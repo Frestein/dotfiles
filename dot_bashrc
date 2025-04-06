@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# ----------------------------Prompt--------------------------- #
+
+eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline.omp.toml")"
+
+# ------------------Completions & Initializations-------------- #
+
+if [[ -r /usr/share/bash-completion/bash_completion ]]; then
+	. /usr/share/bash-completion/bash_completion
+fi
+
+eval "$(zoxide init bash)"
+eval "$(fzf --bash)"
+eval "$(xremap --completions bash)"
+
+# ---------------------------Options--------------------------- #
+
+# History
+export HISTSIZE=50000
+export SAVEHIST=10000
+export HISTCONTROL=ignoredups:erasedups
+shopt -s histappend # Append to history, don't overwrite it
+
+# ---------------------------Imports--------------------------- #
+[ -f "$XDG_CONFIG_HOME/bash/functions" ] && . "$XDG_CONFIG_HOME/bash/functions"
+[ -f "$XDG_CONFIG_HOME/bash/aliases" ] && . "$XDG_CONFIG_HOME/bash/aliases"
+[ -f "$XDG_CONFIG_HOME/sh/aliases" ] && . "$XDG_CONFIG_HOME/sh/aliases"

@@ -1,0 +1,135 @@
+version = 3
+
+[[blocks]]
+type = 'rprompt'
+alignment = 'right'
+
+[[blocks.segments]]
+leading_diamond = ''
+trailing_diamond = ''
+template = ' {{ .Path }}'
+foreground = '#B8BB26'
+background = '#3C3836'
+type = 'path'
+style = 'diamond'
+
+[blocks.segments.properties]
+style = 'folder'
+
+[[blocks.segments]]
+leading_diamond = ' '
+trailing_diamond = ''
+template = "{{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}"
+foreground = 'lightBlue'
+background = '#3C3836'
+type = 'git'
+style = 'diamond'
+
+[blocks.segments.properties]
+branch_icon = ' '
+branch_identical_icon = ''
+branch_gone_icon = ''
+fetch_status = true
+fetch_upstream_icon = true
+source = "cli"
+
+[block.segments.properties.mapped_branches]
+"feat/*" = " "
+"bug/*" = " "
+
+[[blocks.segments]]
+leading_diamond = ' '
+trailing_diamond = ''
+template = ' {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}'
+foreground = 'blue'
+background = '#3C3836'
+type = 'python'
+style = 'diamond'
+
+[[blocks.segments]]
+leading_diamond = ' '
+trailing_diamond = ''
+template = '󰟓 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}'
+foreground = 'lightBlue'
+background = '#3C3836'
+type = 'go'
+style = 'diamond'
+
+[[blocks.segments]]
+leading_diamond = ' '
+trailing_diamond = ''
+template = ' {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}'
+foreground = '#F29111'
+background = '#3C3836'
+type = 'java'
+style = 'diamond'
+
+[[blocks.segments]]
+leading_diamond = ' '
+trailing_diamond = ''
+template = ' {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}'
+foreground = '#906cff'
+background = '#3C3836'
+type = 'kotlin'
+style = 'diamond'
+
+[blocks.segments.properties]
+fetch_version = false
+
+[[blocks.segments]]
+leading_diamond = ' '
+trailing_diamond = ''
+template = ' {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}'
+foreground = 'blue'
+background = '#3C3836'
+type = "lua"
+style = 'diamond'
+
+[[blocks.segments]]
+leading_diamond = ' '
+trailing_diamond = ''
+template = '{{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }}'
+foreground = '#B16286'
+background = '#3C3836'
+type = 'battery'
+style = 'diamond'
+foreground_templates = [
+  '{{if eq "Charging" .State.String}}#458588{{end}}',
+  '{{if eq "Discharging" .State.String}}#D79921{{end}}',
+  '{{if eq "Full" .State.String}}#98971A{{end}}',
+]
+
+[blocks.segments.properties]
+charged_icon = '● '
+charging_icon = '⇡ '
+discharging_icon = '⇣ '
+
+[[blocks]]
+type = 'prompt'
+alignment = 'left'
+
+[[blocks.segments]]
+leading_diamond = ''
+trailing_diamond = ' '
+template = '{{ if eq .Env.FISH__BIND_MODE "default" }}<blue>N</>{{ else if eq .Env.FISH__BIND_MODE "insert" }}<magenta>I</>{{ else if eq .Env.FISH__BIND_MODE "replace_one" }}<yellow>R</>{{ else if eq .Env.FISH__BIND_MODE "visual"}}<cyan>V</>{{ else }}<red>?</>{{ end }}'
+background = '#3C3836'
+type = 'text'
+style = 'diamond'
+
+[[blocks.segments]]
+leading_diamond = ''
+trailing_diamond = ' '
+template = '{{ if .Error }} {{ .Code }}{{ end }}'
+foreground = 'red'
+background = '#3C3836'
+type = 'status'
+style = 'diamond'
+
+[[blocks.segments]]
+leading_diamond = ''
+trailing_diamond = ' '
+template = '{{ .UserName }} '
+foreground = 'green'
+background = '#3C3836'
+type = 'session'
+style = 'diamond'

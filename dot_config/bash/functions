@@ -1,0 +1,174 @@
+#!/usr/bin/env bash
+
+function check_disk_usage() {
+	if [[ "$1" = "" ]]; then
+		echo "Usage: $0 <percentage>"
+		return 1
+	fi
+	df -h | awk -v threshold="$1" '$5 > threshold {printf "%-30s %-6s %s\n", $1, $5, $6}' | (
+		sed -u 1q
+		sort -k2 -nr
+	)
+}
+
+# Show active network interfaces
+function ifactive() {
+	ifconfig | grep 'flags=' | grep 'UP' | awk -F: '{print $1}'
+}
+
+# Create a new directory and enter it
+function mkd() {
+	if [[ "$1" = "" ]]; then
+		echo "Usage: $0 <directory>"
+		return 1
+	fi
+	mkdir -p "$@" && cd "$@" || return
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null >/dev/null 2>&1; then
+		local arg=-sbh
+	else
+		local arg=-sh
+	fi
+
+	if [[ "$#" -gt 0 ]]; then
+		du "$arg" -- "$@"
+	else
+		du "$arg" .[^.]* ./*
+	fi
+}
+
+# Run `dig` and display the most useful info
+function digga() {
+	if [[ "$1" = "" ]]; then
+		echo "Usage: $0 <domain>"
+		return 1
+	fi
+	dig +nocmd "$1" any +multiline +noall +answer
+}
+
+# Show all the names (CNs and SANs) listed in the SSL certificate for a given domain
+function getcertnames() {
+	if [[ "$1" = "" ]]; then
+		echo "Usage: $0 <domain>"
+		return 1
+	fi
+
+	local domain="$1"
+	echo "Testing ${domain}…"
+	echo ""
+
+	local tmp
+	tmp=$(echo -e "GET / HTTP/1.0\nEOT" |
+		openssl s_client -connect "${domain}:443" -servername "$domain" 2>&1)
+
+	if [[ "$tmp" = *("-----BEGIN CERTIFICATE-----")* ]]; then
+		local certText
+		certText=$(echo "$tmp" |
+			openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
+			no_serial, no_sigdump, no_signame, no_validity, no_version")
+		echo "Common Name:"
+		echo ""
+		echo "$certText" | grep "Subject:" | sed -e "s/^.*CN=//" | sed -e "s/\/emailAddress=.*//"
+		echo ""
+		echo "Subject Alternative Name(s):"
+		echo ""
+		echo "$certText" | grep -A 1 "Subject Alternative Name:" |
+			sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail -n +2
+	else
+		echo "ERROR: Certificate not found."
+		return 1
+	fi
+}
+
+# `o` with no arguments opens the current directory, otherwise opens the given location
+function o() {
+	if [[ $# -eq 0 ]]; then
+		xdg-open .
+	else
+		xdg-open "$@"
+	fi
+}
+
+# yazi
+function yy() {
+	local tmp
+	tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [[ "$cwd" != "" ]] && [[ "$cwd" != "$PWD" ]]; then
+		cd -- "$cwd" || exit
+	fi
+	rm -f -- "$tmp"
+}
+
+# Ansible
+function ansible-role-init() {
+	if [[ "$1" = "" ]]; then
+		echo "Usage: $0 <role name>"
+		return 1
+	fi
+	echo "Ansible Role : $1 Creating...."
+	ansible-galaxy init "$1"
+	tree "$1"
+}
+
+# pacman
+function paclist() {
+	pacman -Qqe | xargs -I{} -P0 --no-run-if-empty pacman -Qs --color=auto "^{}$"
+}
+
+function pacdisowned() {
+	local tmp_dir db fs
+	tmp_dir=$(mktemp --directory)
+	db="$tmp_dir/db"
+	fs="$tmp_dir/fs"
+
+	trap 'rm -rf "$tmp_dir"' EXIT
+
+	pacman -Qlq | sort -u >"$db"
+
+	find /etc /usr ! -name lost+found \
+		\( -type d -printf '%p/\n' -o -print \) | sort >"$fs"
+
+	comm -23 "$fs" "$db"
+
+	rm -rf "$tmp_dir"
+}
+
+function pacmansignkeys() {
+	local key
+	for key in "$@"; do
+		sudo pacman-key --recv-keys "$key"
+		sudo pacman-key --lsign-key "$key"
+		printf 'trust\n3\n' | sudo gpg --homedir /etc/pacman.d/gnupg \
+			--no-permission-warning --command-fd 0 --edit-key "$key"
+	done
+}
+
+function pacweb() {
+	if [[ $# = 0 || "$1" =~ (--help|-h) ]]; then
+		echo "$0 - open the website of an Arch Linux package"
+		echo
+		echo "Usage: $0 <target>"
+		return 1
+	fi
+
+	local infos
+	local pkg="$1"
+	infos="$(LANG=C pacman -Si "$pkg")"
+	if [[ "$infos" = "" ]]; then
+		return 1
+	fi
+
+	local repo arch
+	repo="$(grep -m 1 '^Repo' <<<"$infos" | grep -oP '[^ ]+$')"
+	arch="$(grep -m 1 '^Arch' <<<"$infos" | grep -oP '[^ ]+$')"
+	xdg-open "https://www.archlinux.org/packages/$repo/$arch/$pkg/" &>/dev/null
+}
+
+# delta
+function delta-toggle() {
+	eval 'export DELTA_FEATURES="$(-delta-features-toggle $1 | tee /dev/stderr)"'
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ -d "$HOME/Projects/android/sdk" ]; then
+    export ANDROID_HOME="$HOME/Projects/android/sdk"
+    export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+fi
