@@ -1,0 +1,30 @@
+include ~/.config/newsboat/colorschemes/gruvbox
+include ~/.config/newsboat/keys/vi-like
+
+download-retries 5
+download-timeout 60
+reload-threads   100
+# show-keymap-hint no
+# show-read-feeds  no
+browser          "cha %u"
+html-renderer    "cha -d -T text/html"
+
+# feedlist-format          "%4i [%T] %t %> %U/%c"
+
+# Hidden not supported
+feedlist-format "%?T?║%4i [%T] %t %> %U/%c &╠═══════════════════════════════════════════════════════════════%t?"
+highlight feedlist "[║│]" color3 color0
+highlight feedlist "╠═.*" color3 color0 
+
+feedlist-title-format    "[%u unread] feeds out of [%t total] feeds."
+articlelist-format       "%4i %t %> %D"
+articlelist-title-format "%T [%u unread] articles out of [%t total] articles."
+datetime-format          "%d %B %Y"
+
+macro m set browser "mpv %u"; \
+    open-in-browser; \
+    set browser "cha %u" -- "Open in mpv"
+
+macro o set browser "$BROWSER %u"; \
+    open-in-browser-and-mark-read; \
+    set browser "cha %u" -- "Open in system browser"

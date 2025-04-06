@@ -1,0 +1,4 @@
+--buffer-size 4096
+--concurrent-fragments 4
+--sub-lang en.*,ru
+--extractor-args "youtube:bypass_native_jsi;deno_no_jitless"

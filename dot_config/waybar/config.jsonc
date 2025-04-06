@@ -1,0 +1,207 @@
+// -*- mode: jsonc -*-
+{
+  "layer": "top",
+  // "position": "bottom",
+  "height": 30,
+  // "width": 1280,
+  "spacing": 4,
+  "reload_style_on_change": true,
+  "modules-left": ["image#distro", "hyprland/submap", "tray"],
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": [
+    "mpd",
+    "hyprland/language",
+    "wireplumber",
+    "custom/brightness",
+    "cpu",
+    "memory",
+    "temperature",
+    "network",
+    "clock",
+    "custom/dismiss_notifications",
+    "custom/power"
+  ],
+  "image#distro": {
+    "path": "/usr/share/archlinux/icons/archlinux-icon-crystal-256.svg",
+    "size": 14
+  },
+  "hyprland/workspaces": {
+    "all-outputs": true,
+    "format": "{id}"
+  },
+  "hyprland/language": {
+    "format": " {short}",
+    "keyboard-name": "kanata",
+    "on-click": "hyprctl switchxkblayout kanata next"
+  },
+  "hyprland/submap": {
+    "format": "🧩 {}",
+    "max-length": 16,
+    "tooltip": false
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": " ",
+      "deactivated": " "
+    },
+    "tooltip-format-activated": "Idle: {status}",
+    "tooltip-format-deactivated": "Idle: {status}"
+  },
+  "wireplumber": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰝟",
+    "format-icons": ["󰕿", "󰖀", "󰕾"],
+    "on-click": "/home/frestein/.config/hypr/scripts/volume.sh --toggle",
+    "menu": "on-click-right",
+    "menu-file": "/home/frestein/.config/waybar/modules/audio.xml",
+    "menu-actions": {
+      "settings": "pavucontrol"
+    },
+    "max-volume": 100,
+    "scroll-step": 2.0
+  },
+  "mpd": {
+    //"format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {title} ",
+    "format": " {artist} - {title}",
+    "format-disconnected": " Disconnected",
+    //"format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+    "format-stopped": " Stopped",
+    "unknown-tag": "N/A",
+    "interval": 5,
+    "exec-if": "pgrep mpd",
+    "consume-icons": {
+      "on": " "
+    },
+    "random-icons": {
+      "off": "<span color=\"#f53c3c\"></span> ",
+      "on": " "
+    },
+    "repeat-icons": {
+      "on": " "
+    },
+    "single-icons": {
+      "on": "1 "
+    },
+    "state-icons": {
+      "paused": "",
+      "playing": ""
+    },
+    "tooltip-format": "{artist} - {album} - {title}",
+    "tooltip-format-disconnected": "MPD (disconnected)",
+    "max-length": 50,
+    "on-click": "mpc toggle",
+    "on-click-right": "footclient --app-id 'foot-mp-flt'  ncmpcpp -s visualizer -S playlist",
+    "on-scroll-up": "mpc next",
+    "on-scroll-down": "mpc prev"
+  },
+  "tray": {
+    "spacing": 10
+  },
+  "clock": {
+    "interval": 60,
+    "tooltip": true,
+    "format": "󱑎 {:%I:%M}",
+    "tooltip-format": " {:%A, %B %d %Y}"
+  },
+  // "clock": {
+  //   "format": "󱑎 {:%I:%M}",
+  //   "format-alt": " {:%A, %B %d %Y}",
+  //   "tooltip-format": "<tt><small>{calendar}</small></tt>",
+  //   "calendar": {
+  //     "mode": "month",
+  //     "mode-mon-col": 3,
+  //     "weeks-pos": "right",
+  //     "on-scroll": 1,
+  //     "on-click-right": "mode",
+  //     "format": {
+  //       "months": "<span color='#ffead3'><b>{}</b></span>",
+  //       "days": "<span color='#ecc6d9'><b>{}</b></span>",
+  //       "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+  //       "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+  //       "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+  //     }
+  //   },
+  //   "actions": {
+  //     "on-click-right": "mode",
+  //     "on-click-forward": "tz_up",
+  //     "on-click-backward": "tz_down",
+  //     "on-scroll-up": "shift_up",
+  //     "on-scroll-down": "shift_down"
+  //   }
+  // },
+  "cpu": {
+    "format": " {usage}%"
+  },
+  "memory": {
+    "format": "  {}%",
+    "tooltip-format": "Swap: {swapPercentage}%"
+  },
+  "temperature": {
+    //"thermal-zone": 2,
+    "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+    "critical-threshold": 80,
+    //"format-critical": "{icon} {temperatureC}°C",
+    "format": "{icon} {temperatureC}°C",
+    "format-icons": ["", "", ""],
+    "tooltip-format": "CPU: {temperatureC}°C"
+  },
+  "network": {
+    "format-wifi": " {essid} ({signalStrength}%)",
+    "format-ethernet": "󰑩 {bandwidthTotalBytes}",
+    "tooltip-format": " {bandwidthDownBytes}  {bandwidthUpBytes}",
+    "format-linked": "{ifname} (No IP)",
+    "format-disconnected": "󱖣 Disconnected",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "interval": 5,
+    "menu": "on-click-right",
+    "menu-file": "/home/frestein/.config/waybar/modules/network.xml",
+    "menu-actions": {
+      "networkmanager_dmenu": "networkmanager_dmenu",
+      "nm-connection-editor": "nm-connection-editor"
+    }
+  },
+  "custom/power": {
+    "format": "⏻ ",
+    "exec": "uptime --pretty | sed 's/up //'",
+    "interval": 60,
+    "exec-if": "exit 0",
+    "tooltip-format": "Uptime: {}",
+    "menu": "on-click",
+    "menu-file": "/home/frestein/.config/waybar/modules/power.xml",
+    "menu-actions": {
+      "logout": "uwsm stop",
+      "lock": "hyprlock",
+      "kill": "hyprctl kill",
+      "reload": "hyprctl reload && pkill -SIGUSR2 waybar",
+      "reboot": "systemctl reboot",
+      //"suspend": "systemctl suspend",
+      //"hibernate": "systemctl hibernate",
+      "shutdown": "systemctl poweroff"
+    }
+  },
+  "custom/brightness": {
+    "format": " {}%",
+    "tooltip-format": "Brightness: {}%",
+    "exec": "ddcutil getvcp 10 | awk '{print $9}' | sed 's/,//'",
+    "exec-if": "exit 0",
+    "on-click": "pkill -SIGRTMIN+9 waybar",
+    "on-scroll-up": "ddcutil setvcp 10 + 25",
+    "on-scroll-down": "ddcutil setvcp 10 - 25",
+    "menu": "on-click-right",
+    "menu-file": "/home/frestein/.config/waybar/modules/brightness.xml",
+    "menu-actions": {
+      "increase": "/home/frestein/.config/hypr/scripts/brightness.sh --inc",
+      "decrease": "/home/frestein/.config/hypr/scripts/brightness.sh --dec",
+      "custom": "/home/frestein/.config/hypr/scripts/fuzzel/brightness.sh"
+    },
+    "signal": 9
+  },
+  "custom/dismiss_notifications": {
+    "exec-if": "command -v makoctl",
+    "exec": "( makoctl list | grep -q 'Notification' && echo '\nDismiss Notifications\n' ) || echo '\nNo Notifications\nnone' ",
+    "format": "{}",
+    "on-click": "makoctl dismiss -a",
+    "interval": 3
+  }
+}

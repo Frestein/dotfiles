@@ -1,0 +1,9 @@
+export GTK_THEME=Gruvbox-Material-Dark
+export XCURSOR_THEME=phinger-cursors-dark
+export XCURSOR_SIZE=24
+export GDK_BACKEND="wayland,x11,*"
+export QT_QPA_PLATFORM="wayland;xcb"
+export SDL_VIDEODRIVER=wayland
+export CLUTTER_BACKEND=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
+export WOBSOCK="$XDG_RUNTIME_DIR/wob.sock"

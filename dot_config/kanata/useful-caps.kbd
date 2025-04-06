@@ -1,0 +1,14 @@
+(defcfg
+	process-unmapped-keys yes
+)
+
+(defsrc
+	esc
+	lmeta
+)
+
+(deflayermap (default)
+	(tap-hold 100 200 esc lctrl)
+	(tap-hold 100 200 f1 lmet)
+)
+

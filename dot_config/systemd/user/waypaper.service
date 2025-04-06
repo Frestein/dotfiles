@@ -1,0 +1,7 @@
+[Unit]
+Description=Set a random wallpaper with waypaper
+Documentation=man:waypaper(1)
+
+[Service]
+Type=oneshot
+ExecStart=waypaper --random

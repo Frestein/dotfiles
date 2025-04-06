@@ -1,0 +1,44 @@
+##############
+#   Global   #
+##############
+
+format=%s\n%b
+default-timeout=5000
+
+#############
+#   Style   #
+#############
+
+margin=25
+padding=15
+border-size=2
+border-radius=0
+max-icon-size=48
+
+##############
+#   Colors   #
+##############
+
+include=~/.config/mako/themes/gruvbox-dark
+
+###############
+#   Urgency   #
+###############
+
+[urgency=low]
+default-timeout=2000
+
+[urgency=normal]
+default-timeout=5000
+
+[urgency=critical]
+default-timeout=0
+
+############
+#   Mode   #
+############
+
+[mode=do-not-disturb]
+invisible=1
+
+# vim:ft=dosini

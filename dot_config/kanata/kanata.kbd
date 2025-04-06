@@ -1,0 +1,120 @@
+(defcfg
+    ;; linux-dev             /dev/input/event5:/dev/input/event6
+    process-unmapped-keys yes
+)
+
+(defsrc
+    grv  1    2    3    4    5    6    7    8    9    0    -    =   bspc
+    tab  q    w    e    r    t    y    u    i    o    p    [    ]   \
+    caps a    s    d    f    g    h    j    k    l    ;    '    ret
+    lsft z    x    c    v    b    n    m    ,    .    /    rsft
+    lctl lmet lalt           spc            ralt rmet rctl
+)
+
+(defvar
+    tap-time  200
+    hold-time 150
+
+    left-hand-keys (
+        q w e r t
+        a s d f g
+        z x c v b
+    )
+    right-hand-keys (
+        y u i o p [ ] \
+        h j k l ; '
+        n m , . /
+    )
+)
+
+(deffakekeys
+    to-base (layer-switch base)
+)
+
+(deftemplate triple-tap-layer-switch (key layer-name)
+    $key (tap-dance 200 (
+        $key
+        (macro $key $key)
+        (layer-switch $layer-name)
+    ))
+)
+
+(defalias
+    tap (multi
+        (layer-switch nomods)
+        (on-idle-fakekey to-base tap 20)
+    )
+
+    a (tap-hold-release-keys 250       200        (multi a @tap) lmet $left-hand-keys)
+    s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lalt $left-hand-keys)
+    d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lctl $left-hand-keys)
+    f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lsft $left-hand-keys)
+    j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rsft $right-hand-keys)
+    k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) rctl $right-hand-keys)
+    l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) ralt $right-hand-keys)
+    ; (tap-hold-release-keys 250       200        (multi ; @tap) rmet $right-hand-keys)
+
+    i (tap-hold-release-keys $tap-time $hold-time (multi i @tap) bspc $right-hand-keys)
+    [ (tap-hold-release-keys 250       200        (multi [ @tap) \    $right-hand-keys)
+    ] (tap-hold-release-keys 250       200        (multi ] @tap) grv  $right-hand-keys)
+    ' (tap-hold-release-keys 250       200        (multi ' @tap) `    $right-hand-keys)
+
+    caps (tap-hold 100 200 esc  lctl)
+    lmet (tap-hold 100 150 C-f1 lmet)
+    spc  (tap-hold 100 200 spc  (layer-while-held extended))
+)
+
+(deflayermap (base)
+    a    @a
+    s    @s
+    d    @d
+    f    @f
+    j    @j
+    k    @k
+    l    @l
+    ;    @;
+
+    i    @i
+    [    @[
+    ]    @]
+    '    @'
+
+    caps @caps
+    lmet @lmet
+    spc  @spc
+
+    (template-expand triple-tap-layer-switch grv transparent)
+)
+
+(deflayermap (extended)
+    u pgup
+    o pgdn
+
+    p prnt
+
+    h C-left
+    ; C-right
+
+    j left
+    k down
+    i up
+    l right
+
+    n home
+    m del
+    , ins
+    . end
+
+    x C-tab
+    c C-S-tab
+)
+
+(deflayermap (nomods)
+    caps @caps 
+    lmet @lmet
+    spc  @spc
+)
+
+(deflayermap (transparent)
+    (template-expand triple-tap-layer-switch grv base)
+)

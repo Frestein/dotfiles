@@ -1,0 +1,10 @@
+[Unit]
+Description=Key remapper for X11 and Wayland
+After=graphical.target
+
+[Service]
+ExecStart=/usr/bin/xremap %h/.config/xremap/config.yml
+Restart=on-abort
+
+[Install]
+WantedBy=default.target

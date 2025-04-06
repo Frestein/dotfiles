@@ -1,0 +1,18 @@
+[buffer]
+images = true
+autofocus = true
+
+[[siteconf]]
+url = 'https://opennet\.ru/.*'
+scripting = true
+cookie = true
+
+# Allow cookie sharing on *sr.ht domains.
+[[siteconf]]
+host = '(.*\.)?sr\.ht' # either 'something.sr.ht' or 'sr.ht'
+cookie = true          # enable cookies (read-only; use "save" to persist them)
+
+# Use the "vector" skin on Wikipedia.
+[[siteconf]]
+url = '^https?://[a-z]+\.wikipedia\.org/wiki/(?!.*useskin=.*)'
+rewrite-url = 'x => x.searchParams.append("useskin", "vector")'

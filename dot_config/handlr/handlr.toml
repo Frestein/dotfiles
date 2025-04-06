@@ -1,0 +1,24 @@
+enable_selector = true
+selector = "fuzzel -d -p 'Open With ' --config=/home/frestein/.config/hypr/fuzzel/fuzzel.ini"
+term_exec_args = ''
+expand_wildcards = false
+
+[[handlers]]
+exec = "umpv %u"
+terminal = false
+regexes = ['^https?://(www\.)?youtube\.com/watch\?.*v=']
+
+[[handlers]]
+exec = "umpv %u"
+terminal = false
+regexes = ['^https?://youtu\.be/.*']
+
+[[handlers]]
+exec = "git_handler %u"
+terminal = false
+regexes = ['^git\+https://']
+
+[[handlers]]
+exec = "/usr/bin/qutebrowser %u"
+terminal = false
+regexes = ['^https?://']

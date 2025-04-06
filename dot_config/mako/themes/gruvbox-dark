@@ -1,0 +1,18 @@
+background-color=#282828FF
+text-color=#EBDBB2FF
+border-color=#928374FF
+progress-color=#83A598FF
+
+[urgency=critical]
+background-color=#282828FF
+text-color=#EBDBB2FF
+border-color=#FB4934FF
+progress-color=#3C3836FF
+
+[app-name=Ianny]
+background-color=#282828FF
+text-color=#EBDBB2FF
+border-color=#928374FF
+progress-color=#B8BB26FF
+
+# vim:ft=dosini

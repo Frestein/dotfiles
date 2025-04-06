@@ -1,0 +1,7 @@
+[timer]
+ignore_idle_inhibitors = false
+idle_timeout = 240
+short_break_timeout = 1500
+long_break_timeout = 3600
+short_break_duration = 120
+long_break_duration = 600

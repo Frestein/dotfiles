@@ -1,0 +1,4 @@
+pass_backend="gopass"
+dmenu_backend="fuzzel"
+fuzzel_config_file="$XDG_CONFIG_HOME/fuzzel/fuzzel.ini"
+userkey="login"

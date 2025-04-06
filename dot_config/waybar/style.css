@@ -1,0 +1,180 @@
+@import "themes/gruvbox-dark.css";
+
+* {
+  font-family:
+    Maple Mono,
+    FontAwesome,
+    JetBrainsMono Nerd Font;
+  font-size: 13px;
+}
+
+window#waybar {
+  background-color: @regular0;
+  /*border-bottom: 2px solid @bright0;*/
+  color: #d8dee9;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+window#waybar.termite {
+  background-color: #3f3f3f;
+}
+
+window#waybar.chromium {
+  background-color: #000000;
+  border: none;
+}
+
+button {
+  /* Use box-shadow instead of border so the text isn't offset */
+  box-shadow: inset 0 -3px transparent;
+  /* Avoid rounded borders under each button name */
+  border: none;
+  border-radius: 0;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+button:hover {
+  background: inherit;
+  box-shadow: inset 0 -3px @bright7;
+}
+
+#workspaces button {
+  padding: 0 5px;
+  background-color: transparent;
+  color: @bright7;
+}
+
+#workspaces button:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#workspaces button.focused {
+  background-color: @bright4;
+  box-shadow: inset 0 -3px @bright7;
+}
+
+#workspaces button.urgent {
+  background-color: @regular1;
+}
+
+#mode {
+  background-color: @bright4;
+  box-shadow: inset 0 -3px @bright7;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#mpd,
+#image.distro,
+#custom-power,
+#custom-pacman,
+#custom-brightness {
+  padding: 0 10px;
+  color: @bright7;
+}
+
+#custom-dismiss_notifications {
+  padding: 0 0;
+  color: @bright7;
+}
+
+#window,
+#workspaces {
+  margin: 0 4px;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+  margin-left: 0;
+}
+
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+  margin-right: 0;
+}
+
+#cpu {
+  color: @bright7;
+}
+
+#wireplumber {
+  color: @bright7;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
+#idle_inhibitor.activated {
+  color: @bright7;
+}
+
+#mpd {
+  color: @bright7;
+}
+
+#language {
+  color: @bright7;
+  padding: 0 5px;
+  margin: 0 5px;
+  min-width: 16px;
+}
+
+#scratchpad {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad.empty {
+  background-color: transparent;
+}
+
+#privacy {
+  padding: 0;
+}
+
+#privacy-item {
+  padding: 0 5px;
+  color: @bright7;
+}
+
+#privacy-item.screenshare {
+  background-color: @regular3;
+}
+
+#privacy-item.audio-in {
+  background-color: @regular2;
+}
+
+#privacy-item.audio-out {
+  background-color: @regular4;
+}
+
+tooltip {
+  color: @bright7;
+  background-color: @regular0;
+  text-shadow: none;
+  border: solid 2px @bright0;
+}

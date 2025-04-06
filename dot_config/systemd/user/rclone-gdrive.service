@@ -1,0 +1,14 @@
+[Unit]
+Description=Google Drive (rclone)
+AssertPathIsDirectory=%h/GDrive/Main
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/rclone mount --vfs-cache-mode full GDriveMain: %h/GDrive/Main
+# Perform lazy unmount
+ExecStop=/usr/bin/fusermount -zu %h/GDrive/Main
+Restart=on-failure
+RestartSec=15
+
+[Install]
+WantedBy=default.target

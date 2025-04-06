@@ -1,0 +1,18 @@
+bind-key l open
+bind-key . toggle-show-read-feeds
+bind-key s sort
+bind-key S rev-sort
+bind-key g home
+bind-key G end
+bind-key h quit
+bind-key U show-urls
+bind-key k up all
+bind-key j down all
+bind-key k prev all
+bind-key j next all
+bind-key K prev-feed articlelist
+bind-key J next-feed articlelist
+bind-key o open-in-browser-and-mark-read
+
+macro s save -- "Export selected article to a plain text file"
+macro S save-all -- "Export all articles from selected feed to a plain text file"

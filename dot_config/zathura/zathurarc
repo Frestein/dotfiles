@@ -1,0 +1,166 @@
+include ./themes/gruvbox-light-hard
+
+set selection-clipboard clipboard
+set guioptions none
+set database sqlite
+
+# Side-by-side mode
+map D set "first-page-column 1:1"
+map <A-d> set "first-page-column 1:2"
+
+# Smooth scrolling
+map j feedkeys "<C-Down>"
+map k feedkeys "<C-Up>"
+
+map й feedkeys q
+map ц feedkeys w
+map у feedkeys e
+map к feedkeys r
+map е feedkeys t
+map н feedkeys y
+map г feedkeys u
+map ш feedkeys i
+map щ feedkeys o
+map з feedkeys p
+# Feedkeys can't do this
+map х feedkeys [
+# Feedkeys can't do this
+map ъ feedkeys ]
+map ф feedkeys a
+map ы feedkeys s
+map в feedkeys d
+map а feedkeys f
+map п feedkeys g
+# This is needed because the first "п" is immediately replaced with "g",
+# but subsequent keys stay unmodified
+map gп feedkeys gg
+map р feedkeys h
+map о feedkeys "<C-Down>"
+map л feedkeys "<C-Up>"
+map д feedkeys l
+map ж feedkeys ;
+map э feedkeys "'"
+map я feedkeys z
+# See comment for "gп" above
+map zя feedkeys zz
+map ч feedkeys x
+map с feedkeys c
+map м feedkeys v
+map и feedkeys b
+map т feedkeys n
+map ь feedkeys m
+# Feedkeys can't do this
+map б feedkeys ,
+# Feedkeys can't do this
+map ю feedkeys .
+# FIXME: "feedkeys `" always works as "feedkeys ~" for some reason
+map ё feedkeys `
+map Й feedkeys <S-q>
+map Ц feedkeys <S-w>
+map У feedkeys <S-e>
+map К feedkeys <S-r>
+map Е feedkeys <S-t>
+map Н feedkeys <S-y>
+map Г feedkeys <S-u>
+map Ш feedkeys <S-i>
+map Щ feedkeys <S-o>
+map З feedkeys <S-p>
+# Feedkeys can't do this
+map Х feedkeys {
+# Feedkeys can't do this
+map Ъ feedkeys }
+map Ф feedkeys <S-a>
+map Ы feedkeys <S-s>
+map В feedkeys <S-d>
+map А feedkeys <S-f>
+map П feedkeys <S-g>
+map Р feedkeys <S-h>
+map О feedkeys <S-j>
+map Л feedkeys <S-k>
+map Д feedkeys <S-l>
+map Ж feedkeys :
+map Э feedkeys '"'
+map Я feedkeys <S-z>
+map Ч feedkeys <S-x>
+map С feedkeys <S-c>
+map М feedkeys <S-v>
+map И feedkeys <S-b>
+map Т feedkeys <S-n>
+map Ь feedkeys <S-m>
+map Б feedkeys <
+map Ю feedkeys >
+map Ё feedkeys ~
+map <C-й> feedkeys <C-q>
+map <C-ц> feedkeys <C-w>
+map <C-у> feedkeys <C-e>
+map <C-к> feedkeys <C-r>
+map <C-е> feedkeys <C-t>
+map <C-н> feedkeys <C-y>
+map <C-г> feedkeys <C-u>
+map <C-ш> feedkeys <C-i>
+map <C-щ> feedkeys <C-o>
+map <C-з> feedkeys <C-p>
+# Feedkeys can't do this
+map <C-х> feedkeys <C-[>
+# Feedkeys can't do this
+map <C-ъ> feedkeys <C-]>
+map <C-ф> feedkeys <C-a>
+map <C-ы> feedkeys <C-s>
+map <C-в> feedkeys <C-d>
+map <C-а> feedkeys <C-f>
+map <C-п> feedkeys <C-g>
+map <C-р> feedkeys <C-h>
+map <C-о> feedkeys <C-j>
+map <C-л> feedkeys <C-k>
+map <C-д> feedkeys <C-l>
+map <C-ж> feedkeys <C-;>
+# Feedkeys can't do this
+map <C-э> feedkeys <C-"'">
+map <C-я> feedkeys <C-z>
+map <C-ч> feedkeys <C-x>
+map <C-с> feedkeys <C-c>
+map <C-м> feedkeys <C-v>
+map <C-и> feedkeys <C-b>
+map <C-т> feedkeys <C-n>
+map <C-ь> feedkeys <C-m>
+# Feedkeys can't do this
+map <C-б> feedkeys <C-,>
+# Feedkeys can't do this
+map <C-ю> feedkeys <C-.>
+map <A-й> feedkeys <A-q>
+map <A-ц> feedkeys <A-w>
+map <A-у> feedkeys <A-e>
+map <A-к> feedkeys <A-r>
+map <A-е> feedkeys <A-t>
+map <A-н> feedkeys <A-y>
+map <A-г> feedkeys <A-u>
+map <A-ш> feedkeys <A-i>
+map <A-щ> feedkeys <A-o>
+map <A-з> feedkeys <A-p>
+# Feedkeys can't do this
+map <A-х> feedkeys <A-[>
+# Feedkeys can't do this
+map <A-ъ> feedkeys <A-]>
+map <A-ф> feedkeys <A-a>
+map <A-ы> feedkeys <A-s>
+map <A-в> feedkeys <A-d>
+map <A-а> feedkeys <A-f>
+map <A-п> feedkeys <A-g>
+map <A-р> feedkeys <A-h>
+map <A-о> feedkeys <A-j>
+map <A-л> feedkeys <A-k>
+map <A-д> feedkeys <A-l>
+map <A-ж> feedkeys <A-;>
+# Feedkeys can't do this
+map <A-э> feedkeys <A-"'">
+map <A-я> feedkeys <A-z>
+map <A-ч> feedkeys <A-x>
+map <A-с> feedkeys <A-c>
+map <A-м> feedkeys <A-v>
+map <A-и> feedkeys <A-b>
+map <A-т> feedkeys <A-n>
+map <A-ь> feedkeys <A-m>
+# Feedkeys can't do this
+map <A-б> feedkeys <A-,>
+# Feedkeys can't do this
+map <A-ю> feedkeys <A-.>
