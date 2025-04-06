@@ -1,0 +1,99 @@
+[[plugin.deps]]
+use = "Lil-Dank/lazygit"
+rev = "7a08a09"
+hash = "a1fa2b3e1826c3a34804ea8c548e9f80"
+
+[[plugin.deps]]
+use = "Sonico98/exifaudio"
+rev = "7ff7141"
+hash = "666ccba55119fba4c25b8ad354b2855c"
+
+[[plugin.deps]]
+use = "boydaihungst/restore"
+rev = "328dd88"
+hash = "ad406e4a5ada589211e6ffe8bad3c983"
+
+[[plugin.deps]]
+use = "dedukun/bookmarks"
+rev = "95b2c58"
+hash = "17a094653b7d0db4ac68ed531d2e1412"
+
+[[plugin.deps]]
+use = "imsi32/yatline"
+rev = "6b0fc1e"
+hash = "ab115c6cc77f5710c27f39dfa2f3d4d"
+
+[[plugin.deps]]
+use = "imsi32/yatline-githead"
+rev = "3b0eb7c"
+hash = "bfd30c396bbe2af526cb949d97ce3dcf"
+
+[[plugin.deps]]
+use = "imsi32/yatline-gruvbox"
+rev = "1ce46eb"
+hash = "1a087e707ba0512106408144eeb3e50a"
+
+[[plugin.deps]]
+use = "llanosrocas/githead"
+rev = "2375024"
+hash = "f46c42b1146bed331c7000b1efd076f5"
+
+[[plugin.deps]]
+use = "pirafrank/what-size"
+rev = "a0d03d4"
+hash = "351caec76e82a2d798eff8db33702671"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:chmod"
+rev = "9a09505"
+hash = "2f1053f89d1a301a648ab181d0948e38"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:diff"
+rev = "9a09505"
+hash = "7a08e303167d5b655c06da6d570f0333"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:full-border"
+rev = "9a09505"
+hash = "1f3dad061209081a6b04dd6ff2cb06c7"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+rev = "9a09505"
+hash = "e0ada736ea676c2bbb3ec705a49526ef"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-filter"
+rev = "9a09505"
+hash = "f0c4b41b5d19a3144958383333eff6e7"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:mount"
+rev = "9a09505"
+hash = "dd97eede8e20e59cd2604e8006e470e2"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-enter"
+rev = "9a09505"
+hash = "7918aab6a71caf31b58411f789195677"
+
+[[plugin.deps]]
+use = "boydaihungst/compress"
+rev = "6327ef4"
+hash = "6a5c7635015d985a2a6b28a55929d85e"
+
+[[plugin.deps]]
+use = "Vortriz/toggle-view"
+rev = "22e9099"
+hash = "9d291f6cecb1f1f5542fc18177d5c107"
+
+[[flavor.deps]]
+use = "Chromium-3-Oxide/everforest-medium"
+rev = "3d5f847"
+hash = "9b4190e2447f2c843fee23ea5f068f6"
+
+[[flavor.deps]]
+use = "bennyyip/gruvbox-dark"
+rev = "b4cc9f2"
+hash = "f44c42bcbed3c8564100e45e2fe3649a"

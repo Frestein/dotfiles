@@ -1,0 +1,118 @@
+[manager]
+prepend_keymap = [
+    { on = "<Enter>", run = "noop" },
+    { on = "<F1>", run = "noop" },
+    { on = "~", run = "noop" },
+
+    # Motions
+    { on = "j", run = "plugin arrow 1" },
+    { on = "k", run = "plugin arrow -1" },
+    { on = "l", run = "plugin smart-enter" },
+
+    { on = "J", run = "plugin parent-arrow 1" },
+    { on = "K", run = "plugin parent-arrow -1" },
+
+    { on = "<C-f>", run = "seek 5" },
+    { on = "<C-b>", run = "seek -5" },
+
+    { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here" },
+    { on = "q", run = "plugin confirm-quit" },
+    { on = "y", run = [
+        'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list',
+        "yank",
+    ] },
+    # { on = "p", run = "plugin smart-paste", desc = "Paste into the hovered directory or CWD" },
+    { on = "t", run = "plugin smart-tab", desc = "Create a tab and enter the hovered directory" },
+    { on = [
+        "g",
+        "?",
+    ], run = "help", desc = "Open help" },
+    { on = [
+        "g",
+        ".",
+    ], run = "hidden toggle", desc = "Toggle hidden" },
+
+    # Zoxide
+    { on = [
+        "z",
+        "z",
+    ], run = "plugin zoxide", desc = "Jump to a directory via zoxide" },
+    { on = [
+        "z",
+        "a",
+    ], run = 'shell -- zoxide add "$PWD"', desc = "Save the current directory to zoxide" },
+    { on = [
+        "z",
+        "d",
+    ], run = 'shell -- zoxide remove "$PWD"', desc = "Remove the current directory from zoxide" },
+    { on = "Z", run = "plugin fzf" },
+
+    # Bookmarks
+    { on = [
+        "b",
+        "a",
+    ], run = "plugin bookmarks -- save", desc = "Save the current position as a bookmark" },
+    { on = [
+        "b",
+        "b",
+    ], run = "plugin bookmarks -- jump", desc = "Jump to a bookmark" },
+    { on = [
+        "b",
+        "d",
+    ], run = "plugin bookmarks -- delete", desc = "Delete a bookmark" },
+    { on = [
+        "b",
+        "D",
+    ], run = "plugin bookmarks -- delete_all", desc = "Delete all bookmarks" },
+
+    # Mount
+    { on = "M", run = "plugin mount", desc = "Mount manager" },
+
+    # Chmod
+    { on = [
+        "c",
+        "m",
+    ], run = "plugin chmod", desc = "Chmod on selected files" },
+
+    # Diff
+    { on = [
+        ".",
+        "d",
+    ], run = "plugin diff", desc = "Diff the selected with the hovered file" },
+
+    # Compress
+    { on = [
+        "c",
+        "a",
+    ], run = "plugin compress", desc = "Archive the selected files" },
+
+    # What-size
+    { on = [
+        ".",
+        "s",
+    ], run = "plugin what-size", desc = "Show the size of the selected files or cwd" },
+
+    # Preview
+    { on = "<C-1>", run = "plugin toggle-view -- parent", desc = "Toggle parent" },
+    { on = "<C-2>", run = "plugin toggle-view -- current", desc = "Toggle current" },
+    { on = "<C-3>", run = "plugin toggle-view -- preview", desc = "Toggle preview" },
+
+    # Smart filter
+    { on = "F", run = "plugin smart-filter", desc = "Smart filter" },
+
+    # Easyjump
+    { on = "i", run = "plugin easyjump", desc = "Easyjump" },
+
+    # Git 
+    { on = [
+        "g",
+        "i",
+    ], run = "plugin lazygit", desc = "Lazygit" },
+    { on = [
+        "g",
+        "r",
+    ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the rooot (git)" },
+
+    # Trash
+    { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },
+]

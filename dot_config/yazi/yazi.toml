@@ -1,0 +1,35 @@
+[preview]
+max_width = 900
+max_height = 1200
+image_quality = 90
+image_delay = 0
+sixel_fraction = 10
+ueberzug_offset = [5, 1.2, 0, 0]
+
+[[opener.pdf]]
+run = 'zathura "$@"'
+orphan = true
+block = true
+for = "linux"
+
+[[open.append_rules]]
+mime = "image/{vnd.djvu,x-djvu}"
+use = ["pdf", "open"]
+
+[[open.prepend_rules]]
+mime = "image/*"
+use = ["play", "open", "reveal"]
+
+[[open.prepend_rules]]
+mime = "application/pdf"
+use = ["pdf", "open"]
+
+[plugin]
+prepend_previewers = [{ mime = "audio/*", run = "exifaudio" }]
+prepend_fetchers = [
+    { id = "git", name = "*", run = "git" },
+    { id = "git", name = "*/", run = "git" },
+]
+
+[input]
+cursor_blink = true
