@@ -336,6 +336,10 @@
   (which-key-add-column-padding 1)
   (which-key-max-description-length 40))
 
+;; Display of relative line numbers in the buffer:
+(setq display-line-numbers-type 'relative) 
+(global-display-line-numbers-mode)
+
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes)  ; Disable all active themes
 (use-package gruvbox-theme
