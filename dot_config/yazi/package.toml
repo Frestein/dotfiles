@@ -20,8 +20,8 @@ hash = "17a094653b7d0db4ac68ed531d2e1412"
 
 [[plugin.deps]]
 use = "imsi32/yatline"
-rev = "6b0fc1e"
-hash = "ab115c6cc77f5710c27f39dfa2f3d4d"
+rev = "90e0284"
+hash = "8d4cb2dfadcbda045ddaa5c274441f9c"
 
 [[plugin.deps]]
 use = "imsi32/yatline-githead"
@@ -35,47 +35,47 @@ hash = "1a087e707ba0512106408144eeb3e50a"
 
 [[plugin.deps]]
 use = "llanosrocas/githead"
-rev = "2375024"
-hash = "f46c42b1146bed331c7000b1efd076f5"
+rev = "7104df2"
+hash = "407bdfbed7b052dad108eeac88270f25"
 
 [[plugin.deps]]
 use = "pirafrank/what-size"
-rev = "a0d03d4"
-hash = "351caec76e82a2d798eff8db33702671"
+rev = "f1c6b69"
+hash = "6e789212eb41d937bab04877ca361099"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "9a09505"
+rev = "7112e91"
 hash = "2f1053f89d1a301a648ab181d0948e38"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:diff"
-rev = "9a09505"
+rev = "7112e91"
 hash = "7a08e303167d5b655c06da6d570f0333"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "9a09505"
+rev = "7112e91"
 hash = "1f3dad061209081a6b04dd6ff2cb06c7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "9a09505"
+rev = "7112e91"
 hash = "e0ada736ea676c2bbb3ec705a49526ef"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-filter"
-rev = "9a09505"
+rev = "7112e91"
 hash = "f0c4b41b5d19a3144958383333eff6e7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "9a09505"
+rev = "7112e91"
 hash = "dd97eede8e20e59cd2604e8006e470e2"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-enter"
-rev = "9a09505"
+rev = "7112e91"
 hash = "7918aab6a71caf31b58411f789195677"
 
 [[plugin.deps]]
