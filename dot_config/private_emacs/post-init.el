@@ -299,6 +299,18 @@
 
 (use-package treesit-fold)
 
+(add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
+
+(set-frame-font "Maple Mono NF 12" nil t)
+
+(use-package nerd-icons
+  :custom
+  (nerd-icons-font-family "Maple Mono NF"))
+
+(use-package doom-modeline
+  :ensure t
+  :hook (elpaca-after-init . doom-modeline-mode))
+
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes)  ; Disable all active themes
 (use-package gruvbox-theme
