@@ -307,6 +307,20 @@
   :custom
   (nerd-icons-font-family "Maple Mono NF"))
 
+(use-package nerd-icons-completion
+  :after marginalia
+  :config
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
 (use-package doom-modeline
   :ensure t
   :hook (elpaca-after-init . doom-modeline-mode))
