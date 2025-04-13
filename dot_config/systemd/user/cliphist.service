@@ -1,5 +1,5 @@
 [Unit]
-Description=Clipboard Manager (Wayland)
+Description=Wayland clipboard manager with support for multimedia 
 After=graphical-session.target
 
 [Service]
