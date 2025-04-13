@@ -290,6 +290,15 @@
    :preview-key '(:debounce 0.4 any))
   (setq consult-narrow-key "<"))
 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
+(use-package treesit-fold)
+
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes)  ; Disable all active themes
 (use-package gruvbox-theme
