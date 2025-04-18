@@ -141,6 +141,23 @@
      (?> . ("<" . ">"))))
   :hook (elpaca-after-init . global-evil-surround-mode))
 
+;; Prevent parenthesis imbalance
+(use-package paredit
+  :ensure t
+  :defer t
+  :commands paredit-mode
+  :hook
+  (emacs-lisp-mode . paredit-mode)
+  :config
+  (define-key paredit-mode-map (kbd "RET") nil))
+
+(use-package enhanced-evil-paredit
+  :ensure t
+  :defer t
+  :commands enhanced-evil-paredit-mode
+  :hook
+  (paredit-mode . enhanced-evil-paredit-mode))
+
 ;; The undo-fu package is a lightweight wrapper around Emacs' built-in undo
 ;; system, providing more convenient undo/redo functionality.
 (use-package undo-fu
@@ -369,7 +386,7 @@
   :hook (elpaca-after-init . doom-modeline-mode))
 
 (use-package which-key
-  :ensure nil ; builtin
+  :ensure nil
   :defer t
   :commands which-key-mode
   :hook (after-init . which-key-mode)
