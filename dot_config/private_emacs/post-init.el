@@ -328,7 +328,7 @@
 
 (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
 
-(set-frame-font "Maple Mono NF 11" nil t)
+(set-frame-font "Maple Mono NF-11" nil t)
 
 (use-package nerd-icons
   :custom
@@ -400,6 +400,9 @@
     ("S-TAB" . dired-subtree-remove))
   :config
   (setq dired-subtree-use-backgrounds nil))
+
+(use-package rainbow-delimiters
+  :hook ((prog-mode . rainbow-delimiters-mode)))
 
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes)  ; Disable all active themes
