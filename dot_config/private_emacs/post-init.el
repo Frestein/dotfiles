@@ -454,6 +454,10 @@
   :custom
   (helpful-max-buffers 7))
 
+(use-package elisp-autofmt
+  :commands (elisp-autofmt-mode elisp-autofmt-buffer)
+  :hook (emacs-lisp-mode . elisp-autofmt-mode))
+
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes)  ; Disable all active themes
 (use-package gruvbox-theme
