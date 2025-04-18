@@ -82,6 +82,14 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(use-package eglot
+  :ensure nil
+  :defer t
+  :commands (eglot
+             eglot-ensure
+             eglot-rename
+             eglot-format-buffer))
+
 ;; Required by evil-collection
 (eval-when-compile
   ;; It has to be defined before evil
