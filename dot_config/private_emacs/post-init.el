@@ -192,6 +192,14 @@
   :commands vertico-mode
   :hook (elpaca-after-init . vertico-mode))
 
+(use-package vertico-directory
+  :ensure nil ; comes with vertico
+  :after vertico
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word)))
+
 (use-package orderless
   ;; Vertico leverages Orderless' flexible matching capabilities, allowing users
   ;; to input multiple patterns separated by spaces, which Orderless then
