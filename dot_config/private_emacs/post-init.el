@@ -456,7 +456,9 @@
 
 (use-package elisp-autofmt
   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
-  :hook (emacs-lisp-mode . elisp-autofmt-mode))
+  :hook (emacs-lisp-mode . elisp-autofmt-mode)
+  :config
+  (setq elisp-autofmt-style 'fixed))
 
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes)  ; Disable all active themes
