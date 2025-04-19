@@ -1,0 +1,30 @@
+#!/bin/sh
+
+clone_dir="$HOME/Projects/git"
+repo_url="${1#git+https://}"
+
+tag="${repo_url##*#tag=}"
+[ "$repo_url" != "$tag" ] || tag=""
+repo_url="${repo_url%%#tag=*}"
+
+mkdir -p "$clone_dir" || exit 1
+
+if ! git -C "$clone_dir" clone "https://$repo_url"; then
+    notify-send "Error cloning repository" >&2
+    exit 1
+fi
+
+if [ "$tag" != "" ]; then
+    repo_name=$(basename "$repo_url" .git)
+    repo_path="$clone_dir/$repo_name"
+
+    if ! cd "$repo_path"; then
+        notify-send "Error changing directory to $repo_path"
+        exit 1
+    fi
+
+    if ! git checkout "$tag"; then
+        notify-send "Error checking out tag: $tag"
+        exit 1
+    fi
+fi
