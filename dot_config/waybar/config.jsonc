@@ -18,6 +18,7 @@
     "temperature",
     "network",
     "clock",
+    "custom/weather",
     "custom/dismiss_notifications",
     "custom/power"
   ],
@@ -203,5 +204,12 @@
     "format": "{}",
     "on-click": "makoctl dismiss -a",
     "interval": 3
+  },
+  "custom/weather": {
+    "format": "{}°",
+    "tooltip": true,
+    "interval": 3600,
+    "exec": "wttrbar --nerd",
+    "return-type": "json"
   }
 }

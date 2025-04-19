@@ -86,6 +86,7 @@ button:hover {
 #mpd,
 #image.distro,
 #custom-power,
+#custom-weather,
 #custom-pacman,
 #custom-brightness {
   padding: 0 10px;
