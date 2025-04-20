@@ -496,6 +496,8 @@
   :hook (emacs-lisp-mode . elisp-autofmt-mode)
   :config (setq elisp-autofmt-style 'fixed))
 
+(use-package ebuku)
+
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
 (use-package
