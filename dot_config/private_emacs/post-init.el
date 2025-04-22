@@ -25,7 +25,15 @@
   ;; A global mode that compiles .el files before they are loaded.
   (compile-angel-on-load-mode))
 
-(use-package no-littering)
+(use-package
+  no-littering
+  :init (require 'recentf)
+  (add-to-list
+    'recentf-exclude
+    (recentf-expand-file-name no-littering-var-directory))
+  (add-to-list
+    'recentf-exclude
+    (recentf-expand-file-name no-littering-etc-directory)))
 
 ;; Auto-revert in Emacs is a feature that automatically updates the
 ;; contents of a buffer to reflect changes made to the underlying file
