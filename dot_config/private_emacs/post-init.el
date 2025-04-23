@@ -197,20 +197,36 @@
   :ensure t
   :defer t
   :commands (corfu-mode global-corfu-mode)
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.1)
+  (corfu-popupinfo-delay '(0.4 . 0.2))
+
+  :bind (:map corfu-map ("C-y" . corfu-insert))
 
   :hook
   ((prog-mode . corfu-mode)
     (shell-mode . corfu-mode)
     (eshell-mode . corfu-mode))
 
+  :config
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode))
+
+(use-package
+  emacs
+  :ensure nil
   :custom
   ;; Hide commands in M-x which do not apply to the current mode.
   (read-extended-command-predicate #'command-completion-default-include-p)
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
   ;; Disable Ispell completion function. As an alternative try `cape-dict'.
-  (text-mode-ispell-word-completion nil) (tab-always-indent 'complete)
-
-  ;; Enable Corfu
-  :config (global-corfu-mode))
+  (text-mode-ispell-word-completion nil))
 
 (use-package
   cape
