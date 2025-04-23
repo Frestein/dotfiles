@@ -25,7 +25,18 @@
   ;; A global mode that compiles .el files before they are loaded.
   (compile-angel-on-load-mode))
 
-(use-package no-littering)
+(use-package
+  no-littering
+  :hook
+  (recentf-mode
+    .
+    (lambda ()
+      (add-to-list
+        'recentf-exclude
+        (recentf-expand-file-name no-littering-etc-directory))
+      (add-to-list
+        'recentf-exclude
+        (recentf-expand-file-name no-littering-var-directory)))))
 
 (add-hook 'elpaca-after-init-hook #'global-auto-revert-mode)
 
@@ -40,16 +51,6 @@
     (let ((inhibit-message t))
       (recentf-mode 1))))
 (add-hook 'kill-emacs-hook #'recentf-cleanup)
-
-(add-hook
-  'recentf-mode-hook
-  (lambda ()
-    (add-to-list
-      'recentf-exclude
-      (recentf-expand-file-name no-littering-etc-directory))
-    (add-to-list
-      'recentf-exclude
-      (recentf-expand-file-name no-littering-var-directory))))
 
 (setq treesit-language-source-alist
   '
