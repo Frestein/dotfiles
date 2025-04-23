@@ -25,42 +25,31 @@
   ;; A global mode that compiles .el files before they are loaded.
   (compile-angel-on-load-mode))
 
-(use-package
-  no-littering
-  :init (require 'recentf)
-  (add-to-list
-    'recentf-exclude
-    (recentf-expand-file-name no-littering-var-directory))
-  (add-to-list
-    'recentf-exclude
-    (recentf-expand-file-name no-littering-etc-directory)))
+(use-package no-littering)
 
-;; Auto-revert in Emacs is a feature that automatically updates the
-;; contents of a buffer to reflect changes made to the underlying file
-;; on disk.
-(add-hook 'after-init-hook #'global-auto-revert-mode)
+(add-hook 'elpaca-after-init-hook #'global-auto-revert-mode)
 
-;; recentf is an Emacs package that maintains a list of recently
-;; accessed files, making it easier to reopen files you have worked on
-;; recently.
+(add-hook 'elpaca-after-init-hook #'savehist-mode)
+
+(add-hook 'elpaca-after-init-hook #'save-place-mode)
+
 (add-hook
-  'after-init-hook
+  'elpaca-after-init-hook
   #'
   (lambda ()
     (let ((inhibit-message t))
       (recentf-mode 1))))
 (add-hook 'kill-emacs-hook #'recentf-cleanup)
 
-;; savehist is an Emacs feature that preserves the minibuffer history between
-;; sessions. It saves the history of inputs in the minibuffer, such as commands,
-;; search strings, and other prompts, to a file. This allows users to retain
-;; their minibuffer history across Emacs restarts.
-(add-hook 'after-init-hook #'savehist-mode)
-
-;; save-place-mode enables Emacs to remember the last location within a file
-;; upon reopening. This feature is particularly beneficial for resuming work at
-;; the precise point where you previously left off.
-(add-hook 'after-init-hook #'save-place-mode)
+(add-hook
+  'recentf-mode-hook
+  (lambda ()
+    (add-to-list
+      'recentf-exclude
+      (recentf-expand-file-name no-littering-etc-directory))
+    (add-to-list
+      'recentf-exclude
+      (recentf-expand-file-name no-littering-var-directory))))
 
 (setq treesit-language-source-alist
   '
