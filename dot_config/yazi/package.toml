@@ -10,8 +10,8 @@ hash = "666ccba55119fba4c25b8ad354b2855c"
 
 [[plugin.deps]]
 use = "boydaihungst/restore"
-rev = "328dd88"
-hash = "ad406e4a5ada589211e6ffe8bad3c983"
+rev = "539aad5"
+hash = "fd162085ec09fef4b4060c92bba31994"
 
 [[plugin.deps]]
 use = "dedukun/bookmarks"
@@ -20,8 +20,8 @@ hash = "b836fb264381f35dec79930438a906d5"
 
 [[plugin.deps]]
 use = "imsi32/yatline"
-rev = "90e0284"
-hash = "8d4cb2dfadcbda045ddaa5c274441f9c"
+rev = "2ecf715"
+hash = "38e2ea4703ea606d4eef574e8e8b8fd7"
 
 [[plugin.deps]]
 use = "imsi32/yatline-githead"
@@ -45,43 +45,43 @@ hash = "6e789212eb41d937bab04877ca361099"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "b12a9ab"
+rev = "864a021"
 hash = "2f1053f89d1a301a648ab181d0948e38"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:diff"
-rev = "b12a9ab"
+rev = "864a021"
 hash = "7a08e303167d5b655c06da6d570f0333"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "b12a9ab"
+rev = "864a021"
 hash = "1f3dad061209081a6b04dd6ff2cb06c7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "b12a9ab"
+rev = "864a021"
 hash = "e0ada736ea676c2bbb3ec705a49526ef"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-filter"
-rev = "b12a9ab"
+rev = "864a021"
 hash = "f0c4b41b5d19a3144958383333eff6e7"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "b12a9ab"
+rev = "864a021"
 hash = "dd97eede8e20e59cd2604e8006e470e2"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-enter"
-rev = "b12a9ab"
+rev = "864a021"
 hash = "7918aab6a71caf31b58411f789195677"
 
 [[plugin.deps]]
 use = "boydaihungst/compress"
-rev = "6327ef4"
-hash = "6a5c7635015d985a2a6b28a55929d85e"
+rev = "f9d7adb"
+hash = "3c578c90c1cae2a1954768f52c9f9e22"
 
 [[plugin.deps]]
 use = "Vortriz/toggle-view"
@@ -95,5 +95,5 @@ hash = "9b4190e2447f2c843fee23ea5f068f6"
 
 [[flavor.deps]]
 use = "bennyyip/gruvbox-dark"
-rev = "b4cc9f2"
-hash = "f44c42bcbed3c8564100e45e2fe3649a"
+rev = "91fdfa7"
+hash = "f48f510e5505f5d01e79c4f8257ec5cb"
