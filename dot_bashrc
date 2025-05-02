@@ -10,12 +10,11 @@ eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubble
 # ------------------Completions & Initializations-------------- #
 
 if [[ -r /usr/share/bash-completion/bash_completion ]]; then
-	. /usr/share/bash-completion/bash_completion
+    . /usr/share/bash-completion/bash_completion
 fi
 
 eval "$(zoxide init bash)"
 eval "$(fzf --bash)"
-eval "$(xremap --completions bash)"
 
 # ---------------------------Options--------------------------- #
 
