@@ -514,6 +514,9 @@
 
 (use-package ebuku)
 
+(setq telega-server-libs-prefix "/usr")
+(use-package telega)
+
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
 (use-package
