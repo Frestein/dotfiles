@@ -35,8 +35,9 @@ video/x-msvideo=mpv.desktop;
 x-scheme-handler/git+https=handlr-regex.desktop;
 x-scheme-handler/http=handlr-regex.desktop;
 x-scheme-handler/https=handlr-regex.desktop;org.qutebrowser.qutebrowser.desktop;
-x-scheme-handler/tg=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;
-x-scheme-handler/tonsite=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;
+x-scheme-handler/tg=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;userapp-AyuGram Desktop-9PKR52.desktop;
+x-scheme-handler/tonsite=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;userapp-AyuGram Desktop-40JS52.desktop;
+
 [Default Applications]
 application/json=nvim.desktop;
 application/pdf=org.pwmt.zathura.desktop;
@@ -74,5 +75,5 @@ video/x-msvideo=mpv.desktop;
 x-scheme-handler/git+https=handlr-regex.desktop;
 x-scheme-handler/http=handlr-regex.desktop;
 x-scheme-handler/https=handlr-regex.desktop;org.qutebrowser.qutebrowser.desktop;
-x-scheme-handler/tg=org.telegram.desktop.desktop;
-x-scheme-handler/tonsite=org.telegram.desktop.desktop;
+x-scheme-handler/tg=userapp-AyuGram Desktop-9PKR52.desktop
+x-scheme-handler/tonsite=userapp-AyuGram Desktop-40JS52.desktop
