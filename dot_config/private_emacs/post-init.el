@@ -539,11 +539,40 @@
 
 (use-package ebuku :ensure t :defer t)
 
-(setq telega-server-libs-prefix "/usr")
-(use-package telega)
+(use-package
+  telega
+  :ensure t
+  :defer t
+  :bind-keymap ("C-c t" . telega-prefix-map)
+  :hook (telega-load . telega-appindicator-mode)
+  :config
+  (setq telega-server-libs-prefix "/usr")
+  (setq telega-translate-to-language-by-default "ru"))
+
+(use-package
+  telega-mnz
+  :ensure nil
+  :after telega
+  :requires language-detection
+  :custom
+  (global-telega-mnz-mode t)
+  (telega-mnz-use-language-detection 32))
+
+(use-package language-detection)
+
+(use-package
+  telega-stories
+  :ensure nil
+  :after telega
+  :bind (:map telega-root-mode-map ("v e" . telega-view-emacs-stories))
+  :config (telega-stories-mode 1))
+
+(use-package telega-dired-dwim :ensure nil :after telega)
 
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
 (use-package
   gruvbox-theme
   :hook (elpaca-after-init . (lambda () (load-theme 'gruvbox t))))
+
+
