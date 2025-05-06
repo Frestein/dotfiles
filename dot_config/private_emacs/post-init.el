@@ -137,6 +137,12 @@
   :config (evil-collection-init))
 
 (use-package
+  evil-commentary
+  :after evil
+  :ensure t
+  :config (evil-commentary-mode))
+
+(use-package
   evil-surround
   :after evil
   :ensure t
@@ -251,7 +257,7 @@
 
 (use-package
   vertico-directory
-  :ensure nil ; comes with vertico
+  :ensure nil
   :after vertico
   :bind
   (:map
