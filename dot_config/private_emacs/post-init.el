@@ -492,6 +492,23 @@
     ("S-TAB" . dired-subtree-remove))
   :config (setq dired-subtree-use-backgrounds nil))
 
+(use-package
+  org
+  :ensure t
+  :defer t
+  :commands (org-mode org-version)
+  :mode ("\\.org\\'" . org-mode)
+  :custom
+  (org-hide-leading-stars t)
+  (org-startup-indented t)
+  (org-adapt-indentation nil)
+  (org-edit-src-content-indentation 0)
+  (org-startup-truncated t)
+  (org-fontify-done-headline t)
+  (org-fontify-todo-headline t)
+  (org-fontify-whole-heading-line t)
+  (org-fontify-quote-and-verse-blocks t))
+
 (use-package rainbow-delimiters :hook ((prog-mode . rainbow-delimiters-mode)))
 
 (use-package
@@ -514,11 +531,13 @@
 
 (use-package
   elisp-autofmt
+  :ensure t
+  :defer t
   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
   :hook (emacs-lisp-mode . elisp-autofmt-mode)
   :config (setq elisp-autofmt-style 'fixed))
 
-(use-package ebuku)
+(use-package ebuku :ensure t :defer t)
 
 (setq telega-server-libs-prefix "/usr")
 (use-package telega)
