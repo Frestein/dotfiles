@@ -1,6 +1,5 @@
 (use-package
   compile-angel
-  :ensure t
   :demand t
   :custom
   ;; Set `compile-angel-verbose` to nil to suppress output from compile-angel.
@@ -52,6 +51,7 @@
       (recentf-mode 1))))
 (add-hook 'kill-emacs-hook #'recentf-cleanup)
 
+;; Tree-Sitter Setup
 (setq treesit-language-source-alist
   '
   ((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -97,11 +97,21 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+;; LSP Setup
 (use-package
   eglot
   :ensure nil
-  :defer t
-  :commands (eglot eglot-ensure eglot-rename eglot-format-buffer))
+  :commands (eglot eglot-ensure eglot-rename eglot-format-buffer)
+  :config
+  (add-to-list
+    'eglot-server-programs
+    '((python-mode python-ts-mode) "basedpyright-langserver" "--stdio")))
+
+(use-package
+  eglot-booster
+  :ensure (:host github :repo "jdtsmith/eglot-booster")
+  :after eglot
+  :config (eglot-booster-mode))
 
 ;; Required by evil-collection
 (eval-when-compile
@@ -121,8 +131,6 @@
 ;; Vim emulation
 (use-package
   evil
-  :ensure t
-  :defer t
   :commands (evil-mode evil-define-key)
   :hook (elpaca-after-init . evil-mode))
 
@@ -130,48 +138,47 @@
   ;; It has to be defined before evil-colllection
   (setq evil-collection-setup-minibuffer t))
 
-(use-package
-  evil-collection
-  :after evil
-  :ensure t
-  :config (evil-collection-init))
+(use-package evil-collection :after evil :config (evil-collection-init))
 
 (use-package
   evil-commentary
   :after evil
-  :ensure t
-  :config (evil-commentary-mode))
+  :hook (evil-mode . evil-commentary-mode))
 
 (use-package
   evil-surround
   :after evil
-  :ensure t
-  :defer t
   :commands global-evil-surround-mode
   :custom
   (evil-surround-pairs-alist
     '
     ((?\( . ("(" . ")"))
-      (?\[ . ("[" . "]")) (?\{ . ("{" . "}"))
-
-      (?\) . ("(" . ")")) (?\] . ("[" . "]")) (?\} . ("{" . "}"))
-
-      (?< . ("<" . ">")) (?> . ("<" . ">"))))
+      (?\[ . ("[" . "]"))
+      (?\{ . ("{" . "}"))
+      (?\) . ("(" . ")"))
+      (?\] . ("[" . "]"))
+      (?\} . ("{" . "}"))
+      (?< . ("<" . ">"))
+      (?> . ("<" . ">"))))
   :hook (elpaca-after-init . global-evil-surround-mode))
+
+(use-package
+  evil-org
+  :after org
+  :hook (org-mode . evil-org-mode)
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
 ;; Prevent parenthesis imbalance
 (use-package
   paredit
-  :ensure t
-  :defer t
   :commands paredit-mode
   :hook (emacs-lisp-mode . paredit-mode)
   :config (define-key paredit-mode-map (kbd "RET") nil))
 
 (use-package
   enhanced-evil-paredit
-  :ensure t
-  :defer t
   :commands enhanced-evil-paredit-mode
   :hook (paredit-mode . enhanced-evil-paredit-mode))
 
@@ -179,7 +186,6 @@
 ;; system, providing more convenient undo/redo functionality.
 (use-package
   undo-fu
-  :defer t
   :commands
   (undo-fu-only-undo
     undo-fu-only-redo
@@ -194,14 +200,11 @@
 ;; and restoration of undo history across Emacs sessions, even after restarting.
 (use-package
   undo-fu-session
-  :defer t
   :commands undo-fu-session-global-mode
   :hook (elpaca-after-init . undo-fu-session-global-mode))
 
 (use-package
   corfu
-  :ensure t
-  :defer t
   :commands (corfu-mode global-corfu-mode)
   :custom
   (corfu-cycle t)
@@ -209,14 +212,11 @@
   (corfu-auto-prefix 2)
   (corfu-auto-delay 0.1)
   (corfu-popupinfo-delay '(0.4 . 0.2))
-
   :bind (:map corfu-map ("C-y" . corfu-insert))
-
   :hook
   ((prog-mode . corfu-mode)
     (shell-mode . corfu-mode)
     (eshell-mode . corfu-mode))
-
   :config
   (global-corfu-mode)
   (corfu-history-mode)
@@ -236,8 +236,6 @@
 
 (use-package
   cape
-  :ensure t
-  :defer t
   :commands (cape-dabbrev cape-file cape-elisp-block)
   :bind ("C-c p" . cape-prefix-map)
   :init
@@ -250,8 +248,6 @@
 (use-package
   vertico
   ;; (Note: It is recommended to also enable the savehist package.)
-  :ensure t
-  :defer t
   :commands vertico-mode
   :hook (elpaca-after-init . vertico-mode))
 
@@ -271,7 +267,6 @@
   ;; Vertico leverages Orderless' flexible matching capabilities, allowing users
   ;; to input multiple patterns separated by spaces, which Orderless then
   ;; matches in any order against the candidates.
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
@@ -282,8 +277,6 @@
   ;; Marginalia allows Embark to offer you preconfigured actions in more contexts.
   ;; In addition to that, Marginalia also enhances Vertico by adding rich
   ;; annotations to the completion candidates displayed in Vertico's interface.
-  :ensure t
-  :defer t
   :commands (marginalia-mode marginalia-cycle)
   :hook (elpaca-after-init . marginalia-mode))
 
@@ -292,8 +285,6 @@
   ;; Embark is an Emacs package that acts like a context menu, allowing
   ;; users to perform context-sensitive actions on selected items
   ;; directly from the completion interface.
-  :ensure t
-  :defer t
   :commands
   (embark-act
     embark-dwim
@@ -319,12 +310,10 @@
 
 (use-package
   embark-consult
-  :ensure t
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package
   consult
-  :ensure t
   :bind
   ( ;; C-c bindings in `mode-specific-map'
     ("C-c M-x" . consult-mode-command)
@@ -437,15 +426,11 @@
 
 (use-package nerd-icons-dired :hook (dired-mode . nerd-icons-dired-mode))
 
-(use-package
-  doom-modeline
-  :ensure t
-  :hook (elpaca-after-init . doom-modeline-mode))
+(use-package doom-modeline :hook (elpaca-after-init . doom-modeline-mode))
 
 (use-package
   which-key
   :ensure nil
-  :defer t
   :commands which-key-mode
   :hook (after-init . which-key-mode)
   :custom
@@ -492,10 +477,10 @@
     ("S-TAB" . dired-subtree-remove))
   :config (setq dired-subtree-use-backgrounds nil))
 
+(use-package dired-preview :after dired :hook (dired-mode . dired-preview-mode))
+
 (use-package
   org
-  :ensure t
-  :defer t
   :commands (org-mode org-version)
   :mode ("\\.org\\'" . org-mode)
   :custom
@@ -513,7 +498,6 @@
 
 (use-package
   helpful
-  :defer t
   :commands
   (helpful-callable
     helpful-variable
@@ -531,18 +515,16 @@
 
 (use-package
   elisp-autofmt
-  :ensure t
-  :defer t
   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
   :hook (emacs-lisp-mode . elisp-autofmt-mode)
-  :config (setq elisp-autofmt-style 'fixed))
+  :config
+  (setq elisp-autofmt-empty-line-max 1)
+  (setq elisp-autofmt-style 'fixed))
 
-(use-package ebuku :ensure t :defer t)
+(use-package ebuku)
 
 (use-package
   telega
-  :ensure t
-  :defer t
   :bind-keymap ("C-c t" . telega-prefix-map)
   :hook (telega-load . telega-appindicator-mode)
   :config
@@ -558,6 +540,12 @@
   (global-telega-mnz-mode t)
   (telega-mnz-use-language-detection 32))
 
+;; (use-package
+;;   telega-dashboard
+;;   :ensure nil
+;;   :after telega
+;;   :config (add-to-list 'dashboard-items '(telega-chats . 5)))
+
 (use-package language-detection)
 
 (use-package
@@ -569,10 +557,31 @@
 
 (use-package telega-dired-dwim :ensure nil :after telega)
 
+(use-package
+  osm
+  :bind ("C-c m" . osm-prefix-map)
+  :custom
+  (osm-server 'default)
+  (osm-copyright t))
+
+(use-package
+  dashboard
+  :hook
+  (elpaca-after-init
+    .
+    (lambda ()
+      (dashboard-insert-startupify-lists)
+      (dashboard-initialize)))
+  :config (dashboard-setup-startup-hook))
+
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
 (use-package
   gruvbox-theme
   :hook (elpaca-after-init . (lambda () (load-theme 'gruvbox t))))
 
-
+(require 'man)
+(set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
+(set-face-attribute 'Man-underline nil
+  :inherit font-lock-keyword-face
+  :underline t)
