@@ -4,7 +4,7 @@
 ;; URL: https://github.com/jamescherti/minimal-emacs.d
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: maint
-;; Version: 1.2.0
+;; Version: 1.2.1
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
@@ -104,15 +104,16 @@
 
 (setq truncate-string-ellipsis "…")
 
-;; Improve Emacs' responsiveness by delaying syntax highlighting during input
-(setq redisplay-skip-fontification-on-input t)
-
 ;; Disable truncation of printed s-expressions in the message buffer
 (setq eval-expression-print-length nil
       eval-expression-print-level nil)
 
 ;; Position underlines at the descent line instead of the baseline.
 (setq x-underline-at-descent-line t)
+
+(setq tramp-verbose 1)
+(setq tramp-completion-reread-directory-timeout 50)
+(setq remote-file-name-inhibit-cache 50)
 
 ;;; Files
 
@@ -423,13 +424,8 @@
 (setq eglot-extend-to-xref t)
 
 ;; Eglot optimization
-(setq jsonrpc-event-hook nil)
 (setq eglot-events-buffer-size 0)
 (setq eglot-report-progress nil)  ; Prevent Eglot minibuffer spam
-
-;; Eglot optimization: Disable `eglot-events-buffer' to maintain consistent
-;; performance in long-running Emacs sessions.
-(setq eglot-events-buffer-config '(:size 0 :format full))
 
 ;;; Flymake
 

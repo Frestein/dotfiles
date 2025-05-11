@@ -4,7 +4,7 @@
 ;; URL: https://github.com/jamescherti/minimal-emacs.d
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: maint
-;; Version: 1.2.0
+;; Version: 1.2.1
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
@@ -179,6 +179,9 @@ pre-early-init.el, and post-early-init.el.")
 
 (setq warning-minimum-level (if minimal-emacs-debug :warning :error))
 (setq warning-suppress-types '((lexical-binding)))
+
+(when minimal-emacs-debug
+  (setq message-log-max 16384))
 
 ;;; Performance: Miscellaneous options
 
