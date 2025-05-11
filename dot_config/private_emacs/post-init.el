@@ -132,10 +132,23 @@
 (use-package
   evil
   :commands (evil-mode evil-define-key)
-  :hook (elpaca-after-init . evil-mode))
+  :hook (elpaca-after-init . evil-mode)
+  :config
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
+  (evil-define-key 'normal 'global (kbd "<leader>e") 'project-dired)
+  (evil-define-key 'normal 'global (kbd "<leader>E") 'dired)
+  (evil-define-key 'normal 'global (kbd "<leader>fr") 'recentf)
+  (evil-define-key 'normal 'global (kbd "<leader>fb") 'consult-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader>sg") 'consult-ripgrep)
+  (evil-define-key 'normal 'global (kbd "<leader>sw") 'consult-fd)
+  (evil-define-key 'normal 'global (kbd "<leader>sM") 'consult-man)
+  (evil-define-key 'normal 'global (kbd "<leader>bb") 'evil-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader>bd") 'evil-delete-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader>x") 'execute-extended-command))
 
 (eval-when-compile
-  ;; It has to be defined before evil-colllection
+  ;; It has to be defined before evil-collection
   (setq evil-collection-setup-minibuffer t))
 
 (use-package evil-collection :after evil :config (evil-collection-init))
@@ -521,6 +534,8 @@
   (setq elisp-autofmt-empty-line-max 1)
   (setq elisp-autofmt-style 'fixed))
 
+
+
 (use-package ebuku)
 
 (use-package
@@ -573,6 +588,11 @@
       (dashboard-insert-startupify-lists)
       (dashboard-initialize)))
   :config (dashboard-setup-startup-hook))
+
+(use-package
+  chezmoi
+  :bind ("C-c C f" . chezmoi-find)
+  :bind ("C-c C w" . chezmoi-write))
 
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
