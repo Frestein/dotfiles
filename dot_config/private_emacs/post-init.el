@@ -534,8 +534,6 @@
   (setq elisp-autofmt-empty-line-max 1)
   (setq elisp-autofmt-style 'fixed))
 
-
-
 (use-package ebuku)
 
 (use-package
@@ -588,6 +586,15 @@
       (dashboard-insert-startupify-lists)
       (dashboard-initialize)))
   :config (dashboard-setup-startup-hook))
+
+(use-package
+  magit
+  ;; Set initial state to insert mode in Magit commit message buffer
+  :hook (git-commit-setup . evil-insert-state)
+  :bind ("C-x g" . magit-status)
+  :custom
+  ;; Improve readability of diffs
+  (magit-diff-refine-hunk 'all))
 
 (use-package
   chezmoi
