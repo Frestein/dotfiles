@@ -34,5 +34,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT="1"
 export POWERSHELL_TELEMETRY_OPTOUT="1"
 
 export DMENU="fuzzel -d"
+export SUDO_ASKPASS="$HOME/.local/bin/askpass"
+export DOAS_ASKPASS="$SUDO_ASKPASS"
 
 [ -f "$XDG_CONFIG_HOME/bash/fzf_config" ] && . "$XDG_CONFIG_HOME/bash/fzf_config"
