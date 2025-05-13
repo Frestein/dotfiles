@@ -39,27 +39,27 @@ abbr -a -- vd nvim -d
 abbr -a -- vz nvim -c \'Telescope zoxide list\'
 abbr -a -- vc nvim -c \'Telescope chezmoi find_files\'
 
-abbr -a -- pacupg sudo pacman -Syu
-abbr -a -- pacin sudo pacman -S
-abbr -a -- paclean sudo pacman -Sc
-abbr -a -- pacins sudo pacman -U
-abbr -a -- paclr sudo pacman -Scc
-abbr -a -- pacre sudo pacman -R
-abbr -a -- pacrem sudo pacman -Rns
+abbr -a -- pacupg doas pacman -Syu
+abbr -a -- pacin doas pacman -S
+abbr -a -- paclean doas pacman -Sc
+abbr -a -- pacins doas pacman -U
+abbr -a -- paclr doas pacman -Scc
+abbr -a -- pacre doas pacman -R
+abbr -a -- pacrem doas pacman -Rns
 abbr -a -- pacrep pacman -Si
 abbr -a -- pacreps pacman -Ss
 abbr -a -- pacloc pacman -Qi
 abbr -a -- paclocs pacman -Qs
-abbr -a -- pacinsd sudo pacman -S --asdeps
-abbr -a -- pacmir sudo pacman -Syy
-abbr -a -- paclsorphans sudo pacman -Qdt
-abbr -a -- pacrmorphans sudo pacman -Rs '(pacman -Qtdq)'
-abbr -a -- pacfileupg sudo pacman -Fy
+abbr -a -- pacinsd doas pacman -S --asdeps
+abbr -a -- pacmir doas pacman -Syy
+abbr -a -- paclsorphans doas pacman -Qdt
+abbr -a -- pacrmorphans doas pacman -Rs '(pacman -Qtdq)'
+abbr -a -- pacfileupg doas pacman -Fy
 abbr -a -- pacfiles pacman -F
 abbr -a -- pacls pacman -Ql
 abbr -a -- pacown pacman -Qo
-abbr -a -- pacupd sudo pacman -Sy
-abbr -a -- pacmanallkeys sudo pacman-key --refresh-keys
+abbr -a -- pacupd doas pacman -Sy
+abbr -a -- pacmanallkeys doas pacman-key --refresh-keys
 
 if type -q yay
     abbr -a -- yaconf yay -Pg
