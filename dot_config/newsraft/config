@@ -1,3 +1,0 @@
-reload-period 60
-
-bind ? exec man newsraft
