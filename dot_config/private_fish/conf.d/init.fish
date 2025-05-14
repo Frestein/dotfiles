@@ -7,4 +7,3 @@ fzf --fish | source
 atuin init fish | source
 batpipe | source
 direnv hook fish | source
-yt-x completions --fish | source

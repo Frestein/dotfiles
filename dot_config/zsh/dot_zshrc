@@ -3,8 +3,11 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then
-	exec fish
+# fish as interactive shell
+if [[ $(ps -o comm= -p $PPID) != "fish" && $SHLVL -eq 1 && -o login ]]; then
+    exec fish --login
+elif [[ $(ps -o comm= -p $PPID) != "fish" && $SHLVL -eq 1 ]]; then
+    exec fish
 fi
 
 # --------------------------zsh-defer-------------------------- #
@@ -18,7 +21,7 @@ ZSH=/usr/share/oh-my-zsh/
 
 ZSH_CACHE_DIR="$HOME/.cache/oh-my-zsh"
 if [[ ! -d "$ZSH_CACHE_DIR" ]]; then
-	mkdir "$ZSH_CACHE_DIR"
+    mkdir "$ZSH_CACHE_DIR"
 fi
 
 # Python (omz)
@@ -49,17 +52,20 @@ zsh-defer source /usr/share/zsh/plugins/forgit/forgit.plugin.zsh
 ## ---- Completions & Initializations ---- ##
 zsh-defer eval "$(zoxide init zsh)"
 zsh-defer eval "$(fzf --zsh)"
+zsh-defer eval "$(atuin init zsh)"
+zsh-defer eval "$(batpipe)"
+zsh-defer eval "$(direnv hook zsh)"
 
 # ---------------------------ohmyzsh--------------------------- #
 
 plugins=(
-	command-not-found
-	docker-compose
-	extract
-	eza
-	git-auto-fetch
-	python
-	ssh
+    command-not-found
+    docker-compose
+    extract
+    eza
+    git-auto-fetch
+    python
+    ssh
 )
 
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/completion"
@@ -86,7 +92,7 @@ autoload -U compinit && compinit
 
 ## ---- Jumping between prompts (foot) ---- ##
 function precmd() {
-	print -Pn "\e]133;A\e\\"
+    print -Pn "\e]133;A\e\\"
 }
 
 ## ---- On-demand rehash ---- ##
@@ -95,13 +101,13 @@ zshcache_time="$(date +%s%N)"
 autoload -Uz add-zsh-hook
 
 function rehash_precmd() {
-	if [[ -e /var/cache/zsh/pacman ]]; then
-		local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
-		if ((zshcache_time < paccache_time)); then
-			rehash
-			zshcache_time="$paccache_time"
-		fi
-	fi
+    if [[ -e /var/cache/zsh/pacman ]]; then
+        local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
+        if ((zshcache_time < paccache_time)); then
+            rehash
+            zshcache_time="$paccache_time"
+        fi
+    fi
 }
 
 add-zsh-hook -Uz precmd rehash_precmd
@@ -110,130 +116,130 @@ add-zsh-hook -Uz precmd rehash_precmd
 
 # omp integration
 function _omp_redraw-prompt() {
-	local precmd
-	for precmd in "${precmd_functions[@]}"; do
-		"$precmd"
-	done
+    local precmd
+    for precmd in "${precmd_functions[@]}"; do
+        "$precmd"
+    done
 
-	zle .reset-prompt
+    zle .reset-prompt
 }
 
 export POSH_VI_MODE="I"
 
 function zvm_after_select_vi_mode() {
-	case $ZVM_MODE in
-	$ZVM_MODE_NORMAL)
-		POSH_VI_MODE="N"
-		;;
-	$ZVM_MODE_INSERT)
-		POSH_VI_MODE="I"
-		;;
-	$ZVM_MODE_VISUAL)
-		POSH_VI_MODE="V"
-		;;
-	$ZVM_MODE_VISUAL_LINE)
-		POSH_VI_MODE="V-L"
-		;;
-	$ZVM_MODE_REPLACE)
-		POSH_VI_MODE="R"
-		;;
-	esac
-	_omp_redraw-prompt
+    case $ZVM_MODE in
+    $ZVM_MODE_NORMAL)
+        POSH_VI_MODE="N"
+        ;;
+    $ZVM_MODE_INSERT)
+        POSH_VI_MODE="I"
+        ;;
+    $ZVM_MODE_VISUAL)
+        POSH_VI_MODE="V"
+        ;;
+    $ZVM_MODE_VISUAL_LINE)
+        POSH_VI_MODE="V-L"
+        ;;
+    $ZVM_MODE_REPLACE)
+        POSH_VI_MODE="R"
+        ;;
+    esac
+    _omp_redraw-prompt
 }
 
 # system clipboard
 
 if [[ $(uname) = "Darwin" ]]; then
-	host_session="mac"
+    host_session="mac"
 elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-	host_session="wayland"
+    host_session="wayland"
 else
-	host_session="x11"
+    host_session="x11"
 fi
 
 function cbread() {
-	if [[ $host_session == "mac" ]]; then
-		pbcopy
-	elif [[ $host_session == "wayland" ]]; then
-		wl-copy
-	else
-		xclip -selection primary -i -f | xclip -selection secondary -i -f | xclip -selection clipboard -i
-	fi
+    if [[ $host_session == "mac" ]]; then
+        pbcopy
+    elif [[ $host_session == "wayland" ]]; then
+        wl-copy
+    else
+        xclip -selection primary -i -f | xclip -selection secondary -i -f | xclip -selection clipboard -i
+    fi
 }
 
 function cbprint() {
-	if [[ $host_session == "mac" ]]; then
-		pbpaste
-	elif [[ $host_session == "wayland" ]]; then
-		wl-paste
-	else
-		if x=$(xclip -o -selection clipboard 2>/dev/null); then
-			echo -n $x
-		elif x=$(xclip -o -selection primary 2>/dev/null); then
-			echo -n $x
-		elif x=$(xclip -o -selection secondary 2>/dev/null); then
-			echo -n $x
-		fi
-	fi
+    if [[ $host_session == "mac" ]]; then
+        pbpaste
+    elif [[ $host_session == "wayland" ]]; then
+        wl-paste
+    else
+        if x=$(xclip -o -selection clipboard 2>/dev/null); then
+            echo -n $x
+        elif x=$(xclip -o -selection primary 2>/dev/null); then
+            echo -n $x
+        elif x=$(xclip -o -selection secondary 2>/dev/null); then
+            echo -n $x
+        fi
+    fi
 }
 
 function my_zvm_vi_yank() {
-	zvm_vi_yank
-	echo -en "${CUTBUFFER}" | cbread
+    zvm_vi_yank
+    echo -en "${CUTBUFFER}" | cbread
 }
 
 function my_zvm_vi_delete() {
-	zvm_vi_delete
-	echo -en "${CUTBUFFER}" | cbread
+    zvm_vi_delete
+    echo -en "${CUTBUFFER}" | cbread
 }
 
 function my_zvm_vi_change() {
-	zvm_vi_change
-	echo -en "${CUTBUFFER}" | cbread
+    zvm_vi_change
+    echo -en "${CUTBUFFER}" | cbread
 }
 
 function my_zvm_vi_change_eol() {
-	zvm_vi_change_eol
-	echo -en "${CUTBUFFER}" | cbread
+    zvm_vi_change_eol
+    echo -en "${CUTBUFFER}" | cbread
 }
 
 function my_zvm_vi_put_after() {
-	CUTBUFFER=$(cbprint)
-	zvm_vi_put_after
+    CUTBUFFER=$(cbprint)
+    zvm_vi_put_after
 }
 
 function my_zvm_vi_put_before() {
-	CUTBUFFER=$(cbprint)
-	zvm_vi_put_before
+    CUTBUFFER=$(cbprint)
+    zvm_vi_put_before
 }
 
 # -------------------------Key Bindings------------------------ #
 
 function zvm_after_lazy_keybindings() {
-	zvm_bindkey vicmd '^\' autosuggest-accept
-	zvm_bindkey vicmd '^Y' accept-line
+    zvm_bindkey vicmd '^\' autosuggest-accept
+    zvm_bindkey vicmd '^Y' accept-line
 
-	# system clipboard
-	zvm_define_widget my_zvm_vi_yank
-	zvm_define_widget my_zvm_vi_delete
-	zvm_define_widget my_zvm_vi_change
-	zvm_define_widget my_zvm_vi_change_eol
-	zvm_define_widget my_zvm_vi_put_after
-	zvm_define_widget my_zvm_vi_put_before
+    # system clipboard
+    zvm_define_widget my_zvm_vi_yank
+    zvm_define_widget my_zvm_vi_delete
+    zvm_define_widget my_zvm_vi_change
+    zvm_define_widget my_zvm_vi_change_eol
+    zvm_define_widget my_zvm_vi_put_after
+    zvm_define_widget my_zvm_vi_put_before
 
-	zvm_bindkey visual 'y' my_zvm_vi_yank
-	zvm_bindkey visual 'd' my_zvm_vi_delete
-	zvm_bindkey visual 'x' my_zvm_vi_delete
-	zvm_bindkey vicmd 'C' my_zvm_vi_change_eol
-	zvm_bindkey visual 'c' my_zvm_vi_change
-	zvm_bindkey vicmd 'p' my_zvm_vi_put_after
-	zvm_bindkey vicmd 'P' my_zvm_vi_put_before
+    zvm_bindkey visual 'y' my_zvm_vi_yank
+    zvm_bindkey visual 'd' my_zvm_vi_delete
+    zvm_bindkey visual 'x' my_zvm_vi_delete
+    zvm_bindkey vicmd 'C' my_zvm_vi_change_eol
+    zvm_bindkey visual 'c' my_zvm_vi_change
+    zvm_bindkey vicmd 'p' my_zvm_vi_put_after
+    zvm_bindkey vicmd 'P' my_zvm_vi_put_before
 }
 
 function zvm_after_init() {
-	zvm_bindkey viins '^R' fzf-history-widget
-	zvm_bindkey viins '^\' autosuggest-accept
-	zvm_bindkey viins '^Y' accept-line
+    zvm_bindkey viins '^R' fzf-history-widget
+    zvm_bindkey viins '^\' autosuggest-accept
+    zvm_bindkey viins '^Y' accept-line
 }
 
 # ---------------------------Imports--------------------------- #
