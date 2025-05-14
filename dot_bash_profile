@@ -1,5 +1,5 @@
 # History
-export HISTFILE="${XDG_STATE_HOME}"/bash/history
+export HISTFILE="$XDG_STATE_HOME/bash/history"
 
 if [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"
