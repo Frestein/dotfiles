@@ -605,10 +605,13 @@
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
 (use-package
   gruvbox-theme
-  :hook (elpaca-after-init . (lambda () (load-theme 'gruvbox t))))
+  :hook (elpaca-after-init . (lambda () (load-theme 'gruvbox t)))
+  :custom-face (line-number ((t (:background nil :inherit default)))))
 
 (require 'man)
 (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
 (set-face-attribute 'Man-underline nil
   :inherit font-lock-keyword-face
   :underline t)
+
+(setq-default display-line-numbers-width 1)
