@@ -534,7 +534,7 @@
   (setq elisp-autofmt-empty-line-max 1)
   (setq elisp-autofmt-style 'fixed))
 
-(use-package ebuku)
+(use-package ebuku :bind ("C-c b" . ebuku))
 
 (use-package
   telega
@@ -598,8 +598,8 @@
 
 (use-package
   chezmoi
-  :bind ("C-c C f" . chezmoi-find)
-  :bind ("C-c C w" . chezmoi-write))
+  :bind ("C-c d f" . chezmoi-find)
+  :bind ("C-c d w" . chezmoi-write))
 
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
