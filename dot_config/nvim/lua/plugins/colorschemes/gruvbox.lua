@@ -1,6 +1,6 @@
 return {
 	{
-		"Frestein/gruvbox.nvim",
+		"ellisonleao/gruvbox.nvim",
 		opts = {
 			overrides = {
 				DiagnosticSignOk = { link = "GruvboxGreen" },
