@@ -508,6 +508,14 @@
   (org-fontify-whole-heading-line t)
   (org-fontify-quote-and-verse-blocks t))
 
+;; (use-package
+;;   org-modern
+;;   :after org
+;; :hook (org-mode . global-org-modern-mode)
+;; )
+
+(require 'org-tempo)
+
 (use-package rainbow-delimiters :hook ((prog-mode . rainbow-delimiters-mode)))
 
 (use-package
@@ -601,6 +609,15 @@
   chezmoi
   :bind ("C-c d f" . chezmoi-find)
   :bind ("C-c d w" . chezmoi-write))
+
+(use-package
+  yasnippet
+  :hook ((prog-mode . yas-minor-mode) (org-mode . yas-minor-mode))
+  :config
+  (setq yas-snippet-dirs
+    (append yas-snippet-dirs '("~/config/emacs/snippets"))))
+
+(use-package yasnippet-snippets :after yasnippet)
 
 ;; Colorscheme
 (mapc #'disable-theme custom-enabled-themes) ; Disable all active themes
