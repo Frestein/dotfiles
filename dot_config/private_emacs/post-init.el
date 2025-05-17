@@ -629,6 +629,13 @@
   :bind ("C-c d w" . chezmoi-write))
 
 (use-package
+  olivetti
+  :config (evil-define-key 'normal 'global (kbd "<leader>uz") 'olivetti-mode))
+
+(use-package
+  writeroom-mode
+  :config (evil-define-key 'normal 'global (kbd "<leader>uZ") 'writeroom-mode))
+(use-package
   yasnippet
   :hook ((prog-mode . yas-minor-mode) (org-mode . yas-minor-mode))
   :config
