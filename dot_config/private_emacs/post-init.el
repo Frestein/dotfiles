@@ -133,25 +133,35 @@
   evil
   :commands (evil-mode evil-define-key)
   :hook (elpaca-after-init . evil-mode)
-  :config
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-define-key 'normal 'global (kbd "<leader>,") 'consult-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>.") 'scratch-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>/") 'consult-ripgrep)
-  (evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-quit-all)
-  (evil-define-key 'normal 'global (kbd "<leader>e") 'project-dired)
-  (evil-define-key 'normal 'global (kbd "<leader>E") 'dired)
-  (evil-define-key 'normal 'global (kbd "<leader>fr") 'recentf)
-  (evil-define-key 'normal 'global (kbd "<leader>fb") 'consult-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>sg") 'consult-ripgrep)
-  (evil-define-key 'normal 'global (kbd "<leader>sb") 'consult-line)
-  (evil-define-key 'normal 'global (kbd "<leader>sw") 'consult-fd)
-  (evil-define-key 'normal 'global (kbd "<leader>sm") 'consult-mark)
-  (evil-define-key 'normal 'global (kbd "<leader>sM") 'consult-man)
-  (evil-define-key 'normal 'global (kbd "<leader>s/") 'consult-isearch-history)
-  (evil-define-key 'normal 'global (kbd "<leader>bb") 'evil-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>bd") 'evil-delete-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>x") 'execute-extended-command))
+  :config (evil-set-leader 'normal (kbd "SPC"))
+
+  ;; format: off
+  (evil-define-key 'normal 'global
+    (kbd "<leader>,") 'consult-buffer
+    (kbd "<leader>.") 'scratch-buffer
+    (kbd "<leader>/") 'consult-ripgrep
+    (kbd "<leader>qq") 'evil-quit-all
+    (kbd "<leader>e") 'project-dired
+    (kbd "<leader>E") 'dired
+    (kbd "<leader>fr") 'recentf
+    (kbd "<leader>fb") 'consult-buffer
+    (kbd "<leader>sg") 'consult-ripgrep
+    (kbd "<leader>sb") 'consult-line
+    (kbd "<leader>sw") 'consult-fd
+    (kbd "<leader>sz") 'chezmoi-find
+    (kbd "<leader>sm") 'consult-mark
+    (kbd "<leader>sM") 'consult-man
+    (kbd "<leader>gg") 'magit
+    (kbd "<leader>s/") 'consult-isearch-history
+    (kbd "<leader>bb") 'evil-buffer
+    (kbd "<leader>bd") 'evil-delete-buffer
+    (kbd "<leader>uB") 'global-blamer-mode
+    (kbd "<leader>x") 'execute-extended-command)
+
+  (evil-define-key 'normal emacs-lisp-mode-map
+    (kbd "<leader>cf") 'elisp-autofmt-buffer)
+  ;; format: on
+  )
 
 (eval-when-compile
   ;; It has to be defined before evil-collection
@@ -544,7 +554,6 @@
   (setq elisp-autofmt-style 'fixed))
 
 (use-package ebuku :bind ("C-c b" . ebuku))
-
 (use-package
   telega
   :bind-keymap ("C-c t" . telega-prefix-map)
@@ -595,6 +604,15 @@
       (dashboard-insert-startupify-lists)
       (dashboard-initialize)))
   :config (dashboard-setup-startup-hook))
+
+(use-package
+  blamer
+  :custom
+  (blamer-idle-time 0.2)
+  (blamer-max-lines 0)
+  (blamer-commit-formatter "- %s")
+  (blamer-min-offset nil)
+  :custom-face (blamer-face ((t :foreground "#928374" :background nil :italic t))))
 
 (use-package
   magit
