@@ -60,11 +60,11 @@ c.editor.command = [
 ]
 c.spellcheck.languages = ["en-US", "ru-RU"]
 
-c.url.default_page = "https://4get.tux.pizza/"
-c.url.start_pages = "https://4get.tux.pizza/"
+c.url.default_page = "https://4get.turtlecute.org/"
+c.url.start_pages = "https://4get.turtlecute.org/"
 c.url.searchengines = {
-    "DEFAULT": "https://4get.tux.pizza/web?s={}",
-    "4get": "https://4get.tux.pizza/web?s={}",
+    "DEFAULT": "https://4get.turtlecute.org/web?s={}&country=ru&nsfw=yes",
+    "4get": "https://4get.turtlecute.org/web?s={}&country=ru&nsfw=yes",
     "alter": "https://openalternative.co/?q={}",
     "anilist": "https://anilist.co/search/anime?search={}",
     "aur": "https://aur.archlinux.org/packages?&K={}",
