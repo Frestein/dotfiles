@@ -39,6 +39,9 @@ abbr -a -- vd nvim -d
 abbr -a -- vz nvim -c \'Telescope zoxide list\'
 abbr -a -- vc nvim -c \'Telescope chezmoi find_files\'
 
+abbr -a -- ec emacsclient -nc
+abbr -a -- ew emacsclient -nw
+
 abbr -a -- pacupg doas pacman -Syu
 abbr -a -- pacin doas pacman -S
 abbr -a -- paclean doas pacman -Sc

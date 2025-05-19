@@ -9,7 +9,7 @@ export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export GOPATH="$XDG_DATA_HOME/go"
 
-export PATH="$BUN_HOME/bin:$GOPATH/bin:$CARGO_HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$BUN_HOME/bin:$GOPATH/bin:$CARGO_HOME/bin:$XDG_CONFIG_HOME/doom.d/bin:$HOME/.local/bin:$PATH"
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
