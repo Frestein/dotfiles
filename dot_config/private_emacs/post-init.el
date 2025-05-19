@@ -434,7 +434,7 @@
 
 (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
 
-(set-frame-font "Maple Mono NF-11" nil t)
+(set-frame-font "Maple Mono NF-10.5" nil t)
 
 (use-package nerd-icons :custom (nerd-icons-font-family "Maple Mono NF"))
 
