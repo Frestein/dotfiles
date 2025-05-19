@@ -623,6 +623,35 @@
   ;; Improve readability of diffs
   (magit-diff-refine-hunk 'all))
 
+(use-package elfeed :bind ("C-c n e" . elfeed))
+
+(use-package
+  elfeed-org
+  :hook (elpaca-after-init . elfeed-org)
+  :config (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org")))
+
+(use-package
+  elfeed-summary
+  :bind ("C-c n s" . elfeed-summary)
+  :config
+  (setq elfeed-summary-settings
+    '
+    ((group (:title . "News [Software]") (:elements (query . (and tech news))))
+      (group
+        (:title . "YouTube")
+        (:elements
+          (group (:title . "Fun") (:elements (query . (and youtube fun))))
+          (group (:title . "Games") (:elements (query . (and youtube games))))
+          (group (:title . "Sport") (:elements (query . (and youtube sport))))
+          (group
+            (:title . "Vtubers")
+            (:elements (query . (and youtube vtuber))))
+          (group (:title . "Art") (:elements (query . (and youtube art))))
+          (group (:title . "Tech") (:elements (query . (and youtube tech))))
+          (group
+            (:title . "Music")
+            (:elements (query . (and youtube music)))))))))
+
 (use-package
   chezmoi
   :bind ("C-c d f" . chezmoi-find)
@@ -635,6 +664,7 @@
 (use-package
   writeroom-mode
   :config (evil-define-key 'normal 'global (kbd "<leader>uZ") 'writeroom-mode))
+
 (use-package
   yasnippet
   :hook ((prog-mode . yas-minor-mode) (org-mode . yas-minor-mode))
