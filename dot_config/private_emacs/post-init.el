@@ -554,6 +554,7 @@
   (setq elisp-autofmt-style 'fixed))
 
 (use-package ebuku :bind ("C-c b" . ebuku))
+
 (use-package
   telega
   :bind-keymap ("C-c t" . telega-prefix-map)
