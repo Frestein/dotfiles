@@ -1,13 +1,15 @@
 [Unit]
 Description=Wayland clipboard manager with support for multimedia 
+Documentation=https://github.com/sentriz/cliphist
 After=graphical-session.target
 
 [Service]
-ExecStartPre=/usr/bin/sleep 3
+Type=exec
+# Repurpose XDG Autostart filtering
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 ExecStart=/usr/bin/wl-paste --watch /usr/bin/cliphist store
-Slice=session.slice
-TimeoutStopSec=5sec
 Restart=on-failure
+Slice=app-graphical.slice
 
 [Install]
 WantedBy=graphical-session.target
