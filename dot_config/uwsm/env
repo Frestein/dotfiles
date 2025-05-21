@@ -7,3 +7,4 @@ export SDL_VIDEODRIVER=wayland
 export CLUTTER_BACKEND=wayland
 export ELECTRON_OZONE_PLATFORM_HINT=wayland
 export WOBSOCK="$XDG_RUNTIME_DIR/wob.sock"
+export PROTON_ENABLE_WAYLAND=1
