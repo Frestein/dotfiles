@@ -3,6 +3,29 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; Set `compile-angel-verbose' to nil to disable compile-angel messages.
+;; (When set to nil, compile-angel won't show which file is being compiled.)
+(setq compile-angel-verbose nil)
+
+;; Uncomment the line below to compile automatically when an Elisp file is saved
+;; (add-hook 'emacs-lisp-mode-hook #'compile-angel-on-save-local-mode)
+
+;; A global mode that compiles .el files before they are loaded
+;; using `load' or `require'.
+(compile-angel-on-load-mode)
+
+(global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers t)
+
+;; Line numbers
+(setq display-line-numbers-type 'relative)
+
+;; Elfeed
+(map! :leader
+      :desc "Elfeed"
+      "o e" #'elfeed)
+
+(use-package! nerd-icons-dired :hook (dired-mode . nerd-icons-dired-mode))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
