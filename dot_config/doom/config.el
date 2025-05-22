@@ -1,8 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
 ;; Set `compile-angel-verbose' to nil to disable compile-angel messages.
 ;; (When set to nil, compile-angel won't show which file is being compiled.)
 (setq compile-angel-verbose nil)
@@ -16,7 +13,6 @@
 
 ;; Global Auto Revert
 ;; A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x auto-revert-mode, or you can set it to be turned on globally with ‘global-auto-revert-mode’.  I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ‘dired’ buffers.
-
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 
@@ -39,8 +35,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
-;;       user-mail-address "john@doe.com")
+(setq user-full-name "Frestein"
+      user-mail-address "frestein@tuta.io")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
