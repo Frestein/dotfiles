@@ -2,6 +2,7 @@
 
 (doom! :input
        ;; bidi              ; (tfel ot) thgir etirw uoy gnipleh
+       reverse-im           ; support non-english keyboard layouts
        ;; chinese
        ;; japanese
        ;; layout            ; auie,ctsrnm is the superior home row
