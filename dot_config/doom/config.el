@@ -14,17 +14,27 @@
 ;; using `load' or `require'.
 (compile-angel-on-load-mode)
 
+;; Global Auto Revert
+;; A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x auto-revert-mode, or you can set it to be turned on globally with ‘global-auto-revert-mode’.  I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ‘dired’ buffers.
+
 (global-auto-revert-mode 1)
 (setq global-auto-revert-non-file-buffers t)
 
 ;; Line numbers
 (setq display-line-numbers-type 'relative)
 
-;; Elfeed
-(map! :leader
-      :desc "Elfeed"
-      "o e" #'elfeed)
+;; Shell
+(setq shell-file-name (executable-find "bash"))
+(setq-default vterm-shel "/usr/bin/fish")
+(setq-default explicit-shell-file-name "/usr/bin/fish")
 
+;; Mappings
+(map! (:leader
+       (:prefix ("A" . "app")
+        (:when (modulep! :app rss)
+         :desc "Elfeed" "e" #'elfeed))))
+
+;; Dired
 (use-package! nerd-icons-dired :hook (dired-mode . nerd-icons-dired-mode))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -96,8 +106,3 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
-(setq shell-file-name (executable-find "bash"))
-
-(setq-default vterm-shel "/usr/bin/fish")
-(setq-default explicit-shell-file-name "/usr/bin/fish")
