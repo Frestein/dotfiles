@@ -8,5 +8,5 @@
     :recipe
     (:host github
      :repo "tuh8888/chezmoi.el"
-     :branch "master"
+     :branch "main"
      :files ("extensions/chezmoi-cape.el"))))
