@@ -1,10 +1,10 @@
 [Unit]
 Description=JDSP4Linux 
+PartOf=graphical-session.target
 After=graphical-session.target
 
 [Service]
 ; ExecStartPre=/usr/bin/sleep 2
-ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
 ExecStart=/usr/bin/jamesdsp --tray
 TimeoutStopSec=5sec
 Restart=on-failure

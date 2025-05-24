@@ -1,6 +1,8 @@
 [Unit]
 Description=Set a random wallpaper with waypaper
 Documentation=man:waypaper(1)
+PartOf=graphical-session.target
+After=graphical-session.target
 
 [Service]
 Type=oneshot

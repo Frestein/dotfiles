@@ -1,10 +1,10 @@
 [Unit]
 Description=Jellyfin Client (mpv-shim)
+PartOf=graphical-session.targe
 After=graphical-session.target
 
 [Service]
-; ExecStartPre=/usr/bin/sleep 3
-ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "wlroots:sway:Wayfire:labwc:Hyprland" ""
+ExecStartPre=/usr/bin/sleep 1
 ExecStart=/usr/bin/jellyfin-mpv-shim
 ExecStop=/bin/kill -s SIGINT $MAINPID
 Restart=on-failure

@@ -1,11 +1,12 @@
 [Unit]
 Description=Udiskie daemon
+PartOf=graphical-session.target
 After=graphical-session.target
 
 [Service]
-ExecStartPre=/usr/bin/sleep 1
 ExecStart=/usr/bin/udiskie --smart-tray
 Restart=always
+Slice=app-graphical.slice
 
 [Install]
 WantedBy=graphical-session.target
