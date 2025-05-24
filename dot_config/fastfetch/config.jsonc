@@ -1,0 +1,58 @@
+{
+  "$schema": "file:///C:/msys64/home/zhang/fastfetch/doc/json_schema.json",
+  "logo": {
+    "color": {
+      "1": "blue"
+    },
+    "padding": {
+      "top": 1
+    },
+    "type": "small"
+  },
+  "display": {
+    "separator": ": "
+  },
+  "modules": [
+    {
+      "type": "break"
+    },
+    {
+      "key": " ",
+      "keyColor": "red",
+      "type": "os"
+    },
+    {
+      "key": " ",
+      "keyColor": "green",
+      "type": "kernel"
+    },
+    {
+      "key": " ",
+      "keyColor": "yellow",
+      "type": "uptime"
+    },
+    {
+      "key": " ",
+      "keyColor": "blue",
+      "type": "packages"
+    },
+    {
+      "key": " ",
+      "keyColor": "magenta",
+      "type": "wm"
+    },
+    {
+      "key": " ",
+      "keyColor": "cyan",
+      "type": "terminal"
+    },
+    {
+      "key": " ",
+      "keyColor": "white",
+      "type": "shell"
+    },
+    {
+      "type": "break"
+    }
+  ]
+}

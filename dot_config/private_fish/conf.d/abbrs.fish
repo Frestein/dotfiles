@@ -14,6 +14,8 @@ abbr -a -- scu systemctl --user
 abbr -a -- speedtest speedtest-go
 abbr -a -- y yazi
 abbr -a -- tb nc termbin.com 9999
+abbr -a -- f fastfetch
+abbr -a -- ff fastfetch -c $XDG_CONFIG_HOME/fastfetch/config-full.jsonc
 
 set EZA_DEFAULTS --group --group-directories-first
 
