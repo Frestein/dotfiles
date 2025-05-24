@@ -9,7 +9,7 @@ After=graphical-session.target
 Type=exec
 ExecStartPre=/usr/bin/sleep 2
 ExecStart=/usr/bin/wl-paste --watch /usr/bin/cliphist store
-Restart=on-failure
+Restart=always
 Slice=app-graphical.slice
 
 [Install]
