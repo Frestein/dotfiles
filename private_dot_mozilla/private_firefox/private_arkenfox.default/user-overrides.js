@@ -31,6 +31,9 @@ user_pref("browser.sessionstore.privacy_level", 0);
 // 1211: disable OCSP
 user_pref("security.OCSP.enabled", 0);
 
+// 2651: disable user interaction for asking where to download
+user_pref("browser.download.useDownloadDir", true);
+
 // 2812: disable clearOnShutdown items
 user_pref("privacy.clearOnShutdown_v2.browsingHistoryAndDownloads", false);
 user_pref("privacy.clearOnShutdown_v2.downloads", false);
