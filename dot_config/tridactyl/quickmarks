@@ -1,0 +1,22 @@
+quickmark . about:config
+quickmark ? about:about
+quickmark A duck.ai
+quickmark D about:downloads
+quickmark G github.com
+quickmark R rule34.xxx
+quickmark S priv.au
+quickmark T twitter.com
+quickmark a www.perplexity.ai
+quickmark b bsky.app
+quickmark d about:addons
+quickmark g codeberg.org
+quickmark h about:history
+quickmark i instagram.com
+quickmark m app.tuta.com
+quickmark p pixiv.net
+quickmark r reddit.com
+quickmark s 4get.tux.pizza
+quickmark t deepl.com/en/translator#en/ru/
+quickmark y www.youtube.com
+
+" vim: filetype=vim

@@ -1,1 +1,28 @@
+" Disable normal mode indicator in normal mode.
 set modeindicatormodes.normal false
+
+set keyboardlayoutbase qwerty
+set keyboardlayoutforce true
+
+" Ctrl-F should use the browser's native 'find' functionality.
+
+" But also support Tridactyl search too.
+bind / fillcmdline find
+bind ? fillcmdline find -?
+bind n findnext 1
+bind N findnext -1
+
+" Smooth scrolling, yes please. This is still a bit janky in Tridactyl.
+set smoothscroll true
+
+" The default jump of 10 is a bit much.
+bind j scrollline 5
+bind k scrollline -5
+
+" Search Engines
+source ~/.config/tridactyl/searchengines
+
+" Quickmarks
+source ~/.config/tridactyl/quickmarks
+
+" vim: filetype=vim

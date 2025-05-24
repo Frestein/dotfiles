@@ -30,13 +30,12 @@ c.content.javascript.log_message.excludes = {
 
 # Tridactyl quickmarks
 qsites = {
-    "A": "chat.deepseek.com",
+    "A": "duck.ai",
     "G": "github.com",
     "S": "priv.au",
-    "a": "duck.ai",
+    "a": "www.perplexity.ai",
     "g": "codeberg.org",
     "m": "app.tuta.com",
-    "r": "www.perplexity.ai",
     "s": "4get.tux.pizza",
     "t": "deepl.com/en/translator#en/ru/",
     "y": "youtube.com",
@@ -63,8 +62,8 @@ c.spellcheck.languages = ["en-US", "ru-RU"]
 c.url.default_page = "https://4get.turtlecute.org/"
 c.url.start_pages = "https://4get.turtlecute.org/"
 c.url.searchengines = {
-    "DEFAULT": "https://4get.turtlecute.org/web?s={}&country=ru&nsfw=yes",
-    "4get": "https://4get.turtlecute.org/web?s={}&country=ru&nsfw=yes",
+    "DEFAULT": "https://4get.turtlecute.org/web?country=ru&nsfw=yes&s={}",
+    "4get": "https://4get.turtlecute.org/web?country=ru&nsfw=yes&s={}",
     "alter": "https://openalternative.co/?q={}",
     "anilist": "https://anilist.co/search/anime?search={}",
     "aur": "https://aur.archlinux.org/packages?&K={}",
@@ -73,7 +72,7 @@ c.url.searchengines = {
     "deepl": "https://www.deepl.com/en/translator#en/ru/{}",
     "gh": "https://github.com/search?q={}",
     "maps": "https://www.google.com/maps?q={}",
-    "reddit": "https://www.reddit.com/r/{}/",
+    "reddit": "https://www.reddit.com/r/{}",
     "rutracker": "https://rutracker.org/forum/tracker.php?nm={}",
     "searxng": "https://priv.au/?q={}",
     "yt": "https://www.youtube.com/results?search_query={}",

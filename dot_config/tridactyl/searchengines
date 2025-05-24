@@ -1,0 +1,26 @@
+" clear existing searchuls
+" setnull will prevent from adding back in this way; set to empty object instead
+js tri.config.set("searchurls", {})
+
+set searchurls.4get https://4get.turtlecute.org/web?country=ru&nsfw=yes&s=%s
+set searchurls.alter https://openalternative.co/?q=%s
+set searchurls.anilist https://anilist.co/search/anime?search=%s
+set searchurls.aur https://aur.archlinux.org/packages?&K=%s
+set searchurls.aw https://wiki.archlinux.org/index.php?search=%s
+set searchurls.ddg https://duckduckgo.com/?q=%s
+set searchurls.deepl https://www.deepl.com/en/translator#en/ru/%s
+set searchurls.gh https://github.com/search?q=%s
+set searchurls.gmaps https://www.google.com/maps?q=%s
+set searchurls.google https://google.com/search?q=%s
+set searchurls.kino https://www.kinopoisk.ru/index.php?kp_query=%s
+set searchurls.protondb https://www.protondb.com/search?q=%s
+set searchurls.reddit https://www.reddit.com/r/%s
+set searchurls.rutracker https://rutracker.org/forum/tracker.php?nm=%s
+set searchurls.searxng https://searx.be/?q=%s
+set searchurls.wayback https://web.archive.org/web/*/%s
+set searchurls.yt https://www.youtube.com/results?search_query=%s
+set searchurls.zerochan https://www.zerochan.net/%s
+
+set searchengine 4get
+
+" vim: filetype=vim
