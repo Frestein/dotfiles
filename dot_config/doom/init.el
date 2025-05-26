@@ -20,6 +20,7 @@
        doom                 ; what makes DOOM look the way it does
        doom-dashboard       ; a nifty splash screen for Emacs
        ;; doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       (frames-only +remap) ; use native window splits
        ;; (emoji +unicode)  ; 🙂
        hl-todo              ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;; indent-guides     ; highlighted indent columns
