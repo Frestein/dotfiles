@@ -2,8 +2,7 @@
 
 (map! (:leader
        (:prefix ("A" . "app")
-        (:when (modulep! :app telega)
-         :desc "Telega" "t" telega-prefix-map))))
+         :desc "Telega" "t" telega-prefix-map)))
 
 (use-package!
   telega
