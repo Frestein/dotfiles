@@ -11,29 +11,23 @@
 ;; using `load' or `require'.
 (compile-angel-on-load-mode)
 
+;; User
+(setq user-full-name "Frestein"
+      user-mail-address "frestein@tuta.io")
+
+;; Theme
+(setq doom-theme 'doom-one)
+
+;; Org
+(setq org-directory "~/Documents/org/")
+
 ;; Global Auto Revert
 ;; A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x auto-revert-mode, or you can set it to be turned on globally with ‘global-auto-revert-mode’.  I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ‘dired’ buffers.
-(global-auto-revert-mode 1)
+(global-auto-revert-mode)
 (setq global-auto-revert-non-file-buffers t)
 
 ;; Line numbers
 (setq display-line-numbers-type 'relative)
-
-;; Shell
-(setq shell-file-name (executable-find "bash"))
-(setq-default vterm-shel "/usr/bin/fish")
-(setq-default explicit-shell-file-name "/usr/bin/fish")
-
-;; Mappings
-(map! (:leader
-       (:prefix ("A" . "app")
-        (:when (modulep! :app rss)
-         :desc "Elfeed" "e" #'elfeed))))
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-(setq user-full-name "Frestein"
-      user-mail-address "frestein@tuta.io")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -55,20 +49,18 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;; Shell
+(setq shell-file-name (executable-find "bash"))
+(setq-default vterm-shel "/usr/bin/fish")
+(setq-default explicit-shell-file-name "/usr/bin/fish")
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+;; Mappings
+(map! (:leader
+       (:prefix ("A" . "app")
+                (:when (modulep! :app rss)
+                  :desc "Elfeed" "e" #'elfeed))))
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org/")
-
-;;; Smooth scroll
+;; Smooth scroll
 ;; Disable ultra-scroll
 (remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
 (remove-hook 'doom-first-file-hook #'ultra-scroll-mode)
