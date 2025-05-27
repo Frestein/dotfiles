@@ -1,0 +1,7 @@
+[".config/mpv/shaders"]
+type = "archive"
+url = "https://github.com/iwalton3/default-shader-pack/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/shaders/Anime4K*", "*/shaders/FSR*"]
