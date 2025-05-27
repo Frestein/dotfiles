@@ -68,6 +68,11 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/org/")
 
+;;; Smooth scroll
+;; Disable ultra-scroll
+(remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
+(remove-hook 'doom-first-file-hook #'ultra-scroll-mode)
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
