@@ -30,9 +30,6 @@
         (:when (modulep! :app rss)
          :desc "Elfeed" "e" #'elfeed))))
 
-;; Dired
-(use-package! nerd-icons-dired :hook (dired-mode . nerd-icons-dired-mode))
-
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Frestein"
