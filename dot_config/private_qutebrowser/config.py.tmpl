@@ -1,3 +1,4 @@
+# vim: filetype=py
 # Requirements:
 # - python-adblock
 # - python-pyperclip (qute-code-hint)
@@ -80,6 +81,10 @@ c.url.searchengines = {
     "zerochan": "https://www.zerochan.net/{}",
     "protondb": "https://www.protondb.com/search?q={}",
 }
+
+c.completion.web_history.exclude = [
+{{ gopass "personal/qutebrowser/web_exclude" }}
+]
 
 c.fileselect.handler = "external"
 c.fileselect.single_file.command = [
