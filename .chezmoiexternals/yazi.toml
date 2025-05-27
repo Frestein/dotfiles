@@ -1,0 +1,139 @@
+[".config/yazi/plugins/chmod.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/chmod.yazi/**"]
+
+[".config/yazi/plugins/diff.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/diff.yazi/**"]
+
+[".config/yazi/plugins/full-border.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/full-border.yazi/**"]
+
+[".config/yazi/plugins/git.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/git.yazi/**"]
+
+[".config/yazi/plugins/mount.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/mount.yazi/**"]
+
+[".config/yazi/plugins/smart-enter.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/smart-enter.yazi/**"]
+
+[".config/yazi/plugins/smart-filter.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/smart-filter.yazi/**"]
+
+[".config/yazi/plugins/yatline.yazi"]
+type = "archive"
+url = "https://github.com/imsi32/yatline.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/yatline-githead.yazi"]
+type = "archive"
+url = "https://github.com/imsi32/yatline-githead.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/yatline-gruvbox.yazi"]
+type = "archive"
+url = "https://github.com/imsi32/yatline-gruvbox.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/lazygit.yazi"]
+type = "archive"
+url = "https://github.com/Lil-Dank/lazygit.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/exifaudio.yazi"]
+type = "archive"
+url = "https://github.com/Sonico98/exifaudio.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/restore.yazi"]
+type = "archive"
+url = "https://github.com/boydaihungst/restore.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/bookmarks.yazi"]
+type = "archive"
+url = "https://github.com/dedukun/bookmarks.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/githead.yazi"]
+type = "archive"
+url = "https://github.com/llanosrocas/githead.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/what-size.yazi"]
+type = "archive"
+url = "https://github.com/pirafrank/what-size.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/compress.yazi"]
+type = "archive"
+url = "https://github.com/boydaihungst/compress.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/toggle-view.yazi"]
+type = "archive"
+url = "https://github.com/Vortriz/toggle-view.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/flavors/gruvbox-dark.yazi"]
+type = "archive"
+url = "https://github.com/bennyyip/gruvbox-dark.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
