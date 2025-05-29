@@ -92,5 +92,6 @@ bind I login on
 bind O login off
 bind } history
 
+truecolor on
 term xterm-256color
 altscreen on
