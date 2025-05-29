@@ -83,8 +83,27 @@ bind K kill
 bind I login on
 bind O login off
 bind } history
+# Reload .screenrc without restarting:
+bind R source $XDG_CONFIG_HOME/screen/screenrc
 
+# Correct colors
 truecolor on
 term screen-256color
-altscreen on
+
+# Fix escape delay
 maptimeout 10
+
+# You'll like it
+altscreen on
+
+# Scrollback
+# Enable mouse whell scrolling
+termcapinfo xterm*|rxvt*|kterm*|Eterm*|foot* ti@:te@
+defscrollback 20000
+
+# Screensaver
+blankerprg cmatrix
+idle 300 blanker
+# or disable blanker
+# blankerprg ""
+# idle 0
