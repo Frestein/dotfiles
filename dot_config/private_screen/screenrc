@@ -93,5 +93,5 @@ bind O login off
 bind } history
 
 truecolor on
-term xterm-256color
+term screen-256color
 altscreen on
