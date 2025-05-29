@@ -1,11 +1,3 @@
-#
-# This is an example for the global screenrc file.
-# You may want to install this file as /usr/local/etc/screenrc.
-# Check config.h for the exact location.
-#
-# Flaws of termcap and standard settings are done here.
-#
-
 startup_message off
 
 #defflow on # will force screen to process ^S/^Q
@@ -95,3 +87,4 @@ bind } history
 truecolor on
 term screen-256color
 altscreen on
+maptimeout 10
