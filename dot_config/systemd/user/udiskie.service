@@ -4,6 +4,7 @@ PartOf=graphical-session.target
 After=graphical-session.target
 
 [Service]
+ExecStartPre=/usr/bin/sleep 3
 ExecStart=/usr/bin/udiskie --smart-tray
 Restart=always
 Slice=app-graphical.slice
