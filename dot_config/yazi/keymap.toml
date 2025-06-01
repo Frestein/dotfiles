@@ -1,4 +1,4 @@
-[manager]
+[mgr]
 prepend_keymap = [
     { on = "<Enter>", run = "noop" },
     { on = "<F1>", run = "noop" },

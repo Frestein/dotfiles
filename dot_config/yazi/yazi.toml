@@ -3,7 +3,6 @@ max_width = 900
 max_height = 1200
 image_quality = 90
 image_delay = 0
-sixel_fraction = 10
 ueberzug_offset = [5, 1.2, 0, 0]
 
 [[opener.pdf]]
