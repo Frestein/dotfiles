@@ -1,3 +1,11 @@
+disableStartupPopups: true
+gui:
+  nerdFontsVersion: "3"
+  border: "single"
+  expandFocusedSidePanel: true
+  commandLogSize: 5
+  showBottomLine: false
+  showCommandLog: true
 customCommands:
   - key: "<c-P>"
     description: "Push to a specific remote repository"
