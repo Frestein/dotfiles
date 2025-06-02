@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch directory for file changes, add to chezmoi on change
+
+[Service]
+Type=simple
+ExecStart=%h/.config/bash/scripts/watch-nvim.sh
+
+[Install]
+WantedBy=default.target
