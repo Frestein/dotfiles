@@ -1,3 +1,27 @@
+[".config/yazi/plugins/toggle-pane.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/toggle-pane.yazi/**"]
+
+[".config/yazi/plugins/vcs-files.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/vcs-files.yazi/**"]
+
+[".config/yazi/plugins/types.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/types.yazi/**"]
+
 [".config/yazi/plugins/chmod.yazi"]
 type = "archive"
 url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
@@ -103,9 +127,16 @@ exact = true
 stripComponents = 1
 refreshPeriod = "168h"
 
-[".config/yazi/plugins/toggle-view.yazi"]
+[".config/yazi/plugins/easyjump.yazi"]
 type = "archive"
-url = "https://github.com/Vortriz/toggle-view.yazi/archive/master.tar.gz"
+url = "https://github.com/DreamMaoMao/easyjump.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/yaziline.yazi"]
+type = "archive"
+url = "https://github.com/llanosrocas/yaziline.yazi/archive/master.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "168h"

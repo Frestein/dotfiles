@@ -32,6 +32,32 @@ prepend_keymap = [
         ".",
     ], run = "hidden toggle", desc = "Toggle hidden" },
 
+    # Goto
+    { on = [
+        "g",
+        "C",
+    ], run = "cd ~/.local/share/chezmoi/dot_config", desc = "Go ~/.dot_config" },
+    { on = [
+        "g",
+        "D",
+    ], run = "cd ~/Documents", desc = "Go ~/Documents" },
+    { on = [
+        "g",
+        "m",
+    ], run = "cd ~/Music", desc = "Go ~/Music" },
+    { on = [
+        "g",
+        "v",
+    ], run = "cd ~/Videos", desc = "Go ~/Videos" },
+    { on = [
+        "g",
+        "p",
+    ], run = "cd ~/Pictures", desc = "Go ~/Pictures" },
+    { on = [
+        "g",
+        "P",
+    ], run = "cd ~/Projects", desc = "Go ~/Projects" },
+
     # Zoxide
     { on = [
         "z",
@@ -93,9 +119,8 @@ prepend_keymap = [
     ], run = "plugin what-size", desc = "Show the size of the selected files or cwd" },
 
     # Preview
-    { on = "<C-1>", run = "plugin toggle-view -- parent", desc = "Toggle parent" },
-    { on = "<C-2>", run = "plugin toggle-view -- current", desc = "Toggle current" },
-    { on = "<C-3>", run = "plugin toggle-view -- preview", desc = "Toggle preview" },
+    { on = "<C-1>", run = "plugin toggle-pane min-parent", desc = "Toggle minimaze parent" },
+    { on = "<C-3>", run = "plugin toggle-pane max-preview", desc = "Toggle maximaze preview" },
 
     # Smart filter
     { on = "F", run = "plugin smart-filter", desc = "Smart filter" },
@@ -105,13 +130,20 @@ prepend_keymap = [
 
     # Git 
     { on = [
+        "\\",
         "g",
         "i",
     ], run = "plugin lazygit", desc = "Lazygit" },
     { on = [
+        "\\",
         "g",
         "r",
     ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the rooot (git)" },
+    { on = [
+        "\\",
+        "g",
+        "v",
+    ], run = "plugin vcs-files", desc = "Show Git file changes" },
 
     # Trash
     { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },

@@ -3,7 +3,19 @@
 --------------------------------------------------------------------------------
 
 -- Borders
-require("full-border"):setup()
+require("full-border"):setup({
+	-- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
+	type = ui.Border.PLAIN,
+})
+
+-- -- Statusline
+-- require("yaziline"):setup({
+-- 	-- color = "#A89984",
+-- 	secondary_color = "#504945",
+--
+-- 	select_symbol = "",
+-- 	yank_symbol = "󰆐",
+-- })
 
 -- Tools
 require("git"):setup()
