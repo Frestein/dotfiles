@@ -2,3 +2,4 @@
 --concurrent-fragments 4
 --sub-lang en.*,ru
 --extractor-args "youtube:bypass_native_jsi;deno_no_jitless"
+--extractor-args "youtubepot-bgutilscript:script_path=$HOME/Tools/bgutil-ytdlp-pot-provider/server/build/generate_once.js"

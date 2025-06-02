@@ -1,0 +1,67 @@
+[".config/yt-dlp-plugins/YandexTranslate/yt_dlp_plugins"]
+type = "archive"
+url = "https://github.com/gnfalex/YT_yt_dlp_plugin/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = [
+    "*/yt_dlp_plugins/extractor/**",
+    "*/yt_dlp_plugins/postprocessor/**",
+    "*/yt_dlp_plugins/yandex.protoc",
+]
+
+[".config/yt-dlp-plugins/yt-dlp-YTNSigDeno"]
+type = "archive"
+url = "https://github.com/bashonly/yt-dlp-YTNSigDeno/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+include = ["*/yt_dlp_plugins/**"]
+
+[".config/yt-dlp-plugins/bgutil-ytdlp-pot-provider"]
+type = "archive"
+url = "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/plugin/yt_dlp_plugins/**"]
+
+["Tools/bgutil-ytdlp-pot-provider/src"]
+type = "archive"
+url = "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz"
+exact = true
+stripComponents = 3
+refreshPeriod = "168h"
+include = ["*/server/src/**"]
+
+["Tools/bgutil-ytdlp-pot-provider/types"]
+type = "archive"
+url = "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz"
+exact = true
+stripComponents = 3
+refreshPeriod = "168h"
+include = ["*/server/types/**"]
+
+["Tools/bgutil-ytdlp-pot-provider/eslint.config.mjs"]
+type = "file"
+url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/eslint.config.mjs"
+exact = true
+refreshPeriod = "168h"
+
+["Tools/bgutil-ytdlp-pot-provider/package.json"]
+type = "file"
+url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/package.json"
+exact = true
+refreshPeriod = "168h"
+
+["Tools/bgutil-ytdlp-pot-provider/tsconfig.json"]
+type = "file"
+url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/tsconfig.json"
+exact = true
+refreshPeriod = "168h"
+
+["Tools/bgutil-ytdlp-pot-provider/yarn.lock"]
+type = "file"
+url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/yarn.lock"
+exact = true
+refreshPeriod = "168h"
