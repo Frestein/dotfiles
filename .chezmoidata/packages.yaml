@@ -157,7 +157,6 @@ packages:
         - cups-filters
         - cups-pdf
         - ddcutil
-        - ddgr
         - delve
         - deno
         - direnv
