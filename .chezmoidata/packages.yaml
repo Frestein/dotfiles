@@ -56,7 +56,6 @@ packages:
         - telegram-tdlib
         - tessen
         - ttf-ms-win11-auto
-        - typos-lsp-bin
         - update-grub
         - ventoy-bin
         - vidoas
@@ -204,12 +203,12 @@ packages:
         - gnome-keyring
         - gnu-netcat
         - go
+        - go-tools
         - gofumpt
         - golangci-lint
         - gopass
         - gopass-hibp
         - gopls
-        - go-tools
         - gpart
         - gparted
         - gptfdisk
@@ -290,8 +289,8 @@ packages:
         - lsb-release
         - lsof
         - lsscsi
-        - lua51
         - lua-language-server
+        - lua51
         - luarocks
         - lutris
         - lynis
@@ -316,12 +315,12 @@ packages:
         - ndisc6
         - neovim
         - nethogs
-        - networkmanager
         - network-manager-applet
+        - networkmanager
         - networkmanager-openvpn
         - newsboat
-        - nmap
         - nm-connection-editor
+        - nmap
         - noto-fonts
         - noto-fonts-cjk
         - noto-fonts-emoji
@@ -331,8 +330,8 @@ packages:
         - nvtop
         - nyxt
         - onefetch
-        - opendoas
         - open-iscsi
+        - opendoas
         - openmp
         - openvpn
         - os-prober
@@ -371,8 +370,8 @@ packages:
         - qbittorrent
         - qemu-desktop
         - qt5ct
-        - qt6ct
         - qt6-wayland
+        - qt6ct
         - qutebrowser
         - rclone
         - refind
@@ -430,6 +429,7 @@ packages:
         - ttf-nerd-fonts-symbols
         - ttf-nerd-fonts-symbols-mono
         - typos
+        - typos-lsp
         - udftools
         - udiskie
         - udisks2
