@@ -26,42 +26,16 @@ stripComponents = 2
 refreshPeriod = "168h"
 include = ["*/plugin/yt_dlp_plugins/**"]
 
-["Tools/bgutil-ytdlp-pot-provider/src"]
+["Tools/bgutil-ytdlp-pot-provider"]
 type = "archive"
 url = "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz"
 exact = true
-stripComponents = 3
+stripComponents = 2
 refreshPeriod = "168h"
-include = ["*/server/src/**"]
-
-["Tools/bgutil-ytdlp-pot-provider/types"]
-type = "archive"
-url = "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz"
-exact = true
-stripComponents = 3
-refreshPeriod = "168h"
-include = ["*/server/types/**"]
-
-["Tools/bgutil-ytdlp-pot-provider/eslint.config.mjs"]
-type = "file"
-url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/eslint.config.mjs"
-exact = true
-refreshPeriod = "168h"
-
-["Tools/bgutil-ytdlp-pot-provider/package.json"]
-type = "file"
-url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/package.json"
-exact = true
-refreshPeriod = "168h"
-
-["Tools/bgutil-ytdlp-pot-provider/tsconfig.json"]
-type = "file"
-url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/tsconfig.json"
-exact = true
-refreshPeriod = "168h"
-
-["Tools/bgutil-ytdlp-pot-provider/yarn.lock"]
-type = "file"
-url = "https://raw.githubusercontent.com/Brainicism/bgutil-ytdlp-pot-provider/refs/heads/master/server/yarn.lock"
-exact = true
-refreshPeriod = "168h"
+include = [
+    "*/server/src",
+    "*/server/types",
+    "*/server/package.json",
+    "*/server/tsconfig.json",
+    "*/server/yarn.lock",
+]
