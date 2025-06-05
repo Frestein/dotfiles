@@ -317,7 +317,6 @@ packages:
         - network-manager-applet
         - networkmanager
         - networkmanager-openvpn
-        - newsboat
         - nm-connection-editor
         - nmap
         - noto-fonts
