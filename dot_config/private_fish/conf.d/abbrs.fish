@@ -6,13 +6,10 @@ end
 abbr -a -- bc bc -q
 abbr -a -- btm btm -b --hide_avg_cpu --theme gruvbox
 
-# network
-abbr -a -- speedtest speedtest-go
-
 # trans
 abbr -a -- t trans :ru
-abbr -a -- tl trans :ru --shell --brief
 abbr -a -- tt trans :en
+abbr -a -- tl trans :ru --shell --brief
 abbr -a -- ttl trans :en --shell --brief
 
 # share files
@@ -45,24 +42,19 @@ abbr -a -- y yazi
 # nvim
 abbr -a -- v nvim
 abbr -a -- vd nvim -d
-abbr -a -- vz nvim -c \'Telescope zoxide list\'
-abbr -a -- vc nvim -c \'Telescope chezmoi find_files\'
+
+# helix
+abbr -a -- hx helix
 
 # emacs
 abbr -a -- ec emacsclient -nc
 abbr -a -- ew emacsclient -nw
-abbr -a -- ds doom sync
-abbr -a -- dupd doom update
-abbr -a -- dupg doom upgrade
-abbr -a -- ddoc doom doctor
-abbr -a -- dpur doom purge
+abbr -a -- dm doom
 
 # chezmoi
 abbr -a -- cz chezmoi
-abbr -a -- czdf chezmoi diff
-abbr -a -- czapl chezmoi apply
 
-# ansbile
+# ansible
 abbr -a -- a ansible
 
 # docker
@@ -72,7 +64,11 @@ abbr -a -- d docker
 abbr -a -- sc systemctl
 abbr -a -- scu systemctl --user
 
-# archlinux
+# network
+abbr -a -- speedtest speedtest-go
+
+# Arch Linux
+# Additional info: https://wiki.archlinux.org/index.php/Pacman_Tips
 abbr -a -- pacupg doas pacman -Syu
 abbr -a -- pacin doas pacman -S
 abbr -a -- paclean doas pacman -Sc
