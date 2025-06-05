@@ -78,6 +78,27 @@ stripComponents = 2
 refreshPeriod = "168h"
 include = ["*/smart-filter.yazi/**"]
 
+[".config/yazi/plugins/yatline.yazi"]
+type = "archive"
+url = "https://github.com/imsi32/yatline.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/yatline-githead.yazi"]
+type = "archive"
+url = "https://github.com/imsi32/yatline-githead.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
+[".config/yazi/plugins/yatline-gruvbox.yazi"]
+type = "archive"
+url = "https://github.com/imsi32/yatline-gruvbox.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+
 [".config/yazi/plugins/lazygit.yazi"]
 type = "archive"
 url = "https://github.com/Lil-Dank/lazygit.yazi/archive/master.tar.gz"
