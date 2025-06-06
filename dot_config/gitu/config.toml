@@ -1,0 +1,10 @@
+[style]
+section_header = { fg = "light green" }
+file_header = { fg = "white" }
+
+hash = { fg = "gray" }
+branch = { fg = "light green" }
+remote = { fg = "yellow" }
+
+command = { fg = "gray", mods = "BOLD" }
+hotkey = { fg = "yellow" }
