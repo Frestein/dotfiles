@@ -62,3 +62,11 @@ formatter = { command = "bash", args = [
     "-c",
     "ruff format --line-length 80 -q . && black --line-length 80 -q -",
 ] }
+
+[[language]]
+name = "markdown"
+comment-tokens = ["-", "+", "*", "1.", ">", "- [ ]"]
+
+[[language]]
+name = "org"
+comment-tokens = ["-", "+", "*", "1.", "#+", "- [ ]"]
