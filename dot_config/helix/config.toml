@@ -46,13 +46,21 @@ C-g = [
 ]
 
 [keys.normal.space]
-q = { q = ":qa" }
-b = { b = "buffer_picker", d = ":bc", D = ":bc!", o = ":bco", n = ":n" }
 "," = "buffer_picker"
 "." = ":n"
-u = { h = ":toggle lsp.display-inlay-hints", L = ":toggle line-number 'absolute' 'relative'", f = ":toggle auto-format", p = ":toggle auto-pairs" }
+q.q = ":qa"
+b.b = "buffer_picker"
+b.d = ":bc"
+b.D = ":bc!"
+b.o = ":bco"
+b.n = ":n"
+u.h = ":toggle lsp.display-inlay-hints"
+u.L = ":toggle line-number 'absolute' 'relative'"
+u.f = ":toggle auto-format"
+u.p = ":toggle auto-pairs"
 
-[keys.normal."C-backspace"]
+[keys.normal."C-d"]
 r = ":config-reload"
-o = ":o ~/.local/share/chezmoi/dot_config/helix/config.toml"
-l = ":o ~/.local/share/chezmoi/dot_config/helix/languages.toml"
+d = [":cd ~/.local/share/chezmoi", "file_picker"]
+c = [":cd ~/.local/share/chezmoi", ":o dot_config/helix/config.toml"]
+l = [":cd ~/.local/share/chezmoi", ":o dot_config/helix/languages.toml"]
