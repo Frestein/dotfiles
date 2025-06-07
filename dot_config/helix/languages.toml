@@ -25,42 +25,42 @@ name = "python"
 scope = "source.python"
 injection-regex = "python"
 file-types = [
-    "py",
-    "pyi",
-    "py3",
-    "pyw",
-    "ptl",
-    "rpy",
-    "cpy",
-    "ipy",
-    "pyt",
-    { glob = ".python_history" },
-    { glob = ".pythonstartup" },
-    { glob = ".pythonrc" },
-    { glob = "SConstruct" },
-    { glob = "SConscript" },
+  "py",
+  "pyi",
+  "py3",
+  "pyw",
+  "ptl",
+  "rpy",
+  "cpy",
+  "ipy",
+  "pyt",
+  { glob = ".python_history" },
+  { glob = ".pythonstartup" },
+  { glob = ".pythonrc" },
+  { glob = "SConstruct" },
+  { glob = "SConscript" },
 ]
 shebangs = ["python"]
 roots = [
-    "pyproject.toml",
-    "setup.py",
-    "poetry.lock",
-    "pyrightconfig.json",
-    "requirements.txt",
-    ".venv/",
+  "pyproject.toml",
+  "setup.py",
+  "poetry.lock",
+  "pyrightconfig.json",
+  "requirements.txt",
+  ".venv/",
 ]
 comment-token = "#"
 language-servers = [
-    { name = "basedpyright", except-features = [
-        "diagnostics",
-    ] },
-    "ruff",
+  { name = "basedpyright", except-features = [
+    "diagnostics",
+  ] },
+  "ruff",
 ]
 indent = { tab-width = 4, unit = "    " }
 auto-format = true
 formatter = { command = "bash", args = [
-    "-c",
-    "ruff format --line-length 80 -q . && black --line-length 80 -q -",
+  "-c",
+  "ruff format --line-length 80 -q . && black --line-length 80 -q -",
 ] }
 
 [[language]]
@@ -70,3 +70,8 @@ comment-tokens = ["-", "+", "*", "1.", ">", "- [ ]"]
 [[language]]
 name = "org"
 comment-tokens = ["-", "+", "*", "1.", "#+", "- [ ]"]
+
+[[language]]
+name = "toml"
+auto-format = true
+formatter = { command = "taplo", args = ["fmt", "-"] }
