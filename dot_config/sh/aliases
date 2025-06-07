@@ -47,7 +47,7 @@ alias v='nvim'
 alias vd='nvim -d'
 
 # helix
-alias hx='helix'
+# alias hx='helix'
 
 # emacs
 alias ec='emacsclient -nc'
