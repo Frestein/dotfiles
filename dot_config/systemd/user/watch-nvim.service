@@ -4,6 +4,8 @@ Description=Watch directory for file changes, add to chezmoi on change
 [Service]
 Type=simple
 ExecStart=%h/.config/bash/scripts/watch-nvim.sh
+Restart=on-failure
+RestartSec=5
 
 [Install]
 WantedBy=default.target

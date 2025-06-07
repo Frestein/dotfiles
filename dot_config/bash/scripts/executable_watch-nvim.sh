@@ -2,7 +2,7 @@
 
 WATCHED_DIR="$XDG_CONFIG_HOME/nvim"
 
-while inotifywait -e create -e modify "$WATCHED_DIR"; do
+while inotifywait -e create -e modify -r "$WATCHED_DIR"; do
     chezmoi re-add "$WATCHED_DIR"
 done
 
