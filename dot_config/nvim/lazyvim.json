@@ -53,6 +53,7 @@
     "plugins.extras.lang.python",
     "plugins.extras.lang.shell",
     "plugins.extras.lang.systemd",
+    "plugins.extras.lang.toml",
     "plugins.extras.lang.yaml",
     "plugins.extras.linting.typos",
     "plugins.extras.optimizations.garbage-day",
