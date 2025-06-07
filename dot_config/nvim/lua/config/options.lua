@@ -10,7 +10,17 @@ g.loaded_ruby_provider = 0
 --- LazyVim  ---
 g.lazyvim_python_lsp = "basedpyright"
 
+--- Neovide ---
+g.neovide_cursor_animation_length = 0
+g.neovide_cursor_short_animation_length = 0
+g.neovide_cursor_trail_size = 0.0
+g.neovide_cursor_animate_in_insert_mode = false
+g.neovide_cursor_animate_command_line = false
+g.experimental_layer_grouping = true
+g.neovide_refresh_rate = 75
+
 --- UI ---
+o.guifont = "monospace:h10"
 o.numberwidth = 2
 o.pumblend = 15
 o.scrolloff = 5
