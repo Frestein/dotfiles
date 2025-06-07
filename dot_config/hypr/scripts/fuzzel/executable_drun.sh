@@ -1,8 +1,6 @@
 #!/usr/bin/env dash
 
-ANDROID_HOME="$HOME/Projects/android/sdk"
-
-FUZZEL_IGNORED_BINDIRS="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin"
+FUZZEL_IGNORED_BINDIRS=""
 
 exit_err() {
   echo "$1" >&2
