@@ -3,18 +3,28 @@ theme = "gruvbox"
 [editor]
 cursorline = true
 line-number = "relative"
+gutters = ["diff", "diagnostics", "line-numbers", "spacer"]
 
 [editor.statusline]
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
 mode.select = "SELECT"
 
+[editor.lsp]
+display-progress-messages = true
+display-inlay-hints = true
+
 [editor.indent-guides]
 render = true
 
+[editor.soft-wrap]
+enable = true
+
 [keys.normal]
-C-s = ":write"
-Z = { Q = ":quit!", Z = ":write-quit!" }
+H = ":bp"
+L = ":bn"
+Z = { Q = ":q!", Z = ":wq!" }
+C-s = ":w"
 C-y = [
   ':sh rm -f /tmp/unique-file',
   ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
@@ -25,18 +35,22 @@ C-y = [
   ":set mouse true",
 ]
 C-g = [
-  ":write-all",
-  ":new",
+  ":wa",
+  ":n",
   ":insert-output lazygit",
   ":set mouse false",
   ":set mouse true",
   ":buffer-close!",
   ":redraw",
-  ":reload-all",
+  ":rla",
 ]
 
 [keys.normal.space]
-q = { q = ":quit-all" }
+q = { q = ":qa" }
+b = { b = "buffer_picker", d = ":bc", D = ":bc!", o = ":bco", n = ":n" }
+"," = "buffer_picker"
+"." = ":n"
+u = { h = ":toggle lsp.display-inlay-hints", L = ":toggle line-number 'absolute' 'relative'", f = ":toggle auto-format", p = ":toggle auto-pairs" }
 
 [keys.normal."C-backspace"]
 r = ":config-reload"
