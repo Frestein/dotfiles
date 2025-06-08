@@ -40,7 +40,6 @@
     "plugins.extras.fun.drop",
     "plugins.extras.fun.dynamic-dashboard",
     "plugins.extras.keys.lazy-extended",
-    "plugins.extras.keys.lsp.hover-tab",
     "plugins.extras.keys.lsp.workspace",
     "plugins.extras.keys.snacks_picker.smart",
     "plugins.extras.lang.ansible",
