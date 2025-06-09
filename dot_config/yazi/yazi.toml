@@ -11,13 +11,19 @@ orphan = true
 block = true
 for = "linux"
 
+[[opener.image]]
+run = 'swayimg "$@"'
+orphan = true
+block = true
+for = "linux"
+
 [[open.append_rules]]
 mime = "image/{vnd.djvu,x-djvu}"
 use = ["pdf", "open"]
 
 [[open.prepend_rules]]
 mime = "image/*"
-use = ["play", "open", "reveal"]
+use = ["image", "open", "reveal"]
 
 [[open.prepend_rules]]
 mime = "application/pdf"
@@ -26,8 +32,8 @@ use = ["pdf", "open"]
 [plugin]
 prepend_previewers = [{ mime = "audio/*", run = "exifaudio" }]
 prepend_fetchers = [
-    { id = "git", name = "*", run = "git" },
-    { id = "git", name = "*/", run = "git" },
+  { id = "git", name = "*", run = "git" },
+  { id = "git", name = "*/", run = "git" },
 ]
 
 [input]

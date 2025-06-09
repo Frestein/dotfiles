@@ -28,6 +28,8 @@ decoration = no
 sigusr1 = reload
 # Action performed by SIGUSR2 signal (same format as for key bindings)
 sigusr2 = next_file
+# Integrate with Wayland compositor (Sway/Hyprland only)
+compositor = yes
 # Application ID and window class name
 app_id = swayimg
 
@@ -35,46 +37,45 @@ app_id = swayimg
 # Viewer mode configuration
 ################################################################################
 [viewer]
-# Window background color (RGBA)
+# Window background color (blur/RGBA)
 window = #282828ff
 # Background for transparent images (grid/RGBA)
 transparency = grid
-# Default image scale (optimal/fit/width/height/fill/real)
+# Default image scale (optimal/width/height/fit/fill/real/keep)
 scale = optimal
-# Keep absolute zoom across images (yes/no)
-keep_zoom = no
-# Initial image position
+# Initial image position on the window
+# (top/center/bottom/left/right/topleft/topright/bottomleft/bottomright/free)
 position = center
-# Fix position of the image on the window surface (yes/no)
-fixed = yes
 # Anti-aliasing mode (none/box/bilinear/bicubic/mks13)
 antialiasing = mks13
 # Run slideshow at startup (yes/no)
 slideshow = no
 # Slideshow image display time (seconds)
-slideshow_time = 3
+slideshow_time = 5
 # Number of previously viewed images to store in cache
-history = 1
+history = 50
 # Number of preloaded images (read ahead)
-preload = 1
+preload = 25
 
 ################################################################################
 # Gallery mode configuration
 ################################################################################
 [gallery]
-# Size of the thumbnail (pixels)
+# Height and width of each thumbnail (pixels)
 size = 200
-# Max number of thumbnails in memory cache, 0 for unlimited
-cache = 200
+# Max number of invisible thumbnails stored in memory cache
+cache = 100
+# Load not only visible but also adjacent thumbnails
+preload = yes
 # Enable/disable storing thumbnails in persistent storage (yes/no)
-pstore = yes
+pstore = no
 # Fill the entire tile with thumbnail (yes/no)
 fill = yes
 # Anti-aliasing mode for thumbnails (none/box/bilinear/bicubic/mks13)
 antialiasing = mks13
 # Background color of the window (RGBA)
 window = #282828ff
-# Background color of the tile (RGBA)
+# Background color of non-selected tiles (RGBA)
 background = #202020ff
 # Background color of the selected tile (RGBA)
 select = #404040ff
@@ -87,14 +88,18 @@ shadow = #000000ff
 # Image list configuration
 ################################################################################
 [list]
-# Default order (none/alpha/reverse/random)
+# Default order (none/alpha/numeric/mtime/size/random)
 order = alpha
+# Reverse order (yes/no)
+reverse = no
 # Looping list of images (yes/no)
 loop = yes
 # Read directories recursively (yes/no)
 recursive = no
-# Open all files in the directory of the specified file (yes/no)
-all = no
+# Add files from the same directory as the first file (yes/no)
+all = yes
+# Enable file system monitoring for adding new images to the list (yes/no)
+fsmon = yes
 
 ################################################################################
 # Font configuration
@@ -103,16 +108,16 @@ all = no
 # Font name
 name = monospace
 # Font size (pt)
-size = 14
+size = 12
 # Font color (RGBA)
-color = #ccccccff
+color = #EBDBB2FF
 # Shadow color (RGBA)
-shadow = #000000d0
+shadow = #000000D0
 # Background color (RGBA)
 background = #00000000
 
 ################################################################################
-# Image meta info scheme (format, size, EXIF, etc)
+# Image meta info scheme (format, size, EXIF, etc.)
 ################################################################################
 [info]
 # Show on startup (yes/no)
@@ -145,6 +150,10 @@ g = first_file
 Shift+g = last_file
 Prior = prev_file
 Next = next_file
+h = prev_file
+j = next_file
+k = prev_file
+l = next_file
 Space = next_file
 Shift+r = rand_file
 Shift+d = prev_dir
@@ -169,19 +178,20 @@ z = zoom fit
 Shift+z = zoom fill
 0 = zoom real
 BackSpace = zoom optimal
-Alt+s = scale
+Alt+z = zoom keep
+Alt+s = zoom
 bracketleft = rotate_left
 bracketright = rotate_right
 m = flip_vertical
 Shift+m = flip_horizontal
-a = antialiasing
+a = antialiasing next
+Shift+a = antialiasing prev
 r = reload
 i = info
-Shift+Delete = exec rm "%"; skip_file
+Shift+Delete = exec rm -f '%' && echo "File removed: %"; skip_file
 Escape = exit
 q = exit
-j = next_file
-k = prev_file
+# Mouse related
 ScrollLeft = step_right 5
 ScrollRight = step_left 5
 ScrollUp = next_file
@@ -210,14 +220,21 @@ Next = page_down
 c = skip_file
 f = fullscreen
 Return = mode
-a = antialiasing
+a = antialiasing next
+Shift+a = antialiasing prev
 r = reload
 i = info
-Shift+Delete = exec rm "%"; skip_file
+Equal = thumb +20
+Plus = thumb +20
+Minus = thumb -20
+Shift+Delete = exec rm -f '%' && echo "File removed: %"; skip_file
 Escape = exit
 q = exit
+# Mouse related
 ScrollLeft = step_right
 ScrollRight = step_left
 ScrollUp = step_up
 ScrollDown = step_down
 MouseRight = mode
+Ctrl+ScrollUp = thumb +20
+Ctrl+ScrollDown = thumb -20
