@@ -176,6 +176,7 @@
 
        :app
        calendar
+       ement
        (telega +mnz +stories)  ; the best telegram client ever
        ;; emms
        ;; everywhere        ; *leave* Emacs!? You must be joking
