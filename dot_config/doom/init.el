@@ -82,6 +82,7 @@
        ;; direnv
        ;; docker
        chezmoi
+       consult-gh
        trashed              ; freedesktop.org trashcan
        ;; editorconfig      ; let someone else argue about tabs vs spaces
        ;; ein               ; tame Jupyter notebooks with emacs
