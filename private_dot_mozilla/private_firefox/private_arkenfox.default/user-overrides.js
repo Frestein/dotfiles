@@ -1,3 +1,6 @@
+// Personal preferences
+user_pref("network.http.http3.enabled", true);
+
 /****************************************************************************
  * Arkenfox                                                                 *
  * version: 135                                                             *
