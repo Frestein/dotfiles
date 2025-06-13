@@ -234,12 +234,13 @@ c.auto_save.session = True
 c.session.lazy_restore = True
 c.completion.cmd_history_max_items = 10000
 c.qt.args = [
+    "enable-unsafe-webgpu",
+    "enable-zero-copy",
     "enable-gpu-rasterization",
     "ignore-gpu-blocklist",
     "enable-accelerated-video-decode",
     "enable-quic",
-    "quic-version=h3-29",
-    "enable-features=VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL"
+    "enable-features=VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL",
 ]
 c.qt.workarounds.disable_accelerated_2d_canvas = "never"
 
