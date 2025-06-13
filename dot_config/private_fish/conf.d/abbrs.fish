@@ -63,11 +63,17 @@ abbr -a -- d docker
 # systemd
 abbr -a -- sc systemctl
 abbr -a -- scu systemctl --user
+# Get the error messages from journalctl
+abbr -a -- jctl journalctl -p 3 -xb
 
 # network
 abbr -a -- speedtest speedtest-go
 
 # Arch Linux
+
+# Recent installed packages
+abbr -a -- pacrip "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+
 # Additional info: https://wiki.archlinux.org/index.php/Pacman_Tips
 abbr -a -- pacupg doas pacman -Syu
 abbr -a -- pacin doas pacman -S

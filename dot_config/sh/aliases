@@ -66,6 +66,8 @@ alias d='docker'
 # systemd
 alias sc='systemctl'
 alias scu='systemctl --user'
+# Get the error messages from journalctl
+alias jctl='journalctl -p 3 -xb'
 
 # network
 alias speedtest='speedtest-go'
@@ -73,6 +75,10 @@ alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Arch Linux
+
+# Recent installed packages
+alias pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+
 # Additional info: https://wiki.archlinux.org/index.php/Pacman_Tips
 alias pacupg='doas pacman -Syu'
 alias pacin='doas pacman -S'
