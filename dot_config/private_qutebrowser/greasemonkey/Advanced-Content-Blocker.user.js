@@ -60,6 +60,10 @@
     "www.fotor.com": ["._1Pece", "._3KDv2"],
     "www.pornhub.com": [
       ".eJOY__extension_ai_adv_root_class",
+      "#age-verification-container",
+      "#age-verification-wrapper",
+      "#customSkinCTA",
+      "#customSkin",
       "#abAlert",
       "#countryRedirectMessage",
       "#welcome",
