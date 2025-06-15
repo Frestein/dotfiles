@@ -8,41 +8,13 @@ require("full-border"):setup({
 	type = ui.Border.PLAIN,
 })
 
--- -- Statusline
--- require("yaziline"):setup({
--- 	-- color = "#A89984",
--- 	secondary_color = "#504945",
---
--- 	select_symbol = "",
--- 	yank_symbol = "󰆐",
--- })
+require("omp"):setup()
 
 -- "light" | "dark"
 local gruvbox_theme = require("yatline-gruvbox"):setup("dark")
 
-gruvbox_theme.section_separator = { open = "", close = "" }
-gruvbox_theme.part_separator = { open = "", close = "" }
-gruvbox_theme.inverse_separator = { open = "", close = "" }
-gruvbox_theme.style_c = { fg = "gray" }
-
--- Tabline and statusline
 require("yatline"):setup({
 	theme = gruvbox_theme,
-
-	section_separator = { open = "", close = "" },
-	part_separator = { open = "", close = "" },
-	inverse_separator = { open = "", close = "" },
-
-	style_a = {
-		fg = "black",
-		bg_mode = {
-			normal = "blue",
-			select = "magenta",
-			un_set = "yellow",
-		},
-	},
-	style_b = { bg = "black", fg = "lightgray" },
-	style_c = { fg = "gray" },
 
 	permissions_t_fg = "green",
 	permissions_r_fg = "yellow",
@@ -70,20 +42,14 @@ require("yatline"):setup({
 
 	header_line = {
 		left = {
-			section_a = {
-				{ type = "line", custom = false, name = "tabs", params = { "left" } },
-			},
+			section_a = {},
 			section_b = {},
 			section_c = {},
 		},
 		right = {
-			section_a = {
-				{ type = "string", custom = false, name = "date", params = { "%a, %b %d %Y" } },
-			},
+			section_a = {},
 			section_b = {},
-			section_c = {
-				{ type = "coloreds", custom = false, name = "task_states" },
-			},
+			section_c = {},
 		},
 	},
 
@@ -102,18 +68,13 @@ require("yatline"):setup({
 		},
 		right = {
 			section_a = {
-				{
-					type = "string",
-					custom = false,
-					name = "cursor_position",
-				},
+				{ type = "line", custom = false, name = "tabs", params = { "right" } },
 			},
-			section_b = {
-				{ type = "string", custom = false, name = "hovered_file_extension", params = { true } },
-			},
+			section_b = {},
 			section_c = {
-				{ type = "coloreds", custom = false, name = "count" },
+				{ type = "string", custom = false, name = "cursor_position" },
 				{ type = "coloreds", custom = false, name = "permissions" },
+				{ type = "coloreds", custom = false, name = "count", params = { "true" } },
 			},
 		},
 	},
