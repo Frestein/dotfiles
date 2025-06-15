@@ -16,7 +16,7 @@
       user-mail-address "frestein@tuta.io")
 
 ;; Theme
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-gruvbox)
 
 ;; Org
 (setq org-directory "~/Documents/org/")
