@@ -1,4 +1,7 @@
 [Added Associations]
+application/pgp-keys=nvim.desktop;
+application/pgp-encrypted=nvim.desktop;
+application/pgp-signature=nvim.desktop;
 application/json=nvim.desktop;
 application/pdf=org.pwmt.zathura.desktop;
 application/postscript=org.pwmt.zathura.desktop;
@@ -39,6 +42,9 @@ x-scheme-handler/tg=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop
 x-scheme-handler/tonsite=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;userapp-AyuGram Desktop-40JS52.desktop;
 
 [Default Applications]
+application/pgp-keys=nvim.desktop;
+application/pgp-encrypted=nvim.desktop;
+application/pgp-signature=nvim.desktop;
 application/json=nvim.desktop;
 application/pdf=org.pwmt.zathura.desktop;
 application/postscript=org.pwmt.zathura.desktop;
