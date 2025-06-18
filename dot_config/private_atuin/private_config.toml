@@ -125,7 +125,7 @@ invert = true
 ## Configure whether or not to show the help row, which includes the current Atuin
 ## version (and whether an update is available), a keymap hint, and the total
 ## amount of commands in your history.
-# show_help = true
+show_help = false
 
 ## Configure whether or not to show tabs for search and inspect
 # show_tabs = true
@@ -147,7 +147,7 @@ invert = true
 
 ## Defaults to true. If enabled, upon hitting enter Atuin will immediately execute the command. Press tab to return to the shell and edit.
 # This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
-enter_accept = true
+enter_accept = false
 
 ## Defaults to "emacs".  This specifies the keymap on the startup of `atuin
 ## search`.  If this is set to "auto", the startup keymap mode in the Atuin
@@ -212,9 +212,20 @@ ignored_commands = [
   "vi",
   "vim",
   "nvim",
+  "emacs",
+  "doom",
+  "chezmoi",
   "pacman",
   "yay",
   "yazi",
+  "mpv",
+  "btm",
+  "newsboat",
+  "lazygit",
+  "hyprctl",
+  "systemctl --user",
+  "systemctl status",
+  "systemctl restart",
 ]
 
 [keys]
@@ -265,7 +276,7 @@ records = true
 ##    https://ogeon.github.io/docs/palette/master/palette/named/index.html
 ## If you provide a custom theme file, it should be  called "NAME.toml" and the theme below
 ## should be the stem, i.e. `theme = "NAME"` for your chosen NAME.
-# name = "autumn"
+name = "gruvbox"
 
 ## Whether the theme manager should output normal or extra information to help fix themes.
 ## Boolean, true or false. If unset, left up to the theme manager.
