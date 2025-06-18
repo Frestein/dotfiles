@@ -3,6 +3,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# ble.sh
+[[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
+
 # fish as interactive shell
 if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
     shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
@@ -33,7 +36,12 @@ export HISTCONTROL=ignoredups:erasedups
 export HISTFILE="$XDG_STATE_HOME/bash/history"
 shopt -s histappend # Append to history, don't overwrite it
 
+# Vi mode
+set -o vi
+
 # ---------------------------Imports--------------------------- #
 [ -f "$XDG_CONFIG_HOME/bash/functions" ] && . "$XDG_CONFIG_HOME/bash/functions"
 [ -f "$XDG_CONFIG_HOME/bash/aliases" ] && . "$XDG_CONFIG_HOME/bash/aliases"
 [ -f "$XDG_CONFIG_HOME/sh/aliases" ] && . "$XDG_CONFIG_HOME/sh/aliases"
+
+[[ ${BLE_VERSION-} ]] && ble-attach
