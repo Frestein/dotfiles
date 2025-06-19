@@ -40,4 +40,7 @@ export DMENU="fuzzel -d"
 export SUDO_ASKPASS="$HOME/.local/bin/askpass"
 export DOAS_ASKPASS="$SUDO_ASKPASS"
 
+export VDPAU_DRIVER=radeonsi
+export LIBVA_DRIVER_NAME=radeonsi
+
 [ -f "$XDG_CONFIG_HOME/bash/fzf_config" ] && . "$XDG_CONFIG_HOME/bash/fzf_config"
