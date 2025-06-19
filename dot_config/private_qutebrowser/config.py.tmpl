@@ -3,6 +3,7 @@
 # - python-adblock
 # - python-pyperclip (qute-code-hint)
 # - python-protobuf
+# - python-tldextract (qute-pass)
 
 import os.path
 
@@ -43,7 +44,6 @@ qsites = {
 }
 
 DMENU_CMD = "fuzzel -d"
-QUTE_PASS = f"{os.path.expanduser('~')}/.config/qutebrowser/userscripts/qute-pass"
 
 ###############################################################################
 # General settings
@@ -161,8 +161,8 @@ config.set(
 # Advertising blocking
 ################################################################################
 
+c.content.blocking.method = "adblock"
 c.content.blocking.hosts.lists = []
-
 c.content.blocking.adblock.lists = [
     "https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt",
     "https://easylist-downloads.adblockplus.org/antiadblockfilters.txt",
@@ -235,13 +235,19 @@ c.auto_save.session = True
 c.session.lazy_restore = True
 c.completion.cmd_history_max_items = 10000
 c.qt.args = [
-    "enable-unsafe-webgpu",
-    "enable-zero-copy",
-    "enable-gpu-rasterization",
-    "ignore-gpu-blocklist",
-    "enable-accelerated-video-decode",
+    "enable-accelerated-video",
+    "enable-native-gpu-memory-buffers",
+    "enable-oop-rasterization",
     "enable-quic",
-    "enable-features=VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL",
+    "enable-unsafe-webgpu",
+    "enable-vulkan",
+    "enable-zero-copy",
+    "font-cache-shared-handle",
+    "ignore-gpu-blocklist",
+    "num-raster-threads=4",
+    "enable-features=VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL,AcceleratedVideoEncoder",
+    # Chromium 131+
+    # "enable-features=VaapiIgnoreDriverChecks,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoEncoder",
 ]
 c.qt.workarounds.disable_accelerated_2d_canvas = "never"
 
@@ -325,14 +331,14 @@ config.bind("gF", "spawn -u openfeeds")
 # Password management (gopass)
 config.bind(
     "zl",
-    f"spawn -u {QUTE_PASS} -d '{DMENU_CMD}' -M gopass --username-target secret --username-pattern 'login: (.+)'",
+    f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --username-target secret --username-pattern 'login: (.+)'",
 )
 config.bind(
     "zul",
-    f"spawn -u {QUTE_PASS} -d '{DMENU_CMD}' -M gopass --username-only --username-target secret --username-pattern 'login: (.+)'",
+    f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --username-only --username-target secret --username-pattern 'login: (.+)'",
 )
-config.bind("zpl", f"spawn -u {QUTE_PASS} -d '{DMENU_CMD}' -M gopass --password-only")
-config.bind("zol", f"spawn -u {QUTE_PASS} -d '{DMENU_CMD}' -M gopass --otp-only")
+config.bind("zpl", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --password-only")
+config.bind("zol", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --otp-only")
 
 # Quickmarks
 for k, v in qsites.items():
