@@ -1,0 +1,286 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import os
+import sys
+import urllib.parse
+
+import requests
+
+
+def js(message):
+    styles = {
+        "position": "fixed",
+        "top": "10px",
+        "right": "10px",
+        "width": "600px",
+        "height": "300px",
+        "backgroundColor": "#fbf1c7",
+        "color": "#3c3836",
+        "border": "1px solid #928374",
+        "borderRadius": "0",
+        "padding": "10px",
+        "zIndex": "10000",
+        "fontFamily": "sans-serif",
+        "fontSize": "16px",
+        "boxSizing": "border-box",
+        "overflow": "hidden",
+        "wordWrap": "break-word",
+        "cursor": "move",
+    }
+    styles_js = "\n".join([f"box.style.{k} = '{v}';" for k, v in styles.items()])
+
+    return f"""
+    (function() {{
+        var style = document.createElement('style');
+        style.textContent = `
+            .custom-scrollbar {{
+                scrollbar-width: thin;
+                scrollbar-color: #928374 #fbf1c7;
+            }}
+            .custom-scrollbar::-webkit-scrollbar {{
+                width: 8px;
+                height: 8px;
+            }}
+            .custom-scrollbar::-webkit-scrollbar-track {{
+                background: #fbf1c7;
+            }}
+            .custom-scrollbar::-webkit-scrollbar-thumb {{
+                background-color: #928374;
+                border-radius: 4px;
+                border: 2px solid #fbf1c7;
+            }}
+        `;
+        document.head.appendChild(style);
+
+        var box = document.createElement('div');
+        {styles_js}
+
+        var contentDiv = document.createElement('div');
+        contentDiv.innerText = decodeURIComponent("{message}");
+        contentDiv.className = "custom-scrollbar";
+        contentDiv.style.height = 'calc(100% - 1px)';
+        contentDiv.style.overflow = 'auto';
+        contentDiv.style.boxSizing = 'border-box';
+        box.appendChild(contentDiv);
+
+        var corners = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+        var cursors = {{
+            'top-left': 'nwse-resize',
+            'top-right': 'nesw-resize',
+            'bottom-left': 'nesw-resize',
+            'bottom-right': 'nwse-resize'
+        }};
+        var resizers = {{}};
+        corners.forEach(function(corner) {{
+            var resizer = document.createElement('div');
+            resizer.className = 'resizer-' + corner;
+            resizer.style.width = '15px';
+            resizer.style.height = '15px';
+            resizer.style.position = 'absolute';
+            resizer.style.background = 'transparent';
+            resizer.style.userSelect = 'none';
+            resizer.style.cursor = cursors[corner];
+            if(corner.includes('top')) resizer.style.top = '0';
+            if(corner.includes('bottom')) resizer.style.bottom = '0';
+            if(corner.includes('left')) resizer.style.left = '0';
+            if(corner.includes('right')) resizer.style.right = '0';
+            box.appendChild(resizer);
+            resizers[corner] = resizer;
+        }});
+
+        document.body.appendChild(box);
+
+        var isDragging = false;
+        var isResizing = false;
+        var currentResizer = null;
+        var startX, startY, startLeft, startTop, startWidth, startHeight;
+
+        box.addEventListener('mousedown', function(e) {{
+            if (Object.values(resizers).includes(e.target)) return;
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            var rect = box.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            box.style.transform = 'none';
+            box.style.left = startLeft + 'px';
+            box.style.top = startTop + 'px';
+            box.style.right = 'auto';
+            box.style.bottom = 'auto';
+            document.body.style.userSelect = 'none';
+        }});
+
+        Object.entries(resizers).forEach(function([corner, resizer]) {{
+            resizer.addEventListener('mousedown', function(e) {{
+                e.stopPropagation();
+                isResizing = true;
+                currentResizer = corner;
+                startX = e.clientX;
+                startY = e.clientY;
+                var rect = box.getBoundingClientRect();
+                startLeft = rect.left;
+                startTop = rect.top;
+                startWidth = rect.width;
+                startHeight = rect.height;
+                box.style.transform = 'none';
+                box.style.left = startLeft + 'px';
+                box.style.top = startTop + 'px';
+                box.style.right = 'auto';
+                box.style.bottom = 'auto';
+                document.body.style.userSelect = 'none';
+            }});
+        }});
+
+        document.addEventListener('mousemove', function(e) {{
+            if (isDragging) {{
+                var dx = e.clientX - startX;
+                var dy = e.clientY - startY;
+                box.style.left = (startLeft + dx) + 'px';
+                box.style.top = (startTop + dy) + 'px';
+            }} else if (isResizing) {{
+                var dx = e.clientX - startX;
+                var dy = e.clientY - startY;
+                var newWidth = startWidth;
+                var newHeight = startHeight;
+                var newLeft = startLeft;
+                var newTop = startTop;
+                if (currentResizer.includes('right')) {{
+                    newWidth = startWidth + dx;
+                }}
+                if (currentResizer.includes('left')) {{
+                    newWidth = startWidth - dx;
+                    newLeft = startLeft + dx;
+                }}
+                if (currentResizer.includes('bottom')) {{
+                    newHeight = startHeight + dy;
+                }}
+                if (currentResizer.includes('top')) {{
+                    newHeight = startHeight - dy;
+                    newTop = startTop + dy;
+                }}
+                if (newWidth > 150) {{
+                    box.style.width = newWidth + 'px';
+                    box.style.left = newLeft + 'px';
+                }}
+                if (newHeight > 100) {{
+                    box.style.height = newHeight + 'px';
+                    box.style.top = newTop + 'px';
+                }}
+            }}
+        }});
+
+        document.addEventListener('mouseup', function(e) {{
+            if (isDragging) {{
+                isDragging = false;
+                document.body.style.userSelect = '';
+            }}
+            if (isResizing) {{
+                isResizing = false;
+                currentResizer = null;
+                document.body.style.userSelect = '';
+            }}
+        }});
+
+        function removeBox(event) {{
+            if (!box.contains(event.target)) {{
+                box.remove();
+                document.removeEventListener('click', removeBox);
+            }}
+        }}
+        document.addEventListener('click', removeBox);
+    }})();
+    """
+
+
+def translate_google(text, target_lang):
+    encoded_text = urllib.parse.quote(text)
+    response = requests.get(
+        f"https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={target_lang}&dt=t&q={encoded_text}"
+    )
+    response_json = json.loads(response.text)
+    translated_text = ""
+    for i in response_json[0]:
+        translated_text += i[0]
+    return translated_text
+
+
+def translate_libretranslate(text, url, key, target_lang):
+    response = requests.post(
+        f"{url}/translate",
+        data={"q": text, "source": "auto", "target": target_lang, "api_key": key},
+    )
+    return response.json()["translatedText"]
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Translate text using different providers."
+    )
+    parser.add_argument(
+        "--provider",
+        choices=["google", "libretranslate"],
+        required=False,
+        default="google",
+        help="Translation provider to use",
+    )
+    parser.add_argument(
+        "--libretranslate_url",
+        required=False,
+        default="https://libretranslate.com",
+        help="URL for LibreTranslate API",
+    )
+    parser.add_argument(
+        "--libretranslate_key",
+        required=False,
+        default="",
+        help="API key for LibreTranslate",
+    )
+    parser.add_argument(
+        "--target_lang",
+        required=False,
+        default="ru",
+        help="Target language for translation",
+    )
+    parser.add_argument(
+        "--url",
+        action="store_true",
+        help="Translate the current URL instead of selected text",
+    )
+    args = parser.parse_args()
+
+    qute_fifo = os.getenv("QUTE_FIFO")
+    if not qute_fifo:
+        sys.stderr.write(
+            f"Error: {sys.argv[0]} can not be run as a standalone script.\n"
+        )
+        sys.stderr.write(
+            "It is a qutebrowser userscript. In order to use it, call it using 'spawn --userscript' as described in qute://help/userscripts.html\n"
+        )
+        sys.exit(1)
+
+    if args.url:
+        current_url = urllib.parse.quote(os.getenv("QUTE_URL", ""))
+        translated_url = f"https://translate.google.com/translate?sl=auto&tl={args.target_lang}&u={urllib.parse.quote(current_url)}"
+        with open(qute_fifo, "a") as fifo:
+            fifo.write(f"open -t {translated_url}\n")
+    else:
+        text = os.getenv("QUTE_SELECTED_TEXT", "")
+
+        if args.provider == "google":
+            translated_text = translate_google(text, args.target_lang)
+        elif args.provider == "libretranslate":
+            translated_text = translate_libretranslate(
+                text, args.libretranslate_url, args.libretranslate_key, args.target_lang
+            )
+
+        js_code = js(urllib.parse.quote(translated_text)).replace("\n", " ")
+
+        with open(qute_fifo, "a") as fifo:
+            fifo.write(f"jseval -q {js_code}\n")
+
+
+if __name__ == "__main__":
+    main()

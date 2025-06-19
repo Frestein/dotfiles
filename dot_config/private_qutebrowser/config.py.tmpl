@@ -260,7 +260,7 @@ c.aliases.update(
     {
         "bk": "spawn -u qute-buku",
         "qr": "spawn -u qr",
-        "translate": "spawn -u translate",
+        "translate": "spawn -u qute-translate-popup",
     }
 )
 
@@ -306,6 +306,8 @@ config.bind("<Shift-l>", "forward")
 config.bind(",qr", "qr")
 config.bind("tt", "translate")
 config.bind("tt", "translate", mode="caret")
+config.bind('tT', 'spawn --userscript qute-translate')
+config.bind('tT', 'spawn --userscript qute-translate', mode='caret')
 config.bind("cm", "clear-messages")
 config.bind(";c", "hint code userscript qute-code-hint")
 
