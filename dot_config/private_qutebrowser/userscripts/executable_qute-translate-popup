@@ -15,14 +15,14 @@ def js(message):
         "top": "10px",
         "right": "10px",
         "width": "600px",
-        "height": "300px",
-        "backgroundColor": "#fbf1c7",
-        "color": "#3c3836",
-        "border": "1px solid #928374",
+        "height": "200px",
+        "backgroundColor": "#ffffffe6",
+        "color": "#000000e6",
+        "border": "1px solid #000000e6",
         "borderRadius": "0",
         "padding": "10px",
         "zIndex": "10000",
-        "fontFamily": "sans-serif",
+        "fontFamily": "Playpen Sans, sans-serif",
         "fontSize": "16px",
         "boxSizing": "border-box",
         "overflow": "hidden",
@@ -33,33 +33,11 @@ def js(message):
 
     return f"""
     (function() {{
-        var style = document.createElement('style');
-        style.textContent = `
-            .custom-scrollbar {{
-                scrollbar-width: thin;
-                scrollbar-color: #928374 #fbf1c7;
-            }}
-            .custom-scrollbar::-webkit-scrollbar {{
-                width: 8px;
-                height: 8px;
-            }}
-            .custom-scrollbar::-webkit-scrollbar-track {{
-                background: #fbf1c7;
-            }}
-            .custom-scrollbar::-webkit-scrollbar-thumb {{
-                background-color: #928374;
-                border-radius: 4px;
-                border: 2px solid #fbf1c7;
-            }}
-        `;
-        document.head.appendChild(style);
-
         var box = document.createElement('div');
         {styles_js}
 
         var contentDiv = document.createElement('div');
         contentDiv.innerText = decodeURIComponent("{message}");
-        contentDiv.className = "custom-scrollbar";
         contentDiv.style.height = 'calc(100% - 1px)';
         contentDiv.style.overflow = 'auto';
         contentDiv.style.boxSizing = 'border-box';
