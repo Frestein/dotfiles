@@ -6,24 +6,38 @@ prepend_keymap = [
   { on = "<F1>", run = "noop" },
   { on = "~", run = "noop" },
 
-  # Motions
-  { on = "j", run = "plugin arrow 1" },
-  { on = "k", run = "plugin arrow -1" },
-  { on = "l", run = "plugin smart-enter" },
+  { on = "q", run = "plugin confirm-quit", desc = "Quit the process" },
 
-  { on = "J", run = "plugin parent-arrow 1" },
-  { on = "K", run = "plugin parent-arrow -1" },
+  # Hopping
+  { on = "j", run = "plugin arrow 1", desc = "Next file" },
+  { on = "k", run = "plugin arrow -1", desc = "Previous file" },
 
+  { on = "J", run = "plugin parent-arrow 1", desc = "Next parent directory" },
+  { on = "K", run = "plugin parent-arrow -1", desc = "Previous parent directory" },
+
+  # Seeking
   { on = "<C-f>", run = "seek 5" },
   { on = "<C-b>", run = "seek -5" },
 
+  # Operation
+  { on = "l", run = "plugin smart-enter" },
   { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here" },
-  { on = "q", run = "plugin confirm-quit" },
   { on = "y", run = [
     'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list',
     "yank",
   ] },
-  # { on = "p", run = "plugin smart-paste", desc = "Paste into the hovered directory or CWD" },
+  # { on = [
+  #   "p",
+  #   "p",
+  # ], run = "plugin smart-paste", desc = "Paste into the hovered directory or CWD" },
+  { on = [
+    "p",
+    "p",
+  ], run = "paste", desc = "Paste yanked files" },
+  { on = [
+    "p",
+    "c",
+  ], run = "plugin save-clipboard-to-file", desc = "Paste clipboard content to file" },
   { on = "t", run = "plugin smart-tab", desc = "Create a tab and enter the hovered directory" },
   { on = [
     "g",
@@ -121,8 +135,10 @@ prepend_keymap = [
   ], run = "plugin what-size", desc = "Show the size of the selected files or cwd" },
 
   # Preview
-  { on = "<C-1>", run = "plugin toggle-pane min-parent", desc = "Toggle minimaze parent" },
-  { on = "<C-3>", run = "plugin toggle-pane max-preview", desc = "Toggle maximaze preview" },
+  { on = [
+    "p",
+    "m",
+  ], run = "plugin toggle-pane max-preview", desc = "Toggle maximaze preview" },
 
   # Zoom
   { on = "=", run = "plugin zoom 1", desc = "Zoom in hovered file" },
