@@ -6,6 +6,14 @@ stripComponents = 2
 refreshPeriod = "168h"
 include = ["*/toggle-pane.yazi/**"]
 
+[".config/yazi/plugins/zoom.yazi"]
+type = "archive"
+url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["*/zoom.yazi/**"]
+
 [".config/yazi/plugins/vcs-files.yazi"]
 type = "archive"
 url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
@@ -151,13 +159,6 @@ refreshPeriod = "168h"
 [".config/yazi/plugins/easyjump.yazi"]
 type = "archive"
 url = "https://github.com/DreamMaoMao/easyjump.yazi/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "168h"
-
-[".config/yazi/plugins/omp.yazi"]
-type = "archive"
-url = "https://github.com/saumyajyoti/omp.yazi/archive/master.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "168h"

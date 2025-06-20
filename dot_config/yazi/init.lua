@@ -8,8 +8,6 @@ require("full-border"):setup({
 	type = ui.Border.PLAIN,
 })
 
-require("omp"):setup()
-
 -- "light" | "dark"
 local gruvbox_theme = require("yatline-gruvbox"):setup("dark")
 

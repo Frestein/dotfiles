@@ -1,9 +1,12 @@
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
 [preview]
 max_width = 900
 max_height = 1200
 image_quality = 90
 image_delay = 0
-ueberzug_offset = [5, 1.2, 0, 0]
+# FIX: Need test
+# ueberzug_offset = [5, 1.2, 0, 0]
 
 [[opener.pdf]]
 run = 'zathura "$@"'
@@ -28,6 +31,9 @@ use = ["image", "open", "reveal"]
 [[open.prepend_rules]]
 mime = "application/pdf"
 use = ["pdf", "open"]
+
+[tasks]
+image_bound = [10000, 10000]
 
 [plugin]
 prepend_previewers = [{ mime = "audio/*", run = "exifaudio" }]
