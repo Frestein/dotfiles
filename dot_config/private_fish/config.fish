@@ -24,7 +24,6 @@ if status is-interactive
 
     set fzf_preview_dir_cmd eza --all --oneline --color=always --icons=always
 
-    # Use correct fzf-search-history
-    # bind \cr _fzf_search_history
-    # bind -M insert \cr _fzf_search_history
+    bind ctrl-s sysz
+    bind -M insert ctrl-s sysz
 end

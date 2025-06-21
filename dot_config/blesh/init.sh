@@ -1,22 +1,4 @@
-# -*- mode: sh; mode: sh-bash -*-
-
-## This is a template for "~/.blerc".
-##
-## To use ble.sh in bash, please set up "~/.bashrc" as follows:
-##
-## ```bash
-## # bashrc
-##
-## # Please put the following line in the beginning of .bashrc
-## # Note: Please replace $HOME/.local/share/blesh with the path to your ble.sh
-## [[ $- == *i* ]] && source "$HOME/.local/share/blesh/ble.sh" --noattach
-##
-## # Your bashrc contents should come between the two lines.
-##
-## # Please put the following line in the end of .bashrc
-## [[ ! ${BLE_VERSION-} ]] || ble-attach
-## ```
-##
+#!/usr/bin/env bash
 
 ##-----------------------------------------------------------------------------
 ## Basic settings
@@ -1364,3 +1346,130 @@ blehook/eval-after-load keymap_vi blerc/vim-load-hook
 ## execution will be skipped.  The default value is 5.0 msec.
 
 #bleopt debug_profiler_tree_threshold=5.0
+
+function my/set-up-completion {
+    # better defaults
+    ble-sabbrev bc='bc -q'
+    ble-sabbrev btm='btm -b --hide_avg_cpu --theme gruvbox'
+    ble-sabbrev path='echo "$PATH" | tr ":" " "'
+    ble-sabbrev path_list='echo "$PATH" | tr ":" "\n" | sort'
+
+    # clipboard
+    ble-sabbrev clipboard_history="cliphist list | fzf -d $'\t' --with-nth 2 | cliphist decode | wl-copy"
+
+    # trans
+    ble-sabbrev t='trans :ru'
+    ble-sabbrev tt='trans :en'
+    ble-sabbrev tl='trans :ru --shell --brief'
+    ble-sabbrev ttl='trans :en --shell --brief'
+
+    # share files
+    ble-sabbrev tb='nc termbin.com 9999'
+
+    # fetch
+    ble-sabbrev f='fastfetch'
+    ble-sabbrev ff='fastfetch -c $XDG_CONFIG_HOME/fastfetch/config-full.jsonc'
+
+    # eza
+    EZA_DEFAULTS='--group --group-directories-first'
+
+    ble-sabbrev lD="eza -lD $EZA_DEFAULTS"
+    ble-sabbrev lS="eza -lS $EZA_DEFAULTS"
+    ble-sabbrev lT="eza -lT $EZA_DEFAULTS"
+    ble-sabbrev laD="eza -laD $EZA_DEFAULTS"
+    ble-sabbrev ldot="eza -ld -a $EZA_DEFAULTS"
+    ble-sabbrev l="eza -l $EZA_DEFAULTS"
+    ble-sabbrev ll="eza -la $EZA_DEFAULTS"
+    ble-sabbrev lr="eza -R $EZA_DEFAULTS"
+    ble-sabbrev ls="eza $EZA_DEFAULTS"
+    ble-sabbrev lsd="eza -d $EZA_DEFAULTS"
+    ble-sabbrev lsdl="eza -dl $EZA_DEFAULTS"
+
+    unset EZA_DEFAULTS
+
+    # yazi
+    ble-sabbrev y='yazi'
+
+    # nvim
+    ble-sabbrev v='nvim'
+    ble-sabbrev vd='nvim -d'
+
+    # helix
+    # ble-sabbrev hx='helix'
+
+    # emacs
+    ble-sabbrev ec='emacsclient -nc'
+    ble-sabbrev ew='emacsclient -nw'
+    ble-sabbrev dm='doom'
+
+    # chezmoi
+    ble-sabbrev cz='chezmoi'
+
+    # ansible
+    ble-sabbrev a='ansible'
+
+    # docker
+    ble-sabbrev d='docker'
+
+    # systemd
+    ble-sabbrev sc='systemctl'
+    ble-sabbrev scu='systemctl --user'
+    # Get the error messages from journalctl
+    ble-sabbrev jctl='journalctl -p 3 -xb'
+
+    # network
+    ble-sabbrev speedtest='speedtest-go'
+    ble-sabbrev myip='dig +short myip.opendns.com @resolver1.opendns.com'
+    ble-sabbrev ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+    # Arch Linux
+
+    # Recent installed packages
+    ble-sabbrev pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+
+    # Additional info: https://wiki.archlinux.org/index.php/Pacman_Tips
+    ble-sabbrev pacupg='doas pacman -Syu'
+    ble-sabbrev pacin='doas pacman -S'
+    ble-sabbrev paclean='doas pacman -Sc'
+    ble-sabbrev pacins='doas pacman -U'
+    ble-sabbrev paclr='doas pacman -Scc'
+    ble-sabbrev pacre='doas pacman -R'
+    ble-sabbrev pacrem='doas pacman -Rns'
+    ble-sabbrev pacrep='pacman -Si'
+    ble-sabbrev pacreps='pacman -Ss'
+    ble-sabbrev pacloc='pacman -Qi'
+    ble-sabbrev paclocs='pacman -Qs'
+    ble-sabbrev pacinsd='doas pacman -S --asdeps'
+    ble-sabbrev pacmir='doas pacman -Syy'
+    ble-sabbrev paclsorphans='doas pacman -Qdt'
+    ble-sabbrev pacrmorphans='doas pacman -Rs $(pacman -Qtdq)'
+    ble-sabbrev pacfileupg='doas pacman -Fy'
+    ble-sabbrev pacfiles='pacman -F'
+    ble-sabbrev pacls='pacman -Ql'
+    ble-sabbrev pacown='pacman -Qo'
+    ble-sabbrev pacupd="doas pacman -Sy"
+    ble-sabbrev pacmanallkeys='doas pacman-key --refresh-keys'
+
+    if command -v yay >/dev/null 2>&1; then
+        ble-sabbrev yaconf='yay -Pg'
+        ble-sabbrev yaclean='yay -Sc'
+        ble-sabbrev yaclr='yay -Scc'
+        ble-sabbrev yaupg='yay -Syu'
+        ble-sabbrev yasu='yay -Syu --noconfirm'
+        ble-sabbrev yain='yay -S'
+        ble-sabbrev yains='yay -U'
+        ble-sabbrev yare='yay -R'
+        ble-sabbrev yarem='yay -Rns'
+        ble-sabbrev yarep='yay -Si'
+        ble-sabbrev yareps='yay -Ss'
+        ble-sabbrev yaloc='yay -Qi'
+        ble-sabbrev yalocs='yay -Qs'
+        ble-sabbrev yalst='yay -Qe'
+        ble-sabbrev yaorph='yay -Qtd'
+        ble-sabbrev yainsd='yay -S --asdeps'
+        ble-sabbrev yamir='yay -Syy'
+        ble-sabbrev yaupd="yay -Sy"
+    fi
+}
+
+ble-import core-complete -C 'my/set-up-completion'
