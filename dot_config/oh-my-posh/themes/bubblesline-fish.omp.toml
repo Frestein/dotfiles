@@ -128,7 +128,7 @@ style = 'diamond'
 [[blocks.segments]]
 leading_diamond = ''
 trailing_diamond = ' '
-template = '{{ .UserName }} '
+template = '{{ .UserName }}'
 foreground = 'green'
 background = '#3C3836'
 type = 'session'
