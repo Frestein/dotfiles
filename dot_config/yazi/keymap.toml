@@ -171,5 +171,8 @@ prepend_keymap = [
   { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },
 
   # Thumbnail
-  { on = "<C-t>", run = 'plugin thumbnail', desc = "Open current directory in Swayimg gallery" },
+  { on = [
+    "g",
+    "V",
+  ], run = 'plugin thumbnail', desc = "Open current directory in Swayimg gallery" },
 ]
