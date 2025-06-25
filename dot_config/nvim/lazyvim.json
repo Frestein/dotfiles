@@ -43,6 +43,7 @@
     "plugins.extras.keys.lsp.workspace",
     "plugins.extras.keys.snacks_picker.smart",
     "plugins.extras.lang.ansible",
+    "plugins.extras.lang.commonlisp",
     "plugins.extras.lang.css",
     "plugins.extras.lang.go",
     "plugins.extras.lang.hyprlang",
