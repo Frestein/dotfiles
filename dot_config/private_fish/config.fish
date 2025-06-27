@@ -1,6 +1,8 @@
 if status is-interactive
     set -gx SHELL /usr/bin/fish
 
+    set -gx LS_COLORS "$(vivid generate gruvbox-dark)"
+
     set -g fish_key_bindings fish_vi_key_bindings
     set fish_cursor_insert line blink
     set fish_cursor_replace_one underscore
@@ -13,6 +15,9 @@ if status is-interactive
         echo (fish_prompt_pwd_dir_length=1 prompt_pwd): $argv
     end
 
+    bind ctrl-s sysz
+    bind -M insert ctrl-s sysz
+
     # ------------------------Plugins Options---------------------- #
     # patrickf1/fzf.fish
     set fzf_directory_opts --prompt='  ' --bind "ctrl-o:execute($EDITOR {} &> /dev/tty)" --border-label='Directory' --border-label-pos=-4 --header='Open <C-o>'
@@ -23,7 +28,4 @@ if status is-interactive
     set fzf_variables_opts --prompt='  ' --border-label='Variables' --border-label-pos=-4
 
     set fzf_preview_dir_cmd eza --all --oneline --color=always --icons=always
-
-    bind ctrl-s sysz
-    bind -M insert ctrl-s sysz
 end

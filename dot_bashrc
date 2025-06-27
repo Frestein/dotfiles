@@ -29,6 +29,8 @@ eval "$(direnv hook bash)"
 
 # ---------------------------Options--------------------------- #
 
+export LS_COLORS="$(vivid generate gruvbox-dark)"
+
 # History
 export HISTSIZE=50000
 export SAVEHIST=10000
