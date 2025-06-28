@@ -13,6 +13,12 @@
   "use strict";
 
   const filterRules = {
+    "www.trueachievements.com": [
+      ".lb_holder",
+      ".ta-ab-overlay",
+      "#mpu-1",
+      ".nn_player",
+    ],
     "www.aznude.com": [".az-ads-banner"],
     "simpcity.su": [
       ".blockitsowereplaceit",
