@@ -72,7 +72,6 @@ require("yatline"):setup({
 			section_c = {
 				{ type = "string", custom = false, name = "cursor_position" },
 				{ type = "coloreds", custom = false, name = "permissions" },
-				{ type = "coloreds", custom = false, name = "count", params = { "true" } },
 			},
 		},
 	},
