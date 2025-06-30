@@ -96,6 +96,7 @@
        ;; make              ; run make tasks from Emacs
        pass                 ; password manager for nerds
        pdf                  ; pdf enhancements
+       ;; reader               ; an all-in-one document reader
        ;; terraform         ; infrastructure as code
        ;; tmux              ; an API for interacting with tmux
        tree-sitter          ; syntax and parsing, sitting in a tree...
