@@ -13,7 +13,7 @@ primary-highlighter = "block"                             # possible values: blo
 disable-notifications = false
 
 [font]
-family = "Maple Mono NF"
+family = "monospace"
 style = "Bold"
 
 [color-palette]

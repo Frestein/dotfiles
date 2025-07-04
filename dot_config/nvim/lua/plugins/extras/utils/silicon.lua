@@ -1,7 +1,7 @@
 return {
 	"michaelrommel/nvim-silicon",
 	opts = {
-		font = "Maple Mono NF=34",
+		font = "monospace=34",
 		to_clipboard = true,
 		theme = "gruvbox-dark",
 		pad_horiz = 40,
