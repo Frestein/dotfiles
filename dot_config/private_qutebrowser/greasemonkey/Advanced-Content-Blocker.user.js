@@ -13,6 +13,21 @@
   "use strict";
 
   const filterRules = {
+    //  TEST: Need test
+    // "rutracker.org": [
+    //   "#bn-top-block",
+    //   "#bn-top-right",
+    //   ".bn-idx",
+    //   "td.vMiddle",
+    //   "td.tCenter",
+    // ],
+    // "rutracker.net": [
+    //   "#bn-top-block",
+    //   "#bn-top-right",
+    //   ".bn-idx",
+    //   "td.vMiddle",
+    //   "td.tCenter",
+    // ],
     "www.trueachievements.com": [
       ".lb_holder",
       ".ta-ab-overlay",
