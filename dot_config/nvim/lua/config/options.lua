@@ -9,6 +9,7 @@ g.loaded_ruby_provider = 0
 
 --- LazyVim  ---
 g.lazyvim_python_lsp = "basedpyright"
+g.lazyvim_toml_lsp = "tombi"
 
 --- Neovide ---
 g.neovide_cursor_animation_length = 0
