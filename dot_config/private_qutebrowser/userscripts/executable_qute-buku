@@ -14,20 +14,19 @@ declare -A flags=(
 )
 
 log() {
-    echo "message-info '$1'" >>"$QUTE_FIFO"
-}
-
-error_log() {
-    echo "message-error '$1'" >>"$QUTE_FIFO"
-    exit
+    local level="$1"
+    local msg="$2"
+    echo "message-$level '$msg'" >>"$QUTE_FIFO"
+    if [[ "$level" == "error" ]]; then
+        exit 1
+    fi
 }
 
 run_buku() {
-    # shellcheck disable=SC2068
-    if $buku_cmd "${flags["$1"]}" ${@:2}; then
-        log "Success"
+    if $buku_cmd "${flags["$1"]}" "${@:2}"; then
+        log info "Success"
     else
-        error_log "Something wrong happened"
+        log error "Something wrong happened"
     fi
     exit
 }
@@ -37,31 +36,29 @@ search() {
     search_flag="$2"
     query="${3//\*/\\*}"
 
-    # shellcheck disable=SC2068
-    result_str=$($buku_cmd --format 1 "$search_flag" ${query[@]} | grep -Eo '^[0-9]+' | head -n "$open_count")
+    result_str=$($buku_cmd --format 1 "$search_flag" "$query" | grep -Eo '^[0-9]+' | head -n "$open_count")
 
     echo "${result_str//\\n/ }"
 }
 
 parse_query() {
-    query=""
+    local query=""
     while [[ "$1" =~ [^-][[:alpha:]]* ]]; do
         query+="$1 "
         shift
     done
-
-    echo "$query"
+    echo "${query%" "}"
 }
 
-# shellcheck disable=SC2076
-if [[ " ${actions[*]} " =~ " $1 " ]]; then
-    action="$1"
-    shift
-else
-    action="add"
-fi
+action="add"
+for a in "${actions[@]}"; do
+    if [[ "$a" == "$1" ]]; then
+        action="$1"
+        shift
+        break
+    fi
+done
 
-# Argument Parsing
 while : ; do
     case "$1" in
     -n*)
@@ -72,7 +69,7 @@ while : ; do
             limit="$2"
             shift 2
         else
-            error_log "The -n flag only accepts a number"
+            log error "The -n flag only accepts a number"
         fi
         ;;
     -s)
@@ -103,7 +100,7 @@ add)
     ;;
 open)
     if [[ -z "$1" ]] && [[ ! $search ]]; then
-        error_log "At least 1 argument required: index | query | tag"
+        log error "At least 1 argument required: index | query | tag"
     fi
 
     if [[ -n "$1" ]]; then
@@ -119,7 +116,7 @@ open)
     fi
 
     if [[ ! $search ]]; then
-        log "OK"
+        log info "OK"
         run_buku open "$index"
     fi
 
@@ -128,26 +125,31 @@ open)
     ;;
 edit)
     if [[ -z "$1" ]]; then
-        error_log "argument required: tag"
+        log error "argument required: tag"
     fi
 
     run_buku edit "$@"
     ;;
 del)
     if [[ -z "$1" ]]; then
-        error_log "argument required: tag | tag range"
+        log error "argument required: tag | tag range"
     fi
 
     run_buku del "$@"
     ;;
 dmenu)
-    if ! command -v fuzzel &> /dev/null; then
-        error_log "fuzzel not found!"
+    if ! command -v fuzzel &>/dev/null; then
+        log error "Fuzzel not found!"
     fi
 
-    $buku_cmd -p -f 3 | sed 's/\t/ /g' \
-    | fuzzel -d -w 80 -p 'Bookmarks ' \
-    | cut -d ' ' -f 1 \
-    | xargs --no-run-if-empty buku -o
+    eval "$buku_cmd" -p -f 3 |
+        fuzzel -d \
+            -p ' ' \
+            -w 117 \
+            -l 25 \
+            --anchor center \
+            --with-nth 2 |
+        cut -d ' ' -f 1 |
+        xargs --no-run-if-empty buku -o
     ;;
 esac
