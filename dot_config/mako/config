@@ -9,9 +9,9 @@ default-timeout=5000
 #   Style   #
 #############
 
-margin=25
+margin=0
 padding=15
-border-size=2
+border-size=3
 border-radius=0
 max-icon-size=48
 

@@ -9,7 +9,9 @@ set_brightness() {
 }
 
 new_brightness=$(fuzzel -dw 12 \
-    --prompt-only " " --placeholder 'Brightness')
+    --prompt-only " " \
+    --anchor top \
+    --placeholder 'Brightness')
 
 if [ "$new_brightness" != "" ]; then
     if [ "$new_brightness" -ge 0 ] && [ "$new_brightness" -le 100 ] 2>/dev/null; then
