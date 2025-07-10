@@ -1,18 +1,22 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+#!/usr/bin/env bash
 
-function fzf_bind_multiply
-    set multiplier $argv[1]
-    set prefix $argv[2]
-    set prefixes (for i in (seq $multiplier); echo $prefix; end)
-    echo (string join + $prefixes)
-end
+function fzf_bind_multiply() {
+    local multiplier="$1"
+    local prefix="$2"
+    local result=""
 
-set preview_down (fzf_bind_multiply 10 'preview-down')
-set preview_up (fzf_bind_multiply 10 'preview-up')
+    local i
+    for ((i=1; i<=multiplier; i++)); do
+        result+="${prefix}+"
+    done
 
-set walker_skip "
+    echo "${result%+}"
+}
+
+preview_down=$(fzf_bind_multiply 10 'preview-down')
+preview_up=$(fzf_bind_multiply 10 'preview-up')
+
+walker_skip="
     GDrive
     Music
     node_modules
@@ -61,9 +65,9 @@ set walker_skip "
     .stfolder
 "
 
-set walker_skip (string split "\n" $walker_skip | string trim | string join ",")
+walker_skip=$(echo "$walker_skip" | tr '\n' ',' | sed 's/,$//')
 
-set -gx FZF_CTRL_T_OPTS "
+export FZF_CTRL_T_OPTS="
     --bind 'alt-p:toggle-preview'
     --list-border='sharp'
     --border-label='Files'
@@ -72,7 +76,7 @@ set -gx FZF_CTRL_T_OPTS "
     --walker-skip $walker_skip
     --preview 'fzf-preview.sh {}'
 "
-# set -gx FZF_CTRL_R_OPTS "
+# export FZF_CTRL_R_OPTS="
 #     --bind 'alt-y:execute-silent(echo -n {2..} | fish_clipboard_copy)+abort'
 #     --list-border='sharp'
 #     --border-label='Command History'
@@ -80,25 +84,25 @@ set -gx FZF_CTRL_T_OPTS "
 #     --color header:italic
 #     --header 'Copy <M-y>'
 # "
-set -gx FZF_ALT_C_OPTS "
+export FZF_ALT_C_OPTS="
     --bind 'alt-p:toggle-preview'
     --bind 'alt-m:change-multi'
     --list-border='sharp'
 	--border-label='Directories'
     --border-label-pos=-4
-    --header 'Preview <M-p>  Multi <M-m>'
-	--walker-skip $walker_skip
+	--header 'Preview <M-p>  Multi <M-m>'
+    --walker-skip $walker_skip
     --preview 'eza -T --color=always --icons {}'
 "
 
 # Respect .gitignore
-set -gx FZF_DEFAULT_COMMAND "fd --type f --strip-cwd-prefix"
-set -gx FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-set -gx DISABLE_FZF_AUTO_COMPLETION false
-set -gx DISABLE_FZF_KEY_BINDINGS false
+export DISABLE_FZF_AUTO_COMPLETION="false"
+export DISABLE_FZF_KEY_BINDINGS="false"
 
-set -gx FZF_DEFAULT_OPTS "
+export FZF_DEFAULT_OPTS="
     --bind 'ctrl-y:accept'
     --bind 'ctrl-f:$preview_down'
     --bind 'ctrl-b:$preview_up'
@@ -131,8 +135,8 @@ set -gx FZF_DEFAULT_OPTS "
     '
 "
 
-set -gx YT_X_FZF_OPTS "$FZF_DEFAULT_OPTS
+export YT_X_FZF_OPTS="$FZF_DEFAULT_OPTS 
     --bind=esc:
 "
 
-set -e preview_down preview_up fzf_bind_multiply walker_skip
+unset preview_down preview_up fzf_bind_multiply walker_skip

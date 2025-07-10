@@ -43,4 +43,4 @@ export DOAS_ASKPASS="$SUDO_ASKPASS"
 export VDPAU_DRIVER=radeonsi
 export LIBVA_DRIVER_NAME=radeonsi
 
-[ -f "$XDG_CONFIG_HOME/bash/fzf_config" ] && . "$XDG_CONFIG_HOME/bash/fzf_config"
+[ -f "$XDG_CONFIG_HOME/bash/fzf_config.sh" ] && . "$XDG_CONFIG_HOME/bash/fzf_config.sh"

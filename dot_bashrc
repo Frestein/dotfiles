@@ -47,8 +47,8 @@ bind '"\C-s": "sysz\n"'
 bind -m vi-command '"\C-s": "i sysz\n"'
 
 # ---------------------------Imports--------------------------- #
-[ -f "$XDG_CONFIG_HOME/bash/functions" ] && . "$XDG_CONFIG_HOME/bash/functions"
-[ -f "$XDG_CONFIG_HOME/bash/aliases" ] && . "$XDG_CONFIG_HOME/bash/aliases"
-[ -f "$XDG_CONFIG_HOME/sh/aliases" ] && . "$XDG_CONFIG_HOME/sh/aliases"
+[ -f "$XDG_CONFIG_HOME/bash/functions.sh" ] && . "$XDG_CONFIG_HOME/bash/functions.sh"
+[ -f "$XDG_CONFIG_HOME/bash/aliases.sh" ] && . "$XDG_CONFIG_HOME/bash/aliases.sh"
+[ -f "$XDG_CONFIG_HOME/sh/aliases.sh" ] && . "$XDG_CONFIG_HOME/sh/aliases.sh"
 
 # [[ ${BLE_VERSION-} ]] && ble-attach
