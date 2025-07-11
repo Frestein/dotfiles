@@ -4,6 +4,7 @@
 
 format=%s\n%b
 default-timeout=5000
+max-history=20
 
 #############
 #   Style   #
