@@ -30,16 +30,20 @@ c.content.javascript.log_message.excludes = {
 # Variables and constants
 ###############################################################################
 
+instance_4get = "4get.ch"
+instance_searxng = "priv.au"
+instance_mozhi = "translate.projectsegfau.lt"
+
 # Tridactyl quickmarks
 qsites = {
     "A": "duck.ai",
     "G": "github.com",
-    "S": "priv.au",
+    "S": instance_searxng,
     "a": "www.perplexity.ai",
     "g": "codeberg.org",
     "m": "app.tuta.com",
-    "s": "4get.tux.pizza",
-    "t": "translate.projectsegfau.lt/?engine=yandex&from=auto&to=ru",
+    "s": instance_4get,
+    "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
     "y": "youtube.com",
 }
 
@@ -60,28 +64,27 @@ c.editor.command = [
 ]
 c.spellcheck.languages = ["en-US", "ru-RU"]
 
-c.url.default_page = "https://4get.turtlecute.org/"
-c.url.start_pages = "https://4get.turtlecute.org/"
+c.url.default_page = f"https://{instance_4get}/"
+c.url.start_pages = f"https://{instance_4get}/"
 c.url.searchengines = {
-    "DEFAULT": "https://4get.turtlecute.org/web?country=ru&nsfw=yes&s={}",
-    "paywall": "https://12ft.io/proxy?q={}",
-    "4get": "https://4get.turtlecute.org/web?country=ru&nsfw=yes&s={}",
-    "alter": "https://openalternative.co/?q={}",
-    "anilist": "https://anilist.co/search/anime?search={}",
-    "aur": "https://aur.archlinux.org/packages?&K={}",
-    "aw": "https://wiki.archlinux.org/index.php?search={}",
-    "ddg": "https://duckduckgo.com/?q={}",
-    "deepl": "https://www.deepl.com/en/translator#en/ru/{}",
-    "mozhi": "translate.projectsegfau.lt/?engine=yandex&from=auto&to=ru&text={}",
-    "gh": "https://github.com/search?q={}",
-    "maps": "https://www.google.com/maps?q={}",
-    "reddit": "https://www.reddit.com/r/{}",
-    "rutracker": "https://rutracker.org/forum/tracker.php?nm={}",
-    "searxng": "https://priv.au/?q={}",
-    "yt": "https://www.youtube.com/results?search_query={}",
-    "kino": "https://www.kinopoisk.ru/index.php?kp_query={}",
-    "zerochan": "https://www.zerochan.net/{}",
-    "protondb": "https://www.protondb.com/search?q={}",
+    "DEFAULT": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
+    "4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
+    "searxng": f"{instance_searxng}/?q={{"{{}}"}}",
+    "paywall": "12ft.io/proxy?q={}",
+    "alter": "alternativeto.net/browse/search/?q={}",
+    "anilist": "anilist.co/search/anime?search={}",
+    "aur": "aur.archlinux.org/packages?&K={}",
+    "aw": "wiki.archlinux.org/index.php?search={}",
+    "ddg": "duckduckgo.com/?q={}",
+    "mozhi": f"{instance_mozhi}/translate.projectsegfau.lt/?engine=yandex&from=auto&to=ru&text={{"{{}}"}}",
+    "gh": "github.com/search?q={}",
+    "maps": "www.google.com/maps?q={}",
+    "reddit": "www.reddit.com/r/{}",
+    "rutracker": "rutracker.org/forum/tracker.php?nm={}",
+    "yt": "www.youtube.com/results?search_query={}",
+    "kino": "www.kinopoisk.ru/index.php?kp_query={}",
+    "zerochan": "www.zerochan.net/{}",
+    "protondb": "www.protondb.com/search?q={}",
 }
 
 c.completion.web_history.exclude = [
