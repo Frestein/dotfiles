@@ -40,24 +40,28 @@ EOF
 }
 
 function Print() {
-    if [ $DEBUG -eq 0 ]; then
+    if [ "$DEBUG" -eq 0 ]; then
         return 0
     fi
-    
-    1>&2 printf "$@" 
+
+    1>&2 printf "$@"
 }
 
 function send_notification() {
-    if [ $SILENT -eq 1 ]; then
+    if [ "$SILENT" -eq 1 ]; then
         return 0
     fi
 
-    local message=$([ $CLIPBOARD -eq 1 ] && \
-        echo "Image copied to the clipboard" || \
-        echo "Image saved in <i>${1}</i> and copied to the clipboard.")
+    local message
+    if [ "$CLIPBOARD" -eq 1 ]; then
+        message="Image copied to the clipboard"
+    else
+        message="Image saved in <i>${1}</i> and copied to the clipboard."
+    fi
+
     notify-send "Screenshot saved" \
-                "${message}" \
-                -t "$NOTIF_TIMEOUT" -i "${1}" -a Hyprshot
+        "$message" \
+        -t "$NOTIF_TIMEOUT" -i "${1}" -a Hyprshot
 }
 
 function trim() {

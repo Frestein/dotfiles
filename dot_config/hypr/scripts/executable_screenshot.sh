@@ -1,60 +1,66 @@
-#!/usr/bin/env dash
+#!/usr/bin/env bash
 
 SCREENSHOTS_DIR="$(xdg-user-dir PICTURES)/Screenshots"
-NOTIFY_CMD="notify-send -h string:x-dunst-stack-tag:screenshot"
+NOTIFY_CMD=(notify-send -h string:x-dunst-stack-tag:screenshot)
 DATE_FORMAT="C%H.%M.%S-D%m.%d.%Y"
-HYPRSHOT_OPTS="-F ppm --raw --freeze"
+HYPRSHOT_OPTS=(-F ppm --raw --freeze)
 DEFAULT_DISPLAY="HDMI-A-2"
 MAX_DELAY=9
 
 init() {
-	[ -d "$SCREENSHOTS_DIR" ] || mkdir -p "$SCREENSHOTS_DIR"
+    [ -d "$SCREENSHOTS_DIR" ] || mkdir -p "$SCREENSHOTS_DIR"
 }
 
 notify() {
-	local timeout="${1:-1000}"
-	local msg="$2"
-	$NOTIFY_CMD -t "$timeout" "$msg"
+    local timeout="${1:-1000}"
+    local msg="$2"
+    "${NOTIFY_CMD[@]}" -t "$timeout" "$msg"
 }
 
 countdown() {
-    for sec in $(seq "$1" -1 1); do
-        notify 1000 "Taking shot in: $sec"
+    local i="$1"
+    while [ "$i" -ge 1 ]; do
+        notify 1000 "Taking shot in: $i"
         sleep 1
+        ((i--))
     done
 }
 
 capture() {
-	local mode="$1"
-	local extra_args="${2:-}"
-	local timestamp
-	timestamp=$(date +"$DATE_FORMAT")
-	local file="$SCREENSHOTS_DIR/${timestamp}.png"
+    local mode="$1"
+    local extra_args=()
+    if [ -n "$2" ]; then
+        read -r -a extra_args <<< "$2"
+    fi
 
-	hyprshot -m "$mode" $HYPRSHOT_OPTS "$extra_args" | satty --filename - --output-filename "$file"
+    local timestamp
+    timestamp=$(date +"$DATE_FORMAT")
+    local file="$SCREENSHOTS_DIR/${timestamp}.png"
+
+    hyprshot -m "$mode" "${HYPRSHOT_OPTS[@]}" "${extra_args[@]}" | satty --filename - --output-filename "$file"
 }
 
 capture_output() {
-	capture output "-m $DEFAULT_DISPLAY"
+    capture output "-m $DEFAULT_DISPLAY"
 }
 
 capture_window() {
-	capture window "${1:-}"
+    capture window "${1:-}"
 }
 
 capture_region() {
-	capture region
+    capture region
 }
 
 capture_with_delay() {
-	local delay="${1:-3}"
-	countdown "$delay"
-	sleep 0.5
-	capture_output
+    local delay="${1:-3}"
+    countdown "$delay"
+    sleep 0.5
+    capture_output
 }
 
 usage() {
-	cat <<EOF
+    cat <<EOF
 Screenshot tool
 
 Usage: ${0##*/} [OPTION]
@@ -70,28 +76,31 @@ EOF
 }
 
 main() {
-	init
+    init
 
-	case "$1" in
-	--now) capture_output ;;
-	--delay)
-		if [ "$2" != "" ] && [ "$2" -ge 1 ] && [ "$2" -le "$MAX_DELAY" ]; then
-			capture_with_delay "$2"
-		fi
-		;;
-	--win) capture_window ;;
-	--active) capture_window "-m active" ;;
-	--area) capture_region ;;
-	--help | -h) usage ;;
-	*)
-		if [ "$1" = "" ]; then
-			usage
-		else
-			notify 5000 "Invalid option: $1"
-			echo "Invalid option: $1"
-		fi
-		;;
-	esac
+    case "$1" in
+    --now) capture_output ;;
+    --delay)
+        if [[ -n "$2" && "$2" =~ ^[0-9]+$ && "$2" -ge 1 && "$2" -le "$MAX_DELAY" ]]; then
+            capture_with_delay "$2"
+        else
+            notify 5000 "Invalid delay value: $2"
+            echo "Invalid delay value: $2"
+        fi
+        ;;
+    --win) capture_window ;;
+    --active) capture_window "-m active" ;;
+    --area) capture_region ;;
+    --help | -h) usage ;;
+    *)
+        if [ -z "$1" ]; then
+            usage
+        else
+            notify 5000 "Invalid option: $1"
+            echo "Invalid option: $1"
+        fi
+        ;;
+    esac
 }
 
 main "$@"
