@@ -29,6 +29,7 @@
     "plugins.extras.coding.colorful-menu",
     "plugins.extras.editor.dial",
     "plugins.extras.editor.highlight-undo",
+    "plugins.extras.editor.import",
     "plugins.extras.editor.mini-align",
     "plugins.extras.editor.mini-move",
     "plugins.extras.editor.mini-operators",
