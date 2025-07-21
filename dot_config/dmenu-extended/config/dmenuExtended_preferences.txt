@@ -31,7 +31,7 @@
         "-w",
         "117",
         "-B",
-        "4"
+        "3"
     ],
     "password_helper": [
         "zenity",
