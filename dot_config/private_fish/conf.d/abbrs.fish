@@ -44,7 +44,7 @@ abbr -a -- v nvim
 abbr -a -- vd nvim -d
 
 # helix
-# abbr -a -- hx helix
+abbr -a -- hx helix
 
 # emacs
 abbr -a -- ec emacsclient -nc
