@@ -7,34 +7,60 @@ return {
 	end,
 
 	{
-
 		"ray-x/go.nvim",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		build = ':lua require("go.install").update_all_sync()',
+		event = { "CmdlineEnter" },
 		ft = { "go", "gomod" },
-		config = function(_, opts)
-			require("go").setup(opts)
-		end,
+		opts = {},
 	},
 
 	{
 
 		"neovim/nvim-lspconfig",
 		optional = true,
-		---@class PluginLspOpts
-		opts = {
-			---@type lspconfig.options
-			servers = {
-				golangci_lint_ls = {},
-			},
-		},
+		setup = function()
+			vim.lsp.enable "golangci_lint_ls"
+		end,
 	},
 
+	-- {
+	-- 	"mfussenegger/nvim-lint",
+	-- 	optional = true,
+	-- 	opts = {
+	-- 		linters_by_ft = {
+	-- 			go = { "golangcilint" },
+	-- 			gomod = { "golangcilint" },
+	-- 		},
+	-- 	},
+	-- },
+
 	{
-		"mfussenegger/nvim-lint",
+		"saghen/blink.cmp",
 		optional = true,
+		dependencies = {
+			{ "samiulsami/cmp-go-deep", dependencies = { "kkharji/sqlite.lua" } },
+			"saghen/blink.compat",
+		},
 		opts = {
-			linters_by_ft = {
-				go = { "golangcilint" },
-				gomod = { "golangcilint" },
+			sources = {
+				default = {
+					"go_deep",
+				},
+				providers = {
+					go_deep = {
+						name = "go_deep",
+						module = "blink.compat.source",
+						min_keyword_length = 3,
+						max_items = 5,
+						---@module "cmp_go_deep"
+						---@type cmp_go_deep.Options
+						opts = {},
+					},
+				},
 			},
 		},
 	},
