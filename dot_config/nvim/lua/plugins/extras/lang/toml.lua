@@ -11,7 +11,7 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		optional = true,
-		setup = function()
+		opts = function()
 			vim.lsp.enable(lsp)
 		end,
 	},

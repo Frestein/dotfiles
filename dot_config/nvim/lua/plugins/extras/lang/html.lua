@@ -1,3 +1,5 @@
+local lsp = vim.g.lazyvim_html_lsp or "html"
+
 return {
 	recommended = function()
 		return LazyVim.extras.wants {
@@ -7,11 +9,7 @@ return {
 
 	"neovim/nvim-lspconfig",
 	optional = true,
-	---@class PluginLspOpts
-	opts = {
-		---@type lspconfig.options
-		servers = {
-			html = {},
-		},
-	},
+	opts = function()
+		vim.lsp.enable(lsp)
+	end,
 }

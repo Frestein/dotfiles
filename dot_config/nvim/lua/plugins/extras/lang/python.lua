@@ -18,22 +18,19 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		optional = true,
-		---@class PluginLspOpts
-		opts = {
-			---@type lspconfig.options
-			servers = {
-				[lsp] = {
-					settings = {
-						[lsp] = {
-							analysis = {
-								diagnosticMode = "workspace",
-								typeCheckingMode = "off",
-							},
+		opts = function()
+			vim.lsp.enable(lsp)
+			vim.lsp.config(lsp, {
+				settings = {
+					[lsp] = {
+						analysis = {
+							diagnosticMode = "workspace",
+							typeCheckingMode = "off",
 						},
 					},
 				},
-			},
-		},
+			})
+		end,
 	},
 
 	{

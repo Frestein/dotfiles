@@ -6,23 +6,22 @@ return {
 		}
 	end,
 
-	{
-		"ray-x/go.nvim",
-		dependencies = {
-			"neovim/nvim-lspconfig",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		build = ':lua require("go.install").update_all_sync()',
-		event = { "CmdlineEnter" },
-		ft = { "go", "gomod" },
-		opts = {},
-	},
+	-- {
+	-- 	"ray-x/go.nvim",
+	-- 	dependencies = {
+	-- 		"neovim/nvim-lspconfig",
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 	},
+	-- 	build = ':lua require("go.install").update_all_sync()',
+	-- 	event = { "CmdlineEnter" },
+	-- 	ft = { "go", "gomod" },
+	-- 	opts = {},
+	-- },
 
 	{
-
 		"neovim/nvim-lspconfig",
 		optional = true,
-		setup = function()
+		opts = function()
 			vim.lsp.enable "golangci_lint_ls"
 		end,
 	},

@@ -8,13 +8,9 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		optional = true,
-		---@class PluginLspOpts
-		opts = {
-			---@type lspconfig.options
-			servers = {
-				systemd_ls = {},
-			},
-		},
+		opts = function()
+			vim.lsp.enable "systemd_ls"
+		end,
 	},
 
 	{

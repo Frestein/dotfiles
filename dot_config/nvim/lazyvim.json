@@ -46,6 +46,7 @@
     "plugins.extras.lang.commonlisp",
     "plugins.extras.lang.css",
     "plugins.extras.lang.go",
+    "plugins.extras.lang.html",
     "plugins.extras.lang.hyprlang",
     "plugins.extras.lang.jsonc",
     "plugins.extras.lang.lua",

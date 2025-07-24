@@ -7,11 +7,7 @@ return {
 
 	"neovim/nvim-lspconfig",
 	optional = true,
-	---@class PluginLspOpts
-	opts = {
-		---@type lspconfig.options
-		servers = {
-			cssls = {},
-		},
-	},
+	opts = function()
+		vim.lsp.enable "cssls"
+	end,
 }
