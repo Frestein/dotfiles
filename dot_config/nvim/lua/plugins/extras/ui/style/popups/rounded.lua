@@ -1,3 +1,5 @@
+-- vim.o.winborder = "rounded"
+
 return {
 	{
 		"neovim/nvim-lspconfig",

@@ -13,13 +13,18 @@ g.lazyvim_toml_lsp = "tombi"
 g.lazyvim_html_lsp = "superhtml"
 
 --- Neovide ---
+g.neovide_refresh_rate = 75
 g.neovide_cursor_animation_length = 0
 g.neovide_cursor_short_animation_length = 0
 g.neovide_cursor_trail_size = 0.0
 g.neovide_cursor_animate_in_insert_mode = false
 g.neovide_cursor_animate_command_line = false
+g.neovide_text_gamma = 5.5
+g.neovide_text_contrast = 0.0
+g.neovide_floating_blur_amount_x = 1.5
+g.neovide_floating_blur_amount_y = 1.5
+g.neovide_floating_shadow = false
 g.experimental_layer_grouping = true
-g.neovide_refresh_rate = 75
 
 --- UI ---
 o.guifont = "monospace:h10"
