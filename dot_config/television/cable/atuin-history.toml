@@ -1,0 +1,7 @@
+[metadata]
+name = "atuin-history"
+description = "A channel to select from your atuin history"
+requirements = ["atuin"]
+
+[source]
+command = "atuin history list --format '{command}'"

@@ -23,8 +23,9 @@ if [[ -r /usr/share/bash-completion/bash_completion ]]; then
 fi
 
 eval "$(zoxide init bash)"
-eval "$(fzf --bash)"
 eval "$(atuin init bash)"
+# eval "$(fzf --bash)"
+eval "$(tv init bash)"
 eval "$(direnv hook bash)"
 
 # ---------------------------Options--------------------------- #
