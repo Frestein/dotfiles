@@ -21,9 +21,8 @@
     (add-hook 'chezmoi-mode-hook #'+chezmoi--evil-h)))
 
 (use-package! chezmoi-cape
-  :ensure nil
   :when (modulep! :completion corfu)
-  :after chezmoi
+  :after-call chezmoi
   :config
   (add-to-list 'completion-at-point-functions #'chezmoi-capf))
 

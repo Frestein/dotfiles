@@ -15,8 +15,7 @@
 (use-package!
   telega-mnz
   :when (modulep! +mnz)
-  :ensure nil
-  :after telega
+  :after-call telega
   :custom
   (global-telega-mnz-mode t)
   (telega-mnz-use-language-detection 32))
@@ -36,9 +35,8 @@
 (use-package!
   telega-stories
   :when (modulep! +stories)
-  :ensure nil
-  :after telega
+  :after-call telega
   :bind (:map telega-root-mode-map ("v e" . telega-view-emacs-stories))
   :config (telega-stories-mode 1))
 
-(use-package! telega-dired-dwim :ensure nil :after telega)
+(use-package! telega-dired-dwim :after-call telega)
