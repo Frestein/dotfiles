@@ -35,7 +35,6 @@
       ".nn_player",
     ],
     "www.aznude.com": [".az-ads-banner"],
-    "www.erome.com": ["#disclaimer"],
     "simpcity.su": [
       ".blockitsowereplaceit",
       ".nocopy.prm-wrapper",
