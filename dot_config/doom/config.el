@@ -49,11 +49,34 @@
 (remove-hook 'doom-first-file-hook #'ultra-scroll-mode)
 
 ;; Mappings
+(map!
+ (:when (modulep! :term vterm )
+   :desc "Toggle vterm popup" "C-/" #'+vterm/toggle))
+
 (map! :leader
       (:prefix ("A" . "app")
                (:when (modulep! :app rss)
-                 :desc "Elfeed"
-                 "e" #'elfeed)))
+                 :desc "Elfeed" "e" #'elfeed)))
+
+;; Dired
+;; Dirvish
+(when (modulep! :emacs dired)
+  (after! dirvish
+    (setq dirvish-quick-access-entries
+          '(("h" "~/"                                 "Home")
+            ("d" "~/Downloads/"                       "Downloads")
+            ("D" "~/Documents/"                       "Documents")
+            ("v" "~/Videos/"                          "Videos")
+            ("m" "~/Music/"                           "Music")
+            ("c" "~/.config/"                         "Config")
+            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
+            ("p" "~/Pictures/"                        "Pictures")
+            ("P" "~/Projects/"                        "Projects")
+            ("M" "/mnt/"                              "Drives")
+            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+
+    (map! :map dirvish-mode-map
+          :n "g" #'dirvish-quick-access)))
 
 ;; Git
 ;; Magit
