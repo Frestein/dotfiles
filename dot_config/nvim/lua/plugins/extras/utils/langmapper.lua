@@ -15,8 +15,18 @@ return {
 			},
 		},
 		config = function(_, opts)
-			require("langmapper").setup(opts)
-			require("langmapper").hack_get_keymap()
+			local lm = require "langmapper"
+
+			lm.setup(opts)
+			lm.hack_get_keymap()
+
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "LazyDone",
+				once = true,
+				callback = function()
+					lm.automapping { global = true, buffer = false }
+				end,
+			})
 		end,
 	},
 
