@@ -1,3 +1,7 @@
 #!/usr/bin/env dash
 
-rofimoji --prompt '😃 ' --action clipboard --clipboarder wl-copy
+PROMPT="$1"
+
+shift
+
+rofimoji --prompt "$PROMPT" --files "$@" --action clipboard --clipboarder wl-copy
