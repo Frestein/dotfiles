@@ -1,14 +1,18 @@
 local map = vim.keymap.set
 local unmap = vim.keymap.del
 
+-- Fix H & L keymaps (langmapper issue)
+map("n", "H", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+map("n", "L", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+
 local function unmap_defaults(config)
 	local extras = {
 		["plugins.extras.keys.lazy-extended"] = {
 			{ mode = "n", key = "<leader>l" },
 		},
 		["plugins.extras.keys.bufferline.focus-left-or-right"] = {
-			{ mode = "n", key = "<S-h>" },
-			{ mode = "n", key = "<S-l>" },
+			{ mode = "n", key = "H" },
+			{ mode = "n", key = "L" },
 		},
 	}
 
