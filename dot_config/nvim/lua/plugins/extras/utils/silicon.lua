@@ -37,7 +37,6 @@ return {
 					require("nvim-silicon").shoot()
 				end,
 				desc = "Screenshot Code",
-				group = "screenshot",
 			},
 			{
 				mode = "v",
