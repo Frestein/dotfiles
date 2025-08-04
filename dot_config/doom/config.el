@@ -25,7 +25,6 @@
 
 ;; Line settings
 (setq display-line-numbers-type 'relative)
-(visual-line-mode t)
 
 ;; Fonts
 (setq doom-font (font-spec :family "Maple Mono NF" :size 14)
@@ -56,31 +55,69 @@
 (map! :leader
       (:prefix ("A" . "app")
                (:when (modulep! :app rss)
-                 :desc "Elfeed" "e" #'elfeed)))
+                 :desc "Elfeed" "e" #'elfeed))
+      (:prefix ("f" . "file")
+               (:when (modulep! :emacs dired)
+                 :desc "Open directory in dirvish" "m" #'dirvish)))
 
 ;; Dired
-;; Dirvish
-(when (modulep! :emacs dired)
-  (after! dirvish
-    (setq dirvish-quick-access-entries
-          '(("h" "~/"                                 "Home")
-            ("d" "~/Downloads/"                       "Downloads")
-            ("D" "~/Documents/"                       "Documents")
-            ("v" "~/Videos/"                          "Videos")
-            ("m" "~/Music/"                           "Music")
-            ("c" "~/.config/"                         "Config")
-            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
-            ("p" "~/Pictures/"                        "Pictures")
-            ("P" "~/Projects/"                        "Projects")
-            ("M" "/mnt/"                              "Drives")
-            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+(setq delete-by-moving-to-trash t)
+(setq dired-mouse-drag-files t)
+(setq mouse-drag-and-drop-region-cross-program t)
 
-    (map! :map dirvish-mode-map
-          :n "g" #'dirvish-quick-access)))
+;; Dirvish
+(after! dirvish
+  (setq dirvish-quick-access-entries
+        '(("h" "~/"                                 "Home")
+          ("d" "~/Downloads/"                       "Downloads")
+          ("D" "~/Documents/"                       "Documents")
+          ("v" "~/Videos/"                          "Videos")
+          ("m" "~/Music/"                           "Music")
+          ("c" "~/.config/"                         "Config")
+          ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
+          ("p" "~/Pictures/"                        "Pictures")
+          ("P" "~/Projects/"                        "Projects")
+          ("M" "/mnt/"                              "Drives")
+          ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+
+  (setq dirvish-attributes
+        '(collapse git-msg file-modes file-time))
+
+  (setq dirvish-side-attributes
+        '(collapse))
+
+  (when (modulep! :emacs dired +icons)
+    (setq dirvish-subtree-always-show-state t)
+    (cl-callf append dirvish-attributes '(nerd-icons))
+    (cl-callf append dirvish-side-attributes '(nerd-icons)))
+
+  (when (modulep! :ui vc-gutter)
+    ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
+    ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
+    ;; visible in the terminal.
+    (when (or (daemonp) (display-graphic-p))
+      (push 'vc-state dirvish-side-attributes)))
+
+  (dirvish-define-preview eza (file)
+    "Use `eza' to generate directory preview."
+    :require ("eza")
+    (when (file-directory-p file)
+      `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+
+  (push 'eza dirvish-preview-dispatchers)
+
+  (setq mouse-1-click-follows-link nil)
+  (map! :map dirvish-mode-map
+        :n "<mouse-1>" #'dirvish-subtree-toggle-or-open
+        :n "<mouse-2>" #'dired-mouse-find-file-other-window
+        :n "<mouse-3>" #'dired-mouse-find-file
+        :n "g" #'dirvish-quick-access)
+
+  (dirvish-peek-mode t))
 
 ;; Git
 ;; Magit
-(when (modulep! :tools magit)
+(after! magit
   (setq magit-repository-directories
         '(("~/Projects/" . 2)
           ("~/.local/share/chezmoi" . 1))))
