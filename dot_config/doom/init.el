@@ -73,7 +73,7 @@
        :checkers
        syntax               ; tasing you for every semicolon you forget
        ;; (spell +flyspell) ; tasing you for misspelling mispelling
-       jinx
+       jinx                 ; enchanted spell checker
        ;; grammar           ; tasing grammar mistake every you make
 
        :tools
@@ -182,7 +182,8 @@
 
        :app
        calendar
-       ement
+       ement                ; Matrix client
+       osm                  ; OpenStreetMap viewer
        (telega +mnz +stories)  ; the best telegram client ever
        ;; emms
        ;; everywhere        ; *leave* Emacs!? You must be joking
