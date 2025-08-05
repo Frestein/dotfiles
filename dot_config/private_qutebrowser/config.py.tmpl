@@ -214,6 +214,7 @@ c.content.blocking.adblock.lists = [
 
 config.source("gruvbox.py")
 c.tabs.background = True
+c.completion.shrink = True
 c.scrolling.smooth = True
 c.downloads.position = "bottom"
 
@@ -310,8 +311,8 @@ config.bind("<Shift-l>", "forward")
 config.bind(",qr", "qr")
 config.bind("tt", "translate")
 config.bind("tt", "translate", mode="caret")
-config.bind('tT', 'spawn --userscript qute-translate')
-config.bind('tT', 'spawn --userscript qute-translate', mode='caret')
+config.bind("tT", "spawn --userscript qute-translate")
+config.bind("tT", "spawn --userscript qute-translate", mode="caret")
 config.bind("cm", "clear-messages")
 config.bind(";c", "hint code userscript qute-code-hint")
 
