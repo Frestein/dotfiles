@@ -48,17 +48,21 @@
 (remove-hook 'doom-first-file-hook #'ultra-scroll-mode)
 
 ;; Mappings
+(map! :map evil-normal-state-map
+      "H" #'previous-buffer
+      "L" #'next-buffer)
+
 (map!
  (:when (modulep! :term vterm )
-   :desc "Toggle vterm popup" "C-/" #'+vterm/toggle))
+   :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle))
 
 (map! :leader
       (:prefix ("A" . "app")
                (:when (modulep! :app rss)
-                 :desc "Elfeed" "e" #'elfeed))
+                 :desc "Elfeed" :n "e" #'elfeed))
       (:prefix ("f" . "file")
                (:when (modulep! :emacs dired)
-                 :desc "Open directory in dirvish" "m" #'dirvish)))
+                 :desc "Open directory in dirvish" :n "m" #'dirvish)))
 
 ;; Dired
 (setq delete-by-moving-to-trash t)

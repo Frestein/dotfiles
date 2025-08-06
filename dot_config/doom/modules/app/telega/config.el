@@ -9,7 +9,7 @@
 
 (map! (:leader
        (:prefix ("A" . "app")
-        :desc "Telega" "t" telega-prefix-map)))
+        :desc "Telega" :n "t" telega-prefix-map)))
 
 (use-package! telega-mnz
   :when (modulep! +mnz)
