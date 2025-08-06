@@ -193,4 +193,5 @@
 
        :config
        ;; literate
+       compile-angel        ; auto byte/native-compile all elisp files
        (default +bindings +smartparens))

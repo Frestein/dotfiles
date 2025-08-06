@@ -1,16 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Set `compile-angel-verbose' to nil to disable compile-angel messages.
-;; (When set to nil, compile-angel won't show which file is being compiled.)
-(setq compile-angel-verbose nil)
-
-;; Uncomment the line below to compile automatically when an Elisp file is saved
-;; (add-hook 'emacs-lisp-mode-hook #'compile-angel-on-save-local-mode)
-
-;; A global mode that compiles .el files before they are loaded
-;; using `load' or `require'.
-(compile-angel-on-load-mode)
-
 ;; User
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
