@@ -1,7 +1,7 @@
 ;;; checkers/jinx/config.el -*- lexical-binding: t; -*-
 
 (use-package! jinx
-  :hook (emacs-startup . global-jinx-mode)
+  :hook ((prog-mode conf-mode org-mode text-mode) . drag-stuff-mode)
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages))
   :config

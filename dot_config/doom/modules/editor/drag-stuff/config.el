@@ -1,7 +1,7 @@
 ;;; editor/drag-stuff/config.el -*- lexical-binding: t; -*-
 
 (use-package! drag-stuff
-  :hook ((prog-mode org-mode text-mode) . drag-stuff-mode)
+  :hook ((prog-mode conf-mode org-mode text-mode) . drag-stuff-mode)
   :config
   (map! :map drag-stuff-mode-map
         :n "M-h" #'drag-stuff-left
