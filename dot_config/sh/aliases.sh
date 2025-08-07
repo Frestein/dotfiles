@@ -2,7 +2,7 @@
 
 # better defaults
 alias bc='bc -q'
-alias btm='btm -b --hide_avg_cpu --theme gruvbox'
+alias btm='btm -b --hide_avg_cpu'
 alias path='echo "$PATH" | tr ":" " "'
 alias path_list='echo "$PATH" | tr ":" "\n" | sort'
 

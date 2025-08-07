@@ -1350,7 +1350,7 @@ blehook/eval-after-load keymap_vi blerc/vim-load-hook
 function my/set-up-completion {
     # better defaults
     ble-sabbrev bc='bc -q'
-    ble-sabbrev btm='btm -b --hide_avg_cpu --theme gruvbox'
+    ble-sabbrev btm='btm -b --hide_avg_cpu'
     ble-sabbrev path='echo "$PATH" | tr ":" " "'
     ble-sabbrev path_list='echo "$PATH" | tr ":" "\n" | sort'
 

@@ -4,7 +4,7 @@ end
 
 # better defaults
 abbr -a -- bc bc -q
-abbr -a -- btm btm -b --hide_avg_cpu --theme gruvbox
+abbr -a -- btm btm -b --hide_avg_cpu
 
 # trans
 abbr -a -- t trans :ru
