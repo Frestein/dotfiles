@@ -125,6 +125,70 @@
 (setq org-directory "~/Documents/org/"
       org-hide-emphasis-markers t)
 
+;; Eww
+;; Dependencies:
+;; - rdrview (https://github.com/eafer/rdrview)
+(setq shr-color-visible-luminance-min 50)
+
+(use-package! eww
+  :hook (eww-after-render . eww-auto-rdrview)
+  :config
+  (setq eww-readable-urls '("lwn\\.net"))
+
+  (define-minor-mode eww-rdrview-mode
+    "Toggle whether to use `rdrview' to make eww buffers more readable."
+    :lighter " rdrview"
+    (if eww-rdrview-mode
+        (progn
+          (setq eww-retrieve-command '("rdrview" "-T" "title,sitename,body" "-H"))
+          (add-hook 'eww-after-render-hook #'eww-rdrview-update-title))
+      (progn
+        (setq eww-retrieve-command nil)
+        (remove-hook 'eww-after-render-hook #'eww-rdrview-update-title))))
+
+  (defun eww-rdrview-update-title ()
+    "Change title key in `eww-data' with first line of buffer.
+It should be the title of the web page as returned by `rdrview'"
+    (save-excursion
+      (goto-char (point-min))
+      (plist-put eww-data :title (string-trim (thing-at-point 'line t))))
+    (eww--after-page-change))
+
+  (defun eww-rdrview-toggle-and-reload ()
+    "Toggle `eww-rdrview-mode' and reload page in current eww buffer."
+    (interactive)
+    (if eww-rdrview-mode (eww-rdrview-mode -1)
+      (eww-rdrview-mode 1))
+    (eww-reload))
+
+  (defvar eww-rdrview-urls
+    (regexp-opt '("www.opennet.ru"))
+    "List of URLs to automatically enable eww-rdrview-mode.")
+
+  (defun eww-auto-rdrview ()
+    "Enable eww-rdrview-mode only once for matching URLs."
+    (let ((url (or (eww-current-url) "")))
+      (when (and (string-match-p eww-rdrview-urls url)
+                 (not eww-rdrview-mode))
+        (eww-rdrview-toggle-and-reload))))
+
+  (defun frestein-eww-readable (rdrview)
+    (interactive "P" eww-mode)
+    (if rdrview
+        (eww-rdrview-toggle-and-reload)
+      (eww-readable)))
+
+  (map! :map eww-mode-map
+        :n "R" #'frestein-eww-readable))
+
+;; Elfeed
+(when (modulep! :app rss)
+  (setq browse-url-browser-function 'eww-browse-url)
+
+  (map! :map elfeed-search-mode-map
+        :localleader
+        :desc "Update feeds" "u" #'elfeed-update))
+
 ;; Zen
 (when (modulep! :ui zen)
   (setq +zen-text-scale 0
