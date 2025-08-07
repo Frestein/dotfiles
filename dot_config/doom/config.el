@@ -58,67 +58,72 @@
 (setq dired-mouse-drag-files t)
 (setq mouse-drag-and-drop-region-cross-program t)
 
+(map! :map dired-mode-map
+      :v "u" #'dired-unmark)
+
 ;; Dirvish
-(after! dirvish
-  (setq dirvish-quick-access-entries
-        '(("h" "~/"                                 "Home")
-          ("d" "~/Downloads/"                       "Downloads")
-          ("D" "~/Documents/"                       "Documents")
-          ("v" "~/Videos/"                          "Videos")
-          ("m" "~/Music/"                           "Music")
-          ("c" "~/.config/"                         "Config")
-          ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
-          ("p" "~/Pictures/"                        "Pictures")
-          ("P" "~/Projects/"                        "Projects")
-          ("M" "/mnt/"                              "Drives")
-          ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+(when (modulep! :emacs dired +dirvish)
+  (use-package! dirvish
+    :config
+    (dirvish-peek-mode t)
 
-  (setq dirvish-attributes
-        '(collapse git-msg file-modes file-time))
+    (setq dirvish-quick-access-entries
+          '(("h" "~/"                                 "Home")
+            ("d" "~/Downloads/"                       "Downloads")
+            ("D" "~/Documents/"                       "Documents")
+            ("v" "~/Videos/"                          "Videos")
+            ("m" "~/Music/"                           "Music")
+            ("c" "~/.config/"                         "Config")
+            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
+            ("p" "~/Pictures/"                        "Pictures")
+            ("P" "~/Projects/"                        "Projects")
+            ("M" "/mnt/"                              "Drives")
+            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
 
-  (setq dirvish-side-attributes
-        '(collapse))
+    (setq dirvish-attributes
+          '(collapse git-msg file-modes file-time))
 
-  (when (modulep! :emacs dired +icons)
-    (setq dirvish-subtree-always-show-state t)
-    (cl-callf append dirvish-attributes '(nerd-icons))
-    (cl-callf append dirvish-side-attributes '(nerd-icons)))
+    (setq dirvish-side-attributes
+          '(collapse))
 
-  (when (modulep! :ui vc-gutter)
-    ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
-    ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
-    ;; visible in the terminal.
-    (when (or (daemonp) (display-graphic-p))
-      (push 'vc-state dirvish-side-attributes)))
+    (when (modulep! :emacs dired +icons)
+      (setq dirvish-subtree-always-show-state t)
+      (cl-callf append dirvish-attributes '(nerd-icons))
+      (cl-callf append dirvish-side-attributes '(nerd-icons)))
 
-  (dirvish-define-preview eza (file)
-    "Use `eza' to generate directory preview."
-    :require ("eza")
-    (when (file-directory-p file)
-      `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+    (when (modulep! :ui vc-gutter)
+      ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
+      ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
+      ;; visible in the terminal.
+      (when (or (daemonp) (display-graphic-p))
+        (push 'vc-state dirvish-side-attributes)))
 
-  (push 'eza dirvish-preview-dispatchers)
+    (dirvish-define-preview eza (file)
+      "Use `eza' to generate directory preview."
+      :require ("eza")
+      (when (file-directory-p file)
+        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
 
-  (setq mouse-1-click-follows-link nil)
-  (map! :map dirvish-mode-map
-        :n "<mouse-1>" #'dirvish-subtree-toggle-or-open
-        :n "<mouse-2>" #'dired-mouse-find-file-other-window
-        :n "<mouse-3>" #'dired-mouse-find-file
-        :n "g" #'dirvish-quick-access)
+    (push 'eza dirvish-preview-dispatchers)
 
-  (dirvish-peek-mode t))
+    (setq mouse-1-click-follows-link nil)
+
+    (map! :map dirvish-mode-map
+          "<mouse-1>" #'dirvish-subtree-toggle-or-open
+          "<mouse-2>" #'dired-mouse-find-file-other-window
+          "<mouse-3>" #'dired-mouse-find-file
+          :n "gd" #'dirvish-quick-access)))
 
 ;; Git
 ;; Magit
-(after! magit
+(when (modulep! :tools magit)
   (setq magit-repository-directories
         '(("~/Projects/" . 2)
           ("~/.local/share/chezmoi" . 1))))
 
 ;; Org
-(after! org
-  (setq org-directory "~/Documents/org/"
-        org-hide-emphasis-markers t))
+(setq org-directory "~/Documents/org/"
+      org-hide-emphasis-markers t)
 
 ;; Zen
 (when (modulep! :ui zen)
