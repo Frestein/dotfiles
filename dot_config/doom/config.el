@@ -167,7 +167,7 @@ otherwise open it with the default browser."
 
   (defun eww-rdrview-update-title ()
     "Change title key in `eww-data' with first line of buffer.
-It should be the title of the web page as returned by `rdrview'"
+It should be the title of the web page as returned by `rdrview'."
     (save-excursion
       (goto-char (point-min))
       (plist-put eww-data :title (string-trim (thing-at-point 'line t))))
