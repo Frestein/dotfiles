@@ -125,6 +125,25 @@
 (setq org-directory "~/Documents/org/"
       org-hide-emphasis-markers t)
 
+
+;; WWW
+(setq browse-url-text-browser "cha"
+      browse-url-generic-program "qutebrowser")
+
+(defvar eww-urls
+  '("www.opennet.ru" "lwn.net")
+  "List of domains to open using eww browser.")
+
+(defun frestein-browse-url-function (url &rest args)
+  "Open URL with eww if the host matches a domain in `eww-urls`,
+otherwise open it with the default browser."
+  (let ((host (url-host (url-generic-parse-url url))))
+    (if (member host eww-urls)
+        (eww-browse-url url)
+      (apply #'browse-url-default-browser url args))))
+
+(setq browse-url-browser-function #'frestein-browse-url-function)
+
 ;; Eww
 ;; Dependencies:
 ;; - rdrview (https://github.com/eafer/rdrview)
@@ -183,8 +202,6 @@ It should be the title of the web page as returned by `rdrview'"
 
 ;; Elfeed
 (when (modulep! :app rss)
-  (setq browse-url-browser-function 'eww-browse-url)
-
   (map! :map elfeed-search-mode-map
         :localleader
         :desc "Update feeds" "u" #'elfeed-update))
