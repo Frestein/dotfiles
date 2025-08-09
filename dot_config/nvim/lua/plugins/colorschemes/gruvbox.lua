@@ -1,3 +1,30 @@
+local function set_color(hl_group, fg_hl_name, bg_hl_name)
+	local hl_fg = vim.api.nvim_get_hl(0, { name = fg_hl_name }).fg
+	local hl_bg = vim.api.nvim_get_hl(0, { name = bg_hl_name }).bg
+
+	vim.api.nvim_set_hl(0, hl_group, { fg = hl_fg, bg = hl_bg })
+end
+
+local mode_to_color = {
+	i = "GruvboxBlue",
+	ic = "GruvboxBlue",
+	n = "GruvboxGray",
+	v = "GruvboxOrange",
+	V = "GruvboxOrange",
+	["\22"] = "GruvboxOrange", -- visual block mode Ctrl-V
+	R = "GruvboxRed",
+	Rv = "GruvboxRed",
+	c = "GruvboxGreen",
+}
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+	callback = function(args)
+		local new_mode = args.match:match(":(.+)$")
+		local fg_hl = mode_to_color[new_mode] or "GruvboxGray"
+		set_color("ColorfulWinSep", fg_hl, "Normal")
+	end,
+})
+
 return {
 	{
 		"ellisonleao/gruvbox.nvim",
@@ -52,6 +79,8 @@ return {
 				--- trouble.nvim ---
 				-- TroubleStatusline1 = { link = "Normal" },
 				-- TroubleSeparatorHighlight = { fg = colors.bright_yellow, bg = colors.dark4 },
+				--- colorful-winsep.nvim ---
+				ColorfulWinSep = { link = "GruvboxGray" },
 				--- blink.cmp ---
 				BlinkCmpKindSupermaven = { link = "GruvboxYellow" },
 				--- snacks.nvim ---
