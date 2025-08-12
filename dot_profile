@@ -37,6 +37,7 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
 export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGetPackages"
 export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
+export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"
 
 export DOTNET_CLI_TELEMETRY_OPTOUT="1"
 export POWERSHELL_TELEMETRY_OPTOUT="1"

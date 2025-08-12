@@ -3,9 +3,14 @@
 (use-package! telega
   :bind-keymap ("C-c t" . telega-prefix-map)
   :hook (telega-load . telega-appindicator-mode)
+  :init
+  (setq telega-directory (expand-file-name "~/.local/share/telega")
+        telega-database-dir (expand-file-name "~/.local/share/telega")
+        telega-cache-dir (expand-file-name "~/.cache/telega/cache")
+        telega-temp-dir (expand-file-name "~/.cache/telega/temp"))
   :config
-  (setq telega-server-libs-prefix "/usr")
-  (setq telega-translate-to-language-by-default "ru"))
+  (setq telega-server-libs-prefix "/usr"
+        telega-translate-to-language-by-default "ru"))
 
 (map! (:leader
        (:prefix ("A" . "app")
