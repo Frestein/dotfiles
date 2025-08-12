@@ -2,10 +2,9 @@
 // -*- mode: jsonc -*-
 {
   "layer": "top",
-  // "position": "bottom",
   "height": 30,
-  // "width": 1280,
   "spacing": 4,
+  "start_hidden": true,
   "reload_style_on_change": true,
   "modules-left": ["image#distro", "hyprland/submap", "tray"],
   "modules-center": ["hyprland/workspaces"],
@@ -23,10 +22,6 @@
     "custom/dismiss_notifications",
     "custom/power"
   ],
-  "image#distro": {
-    "path": "/usr/share/archlinux/icons/archlinux-icon-crystal-256.svg",
-    "size": 14
-  },
   "hyprland/workspaces": {
     "all-outputs": true,
     "format": "{id}"
@@ -40,6 +35,10 @@
     "format": "🧩 {}",
     "max-length": 16,
     "tooltip": false
+  },
+  "image#distro": {
+    "path": "/usr/share/archlinux/icons/archlinux-icon-crystal-256.svg",
+    "size": 14
   },
   "idle_inhibitor": {
     "format": "{icon}",
