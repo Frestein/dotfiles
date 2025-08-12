@@ -1,3 +1,5 @@
+# vim filetype=sh
+
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -23,15 +25,18 @@ export LESS='-i -M -F'
 export MANPAGER='nvim +Man!'
 export BAT_THEME=gruvbox-dark
 
-export EMACSDIR="$XDG_CONFIG_HOME/doom.d"
-
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-
-export PASSWORD_STORE_DIR="$XDG_DATA_HOME/gopass/stores/root"
-
 export SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
-
+export EMACSDIR="$XDG_CONFIG_HOME/doom.d"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME/gopass/stores/root"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export RENPY_PATH_TO_SAVES="$XDG_DATA_HOME/renpy"
+export WINEPREFIX="$XDG_DATA_HOME/wine"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
+export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGetPackages"
+export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 
 export DOTNET_CLI_TELEMETRY_OPTOUT="1"
 export POWERSHELL_TELEMETRY_OPTOUT="1"
