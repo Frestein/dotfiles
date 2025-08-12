@@ -1,0 +1,4 @@
+[".config/qutebrowser/greasemonkey/vot.user.js"]
+type = "file"
+url = "https://raw.githubusercontent.com/Frestein/voice-over-translation/refs/heads/master/dist/vot.user.js"
+refreshPeriod = "168h"
