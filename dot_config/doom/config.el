@@ -202,9 +202,12 @@ It should be the title of the web page as returned by `rdrview'."
 
 ;; Elfeed
 (when (modulep! :app rss)
-  (map! :map elfeed-search-mode-map
-        :localleader
-        :desc "Update feeds" "u" #'elfeed-update))
+  (after! elfeed
+    (setq elfeed-search-filter "@2-week-ago +unread -youtube -reddit -x")
+
+    (map! :map elfeed-search-mode-map
+          :localleader
+          :desc "Update feeds" "u" #'elfeed-update)))
 
 ;; Zen
 (when (modulep! :ui zen)
