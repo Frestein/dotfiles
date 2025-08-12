@@ -29,5 +29,7 @@ end
 
 unmap_defaults(LazyVim.config.json)
 
+map("n", "<leader>fs", "<cmd>w<cr><esc>", { desc = "Save File" })
+
 -- Terminal
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "Escape Terminal Mode" })
