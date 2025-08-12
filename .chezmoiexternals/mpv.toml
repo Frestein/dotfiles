@@ -5,3 +5,19 @@ exact = true
 stripComponents = 2
 refreshPeriod = "168h"
 include = ["*/shaders/Anime4K*", "*/shaders/FSR*"]
+
+[".config/mpv/fonts"]
+type = "archive"
+url = "https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip"
+exact = true
+stripComponents = 1
+refreshPeriod = "168h"
+include = ["fonts/**"]
+
+[".config/mpv/scripts/uosc"]
+type = "archive"
+url = "https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip"
+exact = true
+stripComponents = 2
+refreshPeriod = "168h"
+include = ["scripts/**"]
