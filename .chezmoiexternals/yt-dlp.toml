@@ -5,9 +5,9 @@ exact = true
 stripComponents = 2
 refreshPeriod = "168h"
 include = [
-    "*/yt_dlp_plugins/extractor/**",
-    "*/yt_dlp_plugins/postprocessor/**",
-    "*/yt_dlp_plugins/yandex.protoc",
+  "*/yt_dlp_plugins/extractor/**",
+  "*/yt_dlp_plugins/postprocessor/**",
+  "*/yt_dlp_plugins/yandex.protoc",
 ]
 
 [".config/yt-dlp-plugins/yt-dlp-YTNSigDeno"]
@@ -33,9 +33,9 @@ exact = true
 stripComponents = 2
 refreshPeriod = "168h"
 include = [
-    "*/server/src",
-    "*/server/types",
-    "*/server/package.json",
-    "*/server/tsconfig.json",
-    "*/server/yarn.lock",
+  "*/server/src/**",
+  "*/server/types/**",
+  "*/server/package.json",
+  "*/server/tsconfig.json",
+  "*/server/yarn.lock",
 ]
