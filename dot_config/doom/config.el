@@ -221,37 +221,68 @@ It should be the title of the web page as returned by `rdrview'."
 (defun set-cursor-color-to-foreground-optimized ()
   "Set cursor color to match foreground, but only when position changes."
   (condition-case err
-    (unless (equal (point) last-cursor-position)
-      (setq last-cursor-position (point))
-      (let* ((face (get-text-property (point) 'face))
-             (fg-color (cond
-                        ;; If face is a list, get the first valid one with a foreground
-                        ((listp face)
-                         (cl-loop for f in face
-                                  for color = (and (symbolp f) ; Only process symbol faces
-                                                  (condition-case nil
-                                                    (face-foreground f nil t)
-                                                    (error nil)))
-                                  when (and color (not (eq color 'unspecified)))
-                                  return color))
-                        ;; If face is a single symbol face
-                        ((symbolp face)
-                         (condition-case nil
-                           (face-foreground face nil t)
-                           (error nil)))
-                        ;; No face property or invalid face - use nil
-                        (t nil))))
-        ;; If no specific face color found, use default foreground
-        (unless (and fg-color (not (eq fg-color 'unspecified)))
-          (setq fg-color (face-foreground 'default nil t)))
-        ;; Set cursor color (should always have a color now)
-        (when (and fg-color (not (eq fg-color 'unspecified)))
-          (set-cursor-color fg-color))))
+      (unless (equal (point) last-cursor-position)
+        (setq last-cursor-position (point))
+        (let* ((face (get-text-property (point) 'face))
+               (fg-color (cond
+                          ;; If face is a list, get the first valid one with a foreground
+                          ((listp face)
+                           (cl-loop for f in face
+                                    for color = (and (symbolp f) ; Only process symbol faces
+                                                     (condition-case nil
+                                                         (face-foreground f nil t)
+                                                       (error nil)))
+                                    when (and color (not (eq color 'unspecified)))
+                                    return color))
+                          ;; If face is a single symbol face
+                          ((symbolp face)
+                           (condition-case nil
+                               (face-foreground face nil t)
+                             (error nil)))
+                          ;; No face property or invalid face - use nil
+                          (t nil))))
+          ;; If no specific face color found, use default foreground
+          (unless (and fg-color (not (eq fg-color 'unspecified)))
+            (setq fg-color (face-foreground 'default nil t)))
+          ;; Set cursor color (should always have a color now)
+          (when (and fg-color (not (eq fg-color 'unspecified)))
+            (set-cursor-color fg-color))))
     (error
      ;; Silently handle errors to avoid disrupting post-command-hook
      nil)))
 
 (add-hook 'post-command-hook 'set-cursor-color-to-foreground-optimized)
+
+;; Printer
+(after! lpr
+  (setq lpr-lp-system t
+        lpr-command "lp"
+        lpr-add-switches nil
+        lpr-printer-switch "-d"
+        printer-name "Samsung_SCX-3200_Series"))
+
+(after! ps-print
+  (setq ps-printer-name "Samsung_SCX-3200_Series"))
+
+(when (modulep! :tools pdf)
+  (use-package! pdf-misc
+    :after pdf-view
+    :bind (:map pdf-view-mode-map
+                ([remap pdf-misc-print-document] . 'frestein/pdf-misc-print-pages))
+    :config
+    (setq pdf-misc-print-program-executable (executable-find "lp"))
+
+    (defun frestein/pdf-misc-print-pages(filename pages &optional interactive-p)
+      "Wrapper for `pdf-misc-print-document` to add page selection support"
+      (interactive (list (pdf-view-buffer-file-name)
+                         (read-string "Page range (empty for all pages): "
+                                      (number-to-string (pdf-view-current-page)))
+                         t) pdf-view-mode)
+      (let ((pdf-misc-print-program-args
+             (if (not (string-blank-p pages))
+                 (cons (concat "-P " pages) pdf-misc-print-program-args)
+               pdf-misc-print-program-args)))
+        (pdf-misc-print-document filename)))))
 
 ;; Misc
 (setq-default default-input-method "russian-computer")
