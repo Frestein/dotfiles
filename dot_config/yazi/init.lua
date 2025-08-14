@@ -113,6 +113,7 @@ require("yatline-githead"):setup({
 
 -- Tools
 require("git"):setup()
+require("recycle-bin"):setup()
 require("bookmarks"):setup({
 	persist = "vim",
 	desc_format = "parent",

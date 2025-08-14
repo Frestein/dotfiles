@@ -69,6 +69,12 @@ prepend_keymap = [
   { on = ["\\", "g", "v"], run = "plugin vcs-files", desc = "Show Git file changes" },
   # Trash
   { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },
+  { on = ["g", "t"], run = "plugin recycle-bin open", desc = "Go to Trash" },
+  { on = ["R", "o"], run = "plugin recycle-bin open", desc = "Open Trash" },
+  { on = ["R", "e"], run = "plugin recycle-bin empty", desc = "Empty Trash" },
+  { on = ["R", "d"], run = "plugin recycle-bin delete", desc = "Delete from Trash" },
+  { on = ["R", "D"], run = "plugin recycle-bin emptyDays", desc = "Empty by days deleted" },
+  { on = ["R", "r"], run = "plugin recycle-bin restore", desc = "Restore from Trash" },
   # Thumbnail
   { on = ["g", "V"], run = "plugin thumbnail", desc = "Open current directory in Swayimg gallery" },
 ]
