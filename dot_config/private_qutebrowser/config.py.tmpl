@@ -341,11 +341,11 @@ config.bind(
     f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --username-target secret --username-pattern 'login: (.+)'",
 )
 config.bind(
-    "zul",
+    "zu",
     f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --username-only --username-target secret --username-pattern 'login: (.+)'",
 )
-config.bind("zpl", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --password-only")
-config.bind("zol", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --otp-only")
+config.bind("zp", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --password-only")
+config.bind("zo", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --otp-only")
 
 # Quickmarks
 for k, v in qsites.items():
