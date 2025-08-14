@@ -1,6 +1,7 @@
 local autocmd = vim.api.nvim_create_autocmd
 local bo = vim.bo
 local wo = vim.wo
+local b = vim.b
 local o = vim.o
 
 local function augroup(name)
@@ -40,6 +41,7 @@ autocmd({ "BufNewFile", "BufRead" }, {
 	callback = function()
 		bo.swapfile = false
 		bo.undofile = false
+		b.completion = false
 		o.backup = false
 		o.shada = ""
 	end,
