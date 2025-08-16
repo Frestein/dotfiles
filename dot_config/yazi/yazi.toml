@@ -1,4 +1,4 @@
-"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+#:schema https://yazi-rs.github.io/schemas/yazi.json
 
 [preview]
 max_width = 900
@@ -9,16 +9,16 @@ image_delay = 0
 # ueberzug_offset = [5, 1.2, 0, 0]
 
 [[opener.pdf]]
+for = "linux"
 run = 'zathura "$@"'
 orphan = true
 block = true
-for = "linux"
 
 [[opener.image]]
+for = "linux"
 run = 'swayimg "$@"'
 orphan = true
 block = true
-for = "linux"
 
 [[open.append_rules]]
 mime = "image/{vnd.djvu,x-djvu}"
