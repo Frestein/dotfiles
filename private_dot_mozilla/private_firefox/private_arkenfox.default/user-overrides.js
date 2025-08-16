@@ -4,14 +4,14 @@ user_pref("network.http.http3.enabled", true);
 // Fonts
 // See: https://wiki.archlinux.org/title/Firefox#Font_troubleshooting
 user_pref("font.name-list.emoji", "JoyPixels, Noto Color Emoji");
-user_pref("gfx.font_rendering.fontconfig.max_generic_substitutions", 127)
+user_pref("gfx.font_rendering.fontconfig.max_generic_substitutions", 127);
 user_pref("gfx.font_rendering.opentype_svg.enabled", false);
 
 /****************************************************************************
  * Arkenfox                                                                 *
- * version: 135                                                             *
+ * version: 140                                                             *
  * url: https://github.com/arkenfox/user.js                                 *
-****************************************************************************/
+ ****************************************************************************/
 
 // 0102: resume previous session
 user_pref("browser.startup.page", 3);
@@ -62,17 +62,17 @@ user_pref("privacy.clearHistory.formdata", false);
 // 5003: disable saving passwords
 user_pref("signon.rememberSignons", false);
 
-
 /****************************************************************************
  * Betterfox                                                                *
  * "Ad meliora"                                                             *
  * version: 137                                                             *
  * url: https://github.com/yokoffing/Betterfox                              *
-****************************************************************************/
+ ****************************************************************************/
 
 /****************************************************************************
  * SECTION: FASTFOX                                                         *
-****************************************************************************/
+ ****************************************************************************/
+
 /** GENERAL ***/
 user_pref("content.notify.interval", 100000);
 
@@ -100,7 +100,8 @@ user_pref("layout.css.grid-template-masonry-value.enabled", true);
 
 /****************************************************************************
  * SECTION: SECUREFOX                                                       *
-****************************************************************************/
+ ****************************************************************************/
+
 /** OCSP & CERTS / HPKP ***/
 user_pref("security.OCSP.enabled", 0);
 
@@ -132,7 +133,8 @@ user_pref("browser.search.update", false);
 
 /****************************************************************************
  * SECTION: PESKYFOX                                                        *
-****************************************************************************/
+ ****************************************************************************/
+
 /** MOZILLA UI ***/
 user_pref("browser.privatebrowsing.vpnpromourl", "");
 user_pref("browser.shell.checkDefaultBrowser", false);
@@ -156,9 +158,6 @@ user_pref("dom.text_fragments.create_text_fragment.enabled", true);
 /** NEW TAB PAGE ***/
 user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
 
-/** POCKET ***/
-user_pref("extensions.pocket.enabled", false);
-
 /** PDF ***/
 user_pref("browser.download.open_pdf_attachments_inline", true);
 
@@ -170,7 +169,7 @@ user_pref("layout.word_select.eat_space_to_next_word", false);
 
 /****************************************************************************
  * SECTION: SMOOTHFOX                                                       *
-****************************************************************************/
+ ****************************************************************************/
 
 /** INSTANT SCROLLING (SIMPLE ADJUSTMENT) ***/
 user_pref("general.smoothScroll", true); // DEFAULT
