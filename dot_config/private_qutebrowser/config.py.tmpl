@@ -5,7 +5,7 @@
 # - python-protobuf
 # - python-tldextract (qute-pass)
 
-import os.path
+import os
 
 # pylint: disable=C0111
 c = c  # noqa: F821 pylint: disable=E0602,C0103
@@ -34,20 +34,7 @@ instance_4get = "4get.ch"
 instance_searxng = "priv.au"
 instance_mozhi = "translate.projectsegfau.lt"
 
-# Tridactyl quickmarks
-qsites = {
-    "A": "duck.ai",
-    "G": "github.com",
-    "S": instance_searxng,
-    "a": "www.perplexity.ai",
-    "g": "codeberg.org",
-    "m": "app.tuta.com",
-    "s": instance_4get,
-    "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
-    "y": "youtube.com",
-}
-
-DMENU_CMD = "fuzzel -d"
+DMENU = os.environ.get("DMENU")
 
 ###############################################################################
 # General settings
@@ -92,30 +79,20 @@ c.completion.web_history.exclude = [
 ]
 
 c.fileselect.handler = "external"
-c.fileselect.single_file.command = [
-    "footclient",
-    "-T",
-    "foot-yazi-flt",
+
+yazi_chooser = [
+    "xdg-terminal-exec",
+    "--",
+    "--title",
+    "yazi-flt",
     "yazi",
     "--chooser-file",
     "{}",
 ]
-c.fileselect.multiple_files.command = [
-    "footclient",
-    "-T",
-    "foot-yazi-flt",
-    "yazi",
-    "--chooser-file",
-    "{}",
-]
-c.fileselect.folder.command = [
-    "footclient",
-    "-T",
-    "foot-yazi-flt",
-    "yazi",
-    "--chooser-file",
-    "{}",
-]
+
+c.fileselect.single_file.command = yazi_chooser
+c.fileselect.multiple_files.command = yazi_chooser
+c.fileselect.folder.command = yazi_chooser
 
 # Langmap
 config.unbind(".")
@@ -260,12 +237,20 @@ c.qt.workarounds.disable_accelerated_2d_canvas = "never"
 # Aliases
 ################################################################################
 
+gopass = f"spawn -u qute-pass -d '{DMENU}' -M gopass"
+
 c.aliases = config.get("aliases", {})
 c.aliases.update(
     {
-        "bk": "spawn -u qute-buku",
+        "kinopoisk-to-cx": 'jseval window.location.href = window.location.href.replace("kinopoisk.ru", "kinopoisk.cx");',
+        "git-clone": 'spawn xdg-open "git+{url}"',
         "qr": "spawn -u qr",
+        "buku-dmenu": "spawn -u qute-buku dmenu",
         "translate": "spawn -u qute-translate-popup",
+        "gopass-login": f"{gopass} --username-target secret --username-pattern 'login: (.+)'",
+        "gopass-username": f"{gopass} --username-target secret --username-pattern 'login: (.+)' --username-only ",
+        "gopass-password": f"{gopass} --password-only",
+        "gopass-otp": f"{gopass} --otp-only",
     }
 )
 
@@ -273,94 +258,114 @@ c.aliases.update(
 # Bindings
 ################################################################################
 
+bind = config.bind
+unbind = config.unbind
+
+# Unbind defaults
+unbind("<Alt-m>")
+unbind(";i")
+unbind(";I")
+
 # Configuration management
-config.bind(",cs", "config-source")
-config.bind(",ce", "config-edit")
-config.bind(",ca", "adblock-update")
-config.bind(",b", "config-cycle content.blocking.enabled true false")
-config.bind(",cg", "greasemonkey-reload")
-config.bind(",p", "config-cycle -p content.plugins ;; reload")
+bind("\ce", "config-edit")
+bind("\\rc", "config-source")
+bind("\\ra", "adblock-update")
+bind("\\rg", "greasemonkey-reload")
+	
+# Toggle
+bind("tbh", "config-cycle -p -t -u *://{url:host}/* content.blocking.enabled true false ;; reload")
+bind("tBh", "config-cycle -p -u *://{url:host}/* content.blocking.enabled true false ;; reload")
+bind("tbH", "config-cycle -p -t -u *://*.{url:host}/* content.blocking.enabled true false ;; reload")
+bind("tBH", "config-cycle -p  -u *://*.{url:host}/* content.blocking.enabled true false ;; reload")
+bind("tBu", "config-cycle -p -t -u {url} content.blocking.enabled true false ;; reload")
+bind("tBU", "config-cycle -p -u {url} content.blocking.enabled true false ;; reload")
+bind("tT", "config-cycle tabs.show multiple switching")
+bind("tB", "config-cycle statusbar.show always in-mode")
 
 # External editor
-config.bind("<Alt-e>", "edit-text")
-config.bind("<Alt-v>", "edit-text")
-config.bind("<Alt-c>", "cmd-edit")
-config.bind("<Alt-u>", "edit-url")
-config.bind("<Alt-e>", "edit-text", mode="insert")
-config.bind("<Alt-v>", "edit-text", mode="insert")
+bind("<Alt-e>", "edit-text")
+bind("<Alt-v>", "edit-text")
+bind("<Alt-c>", "cmd-edit")
+bind("<Alt-u>", "edit-url")
+bind("<Alt-e>", "edit-text", mode="insert")
+bind("<Alt-v>", "edit-text", mode="insert")
 
 # Tabs
-config.bind("gT", "cmd-set-text -s :tab-take")
-config.bind("gD", "cmd-set-text -s :tab-give")
+bind("gT", "cmd-set-text -s :tab-take")
+bind("gG", "cmd-set-text -s :tab-give")
+bind("gl", "tab-focus last")
+bind("gp", "tab-pin")
+bind("<Ctrl-m>", "tab-mute")
 
 # Media
-config.bind(",m", "spawn umpv {url}")
-config.bind(";m", "hint --rapid links spawn umpv {hint-url}")
+bind("\m", "spawn umpv {url}")
+bind(";m", "hint --rapid links spawn umpv {hint-url}")
 
 # Navigation
-config.bind("<Shift-Left>", "back")
-config.bind("<Shift-Down>", "tab-prev")
-config.bind("<Shift-Up>", "tab-next")
-config.bind("<Shift-Right>", "forward")
-config.bind("<Shift-h>", "back")
-config.bind("<Shift-j>", "tab-prev")
-config.bind("<Shift-k>", "tab-next")
-config.bind("<Shift-l>", "forward")
+bind("<Shift-Left>", "back")
+bind("<Shift-Down>", "tab-prev")
+bind("<Shift-Up>", "tab-next")
+bind("<Shift-Right>", "forward")
+bind("<Shift-h>", "back")
+bind("<Shift-j>", "tab-prev")
+bind("<Shift-k>", "tab-next")
+bind("<Shift-l>", "forward")
 
-# Quick actions
-config.bind(",qr", "qr")
-config.bind("tt", "translate")
-config.bind("tt", "translate", mode="caret")
-config.bind("tT", "spawn --userscript qute-translate")
-config.bind("tT", "spawn --userscript qute-translate", mode="caret")
-config.bind("cm", "clear-messages")
-config.bind(";c", "hint code userscript qute-code-hint")
+# Command mode
+bind("<Ctrl-p>", "completion-item-focus prev", mode="command")
+bind("<Ctrl-n>", "completion-item-focus next", mode="command")
+bind("<Ctrl-Up>", "command-history-prev", mode="command")
+bind("<Ctrl-Down>", "command-history-next", mode="command")
 
 # Bookmarks
-config.bind("b", "spawn -u qute-buku dmenu")
+bind("b", "buku-dmenu")
 
 # Downloads
-config.bind(",d", "spawn -u qute-downloads")
+bind("gD", "spawn -u qute-downloads")
 
 # Images
-config.unbind(";i")
-config.unbind(";I")
-config.bind(";ii", "hint images")
-config.bind(";iy", "hint images yank")
-config.bind(";it", "hint images tab")
-config.bind(";id", "hint images download")
-config.bind(";iT", "hint --rapid images tab")
-config.bind(";iD", "hint --rapid images download")
+bind(";ii", "hint images")
+bind(";iy", "hint images yank")
+bind(";it", "hint images tab")
+bind(";id", "hint images download")
+bind(";iT", "hint --rapid images tab")
+bind(";iD", "hint --rapid images download")
 
 # RSS
-config.bind("gF", "spawn -u openfeeds")
+bind("gF", "spawn -u openfeeds")
 
-# Password management (gopass)
-config.bind(
-    "zl",
-    f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --username-target secret --username-pattern 'login: (.+)'",
-)
-config.bind(
-    "zu",
-    f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --username-only --username-target secret --username-pattern 'login: (.+)'",
-)
-config.bind("zp", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --password-only")
-config.bind("zo", f"spawn -u qute-pass -d '{DMENU_CMD}' -M gopass --otp-only")
+# Password management
+bind("\pl", "gopass-login")
+bind("\pu", "gopass-username")
+bind("\pp", "gopass-password")
+bind("\po", "gopass-otp")
 
-# Quickmarks
+# Tridactyl quickmarks
+qsites = {
+    "A": "duck.ai",
+    "G": "github.com",
+    "S": instance_searxng,
+    "a": "www.perplexity.ai",
+    "g": "codeberg.org",
+    "m": "app.tuta.com",
+    "s": instance_4get,
+    "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
+    "y": "youtube.com",
+}
+
 for k, v in qsites.items():
-    config.bind("gc" + k, "open " + v)
-    config.bind("gn" + k, "open -t " + v)
-
+    bind("gc" + k, "open " + v)
+    bind("gn" + k, "open -t " + v)
 
 # Kinopoisk
-config.bind(
-    "cx",
-    'jseval window.location.href = window.location.href.replace("kinopoisk.ru", "kinopoisk.cx");',
-)
+bind("\k", "kinopoisk-to-cx")
 
 # Git
-config.bind("cg", 'spawn xdg-open "git+{url}"')
+bind("\gc", "git-clone")
 
-config.bind("ct", "config-cycle tabs.show multiple switching")
-config.bind("cb", "config-cycle statusbar.show always in-mode")
+# Misc
+bind("\qr", "qr")
+bind("tt", "translate")
+bind("tt", "translate", mode="caret")
+bind("cm", "clear-messages")
+bind(";c", "hint code userscript qute-code-hint")
