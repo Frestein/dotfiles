@@ -38,7 +38,7 @@ local o = {
 	ellipsis = false,
 	--Change maximum number to show items on integrated submenus in uosc or mpv-menu-plugin
 	list_show_amount = 20,
-};
+}
 (require("mp.options")).read_options(o, _, function() end)
 local utils = require("mp.utils")
 
