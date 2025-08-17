@@ -28,6 +28,7 @@
     //   "td.vMiddle",
     //   "td.tCenter",
     // ],
+    "kwork.ru": [".js-notification-block"],
     "www.trueachievements.com": [
       ".lb_holder",
       ".ta-ab-overlay",
