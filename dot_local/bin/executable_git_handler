@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 clone_dir="$HOME/Projects/git"
 repo_url="${1#git+https://}"

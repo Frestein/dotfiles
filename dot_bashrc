@@ -4,8 +4,9 @@
 [[ $- != *i* ]] && return
 
 # fish as interactive shell
-if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
+if [[ $(ps --no-header --pid="$PPID" --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
     shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+    # shellcheck disable=SC2086
     exec fish $LOGIN_OPTION
 fi
 
@@ -18,9 +19,8 @@ eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubble
 
 # ------------------Completions & Initializations-------------- #
 
-if [[ -r /usr/share/bash-completion/bash_completion ]]; then
+[ -r /usr/share/bash-completion/bash_completion ] &&
     . /usr/share/bash-completion/bash_completion
-fi
 
 eval "$(zoxide init bash)"
 eval "$(atuin init bash)"
@@ -30,7 +30,9 @@ eval "$(direnv hook bash)"
 
 # ---------------------------Options--------------------------- #
 
-export LS_COLORS="$(vivid generate gruvbox-dark)"
+# shellcheck disable=SC2155
+[ "$(command -v vivid)" != "" ] &&
+    export LS_COLORS="$(vivid generate gruvbox-dark)"
 
 # History
 export HISTSIZE=50000
