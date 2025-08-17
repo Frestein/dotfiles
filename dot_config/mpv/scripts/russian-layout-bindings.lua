@@ -132,8 +132,6 @@ mp.add_timeout(1, function()
 				end, {
 					repeatable = guess_repeatable_command(binding.cmd),
 				})
-
-				mp.msg.info("Added binding for Russian layout: " .. translated_key)
 			end
 		end
 	end
