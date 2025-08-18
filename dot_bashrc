@@ -10,9 +10,6 @@ if [[ $(ps --no-header --pid="$PPID" --format=comm) != "fish" && -z ${BASH_EXECU
     exec fish $LOGIN_OPTION
 fi
 
-# ble.sh
-# [[ $- == *i* ]] && source /usr/share/blesh/ble.sh --noattach
-
 # ----------------------------Prompt--------------------------- #
 
 eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline.omp.toml")"
@@ -53,5 +50,3 @@ bind -m vi-command '"\C-s": "i sysz\n"'
 [ -f "$XDG_CONFIG_HOME/bash/functions.sh" ] && . "$XDG_CONFIG_HOME/bash/functions.sh"
 [ -f "$XDG_CONFIG_HOME/bash/aliases.sh" ] && . "$XDG_CONFIG_HOME/bash/aliases.sh"
 [ -f "$XDG_CONFIG_HOME/sh/aliases.sh" ] && . "$XDG_CONFIG_HOME/sh/aliases.sh"
-
-# [[ ${BLE_VERSION-} ]] && ble-attach
