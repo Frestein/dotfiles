@@ -7,15 +7,23 @@ export PATH="$HOME/.local/bin/:$PATH"
 
 echo "Installing Arch packages"
 
-sudo pacman -Syu --needed {{ range .packages.linux.arch.core }} {{.}}{{end}} {{ range .packages.linux.arch.extra }} {{.}}{{end}} {{ range .packages.linux.arch.multilib }} {{.}}{{end}}
+sudo pacman -Syu --needed \
+    {{ range .packages.linux.arch.cachyosV3 }}{{ . }} {{ end }} \
+    {{ range .packages.linux.arch.cachyosCoreV3 }}{{ . }} {{ end }} \
+    {{ range .packages.linux.arch.cachyosExtraV3 }}{{ . }} {{ end }} \
+    {{ range .packages.linux.arch.cachyos }}{{ . }} {{ end }} \
+    {{ range .packages.linux.arch.core }}{{ . }} {{ end }} \
+    {{ range .packages.linux.arch.extra }}{{ . }} {{ end }} \
+    {{ range .packages.linux.arch.multilib }}{{ . }} {{ end }}
 
 if type -P yay >/dev/null 2>&1; then
-  yay -Syu --needed {{ range .packages.linux.arch.aur }} {{.}}{{ end }}
+    yay -Syu --needed {{ range .packages.linux.arch.aur }} {{.}}{{ end }}
 fi
 
 {{ else }}
 
 echo "This script is only for Arch based systems. Exiting..."
+
 exit 1
 
 {{ end }}
