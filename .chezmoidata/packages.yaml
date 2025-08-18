@@ -184,7 +184,6 @@ packages:
         - firefox-i18n-ru
         - firefox-spell-ru
         - fish
-        - fisher
         - foomatic-db
         - foomatic-db-engine
         - foot
