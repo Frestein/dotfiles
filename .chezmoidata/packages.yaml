@@ -1063,6 +1063,7 @@ packages:
         - linux-firmware-whence
         - mkinitcpio
         - mkinitcpio-firmware
+        - nordic-theme-git
         - pacman
         - proton-ge-custom-bin
         - python-imageio-ffmpeg
@@ -1723,7 +1724,6 @@ packages:
         - mkinitcpio-colors-git
         - neovim-symlinks
         - nordic-darker-theme
-        - nordic-theme
         - oh-my-posh-bin
         - otf-raleway
         - outfieldr
