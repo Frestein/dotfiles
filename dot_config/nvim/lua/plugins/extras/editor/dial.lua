@@ -13,6 +13,10 @@ return {
 			augend.constant.new { elements = { "True", "False" }, word = true, cyclic = true },
 			augend.constant.new { elements = { "Enable", "Disable" }, word = true, cyclic = true },
 			augend.constant.new { elements = { "enable", "disable" }, word = true, cyclic = true },
+			augend.case.new {
+				types = { "camelCase", "PascalCase", "kebab-case", "snake_case", "SCREAMING_SNAKE_CASE" },
+				cyclic = true,
+			},
 		})
 		opts.groups.lua = vim.list_extend(opts.groups.lua, {
 			augend.constant.new { elements = { "==", "~=" }, word = false, cyclic = true },
