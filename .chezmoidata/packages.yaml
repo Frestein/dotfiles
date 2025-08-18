@@ -1,243 +1,399 @@
 packages:
   linux:
     arch:
-      aur:
-        - arch-update
-        - archlinux-artwork
-        - ayugram-desktop-bin
-        - basedpyright-bin
-        - buku
-        - chawan-git
-        - czkawka-gui-bin
-        - doas-sudo-shim
-        - doasedit-alternative
-        - dotool
-        - firefox-tridactyl-native-bin
-        - fish-lsp
-        - gopass-symlinks
-        - gpu-screen-recorder
-        - gpu-screen-recorder-notification
-        - gpu-screen-recorder-ui
-        - grub-hook
-        - grub2-theme-archlinux
-        - grub2-theme-archxion
-        - gruvbox-gtk-theme-git
-        - gruvbox-icon-theme-git
-        - gruvbox-material-gtk-theme-git
-        - gruvbox-material-icon-theme-git
-        - hyprls-git
-        - hyprscratch
-        - hyprsysteminfo
-        - jamesdsp
-        - kanata-bin
-        - maplemono-nf
-        - maplemono-otf
-        - maplemono-ttf-autohint
-        - maplemono-woff2
-        - mkinitcpio-colors-git
-        - mkinitcpio-firmware
-        - neovim-symlinks
-        - networkmanager-dmenu-git
-        - nordic-darker-theme
-        - nordic-theme
-        - oh-my-posh-bin
-        - onlyoffice-bin
-        - phinger-cursors
-        - playerctld-systemd-unit
-        - plymouth-theme-arch-glow
-        - protonup-qt-bin
-        - python-imageio-ffmpeg
-        - python-screeninfo
-        - quickemu-git
-        - rustdesk-bin
-        - setcolors-git
-        - speedtest-go
-        - swhkd-bin
-        - telegram-tdlib
-        - tessen
-        - ttf-ms-win11-auto
-        - update-grub
-        - ventoy-bin
-        - vidoas
-        - waypaper
-        - wluma
-        - wttrbar
-        - xdg-desktop-portal-termfilechooser-hunkyburrito-git
-        - xdg-ninja
-        - xdg-terminal-exec
-        - yay-bin
-        - youtube-music-bin
-        - yt-x
-      core:
-        - autoconf
-        - automake
+      cachyosV3:
+        - bash
+        - binutils
+        - clang
+        - gamescope
+        - gcc
+        - gcc-libs
+        - glibc
+        - go
+        - jdk-openjdk
+        - jdk17-openjdk
+        - lib32-gcc-libs
+        - lib32-glibc
+        - lib32-mesa
+        - lib32-opencl-mesa
+        - lib32-vulkan-radeon
+        - lib32-zlib-ng
+        - lib32-zlib-ng-compat
+        - lib32-zstd
+        - libgccjit
+        - libtool
+        - libxnvctrl
+        - linux-api-headers
+        - linux-cachyos
+        - linux-cachyos-headers
+        - llvm
+        - llvm-libs
+        - lz4
+        - mesa
+        - opencl-mesa
+        - proton-cachyos
+        - python
+        - ripgrep
+        - sqlite
+        - svt-av1
+        - vulkan-mesa-layers
+        - vulkan-radeon
+        - wine
+        - xz
+        - zlib-ng
+        - zlib-ng-compat
+        - zstd
+      cachyosCoreV3:
+        - acl
+        - argon2
+        - attr
+        - audit
         - b43-fwcutter
-        - base
-        - base-devel
         - bison
-        - btrfs-progs
+        - brotli
         - bzip2
+        - ca-certificates-mozilla
+        - cronie
         - cryptsetup
+        - curl
         - dash
+        - db5.3
+        - dbus
+        - dbus-broker
+        - dbus-broker-units
+        - debugedit
+        - device-mapper
         - dialog
         - diffutils
+        - ding-libs
         - dmraid
         - dosfstools
         - e2fsprogs
         - efibootmgr
+        - efivar
+        - expat
         - fakeroot
+        - file
+        - findutils
         - flex
-        - gcc
+        - gawk
+        - gc
+        - gdbm
+        - gettext
+        - glib2
+        - glib2-devel
+        - gmp
+        - gnupg
+        - gpgme
         - gpm
+        - grep
+        - groff
         - grub
-        - gzip
+        - gssproxy
+        - guile
         - hdparm
-        - inetutils
+        - icu
+        - iproute2
         - iptables-nft
+        - iputils
         - iw
+        - jansson
         - jfsutils
+        - json-c
+        - kbd
+        - keyutils
+        - krb5
+        - leancrypto
         - less
-        - lib32-gcc-libs
-        - linux
-        - linux-firmware
-        - linux-firmware-marvell
-        - linux-headers
+        - libaio
+        - libarchive
+        - libassuan
+        - libbpf
+        - libcap
+        - libcap-ng
+        - libcurl-compat
+        - libcurl-gnutls
+        - libedit
+        - libevent
+        - libffi
+        - libgcrypt
+        - libgpg-error
+        - libidn2
+        - libinih
+        - libisl
+        - libksba
+        - libmnl
+        - libmpc
+        - libnetfilter_conntrack
+        - libnfnetlink
+        - libnftnl
+        - libnghttp2
+        - libnghttp3
+        - libnl
+        - libnsl
+        - libp11-kit
+        - libpcap
+        - libpipeline
+        - libpsl
+        - libsasl
+        - libseccomp
+        - libsecret
+        - libssh2
+        - libtasn1
+        - libtirpc
+        - libunistring
+        - libusb
+        - libverto
+        - libxcrypt
+        - libxcrypt-compat
+        - libxml2
         - lvm2
-        - lz4
+        - lzo
+        - m4
         - make
         - man-db
-        - man-pages
-        - mdadm
-        - mkinitcpio
+        - minizip
+        - mkinitcpio-busybox
         - mkinitcpio-nfs-utils
+        - mpdecimal
+        - mpfr
+        - ncurses
         - net-tools
+        - nettle
         - nfs-utils
+        - nfsidmap
         - nilfs-utils
+        - npth
+        - nspr
+        - nss
         - openssh
+        - openssl
+        - openssl-1.1
+        - p11-kit
+        - pam
         - patch
+        - pciutils
+        - pcre
+        - pcre2
+        - perl
+        - pinentry
         - pkgconf
-        - ppp
+        - popt
+        - procps-ng
+        - psmisc
+        - readline
+        - rpcbind
+        - run-parts
         - sdparm
-        - systemd-resolvconf
+        - sed
+        - shadow
+        - sysfsutils
+        - tar
+        - texinfo
+        - thin-provisioning-tools
         - tpm2-tss
+        - traceroute
+        - tzdata
         - usbutils
-        - wireless-regdb
+        - util-linux
+        - util-linux-libs
+        - which
         - wpa_supplicant
-        - xfsprogs
-        - xz
-        - zstd
-      extra:
+      cachyosExtraV3:
         - 7zip
+        - a52dec
+        - aalib
+        - abseil-cpp
         - acpi
-        - ansible
-        - ansible-language-server
-        - ansible-lint
-        - archlinux-wallpaper
-        - archlinux-xdg-menu
+        - ada
+        - alsa-card-profiles
+        - alsa-lib
+        - alsa-plugins
+        - ananicy-cpp
+        - aom
+        - appmenu-gtk-module
+        - appstream
+        - appstream-glib
+        - aquamarine
         - aria2
+        - at-spi2-core
+        - atkmm
         - atuin
-        - awesome-terminal-fonts
-        - bash-language-server
+        - avahi
+        - ayatana-ido
+        - babl
         - bat
-        - bat-extras
-        - bc
+        - bcg729
         - bind
+        - blas
+        - bluez-libs
+        - boost-libs
         - bottom
         - brltty
         - broadcom-wl
+        - bubblewrap
+        - c-ares
         - cabextract
+        - cairo
+        - cairomm
+        - cairomm-1.16
+        - capstone
+        - cblas
+        - cdparanoia
+        - cdrtools
+        - cfitsio
         - chafa
-        - checkbashisms
-        - chezmoi
+        - chromaprint
+        - cifs-utils
         - cliphist
+        - clucene
         - cmake
+        - cmark
         - cmatrix
+        - compiler-rt
+        - conky
         - cpio
+        - cppdap
         - cups
         - cups-filters
         - cups-pdf
+        - dav1d
+        - dbus-glib
+        - dconf
         - ddcutil
         - delve
         - deno
+        - desktop-file-utils
+        - dictd
         - direnv
-        - discord
-        - dkms
+        - djvulibre
         - dmidecode
         - dnscrypt-proxy
-        - dotnet-runtime-8.0
-        - edk2-shell
-        - emacs-wayland
+        - dotconf
+        - double-conversion
+        - dtc
+        - duktape
+        - enchant
         - entr
-        - etckeeper
         - ethtool
         - exfatprogs
+        - expac
         - expect
         - eza
         - f2fs-tools
+        - faac
+        - faad2
         - fastfetch
         - fatresize
         - fd
         - ffmpeg
         - ffmpegthumbnailer
-        - firefox
-        - firefox-i18n-en-us
-        - firefox-i18n-ru
-        - firefox-spell-ru
+        - fftw
         - fish
-        - foomatic-db
+        - flac
+        - fluidsynth
+        - fmt
+        - fontconfig
         - foomatic-db-engine
         - foot
         - foot-terminfo
+        - freeglut
+        - freetype2
+        - fribidi
+        - fuse-common
+        - fuse3
         - fuzzel
         - fzf
-        - gamemode
-        - gamescope
+        - gcr
+        - gcr-4
+        - gdk-pixbuf2
         - gegl
+        - geoclue
+        - gflags
+        - gfxstream
         - ghostscript
+        - giflib
         - gimp
+        - girara
         - git
         - git-delta
         - github-cli
+        - gitu
+        - glew
+        - glew1.10
+        - glfw
+        - glib-networking
+        - glibmm
+        - glibmm-2.68
+        - glm
+        - glslang
+        - glu
+        - gnome-desktop
+        - gnome-desktop-common
         - gnome-keyring
         - gnu-netcat
-        - go
+        - gnustep-base
         - go-tools
+        - gobject-introspection-runtime
         - gofumpt
         - golangci-lint
-        - gopass
+        - google-glog
         - gopass-hibp
         - gopls
+        - goverlay
         - gpart
-        - gparted
+        - gperftools
+        - gpgmepp
+        - gping
+        - gpsd
         - gptfdisk
+        - graphene
+        - greetd
+        - greetd-agreety
         - greetd-tuigreet
         - grim
-        - gsfonts
+        - gsm
+        - gsocket
+        - gssdp
         - gst-libav
         - gst-plugin-pipewire
         - gst-plugins-bad
+        - gst-plugins-bad-libs
+        - gst-plugins-base
+        - gst-plugins-base-libs
         - gst-plugins-good
         - gst-plugins-ugly
         - gstreamer
+        - gtest
         - gtk-engine-murrine
+        - gtk-layer-shell
+        - gtk-update-icon-cache
+        - gtk3
+        - gtk4
+        - gtkmm-4.0
+        - gtkmm3
+        - gts
         - gum
+        - gumbo-parser
+        - gupnp
+        - gupnp-igd
         - gutenprint
-        - gvfs
-        - gvfs-afc
-        - gvfs-google
-        - gvfs-gphoto2
-        - gvfs-mtp
-        - gvfs-smb
         - handlr-regex
+        - helix
+        - hidapi
         - highlight
+        - highway
         - hsa-rocr
         - hsetroot
+        - htmlq
         - hunspell
-        - hunspell-en_us
-        - hunspell-ru
         - hwinfo
+        - hwloc
+        - hyphen
+        - hyprcursor
+        - hyprgraphics
         - hypridle
-        - hyprland
+        - hyprland-qt-support
         - hyprland-qtutils
         - hyprlang
         - hyprlock
@@ -246,230 +402,601 @@ packages:
         - hyprpolkitagent
         - hyprsunset
         - hyprutils
+        - hyprwayland-scanner
+        - i2c-tools
         - icoutils
+        - ijs
+        - imagemagick
+        - imath
+        - imlib2
+        - iniparser
         - inotify-tools
-        - intel-ucode
         - iotop-c
-        - ipcalc
         - iperf3
         - ipset
-        - iwd
         - jasper
-        - jellyfin-mpv-shim
+        - jbig2dec
+        - jbigkit
+        - jellyfin-ffmpeg
         - jellyfin-server
-        - jellyfin-web
+        - jemalloc
         - jq
+        - json-glib
+        - jsoncpp
         - just
+        - kcoreaddons
         - kvantum
         - kvantum-qt5
         - kwindowsystem
+        - l-smash
+        - lame
+        - lapack
         - lazygit
-        - libappindicator-gtk3
+        - lcms2
+        - ldb
+        - lensfun
+        - leptonica
+        - libabw
+        - libadwaita
+        - libaemu
+        - libao
+        - libass
+        - libasyncns
+        - libatasmart
+        - libatomic_ops
+        - libavc1394
         - libavif
+        - libavtp
         - libayatana-appindicator
+        - libayatana-indicator
+        - libb2
+        - libblockdev
+        - libblockdev-crypto
+        - libblockdev-fs
+        - libblockdev-loop
+        - libblockdev-mdraid
+        - libblockdev-nvme
+        - libblockdev-part
+        - libblockdev-swap
+        - libbluray
+        - libbs2b
+        - libbsd
+        - libbytesize
+        - libcaca
+        - libcacard
+        - libcanberra
+        - libcbor
+        - libcdio
+        - libcdio-paranoia
+        - libcdr
+        - libcgif
+        - libcloudproviders
+        - libcmis
+        - libcups
+        - libcupsfilters
+        - libdaemon
+        - libdatrie
+        - libdc1394
+        - libdca
         - libde265
+        - libdecor
+        - libdeflate
+        - libdispatch
+        - libdisplay-info
+        - libdovi
+        - libdrm
         - libdv
+        - libdvdnav
+        - libdvdread
+        - libe-book
+        - libebur128
+        - libei
+        - libepoxy
+        - libepubgen
+        - libetonyek
+        - libevdev
+        - libexif
+        - libexttextcat
+        - libfdk-aac
         - libfido2
+        - libfontenc
+        - libfreeaptx
+        - libfreehand
+        - libgdata
+        - libgee
+        - libgexiv2
+        - libgirepository
+        - libgit2
+        - libglvnd
+        - libgme
+        - libgnomekbd
+        - libgoa
+        - libgphoto2
+        - libgudev
         - libheif
+        - libibus
+        - libice
+        - libidn
+        - libiec61883
+        - libieee1284
+        - libimobiledevice
+        - libimobiledevice-glue
+        - libinput
+        - libinstpatch
+        - libixion
+        - libjpeg-turbo
+        - libjpeg6-turbo
+        - libjxl
+        - liblangtag
+        - liblc3
+        - libldac
+        - libliftoff
+        - liblouis
+        - liblqr
+        - liblrdf
+        - libltc
+        - libluv
+        - libmanette
+        - libmaxminddb
+        - libmd
+        - libmediainfo
+        - libmicrodns
+        - libmikmod
+        - libmm-glib
+        - libmms
+        - libmng
+        - libmodplug
+        - libmpdclient
         - libmpeg2
+        - libmspub
+        - libmtp
+        - libmwaw
+        - libmypaint
+        - libmysofa
+        - libnatpmp
+        - libnet
         - libnetfilter_queue
-        - libratbag
+        - libnewt
+        - libnfs
+        - libnice
+        - libnma
+        - libnma-common
+        - libnotify
+        - libnumbertext
+        - libogg
+        - libopenmpt
+        - liborcus
+        - libotf
+        - libpagemaker
+        - libpaper
+        - libpciaccess
+        - libpgm
+        - libpipewire
+        - libplacebo
+        - libplist
+        - libpng
+        - libpng12
+        - libppd
+        - libproxy
+        - libpulse
+        - libqalculate
+        - libqxp
+        - libraqm
+        - libraw
+        - libraw1394
+        - libreoffice-fresh
+        - librevenge
+        - librsvg
+        - librtmp0
+        - libsamplerate
+        - libsass
+        - libshout
+        - libsigc++
+        - libsigc++-3.0
+        - libsixel
+        - libslirp
+        - libsm
+        - libsndfile
+        - libsodium
+        - libsoup
+        - libsoxr
+        - libspeechd
+        - libspiro
+        - libsrtp
+        - libssh
+        - libstaroffice
+        - libstemmer
+        - libsynctex
+        - libsysprof-capture
+        - libthai
         - libtheora
+        - libtiff
+        - libtommath
+        - libtorrent-rasterbar
+        - libtraceevent
+        - libtracefs
+        - libudev0-shim
+        - libunibreak
+        - libunwind
+        - liburcu
+        - liburing
         - libusb-compat
+        - libusbmuxd
+        - libutempter
+        - libutf8proc
+        - libva
         - libva-utils
+        - libvdpau
         - libvdpau-va-gl
+        - libvisio
+        - libvorbis
+        - libvpl
         - libvpx
+        - libvterm
+        - libwbclient
         - libwebp
+        - libwireplumber
+        - libwmf
+        - libwpd
+        - libwps
+        - libx11
+        - libx86emu
+        - libxau
+        - libxaw
+        - libxcb
+        - libxcomposite
+        - libxcursor
+        - libxcvt
+        - libxdamage
+        - libxdmcp
+        - libxdp
+        - libxext
+        - libxfixes
+        - libxfont2
+        - libxft
+        - libxi
+        - libxinerama
+        - libxkbcommon
+        - libxkbcommon-x11
+        - libxkbfile
+        - libxklavier
+        - libxmlb
+        - libxmp
+        - libxmu
+        - libxpm
+        - libxpresent
+        - libxrandr
+        - libxrender
+        - libxres
+        - libxshmfence
+        - libxslt
+        - libxss
+        - libxt
+        - libxtst
+        - libxv
+        - libxxf86vm
+        - libyaml
+        - libyuv
+        - libzen
+        - libzip
+        - libzmf
         - linux-atm
-        - linux-zen
-        - linux-zen-headers
+        - lksctp-tools
+        - lld
+        - llhttp
+        - lm_sensors
+        - lmdb
+        - lpsolve
         - lrzip
-        - lsb-release
         - lsof
         - lsscsi
+        - lua
         - lua-language-server
         - lua51
-        - luarocks
-        - lutris
-        - lynis
+        - lua53
+        - luajit
+        - lynx
         - lzip
         - lzop
+        - m17n-lib
         - mako
         - mangohud
-        - markdownlint-cli2
-        - marksman
+        - md4c
         - mediainfo
-        - mesa
         - mesa-utils
-        - meson
-        - modemmanager
+        - miniupnpc
+        - mjpegtools
+        - mpg123
         - mpv
         - mpv-mpris
+        - msgpack-c
+        - mtdev
         - mtools
         - mtr
-        - mypy
+        - mujs
         - nbd
         - ncdu
+        - ndctl
         - ndisc6
+        - neovide
         - neovim
+        - net-snmp
         - nethogs
-        - network-manager-applet
-        - networkmanager
-        - networkmanager-openvpn
-        - nm-connection-editor
+        - netpbm
+        - nftables
+        - ninja
         - nmap
-        - noto-fonts
-        - noto-fonts-cjk
-        - noto-fonts-emoji
-        - npm
+        - nodejs-lts-jod
         - ntfs-3g
-        - nvme-cli
-        - nvtop
-        - nyxt
+        - ocl-icd
+        - oil
         - onefetch
-        - open-iscsi
+        - onetbb
+        - oniguruma
+        - open-isns
+        - openal
+        - opencore-amr
+        - opencv
         - opendoas
+        - openexr
+        - openh264
         - openmp
         - openvpn
+        - opus
+        - opusfile
+        - orc
         - os-prober
-        - otf-font-awesome
         - pacman-contrib
+        - pahole
+        - pango
+        - pangomm
+        - pangomm-2.48
         - partclone
         - parted
         - partimage
+        - pastel
         - pavucontrol
         - pcsclite
         - peco
-        - perl-image-exiftool
-        - piper
+        - perl-clone
+        - perl-dbi
+        - perl-html-parser
+        - perl-xml-libxml
+        - perl-xml-parser
+        - phodav
         - pipewire
         - pipewire-alsa
+        - pipewire-audio
         - pipewire-jack
         - pipewire-pulse
+        - pixman
+        - pkcs11-helper
         - playerctl
         - plymouth
         - polkit
         - polkit-gnome
+        - poppler
+        - poppler-glib
+        - portaudio
         - powertop
-        - prettier
+        - pps-tools
+        - procs
+        - protobuf
+        - pugixml
         - pv
+        - pyalpm
         - python-adblock
+        - python-bcrypt
+        - python-cairo
+        - python-cffi
+        - python-charset-normalizer
+        - python-contourpy
+        - python-cryptography
         - python-debugpy
-        - python-guessit
-        - python-pip
+        - python-evdev
+        - python-fonttools
+        - python-keyutils
+        - python-kiwisolver
+        - python-lxml
+        - python-markupsafe
+        - python-numpy
+        - python-orjson
         - python-protobuf
+        - python-psutil
         - python-pynacl
-        - python-pyperclip
-        - python-pystray
-        - python-pytest
-        - python-pywal
-        - python-tldextract
-        - qbittorrent
-        - qemu-desktop
+        - python-pyqt6-sip
+        - python-rpds-py
+        - python-ruamel.yaml.clib
+        - python-yaml
+        - qalculate-gtk
+        - qhull
+        - qpdf
+        - qrencode
+        - qt5-base
+        - qt5-svg
+        - qt5-x11extras
         - qt5ct
+        - qt6-5compat
+        - qt6-base
+        - qt6-declarative
+        - qt6-imageformats
+        - qt6-multimedia
+        - qt6-multimedia-ffmpeg
+        - qt6-networkauth
+        - qt6-positioning
+        - qt6-shadertools
+        - qt6-svg
+        - qt6-tools
         - qt6-wayland
+        - qt6-webchannel
         - qt6ct
-        - qutebrowser
+        - qt6pas
+        - raptor
+        - rasqal
+        - rav1e
         - rclone
+        - rdma-core
+        - re2
+        - redland
         - refind
-        - reflector
         - reptyr
-        - ripgrep
+        - rhash
+        - rlwrap
+        - rnnoise
+        - rocm-core
         - rocm-smi-lib
-        - rofimoji
-        - rp-pppoe
+        - rocprofiler-register
         - rsync
+        - rtmpdump
+        - rubberband
         - ruff
         - rustup
+        - rutabaga-ffi
         - sane
         - sassc
         - satty
+        - sbc
         - sbcl
         - scdoc
         - schroedinger
         - screen
         - sd
+        - sdbus-cpp
+        - sdl12-compat
+        - sdl2-compat
+        - sdl2_image
+        - sdl2_mixer
+        - sdl2_ttf
+        - sdl3
+        - sdl_image
+        - sdl_mixer
+        - sdl_ttf
+        - seatd
         - selene
+        - serd
         - sg3_utils
-        - shellcheck
+        - shaderc
+        - shared-mime-info
         - shellharden
         - shfmt
         - silicon
+        - slang
         - slop
         - slurp
         - smartmontools
-        - sof-firmware
+        - smbclient
+        - snappy
+        - sndio
+        - socat
+        - sord
+        - soundtouch
+        - spdlog
         - speech-dispatcher
+        - speex
+        - speexdsp
+        - spice
+        - spirv-llvm-translator
+        - spirv-tools
         - splix
         - squashfs-tools
+        - srt
+        - sshfs
         - strace
         - stylua
+        - suitesparse
+        - svt-hevc
+        - swayimg
         - swig
         - sysstat
-        - systemd-language-server
-        - taplo-cli
+        - taglib
+        - talloc
+        - tcl
         - tcpdump
+        - tdb
         - tesseract
-        - tesseract-data-eng
+        - tevent
         - timeshift
-        - tldr
+        - tk
         - tokei
-        - traceroute
-        - translate-shell
-        - trash-cli
-        - tree
-        - ttc-iosevka
-        - ttf-font-awesome
-        - ttf-iosevka-nerd
-        - ttf-jetbrains-mono
-        - ttf-jetbrains-mono-nerd
-        - ttf-nerd-fonts-symbols
-        - ttf-nerd-fonts-symbols-mono
+        - tombi
+        - tomlplusplus
+        - tree-sitter
+        - tree-sitter-c
+        - tree-sitter-lua
+        - tree-sitter-markdown
+        - tree-sitter-query
+        - tree-sitter-vim
+        - tree-sitter-vimdoc
+        - tslib
+        - twolame
         - typos
         - typos-lsp
+        - uchardet
         - udftools
-        - udiskie
         - udisks2
         - ueberzugpp
         - unarchiver
+        - unibilium
         - unrar
         - unzip
+        - upower
         - usb_modeswitch
         - usbmuxd
-        - uwsm
-        - vscode-css-languageserver
-        - vscode-json-languageserver
-        - vulkan-radeon
+        - usbredir
+        - v4l-utils
+        - vapoursynth
+        - vde2
+        - vdpauinfo
+        - verdict
+        - vid.stab
+        - virglrenderer
+        - virtiofsd
+        - vivid
+        - vmaf
+        - volume_key
+        - vte-common
+        - vte3
+        - vulkan-icd-loader
         - vulkan-tools
+        - wavpack
         - waybar
+        - wayland
+        - webrtc-audio-processing-1
         - wev
         - wf-recorder
         - wget
+        - wildmidi
+        - wireguard-tools
         - wireless_tools
         - wireplumber
-        - wireshark-cli
-        - wireshark-qt
         - wl-clipboard
         - wlr-randr
-        - wmctrl
         - wob
+        - woff2
         - wtype
-        - wvdial
         - x264
         - x265
+        - xapp
+        - xcb-util
+        - xcb-util-cursor
+        - xcb-util-errors
+        - xcb-util-image
+        - xcb-util-keysyms
+        - xcb-util-renderutil
+        - xcb-util-wm
         - xclip
+        - xdg-dbus-proxy
+        - xdg-desktop-portal
+        - xdg-desktop-portal-gtk
         - xdg-desktop-portal-hyprland
         - xdg-user-dirs
         - xdg-user-dirs-gtk
-        - xdg-utils
         - xdotool
         - xf86-input-libinput
         - xf86-video-amdgpu
         - xf86-video-ati
         - xf86-video-fbdev
         - xf86-video-vesa
-        - xl2tpd
-        - xorg-fonts-encodings
         - xorg-server-common
         - xorg-setxkbmap
         - xorg-xhost
@@ -480,32 +1007,750 @@ packages:
         - xorg-xset
         - xorg-xwayland
         - xvidcore
-        - yaml-language-server
-        - yarn
         - yazi
-        - yt-dlp
+        - yyjson
+        - zathura
         - zathura-djvu
         - zathura-pdf-mupdf
+        - zbar
         - zenity
+        - zeromq
+        - zimg
         - zip
+        - zix
         - zoxide
         - zram-generator
+        - zsync
+        - zvbi
+        - zxing-cpp
+      cachyos:
+        - aic94xx-firmware
+        - archlinux-keyring
+        - ast-firmware
+        - ayugram-desktop
+        - btrfs-assistant
+        - cachyos-ananicy-rules
+        - cachyos-keyring
+        - cachyos-mirrorlist
+        - cachyos-rate-mirrors
+        - cachyos-settings
+        - cachyos-v3-mirrorlist
+        - dkms
+        - downgrade
+        - gpu-screen-recorder
+        - gpu-screen-recorder-notification
+        - gpu-screen-recorder-ui
+        - grub-hook
+        - lib32-blas
+        - lib32-lapack
+        - lib32-lzo
+        - linux-firmware
+        - linux-firmware-amdgpu
+        - linux-firmware-atheros
+        - linux-firmware-broadcom
+        - linux-firmware-cirrus
+        - linux-firmware-intel
+        - linux-firmware-liquidio
+        - linux-firmware-marvell
+        - linux-firmware-mediatek
+        - linux-firmware-mellanox
+        - linux-firmware-nfp
+        - linux-firmware-nvidia
+        - linux-firmware-other
+        - linux-firmware-qlogic
+        - linux-firmware-radeon
+        - linux-firmware-realtek
+        - linux-firmware-whence
+        - mkinitcpio
+        - mkinitcpio-firmware
+        - pacman
+        - proton-ge-custom-bin
+        - python-imageio-ffmpeg
+        - python-screeninfo
+        - rate-mirrors
+        - upd72020x-fw
+        - ventoy-bin
+        - waypaper
+        - wd719x-firmware
+        - yay-bin
+      core:
+        - autoconf
+        - automake
+        - base
+        - base-devel
+        - btrfs-progs
+        - ca-certificates
+        - ca-certificates-utils
+        - coreutils
+        - dnssec-anchors
+        - filesystem
+        - gnulib-l10n
+        - gnutls
+        - gzip
+        - hwdata
+        - iana-etc
+        - inetutils
+        - kmod
+        - libelf
+        - libldap
+        - licenses
+        - linux
+        - linux-headers
+        - man-pages
+        - mdadm
+        - pacman-mirrorlist
+        - pambase
+        - systemd
+        - systemd-libs
+        - systemd-sysvcompat
+        - wireless-regdb
+        - xfsprogs
+      extra:
+        - adobe-source-code-pro-fonts
+        - adobe-source-sans-fonts
+        - adobe-source-serif-fonts
+        - adwaita-cursors
+        - adwaita-fonts
+        - adwaita-icon-theme
+        - adwaita-icon-theme-legacy
+        - alsa-topology-conf
+        - alsa-ucm-conf
+        - ansible
+        - ansible-core
+        - ansible-language-server
+        - ansible-lint
+        - archlinux-contrib
+        - archlinux-wallpaper
+        - archlinux-xdg-menu
+        - aspnet-runtime-8.0
+        - awesome-terminal-fonts
+        - bash-completion
+        - bash-language-server
+        - bat-extras
+        - cantarell-fonts
+        - checkbashisms
+        - chezmoi
+        - default-cursors
+        - discord
+        - dotnet-host
+        - dotnet-runtime-7.0
+        - dotnet-runtime-8.0
+        - edk2-ovmf
+        - edk2-shell
+        - emacs-wayland
+        - etckeeper
+        - exiv2
+        - fcft
+        - firefox
+        - firefox-i18n-en-us
+        - firefox-i18n-ru
+        - firefox-spell-ru
+        - foomatic-db
+        - fuse2
+        - gd
+        - ghc-libs
+        - gopass
+        - gparted
+        - graphite
+        - graphviz
+        - gsettings-desktop-schemas
+        - gsettings-system-schemas
+        - gsfonts
+        - gtk2
+        - gvfs
+        - gvfs-afc
+        - gvfs-goa
+        - gvfs-google
+        - gvfs-gphoto2
+        - gvfs-mtp
+        - gvfs-smb
+        - harfbuzz
+        - harfbuzz-icu
+        - haskell-aeson
+        - haskell-ansi-terminal
+        - haskell-ansi-terminal-types
+        - haskell-assoc
+        - haskell-attoparsec
+        - haskell-base-compat
+        - haskell-base-compat-batteries
+        - haskell-base-orphans
+        - haskell-bifunctors
+        - haskell-colour
+        - haskell-comonad
+        - haskell-contravariant
+        - haskell-data-fix
+        - haskell-diff
+        - haskell-distributive
+        - haskell-dlist
+        - haskell-erf
+        - haskell-fgl
+        - haskell-foldable1-classes-compat
+        - haskell-generically
+        - haskell-hashable
+        - haskell-indexed-traversable
+        - haskell-indexed-traversable-instances
+        - haskell-integer-logarithms
+        - haskell-onetuple
+        - haskell-optparse-applicative
+        - haskell-os-string
+        - haskell-prettyprinter
+        - haskell-prettyprinter-ansi-terminal
+        - haskell-primitive
+        - haskell-quickcheck
+        - haskell-random
+        - haskell-regex-base
+        - haskell-regex-tdfa
+        - haskell-scientific
+        - haskell-semialign
+        - haskell-semigroupoids
+        - haskell-splitmix
+        - haskell-statevar
+        - haskell-strict
+        - haskell-tagged
+        - haskell-tasty
+        - haskell-text-short
+        - haskell-th-abstraction
+        - haskell-these
+        - haskell-time-compat
+        - haskell-transformers-compat
+        - haskell-unordered-containers
+        - haskell-uuid-types
+        - haskell-vector
+        - haskell-vector-stream
+        - haskell-witherable
+        - hicolor-icon-theme
+        - hunspell-en_us
+        - hunspell-ru
+        - hyprland
+        - intel-ucode
+        - inxi
+        - ipcalc
+        - irqbalance
+        - iso-codes
+        - java-environment-common
+        - java-runtime-common
+        - jellyfin-mpv-shim
+        - jellyfin-web
+        - libappindicator-gtk3
+        - libclc
+        - libcolord
+        - libdbusmenu-glib
+        - libdbusmenu-gtk2
+        - libdbusmenu-gtk3
+        - libgcrypt15
+        - libidn11
+        - libimagequant
+        - libindicator-gtk2
+        - libmaa
+        - libmpcdec
+        - libmupdf
+        - libnm
+        - libnvme
+        - libodfgen
+        - libratbag
+        - libreoffice-fresh-ru
+        - libsoup3
+        - libtiff4
+        - libtpms
+        - libuv
+        - libvips
+        - libvpx1.3
+        - libwacom
+        - lilv
+        - lsb-release
+        - lua51-lpeg
+        - luarocks
+        - lutris
+        - lv2
+        - lynis
+        - m17n-db
+        - mailcap
+        - markdownlint-cli2
+        - marksman
+        - meson
+        - mobile-broadband-provider-info
+        - mypaint-brushes1
+        - mypy
+        - neon
+        - nm-connection-editor
+        - node-gyp
+        - nodejs-nopt
+        - noto-fonts
+        - noto-fonts-cjk
+        - noto-fonts-emoji
+        - npm
+        - numactl
+        - nvme-cli
+        - open-iscsi
+        - openjpeg2
+        - otf-font-awesome
+        - perl-alien-build
+        - perl-alien-libxml2
+        - perl-capture-tiny
+        - perl-encode-locale
+        - perl-error
+        - perl-ffi-checklib
+        - perl-file-chdir
+        - perl-file-listing
+        - perl-file-which
+        - perl-html-tagset
+        - perl-http-cookiejar
+        - perl-http-cookies
+        - perl-http-daemon
+        - perl-http-date
+        - perl-http-message
+        - perl-http-negotiate
+        - perl-image-exiftool
+        - perl-io-html
+        - perl-json
+        - perl-libwww
+        - perl-lwp-mediatypes
+        - perl-mailtools
+        - perl-net-http
+        - perl-path-tiny
+        - perl-timedate
+        - perl-try-tiny
+        - perl-uri
+        - perl-www-robotrules
+        - perl-xml-namespacesupport
+        - perl-xml-sax
+        - perl-xml-sax-base
+        - perl-xml-writer
+        - piper
+        - polkit-qt6
+        - poppler-data
+        - prettier
+        - python-ansible-compat
+        - python-attrs
+        - python-autocommand
+        - python-babelfish
+        - python-beautifulsoup4
+        - python-black
+        - python-bracex
+        - python-cattrs
+        - python-certifi
+        - python-click
+        - python-configargparse
+        - python-cycler
+        - python-dateutil
+        - python-dbus
+        - python-distro
+        - python-docopt
+        - python-filelock
+        - python-gobject
+        - python-guessit
+        - python-html5lib
+        - python-idna
+        - python-imageio
+        - python-importlib-metadata
+        - python-iniconfig
+        - python-jaraco.collections
+        - python-jaraco.context
+        - python-jaraco.functools
+        - python-jaraco.text
+        - python-jellyfin-apiclient
+        - python-jinja
+        - python-jsonschema
+        - python-jsonschema-specifications
+        - python-lsprotocol
+        - python-matplotlib
+        - python-moddb
+        - python-more-itertools
+        - python-mpv
+        - python-mpv-jsonipc
+        - python-mypy_extensions
+        - python-packaging
+        - python-paramiko
+        - python-pathspec
+        - python-pexpect
+        - python-pillow
+        - python-pip
+        - python-platformdirs
+        - python-pluggy
+        - python-ptyprocess
+        - python-pycparser
+        - python-pygls
+        - python-pygments
+        - python-pyparsing
+        - python-pyperclip
+        - python-pyqt6
+        - python-pyqt6-webengine
+        - python-pystray
+        - python-pytest
+        - python-pywal
+        - python-pyxdg
+        - python-rebulk
+        - python-referencing
+        - python-requests
+        - python-requests-file
+        - python-resolvelib
+        - python-ruamel-yaml
+        - python-setuptools
+        - python-six
+        - python-soupsieve
+        - python-subprocess-tee
+        - python-tldextract
+        - python-tqdm
+        - python-typing_extensions
+        - python-urllib3
+        - python-wcmatch
+        - python-webencodings
+        - python-websocket-client
+        - python-wheel
+        - python-xlib
+        - python-zipp
+        - qbittorrent
+        - qemu-audio-alsa
+        - qemu-audio-dbus
+        - qemu-audio-jack
+        - qemu-audio-oss
+        - qemu-audio-pa
+        - qemu-audio-pipewire
+        - qemu-audio-sdl
+        - qemu-audio-spice
+        - qemu-base
+        - qemu-block-curl
+        - qemu-block-dmg
+        - qemu-block-nfs
+        - qemu-block-ssh
+        - qemu-chardev-spice
+        - qemu-common
+        - qemu-desktop
+        - qemu-hw-display-qxl
+        - qemu-hw-display-virtio-gpu
+        - qemu-hw-display-virtio-gpu-gl
+        - qemu-hw-display-virtio-gpu-pci
+        - qemu-hw-display-virtio-gpu-pci-gl
+        - qemu-hw-display-virtio-gpu-pci-rutabaga
+        - qemu-hw-display-virtio-gpu-rutabaga
+        - qemu-hw-display-virtio-vga
+        - qemu-hw-display-virtio-vga-gl
+        - qemu-hw-display-virtio-vga-rutabaga
+        - qemu-hw-uefi-vars
+        - qemu-hw-usb-host
+        - qemu-hw-usb-redirect
+        - qemu-hw-usb-smartcard
+        - qemu-img
+        - qemu-system-x86
+        - qemu-system-x86-firmware
+        - qemu-ui-curses
+        - qemu-ui-dbus
+        - qemu-ui-egl-headless
+        - qemu-ui-gtk
+        - qemu-ui-opengl
+        - qemu-ui-sdl
+        - qemu-ui-spice-app
+        - qemu-ui-spice-core
+        - qemu-vhost-user-gpu
+        - qt5-translations
+        - qt6-translations
+        - qt6-webengine
+        - quazip-qt6
+        - qutebrowser
+        - realtime-privileges
+        - rocm-device-libs
+        - rofimoji
+        - rtkit
+        - seabios
+        - semver
+        - shellcheck
+        - sof-firmware
+        - sound-theme-freedesktop
+        - spandsp
+        - spice-gtk
+        - spice-protocol
+        - sratom
+        - swtpm
+        - systemd-language-server
+        - television
+        - tesseract-data-eng
+        - tesseract-data-osd
+        - tesseract-data-rus
+        - tinysparql
+        - tinyxml2
+        - translate-shell
+        - trash-cli
+        - tree
+        - ttc-iosevka
+        - ttf-croscore
+        - ttf-dejavu
+        - ttf-iosevka-nerd
+        - ttf-jetbrains-mono
+        - ttf-jetbrains-mono-nerd
+        - ttf-liberation
+        - ttf-nerd-fonts-symbols
+        - ttf-nerd-fonts-symbols-common
+        - ttf-nerd-fonts-symbols-mono
+        - ttf-roboto
+        - ttf-ubuntu-font-family
+        - udiskie
+        - uwsm
+        - vscode-css-languageserver
+        - vscode-json-languageserver
+        - wayland-protocols
+        - webkit2gtk
+        - webkit2gtk-4.1
+        - wireshark-cli
+        - wireshark-qt
+        - wmctrl
+        - woff2-font-awesome
+        - wolfssl
+        - xcb-proto
+        - xdg-utils
+        - xkeyboard-config
+        - xmlsec
+        - xorg-fonts-encodings
+        - xorgproto
+        - xxhash
+        - yaml-language-server
+        - yamllint
+        - yarn
+        - yt-dlp
+        - zerotier-one
       multilib:
+        - lib32-acl
+        - lib32-alsa-lib
         - lib32-alsa-plugins
+        - lib32-at-spi2-core
+        - lib32-attr
+        - lib32-audit
+        - lib32-brotli
+        - lib32-bzip2
+        - lib32-cairo
+        - lib32-clang
+        - lib32-curl
+        - lib32-dbus
+        - lib32-dbus-glib
+        - lib32-duktape
+        - lib32-e2fsprogs
+        - lib32-expat
+        - lib32-flac
+        - lib32-fontconfig
+        - lib32-freeglut
         - lib32-freetype2
-        - lib32-gamemode
+        - lib32-fribidi
+        - lib32-gdk-pixbuf2
+        - lib32-gettext
         - lib32-giflib
+        - lib32-glew
+        - lib32-glew1.10
+        - lib32-glib-networking
+        - lib32-glib2
+        - lib32-glu
+        - lib32-gmp
         - lib32-gnutls
+        - lib32-gst-plugins-base-libs
+        - lib32-gstreamer
+        - lib32-gtk2
+        - lib32-harfbuzz
+        - lib32-icu
+        - lib32-imlib2
+        - lib32-json-c
+        - lib32-keyutils
+        - lib32-krb5
+        - lib32-libappindicator-gtk2
+        - lib32-libasyncns
+        - lib32-libcaca
+        - lib32-libcanberra
+        - lib32-libcap
+        - lib32-libcups
+        - lib32-libcurl-compat
+        - lib32-libcurl-gnutls
+        - lib32-libdatrie
+        - lib32-libdbusmenu-glib
+        - lib32-libdbusmenu-gtk2
+        - lib32-libdrm
+        - lib32-libelf
+        - lib32-libffi
+        - lib32-libgcrypt
+        - lib32-libgcrypt15
         - lib32-libglvnd
         - lib32-libgpg-error
+        - lib32-libgudev
+        - lib32-libice
+        - lib32-libidn11
+        - lib32-libidn2
+        - lib32-libindicator-gtk2
+        - lib32-libjpeg-turbo
+        - lib32-libjpeg6-turbo
+        - lib32-libldap
+        - lib32-libltdl
+        - lib32-libmikmod
+        - lib32-libmodplug
+        - lib32-libnghttp2
+        - lib32-libnghttp3
+        - lib32-libnl
+        - lib32-libnm
+        - lib32-libnsl
+        - lib32-libogg
+        - lib32-libpcap
+        - lib32-libpciaccess
+        - lib32-libpipewire
+        - lib32-libpng
+        - lib32-libpng12
+        - lib32-libproxy
+        - lib32-libpsl
+        - lib32-libpulse
+        - lib32-librsvg
+        - lib32-librtmp0
+        - lib32-libsm
+        - lib32-libsndfile
+        - lib32-libsoup
+        - lib32-libssh2
+        - lib32-libtasn1
+        - lib32-libthai
+        - lib32-libtheora
+        - lib32-libtiff
+        - lib32-libtiff4
+        - lib32-libtirpc
+        - lib32-libudev0-shim
+        - lib32-libunistring
+        - lib32-libunwind
+        - lib32-libusb
+        - lib32-libva
+        - lib32-libvdpau
+        - lib32-libvorbis
+        - lib32-libvpx
+        - lib32-libvpx1.3
+        - lib32-libwebp
         - lib32-libx11
+        - lib32-libxau
+        - lib32-libxcb
+        - lib32-libxcomposite
+        - lib32-libxcrypt
+        - lib32-libxcrypt-compat
+        - lib32-libxcursor
+        - lib32-libxdamage
+        - lib32-libxdmcp
+        - lib32-libxext
+        - lib32-libxfixes
+        - lib32-libxft
+        - lib32-libxi
+        - lib32-libxinerama
+        - lib32-libxkbcommon
+        - lib32-libxml2
+        - lib32-libxmu
+        - lib32-libxrandr
+        - lib32-libxrender
+        - lib32-libxshmfence
         - lib32-libxss
+        - lib32-libxt
+        - lib32-libxtst
+        - lib32-libxv
+        - lib32-libxxf86vm
+        - lib32-llvm-libs
+        - lib32-lm_sensors
         - lib32-mangohud
         - lib32-mpg123
+        - lib32-ncurses
+        - lib32-nettle
+        - lib32-nspr
         - lib32-nss
+        - lib32-openal
         - lib32-openssl
+        - lib32-openssl-1.1
+        - lib32-opus
+        - lib32-orc
+        - lib32-p11-kit
+        - lib32-pam
+        - lib32-pango
+        - lib32-pcre2
+        - lib32-pipewire
+        - lib32-pixman
+        - lib32-sdl12-compat
         - lib32-sdl2-compat
+        - lib32-sdl2_image
+        - lib32-sdl2_mixer
+        - lib32-sdl2_ttf
+        - lib32-sdl3
+        - lib32-sdl_image
+        - lib32-sdl_mixer
+        - lib32-sdl_ttf
+        - lib32-speex
+        - lib32-spirv-llvm-translator
+        - lib32-spirv-tools
+        - lib32-sqlite
+        - lib32-systemd
+        - lib32-tdb
+        - lib32-util-linux
+        - lib32-vkd3d
         - lib32-vulkan-icd-loader
-        - lib32-vulkan-radeon
+        - lib32-wayland
+        - lib32-xcb-util-keysyms
+        - lib32-xz
         - steam
-        - wine
+        - steam-native-runtime
+        - winetricks
+      aur:
+        - arch-update
+        - archlinux-artwork
+        - arkenfox-user.js
+        - basedpyright-bin
+        - blesh-git
+        - buku
+        - chawan
+        - cinny-desktop-bin
+        - codeberg-cli
+        - czkawka-gui-bin
+        - dict-freedict-eng-rus
+        - dict-moby-thesaurus
+        - dict-ozhegov
+        - dmenu-extended-git
+        - doas-sudo-shim-k
+        - doasedit-alternative
+        - dotool
+        - firefox-tridactyl-native-bin
+        - fish-done
+        - fish-lsp
+        - freesmlauncher
+        - fuzzel-dmenu-dropin
+        - golangci-lint-langserver-bin
+        - gopass-symlinks
+        - grub2-theme-archlinux
+        - grub2-theme-archxion
+        - gruvbox-gtk-theme-git
+        - gruvbox-icon-theme-git
+        - gruvbox-material-gtk-theme-git
+        - gruvbox-material-icon-theme-git
+        - hyprls-git
+        - hyprsysteminfo
+        - jamesdsp
+        - kanata-bin
+        - maplemono-nf
+        - maplemono-otf
+        - maplemono-ttf-autohint
+        - maplemono-woff2
+        - mkinitcpio-colors-git
+        - neovim-symlinks
+        - nordic-darker-theme
+        - nordic-theme
+        - oh-my-posh-bin
+        - otf-raleway
+        - outfieldr
+        - phinger-cursors
+        - playerctld-systemd-unit
+        - plymouth-theme-arch-glow
+        - quickemu-git
+        - rdrview
+        - rustdesk-bin
+        - setcolors-git
+        - sgdboop-bin
+        - speedtest-go
+        - superhtml-bin
+        - swhkd-bin
+        - sysz
+        - telegram-tdlib
+        - tessen
+        - ttf-et-book
+        - ttf-joypixels
+        - ttf-ms-win11-auto
+        - ttf-raleway
+        - ttf-raleway-variable
+        - update-grub
+        - vidoas
+        - wttrbar
+        - xdg-desktop-portal-termfilechooser-hunkyburrito-git
+        - xdg-ninja
+        - xdg-terminal-exec
+        - youtube-music-bin
+        - yt-x
