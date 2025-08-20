@@ -1,3 +1,4 @@
+# vim: filetype=py
 # Requirements:
 # - python-adblock
 # - python-pyperclip (qute-code-hint)
@@ -270,16 +271,16 @@ bind("\ce", "config-edit")
 bind("\\rc", "config-source")
 bind("\\ra", "adblock-update")
 bind("\\rg", "greasemonkey-reload")
-	
+
 # Toggle
 bind("tbh", "config-cycle -p -t -u *://{url:host}/* content.blocking.enabled true false ;; reload")
 bind("tBh", "config-cycle -p -u *://{url:host}/* content.blocking.enabled true false ;; reload")
 bind("tbH", "config-cycle -p -t -u *://*.{url:host}/* content.blocking.enabled true false ;; reload")
-bind("tBH", "config-cycle -p  -u *://*.{url:host}/* content.blocking.enabled true false ;; reload")
-bind("tBu", "config-cycle -p -t -u {url} content.blocking.enabled true false ;; reload")
-bind("tBU", "config-cycle -p -u {url} content.blocking.enabled true false ;; reload")
-bind("tT", "config-cycle tabs.show multiple switching")
-bind("tB", "config-cycle statusbar.show always in-mode")
+bind("tBH", "config-cycle -p -u *://*.{url:host}/* content.blocking.enabled true false ;; reload")
+bind("tbu", "config-cycle -p -t -u {url} content.blocking.enabled true false ;; reload")
+bind("tBu", "config-cycle -p -u {url} content.blocking.enabled true false ;; reload")
+bind("tqt", "config-cycle tabs.show multiple switching")
+bind("tqs", "config-cycle statusbar.show always in-mode")
 
 # External editor
 bind("<Alt-e>", "edit-text")
