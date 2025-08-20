@@ -8,11 +8,6 @@ type = "file"
 url = "https://adsbypasser.github.io/releases/adsbypasser.full.es7.user.js"
 refreshPeriod = "168h"
 
-[".config/qutebrowser/greasemonkey/anti-adblocker-fuckoff.user.js"]
-type = "file"
-url = "https://update.greasyfork.org/scripts/397070/Anti-AdBlocker%20Fuckoff.user.js"
-refreshPeriod = "168h"
-
 [".config/qutebrowser/greasemonkey/bypass-all-shortlinks.user.js"]
 type = "file"
 url = "https://codeberg.org/Amm0ni4/bypass-all-shortlinks-debloated/raw/branch/main/Bypass_All_Shortlinks.user.js"
