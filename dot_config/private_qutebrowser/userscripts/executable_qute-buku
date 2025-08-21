@@ -2,7 +2,7 @@
 
 actions=('add' 'open' 'edit' 'del' 'dmenu')
 
-buku_cmd="buku --nostdin --tacit --np --nc"
+buku_cmd="buku --nostdin --tacit --np --nc --db $XDG_DATA_HOME/gosuki/gosuki.db"
 
 url_regexp='^(http(s)?:\/\/)?(www.)?([a-zA-Z0-9])+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/[^\s]*)?$'
 
@@ -143,10 +143,12 @@ dmenu)
     fi
 
     eval "$buku_cmd" -p -f 3 |
-        fuzzel -d \
+        fuzzel \
+            -d \
             -p ' ' \
             -w 117 \
             -l 25 \
+            --counter \
             --anchor center \
             --with-nth 2 |
         cut -d ' ' -f 1 |
