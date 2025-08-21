@@ -99,6 +99,7 @@
        git-auto-commit-mode
        ;; make              ; run make tasks from Emacs
        pass                 ; password manager for nerds
+       ebuku                ; bookmark manager for nerds
        pdf                  ; pdf enhancements
        ;; reader               ; an all-in-one document reader
        ;; terraform         ; infrastructure as code
