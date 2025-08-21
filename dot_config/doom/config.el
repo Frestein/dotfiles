@@ -48,6 +48,7 @@
 (map! :leader
       (:prefix ("A" . "app")
                (:when (modulep! :app rss)
+                 :desc "Elfeed (Summary)" :n "E" #'elfeed-summary
                  :desc "Elfeed" :n "e" #'elfeed))
       (:prefix ("f" . "file")
                (:when (modulep! :emacs dired)
@@ -207,7 +208,28 @@ It should be the title of the web page as returned by `rdrview'."
 
     (map! :map elfeed-search-mode-map
           :localleader
-          :desc "Update feeds" "u" #'elfeed-update)))
+          :desc "Update feeds" "u" #'elfeed-update))
+
+  (use-package! elfeed-summary
+    :config
+    (setq elfeed-summary-other-window t
+          elfeed-summary-settings
+          '((group
+             (:title . "News")
+             (:elements (group (:title . "Tech") (:elements (query . (and news tech))))))
+            (group
+             (:title . "Reddit")
+             (:elements (group (:title . "Tech") (:elements (query . (and reddit tech))))))
+            (group
+             (:title . "YouTube")
+             (:elements
+              (group (:title . "Fun") (:elements (query . (and youtube fun))))
+              (group (:title . "Games") (:elements (query . (and youtube games))))
+              (group (:title . "Sport") (:elements (query . (and youtube sport))))
+              (group (:title . "Vtubers") (:elements (query . (and youtube vtuber))))
+              (group (:title . "Art") (:elements (query . (and youtube art))))
+              (group (:title . "Tech") (:elements (query . (and youtube tech))))
+              (group (:title . "Music") (:elements (query . (and youtube music))))))))))
 
 ;; Zen
 (when (modulep! :ui zen)
