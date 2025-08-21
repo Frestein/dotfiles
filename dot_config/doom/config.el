@@ -17,7 +17,7 @@
 
 ;; Fonts
 (setq doom-font (font-spec :family "Maple Mono NF" :size 14)
-      doom-variable-pitch-font (font-spec :family "Source Code Pro" :size 14)
+      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
       doom-big-font (font-spec :family "Maple Mono NF" :size 24)
       doom-symbol-font (font-spec :family "JoyPixels" :size 14)
       doom-serif-font (font-spec :family "Noto Serif" :size 14))
