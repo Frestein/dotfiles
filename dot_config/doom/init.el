@@ -86,6 +86,7 @@
        ;; docker
        chezmoi
        consult-gh
+       ;; forgejo
        trashed              ; freedesktop.org trashcan
        screenshot
        0x0
