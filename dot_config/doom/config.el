@@ -172,7 +172,7 @@ otherwise open it with the default browser."
     :lighter " rdrview"
     (if eww-rdrview-mode
         (progn
-          (setq eww-retrieve-command '("rdrview" "-T" "title,sitename,body" "-H"))
+          (setq eww-retrieve-command (list (executable-find "rdrview") "-T" "title,sitename,body" "-H"))
           (add-hook 'eww-after-render-hook #'eww-rdrview-update-title))
       (progn
         (setq eww-retrieve-command nil)
