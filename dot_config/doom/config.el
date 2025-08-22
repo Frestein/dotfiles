@@ -46,7 +46,19 @@
    :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle))
 
 (map! :leader
+      (:prefix ("s" . "search")
+               (:when (modulep! :tools pass)
+                 :n "p" nil ;; Disable defaults
+                 :n "P" nil ;; Disable defaults
+                 (:prefix ("p" . "project")
+                  :desc "Search project" :n "p" #'+default/search-project
+                  :desc "Search other project" :n "o" #'+default/search-other-project)
+                 (:prefix ("P" . "Pass")
+                  :desc "Username" :n "u" #'+pass/copy-user
+                  :desc "Password" :n "p" #'+pass/consult)))
       (:prefix ("A" . "app")
+               (:when (modulep! :tools pass)
+                 :desc "Pass" :n "p" #'pass)
                (:when (modulep! :app rss)
                  :desc "Elfeed (Summary)" :n "E" #'elfeed-summary
                  :desc "Elfeed" :n "e" #'elfeed))
@@ -305,6 +317,16 @@ It should be the title of the web page as returned by `rdrview'."
                  (cons (concat "-P " pages) pdf-misc-print-program-args)
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
+
+;; Pass
+(when (modulep! :tools pass)
+  (use-package! password-store
+    :config
+    (setq password-store-executable (executable-find "gopass")))
+
+  (use-package! pass
+    :config
+    (setq pass-show-keybindings nil)))
 
 ;; Misc
 (setq-default default-input-method "russian-computer")
