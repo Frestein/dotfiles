@@ -19,7 +19,7 @@ local mode_to_color = {
 
 vim.api.nvim_create_autocmd("ModeChanged", {
 	callback = function(args)
-		local new_mode = args.match:match(":(.+)$")
+		local new_mode = args.match:match ":(.+)$"
 		local fg_hl = mode_to_color[new_mode] or "GruvboxGray"
 		set_color("ColorfulWinSep", fg_hl, "Normal")
 	end,
@@ -42,6 +42,7 @@ return {
 				TodoSignTEST = { link = "TodoFgTEST" },
 				TodoSignTODO = { link = "TodoFgTODO" },
 				TodoSignNOTE = { link = "TodoFgNOTE" },
+				StatusLine = { link = "ColorColumn" },
 				-- WinBar = { link = "GruvboxFg4" },
 				-- WinBarNC = { link = "GruvboxFg4" },
 				-- NvimSeparator = { fg = colors.dark4 },
