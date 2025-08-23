@@ -86,6 +86,8 @@ abbr -a -- pacrep pacman -Si
 abbr -a -- pacreps pacman -Ss
 abbr -a -- pacloc pacman -Qi
 abbr -a -- paclocs pacman -Qs
+abbr -a -- paclst pacman -Qe
+abbr -a -- paclsta "pacman -Qem | awk '{print \$1}' | xargs expac --timefmt=\"%F %T\" \"[%l] \$(printf '\\033[1;35m')%n\$(printf '\\033[0m') \$(printf '\\033[0;37m')(%v)\$(printf '\\033[0m')\" | sort -k3"
 abbr -a -- pacinsd doas pacman -S --asdeps
 abbr -a -- pacmir doas pacman -Syy
 abbr -a -- paclsorphans doas pacman -Qdt
@@ -112,6 +114,7 @@ if type -q yay
     abbr -a -- yaloc yay -Qi
     abbr -a -- yalocs yay -Qs
     abbr -a -- yalst yay -Qe
+    abbr -a -- yalsta "yay -Qem | awk '{print \$1}' | xargs expac --timefmt=\"%F %T\" \"[%l] \$(printf '\\033[1;35m')%n\$(printf '\\033[0m') \$(printf '\\033[0;37m')(%v)\$(printf '\\033[0m')\" | sort -k3"
     abbr -a -- yaorph yay -Qtd
     abbr -a -- yainsd yay -S --asdeps
     abbr -a -- yamir yay -Syy
