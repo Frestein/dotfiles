@@ -1,0 +1,6 @@
+[".local/share/icons/Gruvbox-Material-Dark"]
+type = "archive"
+url = "https://github.com/TheGreatMcPain/gruvbox-material-gtk/archive/master.tar.gz"
+include = ["*/icons/Gruvbox-Material-Dark/**"]
+refreshPeriod = "168h"
+stripComponents = 3
