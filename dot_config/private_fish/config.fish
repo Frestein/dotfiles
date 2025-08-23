@@ -15,6 +15,8 @@ if status is-interactive
         echo (fish_prompt_pwd_dir_length=1 prompt_pwd): $argv
     end
 
+    fish_config theme choose gruvbox-dark
+
     bind ctrl-s sysz
     bind -M insert ctrl-s sysz
 

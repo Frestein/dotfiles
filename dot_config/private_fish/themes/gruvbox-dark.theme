@@ -1,0 +1,29 @@
+# name: 'Gruvbox Dark'
+# preferred_background: 282828
+
+fish_color_normal d4be98
+fish_color_command b8bb26
+fish_color_param fabd2f
+fish_color_keyword fb4934
+fish_color_quote b8bb26
+fish_color_redirection d3869b
+fish_color_end fabd2f
+fish_color_comment 928374 --italics
+fish_color_error fb4934
+fish_color_gray 7c6f64
+fish_color_selection --background=504945
+fish_color_search_match --background=504945
+fish_color_option b8bb26
+fish_color_operator d3869b
+fish_color_escape fe8019
+fish_color_autosuggestion 7c6f64
+fish_color_cancel fb4934
+fish_color_cwd fabd2f
+fish_color_user 8ec07c
+fish_color_host 83a598
+fish_color_host_remote b8bb26
+fish_color_status fb4934
+fish_pager_color_progress 7c6f64
+fish_pager_color_prefix d3869b
+fish_pager_color_completion d4be98
+fish_pager_color_description 7c6f64
