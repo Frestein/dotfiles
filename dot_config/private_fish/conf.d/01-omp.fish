@@ -2,7 +2,7 @@ if not status is-interactive && test "$CI" != true
     exit
 end
 
-oh-my-posh init fish --config="$HOME/.config/oh-my-posh/themes/bubblesline-fish.omp.toml" | source
+oh-my-posh init fish --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline-fish.omp.toml" | source
 
 function rerender_on_bind_mode_change --on-variable fish_bind_mode
     if test "$fish_bind_mode" != paste -a "$fish_bind_mode" != "$FISH__BIND_MODE"
