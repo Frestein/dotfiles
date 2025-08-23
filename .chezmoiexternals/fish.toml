@@ -3,19 +3,19 @@ type = "file"
 url = "https://raw.githubusercontent.com/oh-my-fish/plugin-extract/refs/heads/master/functions/extract.fish"
 refreshPeriod = "168h"
 
-[".config/fish/completions/fzf_configure_bindings.fish"]
-type = "file"
-url = "https://raw.githubusercontent.com/PatrickF1/fzf.fish/refs/heads/main/completions/fzf_configure_bindings.fish"
-refreshPeriod = "168h"
-
-[".config/fish/conf.d/fzf.fish"]
-type = "file"
-url = "https://raw.githubusercontent.com/PatrickF1/fzf.fish/refs/heads/main/conf.d/fzf.fish"
-refreshPeriod = "168h"
-
-[".config/fish/functions"]
-type = "archive"
-url = "https://github.com/PatrickF1/fzf.fish/archive/main.tar.gz"
-include = ["*/functions/**"]
-refreshPeriod = "168h"
-stripComponents = 2
+# [".config/fish/completions/fzf_configure_bindings.fish"]
+# type = "file"
+# url = "https://raw.githubusercontent.com/PatrickF1/fzf.fish/refs/heads/main/completions/fzf_configure_bindings.fish"
+# refreshPeriod = "168h"
+#
+# [".config/fish/conf.d/fzf.fish"]
+# type = "file"
+# url = "https://raw.githubusercontent.com/PatrickF1/fzf.fish/refs/heads/main/conf.d/fzf.fish"
+# refreshPeriod = "168h"
+#
+# [".config/fish/functions"]
+# type = "archive"
+# url = "https://github.com/PatrickF1/fzf.fish/archive/main.tar.gz"
+# include = ["*/functions/**"]
+# refreshPeriod = "168h"
+# stripComponents = 2
