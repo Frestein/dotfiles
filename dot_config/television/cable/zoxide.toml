@@ -1,0 +1,10 @@
+[metadata]
+name = "zoxide"
+description = "A channel to select from directories"
+requirements = ["zoxide", "eza"]
+
+[source]
+command = ["zoxide query -l"]
+
+[preview]
+command = "eza -la --group-directories-first --no-user --no-permissions --color=always --icons=always '{}'"
