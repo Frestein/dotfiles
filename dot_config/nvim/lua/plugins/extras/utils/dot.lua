@@ -16,7 +16,7 @@ return {
 			pattern = {
 				[".*/.*%.hl"] = "hyprlang",
 				[".*/ghostty/config"] = "bash",
-				[".*/kanata/.+"] = "lisp",
+				[".*/kanata/.+"] = "kanata",
 				[".*/newsboat/.+"] = "config",
 				[".*/zathura/themes/.+"] = "zathurarc",
 			},
@@ -28,6 +28,22 @@ return {
 
 		if fs.exists ".Xresources" then
 			add "xresources"
+		end
+
+		if fs.exists "kanata" then
+			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+
+			parser_config.kanata = {
+				install_info = {
+					url = "~/Projects/git/tree-sitter-kanata/",
+					files = { "src/parser.c" },
+					generate_requires_npm = true,
+					requires_generate_from_grammar = true,
+				},
+				filetype = "kanata",
+			}
+
+			add "kanata"
 		end
 	end,
 }
