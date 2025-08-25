@@ -87,26 +87,25 @@
 )
 
 (deflayermap (extended)
+    ;; first row
     u pgup
+    i ins
     o pgdn
-
     p prnt
 
-    h C-left
-    ; C-right
-
-    j left
-    k down
-    i up
+    ;; home row
+    h left
+    j down
+    k up
     l right
+
+    ;; third row
+    x C-tab
+    c C-S-tab
 
     n home
     m del
-    , ins
-    . end
-
-    x C-tab
-    c C-S-tab
+    , end
 )
 
 (deflayermap (nomods)
