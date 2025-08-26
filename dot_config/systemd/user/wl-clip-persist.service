@@ -1,0 +1,14 @@
+[Unit]
+Description=Keep Wayland clipboard even after programs close
+Documentation=https://github.com/Linus789/wl-clip-persist
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/wl-clip-persist --clipboard regular
+Restart=always
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target
