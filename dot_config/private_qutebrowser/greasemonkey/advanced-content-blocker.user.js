@@ -28,6 +28,7 @@
     //   "td.vMiddle",
     //   "td.tCenter",
     // ],
+    "hentailib.me": [".mc_b"],
     "kwork.ru": [".js-notification-block"],
     "www.trueachievements.com": [
       ".lb_holder",
