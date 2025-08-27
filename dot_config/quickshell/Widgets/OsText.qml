@@ -17,12 +17,12 @@ Rectangle {
 		icon {
 			color: QsData.Colors.tertiary
 			font.family: QsData.Fonts.caskaydia
-			text: "󱄅"
+			text: ""
 		}
 
 		text {
 			color: QsData.Colors.tertiary
-			text: "NixOS"
+			text: "Arch"
 		}
 	}
 }

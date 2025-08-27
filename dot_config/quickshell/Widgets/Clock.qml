@@ -18,7 +18,7 @@ Rectangle {
 			id: icon
 
 			color: QsData.Colors.on_background
-			text: "schedule"
+			text: "󱑎"
 		}
 
 		text {

@@ -10,16 +10,9 @@ Item {
 		anchors.top: parent.top
 		layoutDirection: Qt.RightToLeft
 
-		QsWidgets.Session {}
-
-		QsWidgets.PowerProfs {}
-
 		QsWidgets.Sound {}
-
 		QsWidgets.Sound {
 			node: Pipewire.defaultAudioSource
 		}
-
-		QsWidgets.Battery {}
 	}
 }
