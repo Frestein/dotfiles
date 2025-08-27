@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Pipewire
-import qs.Widgets as Wid
+import qs.Widgets as QsWidgets
 
 Item {
 	RowLayout {
@@ -10,16 +10,16 @@ Item {
 		anchors.top: parent.top
 		layoutDirection: Qt.RightToLeft
 
-		Wid.Session {}
+		QsWidgets.Session {}
 
-		Wid.PowerProfs {}
+		QsWidgets.PowerProfs {}
 
-		Wid.Sound {}
+		QsWidgets.Sound {}
 
-		Wid.Sound {
+		QsWidgets.Sound {
 			node: Pipewire.defaultAudioSource
 		}
 
-		Wid.Battery {}
+		QsWidgets.Battery {}
 	}
 }

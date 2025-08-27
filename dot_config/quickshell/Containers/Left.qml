@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import qs.Widgets as Wid
+import qs.Widgets as QsWidgets
 
 Item {
 	RowLayout {
@@ -8,10 +8,10 @@ Item {
 		anchors.left: parent.left
 		anchors.top: parent.top
 
-		Wid.OsText {}
+		QsWidgets.OsText {}
 
-		Wid.Workspaces {}
+		QsWidgets.Workspaces {}
 
-		Wid.WorkspaceName {}
+		QsWidgets.WorkspaceName {}
 	}
 }

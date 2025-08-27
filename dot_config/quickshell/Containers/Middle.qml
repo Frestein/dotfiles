@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import qs.Widgets as Wid
+import qs.Widgets as QsWidgets
 
 Item {
 	RowLayout {
@@ -8,6 +8,6 @@ Item {
 		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.top: parent.top
 
-		Wid.Clock {}
+		QsWidgets.Clock {}
 	}
 }

@@ -1,10 +1,10 @@
 //@ pragma UseQApplication
 import Quickshell
 import QtQuick
-import qs.Layers as Lay
+import qs.Layers as QsLayers
 
 ShellRoot {
-	Lay.Top {}
+	QsLayers.Top {}
 
 	// inhibit the reload popup
 	Connections {
