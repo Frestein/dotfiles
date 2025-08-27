@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+
+{{ if eq .chezmoi.osRelease.id "arch" }}
+
+echo "Installing Arch Glow Plymouth theme..."
+
+url=$(curl -Lfs "https://store.kde.org/p/1000032/loadFiles" |
+    jq -r '.files | first.version as $v | .[] | select(.version == $v).url' |
+    perl -pe 's/%(\w\w)/chr hex $1/ge')
+
+tmpdir="/tmp/plymouth_tmp"
+outputdir="/usr/share/plymouth/themes/arch-glow"
+filename="plymouth-theme-arch-glow.zip"
+filepath="/tmp/$filename"
+
+mkdir -p "$tmpdir"
+
+curl -L -o "$filepath" "$url"
+
+unzip -q "$filepath" "Arch Linux Plymouth theme/arch-glow/*" -d "$tmpdir"
+
+find "$tmpdir/Arch Linux Plymouth theme/arch-glow/" -name "Thumbs.db" -delete
+
+sudo mkdir -p "$outputdir"
+sudo mv "$tmpdir/Arch Linux Plymouth theme/arch-glow/"* "$outputdir/"
+
+rm -rf "$tmpdir"
+rm -f "$filepath"
+
+{{ else }}
+
+echo "This script is only for Arch based systems. Exiting..."
+
+exit 1
+
+{{ end }}
