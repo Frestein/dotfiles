@@ -124,17 +124,12 @@ M.themes = {
 M.keys = {
 	{ icon = "󰦛 ", key = "s", desc = "Restore", action = ":lua require('persistence').load { last = true }" },
 	{ icon = " ", key = "p", desc = "Projects", action = ":lua Snacks.picker.projects()" },
-	{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-	-- { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-	{ icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+    { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
 	{ icon = " ", key = "r", desc = "Recent", action = ":lua Snacks.dashboard.pick('oldfiles')" },
 	{ icon = "󱐁 ", key = "z", desc = "Zoxide", action = ":lua Snacks.picker.zoxide()" },
 	{ icon = " ", key = "S", desc = "Sessions", action = ":lua require('persistence').select()" },
-	{ icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', { cwd = vim.fn.stdpath('config') })" },
-	{ icon = " ", key = "k", desc = "Keymaps", action = ":lua Snacks.dashboard.pick('keymaps')" },
-    { icon = " ", key = "x", desc = "Extras", action = ":LazyExtras" },
-	{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-	{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+	{ icon = " ", key = "b", desc = "Keymaps", action = ":lua Snacks.dashboard.pick('keymaps')" },
+    { icon = " ", key = "x", desc = "Extras", action = ":LazyExtras" },
 }
 
 M.startup = function()
