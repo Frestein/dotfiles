@@ -3,6 +3,7 @@
 WATCHED_DIRS=(
     "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
     "${XDG_CONFIG_HOME:-$HOME/.config}/doom"
+    "${XDG_CONFIG_HOME:-$HOME/.config}/quickshell"
 )
 
 declare -A last_event_time
