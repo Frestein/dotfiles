@@ -56,7 +56,7 @@
 
 (map! :leader
       (:prefix ("t" . "toggle")
-               :desc "Automatic line breaking" :n "a" #'auto-fill-mode)
+       :desc "Automatic line breaking" :n "a" #'auto-fill-mode)
       (:prefix ("s" . "search")
                (:when (modulep! :tools pass)
                  :n "p" nil ;; Disable defaults
@@ -149,6 +149,9 @@
 (setq org-directory "~/Documents/org/"
       org-hide-emphasis-markers t)
 
+(when (modulep! :lang org)
+  (use-package! corg
+    :config (add-hook 'org-mode-hook #'corg-setup)))
 
 ;; WWW
 (setq browse-url-text-browser "cha"

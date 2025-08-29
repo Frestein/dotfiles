@@ -3,3 +3,7 @@
 
 (when (modulep! :app rss)
   (package! elfeed-summary))
+
+(when (modulep! :lang org)
+  (package! corg
+    :recipe (:host github :repo "isamert/corg.el")))
