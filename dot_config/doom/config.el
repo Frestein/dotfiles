@@ -38,6 +38,10 @@
 
 ;; Mappings
 (map! :map evil-normal-state-map
+      "C-h" #'evil-window-left
+      "C-j" #'evil-window-down
+      "C-k" #'evil-window-up
+      "C-l" #'evil-window-right
       "H" #'previous-buffer
       "L" #'next-buffer)
 
