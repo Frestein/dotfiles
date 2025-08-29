@@ -8,7 +8,12 @@
 (setq doom-theme 'doom-gruvbox)
 
 ;; Global Auto Revert
-;; A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x auto-revert-mode, or you can set it to be turned on globally with ‘global-auto-revert-mode’.  I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ‘dired’ buffers.
+;; A buffer can get out of sync with respect to its visited file on disk if that
+;; file is changed by another program. To keep it up to date, you can enable
+;; Auto Revert mode by typing M-x auto-revert-mode, or you can set it to be
+;; turned on globally with ‘global-auto-revert-mode’. I have also turned on
+;; Global Auto Revert on non-file buffers, which is especially useful for
+;; ‘dired’ buffers.
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
 
@@ -50,6 +55,8 @@
    :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle))
 
 (map! :leader
+      (:prefix ("t" . "toggle")
+               :desc "Automatic line breaking" :n "a" #'auto-fill-mode)
       (:prefix ("s" . "search")
                (:when (modulep! :tools pass)
                  :n "p" nil ;; Disable defaults
