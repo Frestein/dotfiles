@@ -21,15 +21,14 @@
 (setq display-line-numbers-type 'relative)
 
 ;; Fonts
-(setq doom-font (font-spec :family "Maple Mono NF" :size 14)
+(setq doom-font                (font-spec :family "Maple Mono NF" :size 14)
+      doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
-      doom-big-font (font-spec :family "Maple Mono NF" :size 24)
-      doom-symbol-font (font-spec :family "JoyPixels" :size 14)
-      doom-serif-font (font-spec :family "Noto Serif" :size 14))
+      doom-serif-font          (font-spec :family "Noto Serif" :size 14)
+      doom-symbol-font         (font-spec :family "JoyPixels" :size 14))
 
 (custom-set-faces!
-  '(font-lock-comment-face :slant italic)
-  '(font-lock-keyword-face :slant italic))
+  '((font-lock-comment-face font-lock-keyword-face) :slant italic))
 
 ;; Shell
 (setq shell-file-name (executable-find "bash"))
@@ -47,8 +46,8 @@
       "C-j" #'evil-window-down
       "C-k" #'evil-window-up
       "C-l" #'evil-window-right
-      "H" #'previous-buffer
-      "L" #'next-buffer)
+      "H"   #'previous-buffer
+      "L"   #'next-buffer)
 
 (map!
  (:when (modulep! :term vterm )
@@ -104,11 +103,8 @@
             ("M" "/mnt/"                              "Drives")
             ("t" "~/.local/share/Trash/files/"        "TrashCan")))
 
-    (setq dirvish-attributes
-          '(collapse git-msg file-modes file-time))
-
-    (setq dirvish-side-attributes
-          '(collapse))
+    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
+          dirvish-side-attributes '(collapse))
 
     (when (modulep! :emacs dired +icons)
       (setq dirvish-subtree-always-show-state t)
