@@ -331,9 +331,16 @@ It should be the title of the web page as returned by `rdrview'."
 
 ;; Pass
 (when (modulep! :tools pass)
+  (when (executable-find "gopass")
+    (setq backup-directory-alist
+          (append
+           '(("/dev/shm/gopass.*" . nil))
+           backup-directory-alist)))
+
   (use-package! password-store
     :config
-    (setq password-store-executable (executable-find "gopass")))
+    (when (executable-find "gopass")
+      (setq password-store-executable (executable-find "gopass"))))
 
   (use-package! pass
     :config
