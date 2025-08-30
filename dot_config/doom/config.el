@@ -33,8 +33,8 @@
 
 ;; Shell
 (setq shell-file-name (executable-find "bash"))
-(setq-default vterm-shel "/usr/bin/fish")
-(setq-default explicit-shell-file-name "/usr/bin/fish")
+(setq-default vterm-shel (executable-find "fish")
+              explicit-shell-file-name (executable-find "fish"))
 
 ;; Smooth scroll
 ;; Disable ultra-scroll
@@ -154,8 +154,8 @@
     :config (add-hook 'org-mode-hook #'corg-setup)))
 
 ;; WWW
-(setq browse-url-text-browser "cha"
-      browse-url-generic-program "qutebrowser")
+(setq browse-url-text-browser (executable-find "cha")
+      browse-url-generic-program (executable-find "qutebrowser"))
 
 (defvar eww-urls
   '("www.opennet.ru" "lwn.net")
