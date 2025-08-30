@@ -32,8 +32,9 @@
 
 ;; Shell
 (setq shell-file-name (executable-find "bash"))
-(setq-default vterm-shel (executable-find "fish")
-              explicit-shell-file-name (executable-find "fish"))
+(when (executable-find "fish")
+  (setq-default vterm-shell (executable-find "fish")
+                explicit-shell-file-name (executable-find "fish")))
 
 ;; Smooth scroll
 ;; Disable ultra-scroll
