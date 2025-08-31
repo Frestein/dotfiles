@@ -151,6 +151,9 @@
     :config (add-hook 'org-mode-hook #'corg-setup)))
 
 ;; Languages
+;; Treesit
+(setq treesit-font-lock-level 4)
+
 ;; Eglot
 (defun is-arch-linux-p ()
   "Return t if the current system is Arch Linux."
