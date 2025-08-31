@@ -1,0 +1,3 @@
+action = copy
+files = [emoji]
+skin-tone = moderate
