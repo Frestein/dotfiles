@@ -19,6 +19,7 @@ return {
 				[".*/kanata/.+"] = "kanata",
 				[".*/newsboat/.+"] = "config",
 				[".*/zathura/themes/.+"] = "zathurarc",
+				[".*/.chezmoiignore"] = "gitignore",
 			},
 		}
 
