@@ -67,6 +67,11 @@
                  (:prefix ("P" . "Pass")
                   :desc "Username" :n "u" #'+pass/copy-user
                   :desc "Password" :n "p" #'+pass/consult)))
+      (:prefix ("o" . "open")
+       :desc "Open URL using generic browser" :n "g" #'browse-url-generic
+       :desc "Open URL" :n "w" #'browse-url
+       (:when (modulep! :term vterm)
+         :desc "Open URL using text browser" :n "W" #'browse-url-text-vterm))
       (:prefix ("A" . "app")
                (:when (modulep! :tools pass)
                  :desc "Pass" :n "p" #'pass)
@@ -176,6 +181,41 @@
 (setq browse-url-text-browser (executable-find "cha")
       browse-url-generic-program (executable-find "qutebrowser"))
 
+(when (modulep! :term vterm)
+  (defun close-vterm-buffer-on-exit (_buffer _event)
+    "Close vterm buffer and its window upon process exit."
+    (let ((buf (current-buffer))
+          (win (get-buffer-window (current-buffer))))
+      (when (buffer-live-p buf)
+        (when (and win (not (one-window-p)))
+          (delete-window win))
+        (kill-buffer buf))))
+
+  (defun browse-url-text-vterm (url &optional new-buffer)
+    "Ask a text browser to load URL inside vterm."
+    (interactive (browse-url-interactive-arg "Text browser URL: "))
+    (let* ((bufname "*vterm text browser*")
+           (buf (if new-buffer
+                    (generate-new-buffer-name bufname)
+                  bufname))
+           (proc (when (get-buffer buf) (get-buffer-process buf)))
+           (encoded-url (format "\"%s\"" (url-encode-url url)))
+           (browser-cmd (format "exec %s %s" browse-url-text-browser encoded-url)))
+      (if (or new-buffer (not (get-buffer buf)) (not proc) (not (memq (process-status proc) '(run stop))))
+          (progn
+            (vterm buf)
+            (add-hook 'vterm-exit-functions #'close-vterm-buffer-on-exit nil t)
+            (vterm-send-string browser-cmd)
+            (vterm-send-return)
+            (switch-to-buffer buf)
+            (delete-other-windows))
+        (switch-to-buffer buf)
+        (vterm-send-string (concat "g \C-u" encoded-url "\r"))
+        (delete-other-windows)))))
+
+;; Eww
+;; Dependencies:
+;; - rdrview (https://github.com/eafer/rdrview)
 (defvar eww-urls
   '("www.opennet.ru" "lwn.net")
   "List of domains to open using eww browser.")
@@ -190,9 +230,6 @@ otherwise open it with the default browser."
 
 (setq browse-url-browser-function #'frestein-browse-url-function)
 
-;; Eww
-;; Dependencies:
-;; - rdrview (https://github.com/eafer/rdrview)
 (setq shr-color-visible-luminance-min 50)
 
 (use-package! eww
