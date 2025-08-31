@@ -161,22 +161,13 @@
       (re-search-forward "^ID=arch" nil t))))
 
 (when (modulep! :tools lsp +eglot)
-  ;; nix
-  (set-eglot-client! 'nix-mode '("nixd"))
-  (add-hook 'nix-mode-hook #'eglot-ensure)
-
-  ;;qml
-  (after! qml-mode
-    (if (and (eq system-type 'gnu/linux) (is-arch-linux-p))
-        (set-eglot-client! 'qml-mode '("qmlls6"))
-      (set-eglot-client! 'qml-mode '("qmlls")))
-    (add-hook 'qml-mode-hook #'eglot-ensure))
-
-  (after! qml-ts-mode
-    (if (and (eq system-type 'gnu/linux) (is-arch-linux-p))
-        (set-eglot-client! 'qml-ts-mode '("qmlls6"))
-      (set-eglot-client! 'qml-ts-mode '("qmlls")))
-    (add-hook 'qml-ts-mode-hook #'eglot-ensure)))
+  ;; qml
+  (when (is-arch-linux-p)
+    (when (modulep! :lang qt)
+      (defun +qt-common-config (mode)
+        (when (modulep! :lang qt +lsp)
+          (set-eglot-client! mode '("qmlls6"))
+          (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))))
 
 ;; WWW
 (setq browse-url-text-browser (executable-find "cha")

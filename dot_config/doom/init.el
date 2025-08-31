@@ -161,7 +161,7 @@
        ;; graphviz          ; diagrams for confusing yourself even more
        ;; purescript        ; javascript, but functional
        ;; python            ; beautiful is better than ugly
-       qt                ; the 'cutest' gui framework ever
+       (qt +lsp +tree-sitter)  ; the 'cutest' gui framework ever
        ;; racket            ; a DSL for DSLs
        ;; raku              ; the artist formerly known as perl6
        ;; rest              ; Emacs as a REST client
