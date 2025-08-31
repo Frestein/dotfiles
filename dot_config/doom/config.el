@@ -150,6 +150,34 @@
   (use-package! corg
     :config (add-hook 'org-mode-hook #'corg-setup)))
 
+;; Languages
+;; Eglot
+(defun is-arch-linux-p ()
+  "Return t if the current system is Arch Linux."
+  (with-temp-buffer
+    (when (file-readable-p "/etc/os-release")
+      (insert-file-contents "/etc/os-release")
+      (goto-char (point-min))
+      (re-search-forward "^ID=arch" nil t))))
+
+(when (modulep! :tools lsp +eglot)
+  ;; nix
+  (set-eglot-client! 'nix-mode '("nixd"))
+  (add-hook 'nix-mode-hook #'eglot-ensure)
+
+  ;;qml
+  (after! qml-mode
+    (if (and (eq system-type 'gnu/linux) (is-arch-linux-p))
+        (set-eglot-client! 'qml-mode '("qmlls6"))
+      (set-eglot-client! 'qml-mode '("qmlls")))
+    (add-hook 'qml-mode-hook #'eglot-ensure))
+
+  (after! qml-ts-mode
+    (if (and (eq system-type 'gnu/linux) (is-arch-linux-p))
+        (set-eglot-client! 'qml-ts-mode '("qmlls6"))
+      (set-eglot-client! 'qml-ts-mode '("qmlls")))
+    (add-hook 'qml-ts-mode-hook #'eglot-ensure)))
+
 ;; WWW
 (setq browse-url-text-browser (executable-find "cha")
       browse-url-generic-program (executable-find "qutebrowser"))
