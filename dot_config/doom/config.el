@@ -37,9 +37,10 @@
                 explicit-shell-file-name (executable-find "fish")))
 
 ;; Smooth scroll
-;; Disable ultra-scroll
-(remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
-(remove-hook 'doom-first-file-hook #'ultra-scroll-mode)
+(when (modulep! :ui smooth-scroll)
+  ;; Disable ultra-scroll
+  (remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
+  (remove-hook 'doom-first-file-hook #'ultra-scroll-mode))
 
 ;; Mappings
 (map! :map evil-normal-state-map
