@@ -157,17 +157,16 @@
     (when (eq major-mode 'org-mode)
       (save-excursion
         (goto-char (point-min))
-        (let* ((case-fold-search t)
-               (ignore-tag (when (re-search-forward "^#\\+STARTUP_IGNORE:[ \t]*\\(.*\\)" nil t)
-                             (downcase (match-string 1)))))
+        (let ((case-fold-search t)
+              (ignore-tag (when (re-search-forward "^#\\+STARTUP_IGNORE:[ \t]*\\(.*\\)" nil t)
+                            (downcase (match-string 1)))))
           (org-cycle-set-startup-visibility)
           (when ignore-tag
             (goto-char (point-min))
-            (while (re-search-forward org-outline-regexp nil t)
-              (let ((tags (mapcar #'downcase (org-get-tags))))
-                (when (member ignore-tag tags)
-                  (org-show-entry)
-                  (org-show-subtree)))))))))
+            (cl-loop while (re-search-forward org-outline-regexp nil t)
+                     for tags = (mapcar #'downcase (org-get-tags))
+                     when (member ignore-tag tags)
+                     do (progn (org-show-entry) (org-show-subtree))))))))
 
   (add-hook 'org-mode-hook #'frestein/org-fold-respect-startup-ignore-tag)
 
