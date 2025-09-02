@@ -152,6 +152,10 @@
 (setq org-directory "~/Documents/org/"
       org-hide-emphasis-markers t)
 
+(map! :map org-mode-map
+      :localleader
+      :n "B" #'org-babel-tangle)
+
 (when (modulep! :lang org)
   (defun frestein/org-fold-respect-startup-ignore-tag ()
     "Fold according to #+STARTUP: and ignore folding for tag from #+STARTUP_IGNORE:."
