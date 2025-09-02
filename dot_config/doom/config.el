@@ -152,6 +152,25 @@
       org-hide-emphasis-markers t)
 
 (when (modulep! :lang org)
+  (defun frestein/org-fold-respect-startup-ignore-tag ()
+    "Fold according to #+STARTUP: and ignore folding for tag from #+STARTUP_IGNORE:."
+    (when (eq major-mode 'org-mode)
+      (save-excursion
+        (goto-char (point-min))
+        (let* ((case-fold-search t)
+               (ignore-tag (when (re-search-forward "^#\\+STARTUP_IGNORE:[ \t]*\\(.*\\)" nil t)
+                             (downcase (match-string 1)))))
+          (org-cycle-set-startup-visibility)
+          (when ignore-tag
+            (goto-char (point-min))
+            (while (re-search-forward org-outline-regexp nil t)
+              (let ((tags (mapcar #'downcase (org-get-tags))))
+                (when (member ignore-tag tags)
+                  (org-show-entry)
+                  (org-show-subtree)))))))))
+
+  (add-hook 'org-mode-hook #'frestein/org-fold-respect-startup-ignore-tag)
+
   (use-package! corg
     :config (add-hook 'org-mode-hook #'corg-setup)))
 
