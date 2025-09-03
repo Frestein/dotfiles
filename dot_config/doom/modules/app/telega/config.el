@@ -130,10 +130,12 @@
           ("Unread"   . " ")
           ("Work"     . " "))))
 
-
 (map! (:leader
        (:prefix ("A" . "app")
         :desc "Telega" :n "t" telega-prefix-map)))
+
+(map! :map telega-msg-button-map
+      "SPC" nil)
 
 (use-package! telega-mnz
   :when (modulep! +mnz)
