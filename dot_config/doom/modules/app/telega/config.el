@@ -10,7 +10,126 @@
         telega-temp-dir (expand-file-name "~/.cache/telega/temp"))
   :config
   (setq telega-server-libs-prefix "/usr"
-        telega-translate-to-language-by-default "ru"))
+        telega-translate-to-language-by-default "ru"
+        telega-use-images t
+        telega-emoji-use-images nil
+        telega-symbol-alarm "󰯪 "
+        telega-symbol-attachment "󰁦 "
+        telega-symbol-audio " "
+        telega-symbol-bell " "
+        telega-symbol-blocked "󰂭 "
+        telega-symbol-boost " "
+        telega-symbol-bulp " "
+        telega-symbol-chat-list "󱉯 "
+        telega-symbol-circle " "
+        telega-symbol-codeblock " "
+        telega-symbol-contact " "
+        telega-symbol-copyright ""
+        telega-symbol-credit-card " "
+        telega-symbol-distance " "
+        telega-symbol-eye " "
+        telega-symbol-failed ""
+        telega-symbol-favorite ""
+        telega-symbol-flames ""
+        telega-symbol-forum "󰠢 "
+        telega-symbol-forward " "
+        telega-symbol-game " "
+        telega-symbol-invoice "󰗋 "
+        telega-symbol-keyboard " "
+        telega-symbol-leave-comment " "
+        telega-symbol-lightning " "
+        telega-symbol-location " "
+        telega-symbol-lock " "
+        telega-symbol-member " "
+        telega-symbol-mode "󰧀 "
+        telega-symbol-online-status ""
+        telega-symbol-outline-close "󰍟"
+        telega-symbol-outline-open "󰍝"
+        telega-symbol-pause ""
+        telega-symbol-pending "󰔟 "
+        telega-symbol-phone " "
+        telega-symbol-photo " "
+        telega-symbol-pin " "
+        telega-symbol-play ""
+        telega-symbol-poll ""
+        telega-symbol-premium " "
+        telega-symbol-reaction " "
+        telega-symbol-reaction-mark " "
+        telega-symbol-reply " "
+        telega-symbol-right-arrow "󰧂 "
+        telega-symbol-star "󰓎 "
+        telega-symbol-story " "
+        telega-symbol-story-reply (compose-chars ? ?)
+        telega-symbol-telegram " "
+        telega-symbol-telegram-star (propertize "󰓎" 'face '(:foreground "goldenrod"))
+        telega-symbol-timer-clock "󰔛 "
+        telega-symbol-verified " "
+        telega-symbol-video "󰯜 "
+        telega-symbol-video-chat-active "󰯜 "
+        telega-symbol-video-chat-passive "󰯛 "
+        telega-symbol-folder "󰉖 "
+        telega-symbol-multiple-folders "󰉕 "
+        telega-symbol-checkmark "󰄬"
+        telega-symbol-heavy-checkmark "󰄭"
+        telega-symbol-checkbox-on ""
+        telega-symbol-checkbox-off ""
+        telega-symbol-radiobox-on "󰝥"
+        telega-symbol-radiobox-off "󰝦"
+        telega-symbol-poll-options (list "󰝦" "󰝥")
+        telega-symbol-poll-multiple-options (list "󰄱" "󰱒")
+        telega-symbol-dice-list (list "󱅊" "󰇊" "󰇋" "󰇌" "󰇍" "󰇎" "󰇏")
+        telega-currency-symbols-alist
+        '(("EUR" . "€")     ;; Euro
+          ("USD" . "$")     ;; US Dollar
+          ("RUB" . "₽")     ;; Russian Ruble
+          ("GBP" . "£")     ;; British Pound
+          ("JPY" . "¥")     ;; Japanese Yen
+          ("CNY" . "¥")     ;; Chinese Yuan (same symbol as Yen)
+          ("INR" . "₹")     ;; Indian Rupee
+          ("KRW" . "₩")     ;; South Korean Won
+          ("TRY" . "₺")     ;; Turkish Lira
+          ("UAH" . "₴")     ;; Ukrainian Hryvnia
+          ("PLN" . "zł")    ;; Polish Zloty (zł)
+          ("NGN" . "₦")     ;; Nigerian Naira
+          ("KZT" . "₸")     ;; Kazakhstan Tenge
+          ("THB" . "฿")     ;; Thai Baht
+          ("CHF" . "Fr")    ;; Swiss Franc (Fr)
+          ("AUD" . "A$")    ;; Australian Dollar
+          ("CAD" . "C$")    ;; Canadian Dollar
+          ("MXN" . "MX$")   ;; Mexican Peso
+          ("BRL" . "R$"))   ;; Brazilian Real
+        telega-folder-icons-alist
+        '(("All"      . "󰻞 ")
+          ("Airplane" . " ")
+          ("Art"      . "󰸌 ")
+          ("Book"     . " ")
+          ("Bots"     . " ")
+          ("Cat"      . "󰄛 ")
+          ("Channels" . " ")
+          ("Code"     . " ")
+          ("Crown"    . "󱇐 ")
+          ("Favorite" . " ")
+          ("Flower"   . "󰉊 ")
+          ("Game"     . " ")
+          ("Groups"   . "󰭘 ")
+          ("Home"     . " ")
+          ("Like"     . " ")
+          ("Love"     . " ")
+          ("Mask"     . "󰴂 ")
+          ("Money"    . " ")
+          ("Note"     . "󰺿 ")
+          ("Party"    . " ")
+          ("Private"  . " ")
+          ("Setup"    . " ")
+          ("Sport"    . "󱅝 ")
+          ("Study"    . " ")
+          ("Tech"     . " ")
+          ("Trade"    . "󰄨 ")
+          ("Travel"   . " ")
+          ("Unmuted"  . " ")
+          ("Unread"   . " ")
+          ("Work"     . " "))))
+
 
 (map! (:leader
        (:prefix ("A" . "app")

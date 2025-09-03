@@ -27,6 +27,9 @@
       doom-serif-font          (font-spec :family "Noto Serif" :size 14)
       doom-symbol-font         (font-spec :family "JoyPixels" :size 14))
 
+(when (modulep! :app telega)
+  (setq telega-emoji-font-family "JoyPixels"))
+
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
 
