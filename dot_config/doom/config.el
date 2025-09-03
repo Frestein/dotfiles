@@ -51,23 +51,27 @@
       "H"   #'previous-buffer
       "L"   #'next-buffer)
 
-(map!
- (:when (modulep! :term vterm )
-   :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle))
+(map! :map evil-visual-state-map
+      "gss" #'sort-lines)
+
+(map! (:when (modulep! :term vterm )
+        :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle
+        :desc "Toggle vterm popup" :i "C-/" #'+vterm/toggle))
 
 (map! :leader
       (:prefix ("t" . "toggle")
        :desc "Automatic line breaking" :n "a" #'auto-fill-mode)
       (:prefix ("s" . "search")
-               (:when (modulep! :tools pass)
-                 :n "p" nil ;; Disable defaults
-                 :n "P" nil ;; Disable defaults
-                 (:prefix ("p" . "project")
-                  :desc "Search project" :n "p" #'+default/search-project
-                  :desc "Search other project" :n "o" #'+default/search-other-project)
-                 (:prefix ("P" . "Pass")
-                  :desc "Username" :n "u" #'+pass/copy-user
-                  :desc "Password" :n "p" #'+pass/consult)))
+       :desc "Search nerd icons" :n "n" #'nerd-icons-insert
+       (:when (modulep! :tools pass)
+         :n "p" nil ;; Disable defaults
+         :n "P" nil ;; Disable defaults
+         (:prefix ("p" . "project")
+          :desc "Search project" :n "p" #'+default/search-project
+          :desc "Search other project" :n "o" #'+default/search-other-project)
+         (:prefix ("P" . "Pass")
+          :desc "Username" :n "u" #'+pass/copy-user
+          :desc "Password" :n "p" #'+pass/consult)))
       (:prefix ("o" . "open")
        :desc "Open URL using generic browser" :n "g" #'browse-url-generic
        :desc "Open URL" :n "w" #'browse-url
