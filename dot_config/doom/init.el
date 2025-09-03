@@ -32,6 +32,7 @@
        ophints              ; highlight the region an operation acts on
        (popup +defaults)    ; tame sudden yet inevitable temporary windows
        (smooth-scroll +interpolate)  ; So smooth you won't believe it's not butter
+       smart-cursor         ; change cursor-color dynamically
        ;; tabs              ; a tab bar for Emacs
        ;; treemacs          ; a project drawer, like neotree but cooler
        ;; unicode           ; extended unicode support for various languages

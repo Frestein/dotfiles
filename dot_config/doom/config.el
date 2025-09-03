@@ -341,45 +341,6 @@ It should be the title of the web page as returned by `rdrview'."
   (setq +zen-text-scale 0
         writeroom-width 100))
 
-;; Cursor
-(defvar last-cursor-position nil
-  "Last position where cursor color was updated.")
-
-(defun set-cursor-color-to-foreground-optimized ()
-  "Set cursor color to match foreground, but only when position changes."
-  (condition-case err
-      (unless (equal (point) last-cursor-position)
-        (setq last-cursor-position (point))
-        (let* ((face (get-text-property (point) 'face))
-               (fg-color (cond
-                          ;; If face is a list, get the first valid one with a foreground
-                          ((listp face)
-                           (cl-loop for f in face
-                                    for color = (and (symbolp f) ; Only process symbol faces
-                                                     (condition-case nil
-                                                         (face-foreground f nil t)
-                                                       (error nil)))
-                                    when (and color (not (eq color 'unspecified)))
-                                    return color))
-                          ;; If face is a single symbol face
-                          ((symbolp face)
-                           (condition-case nil
-                               (face-foreground face nil t)
-                             (error nil)))
-                          ;; No face property or invalid face - use nil
-                          (t nil))))
-          ;; If no specific face color found, use default foreground
-          (unless (and fg-color (not (eq fg-color 'unspecified)))
-            (setq fg-color (face-foreground 'default nil t)))
-          ;; Set cursor color (should always have a color now)
-          (when (and fg-color (not (eq fg-color 'unspecified)))
-            (set-cursor-color fg-color))))
-    (error
-     ;; Silently handle errors to avoid disrupting post-command-hook
-     nil)))
-
-(add-hook 'post-command-hook 'set-cursor-color-to-foreground-optimized)
-
 ;; Printer
 (after! lpr
   (setq lpr-lp-system t
