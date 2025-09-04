@@ -3,6 +3,8 @@
 (use-package! telega
   :bind-keymap ("C-c t" . telega-prefix-map)
   :hook (telega-load . telega-appindicator-mode)
+  :hook (telega-load . telega-mode-line-mode)
+  :hook (telega-load . telega-notifications-mode)
   :init
   (setq telega-directory (expand-file-name "~/.local/share/telega")
         telega-database-dir (expand-file-name "~/.local/share/telega")
