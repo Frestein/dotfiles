@@ -143,28 +143,31 @@
 (use-package! telega-mnz
   :when (modulep! +mnz)
   :after-call telega
-  :custom
-  (global-telega-mnz-mode t)
-  (telega-mnz-use-language-detection 32))
+  :hook (telega-load  . global-telega-mnz-mode)
+  :config
+  (setq telega-mnz-use-language-detection 32))
 
 (use-package! language-detection
-  :when (modulep! +mnz)
-  ;; NOTE: The `language-detection-string' function is already autoloaded,
-  ;; so we can safely defer it.
-  :defer t)
+  :when (modulep! +mnz))
 
 ;; TODO: WIP
-;; (use-package telega-dashboard
-;; :when (modulep! +dashboard)
+;; (use-package! telega-dashboard
+;;   :when (modulep! +dashboard)
 ;;   :after-call telega
-;;   :config (add-to-list 'dashboard-items '(telega-chats . 5)))
+;;   :config
+;;   (add-to-list '+doom-dashboard-menu-sections
+;;                '("Important telega chats"
+;;                  :icon (nerd-icons-faicon "nf-fa-comment" :face 'doom-dashboard-menu-title)
+;;                  :action (lambda () (telega-dashboard-show))
+;;                  :when (featurep 'telega-dashboard))
+;;                t))
 
-(use-package! telega-stories
+(use-package! telega-emacs-stories
   :when (modulep! +stories)
   :after-call telega
+  :hook (telega-load  . telega-emacs-stories-mode)
   :bind (:map telega-root-mode-map
-              ("v e" . telega-view-emacs-stories))
-  :config (telega-stories-mode 1))
+              ("v e" . telega-view-emacs-stories)))
 
 (use-package! telega-url-shorten-nerd
   :when (modulep! +icons)
