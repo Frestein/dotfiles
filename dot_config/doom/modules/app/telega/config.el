@@ -133,7 +133,11 @@
        ("Travel"   . " ")
        ("Unmuted"  . " ")
        ("Unread"   . " ")
-       ("Work"     . " ")))))
+       ("Work"     . " "))))
+
+  (defun telega-chatbuf--sponsored-messages-fetch ()
+    "Disable fetching sponsored messages."))
+
 
 (map! (:leader
        (:prefix ("A" . "app")
@@ -176,4 +180,11 @@
   :after-call telega
   :hook (telega-load  . global-telega-url-shorten-nerd-mode))
 
-(use-package! telega-dired-dwim :after-call telega)
+(use-package! telega-adblock
+  :when (modulep! +adblock)
+  :after-call telega
+  :hook (telega-load  . telega-adblock-mode))
+
+(use-package! telega-dired-dwim
+  :when (modulep! :emacs dired)
+  :after-call telega)
