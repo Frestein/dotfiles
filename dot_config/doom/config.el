@@ -136,10 +136,10 @@
         (push 'vc-state dirvish-side-attributes)))
 
     (dirvish-define-preview eza (file)
-      "Use `eza' to generate directory preview."
-      :require ("eza")
-      (when (file-directory-p file)
-        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+                            "Use `eza' to generate directory preview."
+                            :require ("eza")
+                            (when (file-directory-p file)
+                              `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
 
     (push 'eza dirvish-preview-dispatchers)
 
@@ -398,6 +398,34 @@ It should be the title of the web page as returned by `rdrview'."
   (use-package! pass
     :config
     (setq pass-show-keybindings nil)))
+
+;; HL-TODO
+(when (modulep! :ui hl-todo)
+  (after! hl-todo
+    (let ((frestein/hl-todo-keyword-faces
+           '(("TODO" (font-lock-variable-name-face bold) nil)
+             ("FIX"  (error bold) nil)
+             ("WARN"  (warning bold) ("WARNING" "XXX"))
+             ("PERF"  (font-lock-variable-name-face bold) ("OPTIM" "PERFORMANCE" "OPTIMIZE"))
+             ("NOTE"  (success bold) ("INFO"))
+             ("TEST"  (font-lock-variable-name-face bold) ("TESTING" "PASSED" "FAILED")))))
+      (dolist (e frestein/hl-todo-keyword-faces)
+        (let ((kw (car e)) (faces (cadr e)) (alts (caddr e)))
+          (if (assoc kw hl-todo-keyword-faces)
+              (when faces
+                (setcdr (assoc kw hl-todo-keyword-faces) faces))
+            (push (cons kw faces) hl-todo-keyword-faces))
+          (dolist (a alts)
+            (let ((existing (assoc a hl-todo-keyword-faces)))
+              (if existing
+                  (when faces (setcdr existing faces))
+                (push (cons a faces) hl-todo-keyword-faces)))))))))
+
+;; Which-key
+(setq which-key-idle-delay 0.2)
+
+;; BUG: https://github.com/justbur/emacs-which-key/issues/345
+;; which-key-show-operator-state-maps t
 
 ;; Misc
 (setq-default default-input-method "russian-computer")
