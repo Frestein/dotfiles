@@ -1,5 +1,8 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;; Doom
+(setq use-package-always-defer t)
+
 ;; User
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
