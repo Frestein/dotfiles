@@ -168,20 +168,26 @@
 
 (when (modulep! :lang org)
   (defun frestein/org-fold-respect-startup-ignore-tag ()
-    "Fold according to #+STARTUP: and ignore folding for tag from #+STARTUP_IGNORE:."
+    "Fold according to #+STARTUP: and ignore folding for tags from #+STARTUP_IGNORE:."
     (when (eq major-mode 'org-mode)
       (save-excursion
         (goto-char (point-min))
-        (let ((case-fold-search t)
-              (ignore-tag (when (re-search-forward "^#\\+STARTUP_IGNORE:[ \t]*\\(.*\\)" nil t)
-                            (downcase (match-string 1)))))
+        (let* ((case-fold-search t)
+               (ignore-line (when (re-search-forward
+                                   "^#\\+STARTUP_IGNORE:[ \t]*\\(.*\\)" nil t)
+                              (match-string 1)))
+               (ignore-tags (when ignore-line
+                              (mapcar #'downcase
+                                      (split-string ignore-line "[ \t]+" t)))))
           (org-cycle-set-startup-visibility)
-          (when ignore-tag
+          (when ignore-tags
             (goto-char (point-min))
             (cl-loop while (re-search-forward org-outline-regexp nil t)
                      for tags = (mapcar #'downcase (org-get-tags))
-                     when (member ignore-tag tags)
-                     do (progn (org-show-entry) (org-show-subtree))))))))
+                     when (cl-intersection ignore-tags tags :test #'string=)
+                     do (progn
+                          (org-show-entry)
+                          (org-show-subtree))))))))
 
   (add-hook 'org-mode-hook #'frestein/org-fold-respect-startup-ignore-tag)
 
