@@ -11,3 +11,6 @@
   (after! vertico-multiform
     (add-to-list 'vertico-multiform-categories
                  '(jinx (vertico-grid-annotate . 25)))))
+
+(when (modulep! :app telega)
+  (add-hook 'telega-chat-mode-hook #'jinx-mode))
