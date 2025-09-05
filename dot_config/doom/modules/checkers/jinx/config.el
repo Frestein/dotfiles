@@ -3,7 +3,8 @@
 (use-package! jinx
   :hook (doom-init-ui . global-jinx-mode)
   :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages))
+         ("C-M-$" . jinx-languages)
+         ([remap ispell-word] . #'jinx-correct))
   :config
   (setq jinx-languages "ru_RU en_US"
         jinx-delay 0.2
@@ -15,7 +16,12 @@
 
   (after! vertico-multiform
     (add-to-list 'vertico-multiform-categories
-                 '(jinx (vertico-grid-annotate . 25)))))
+                 '(jinx (vertico-grid-annotate . 25))))
 
-(when (modulep! :app telega)
-  (add-hook 'telega-chat-mode-hook #'jinx-mode))
+  (after! evil-commands
+    (global-set-key [remap evil-next-flyspell-error] #'jinx-next)
+    (global-set-key [remap evil-prev-flyspell-error] #'jinx-previous))
+
+  ;; I prefer for `point' to end up at the start of the word,
+  ;; not just after the end.
+  (advice-add 'jinx-next :after (lambda (_) (left-word))))
