@@ -2,6 +2,9 @@
 
 (use-package! telega
   :bind-keymap ("C-c t" . telega-prefix-map)
+  :hook (telega-root-mode . (lambda () (evil-snipe-local-mode -1)))
+  :hook (telega-chat-mode . (lambda () (evil-snipe-local-mode -1)))
+  :hook (telega-chatbuf-mode . (lambda () (evil-snipe-local-mode -1)))
   :hook (telega-load . telega-appindicator-mode)
   :hook (telega-load . telega-mode-line-mode)
   :hook (telega-load . telega-notifications-mode)
