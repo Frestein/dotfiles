@@ -87,7 +87,7 @@
        ;; direnv
        ;; docker
        chezmoi
-       consult-gh
+       (consult-gh +embark +nerd)  ; interactive interface for "Github CLI"
        ;; forgejo
        trashed              ; freedesktop.org trashcan
        screenshot
