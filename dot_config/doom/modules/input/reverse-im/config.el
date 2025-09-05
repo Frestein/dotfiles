@@ -1,6 +1,5 @@
 ;;; editor/reverse-im/config.el -*- lexical-binding: t; -*-
 
-;; Needed for `:after char-fold' to work
 (use-package! char-fold
   :custom
   (char-fold-symmetric t)
@@ -8,7 +7,7 @@
 
 (use-package! reverse-im
   :demand t
-  :after char-fold
+  :after-call char-fold
   :bind
   ("M-T" . reverse-im-translate-word)
   :custom
