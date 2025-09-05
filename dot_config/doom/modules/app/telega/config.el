@@ -69,7 +69,7 @@
      telega-symbol-location " "
      telega-symbol-lock " "
      telega-symbol-member " "
-     telega-symbol-mode "󰧀 "
+     telega-symbol-mode ""
      telega-symbol-online-status ""
      telega-symbol-outline-close "󰍟"
      telega-symbol-outline-open "󰍝"
