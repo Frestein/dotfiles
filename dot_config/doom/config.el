@@ -24,11 +24,12 @@
 (setq display-line-numbers-type 'relative)
 
 ;; Fonts
-(setq doom-font                (font-spec :family "Maple Mono NF" :size 14)
-      doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
-      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
+(setq doom-font                (font-spec :family "monospace" :size 14)
+      doom-big-font            (font-spec :family "monospace" :size 24)
+      doom-variable-pitch-font (font-spec :family "sans" :size 14)
       doom-serif-font          (font-spec :family "Noto Serif" :size 14)
-      doom-symbol-font         (font-spec :family "JoyPixels" :size 14))
+      doom-symbol-font         (font-spec :family "JoyPixels" :size 14)
+      doom-emoji-font          (font-spec :family "JoyPixels" :size 14))
 
 (when (modulep! :app telega)
   (setq telega-emoji-font-family "JoyPixels"))
