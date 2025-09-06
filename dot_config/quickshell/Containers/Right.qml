@@ -14,5 +14,7 @@ Item {
 		QsWidgets.Sound {
 			node: Pipewire.defaultAudioSource
 		}
+
+		// QsWidgets.Tray {}
 	}
 }
