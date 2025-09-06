@@ -10,7 +10,8 @@
 .config/doom.d/
 .config/discord/
 .config/Electron/
-.config/enchant/
+.config/enchant/en_US.*
+.config/enchant/ru_RU.*
 .config/FreeTube/
 .config/GIMP/
 .config/glib-2.0/
