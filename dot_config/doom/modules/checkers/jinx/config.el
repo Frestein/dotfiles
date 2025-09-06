@@ -2,8 +2,7 @@
 
 (use-package! jinx
   :hook (doom-init-ui . global-jinx-mode)
-  :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)
+  :bind (("C-M-$" . jinx-languages)
          ([remap ispell-word] . #'jinx-correct))
   :config
   (setq jinx-languages "ru_RU en_US"
