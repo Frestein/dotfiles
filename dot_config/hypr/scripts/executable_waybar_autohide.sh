@@ -51,7 +51,7 @@ while true; do
         pkill -USR1 waybar
         HIDDEN="false"
     elif ((y > 250)) && [[ "$HIDDEN" == "false" ]]; then
-        pkill -USR2 waybar
+        pkill -USR1 waybar
         HIDDEN="true"
     fi
 done
