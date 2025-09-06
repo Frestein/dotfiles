@@ -195,9 +195,6 @@
     :config (add-hook 'org-mode-hook #'corg-setup)))
 
 ;; Languages
-;; Treesit
-(setq treesit-font-lock-level 4)
-
 ;; Eglot
 (defun is-arch-linux-p ()
   "Return t if the current system is Arch Linux."
@@ -405,7 +402,7 @@ It should be the title of the web page as returned by `rdrview'."
     :config
     (setq pass-show-keybindings nil)))
 
-;; HL-TODO
+;; Hl-Todo
 (when (modulep! :ui hl-todo)
   (after! hl-todo
     (let ((frestein/hl-todo-keyword-faces
@@ -427,7 +424,7 @@ It should be the title of the web page as returned by `rdrview'."
                   (when faces (setcdr existing faces))
                 (push (cons a faces) hl-todo-keyword-faces)))))))))
 
-;; Which-key
+;; Which-Key
 (setq which-key-idle-delay 0.2)
 
 ;; BUG: https://github.com/justbur/emacs-which-key/issues/345
