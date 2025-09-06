@@ -6,6 +6,6 @@ return {
 	},
     -- stylua: ignore
     keys = {
-        { "gS", function() require("treesj").toggle() end, desc = "Toggle Arguments" },
+        { "gJ", function() require("treesj").toggle() end, desc = "Toggle Arguments" },
     },
 }

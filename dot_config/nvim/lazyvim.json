@@ -35,6 +35,7 @@
     "plugins.extras.editor.mini-operators",
     "plugins.extras.editor.rainbow-delimiters",
     "plugins.extras.editor.refactoring",
+    "plugins.extras.editor.sibling-swap",
     "plugins.extras.editor.treesj",
     "plugins.extras.editor.workspace-diagnostics",
     "plugins.extras.fun.drop",
