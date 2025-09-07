@@ -18,6 +18,7 @@
         telega-translate-to-language-by-default "ru"
         telega-use-images t
         telega-emoji-use-images nil
+        telega-chat-input-markups '("org" nil "markdown2")
         telega-currency-symbols-alist
         '(("EUR" . "€")     ;; Euro
           ("USD" . "$")     ;; US Dollar
