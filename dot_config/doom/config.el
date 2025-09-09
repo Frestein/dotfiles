@@ -24,15 +24,28 @@
 (setq display-line-numbers-type 'relative)
 
 ;; Fonts
-(setq doom-font                (font-spec :family "monospace" :size 14)
-      doom-big-font            (font-spec :family "monospace" :size 24)
-      doom-variable-pitch-font (font-spec :family "sans" :size 14)
+(setq doom-font                (font-spec :family "Maple Mono NF" :size 14)
+      doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
+      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
       doom-serif-font          (font-spec :family "Noto Serif" :size 14)
-      doom-symbol-font         (font-spec :family "JoyPixels" :size 14)
-      doom-emoji-font          (font-spec :family "JoyPixels" :size 14))
+      doom-emoji-font          (font-spec :family "JoyPixels" :size 14)
 
-(when (modulep! :app telega)
+      doom-symbol-font doom-font
+      doom-symbol-fallback-font-families '("JoyPixels"))
+
+(after! telega
   (setq telega-emoji-font-family "JoyPixels"))
+
+(after! unicode-fonts
+  (setq unicode-fonts-fallback-font-list doom-symbol-fallback-font-families)
+
+  (dolist (block '("Dingbats"
+                   "Emoticons"
+                   "Transport and Map Symbols"
+                   "Miscellaneous Symbols and Pictographs"
+                   "Enclosed Alphanumeric Supplement"
+                   "Supplemental Symbols and Pictographs"))
+    (push "JoyPixels" (cadr (assoc block unicode-fonts-block-font-mapping)))))
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
