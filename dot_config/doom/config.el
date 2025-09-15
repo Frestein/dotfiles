@@ -28,13 +28,13 @@
       doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
       doom-serif-font          (font-spec :family "Noto Serif" :size 14)
-      doom-emoji-font          (font-spec :family "JoyPixels" :size 14)
+      doom-emoji-font          (font-spec :family "Twemoji" :size 14)
 
       doom-symbol-font doom-font
-      doom-symbol-fallback-font-families '("JoyPixels"))
+      doom-symbol-fallback-font-families '("Twemoji"))
 
 (after! telega
-  (setq telega-emoji-font-family "JoyPixels"))
+  (setq telega-emoji-font-family "Twemoji"))
 
 (after! unicode-fonts
   (setq unicode-fonts-fallback-font-list doom-symbol-fallback-font-families)
@@ -45,7 +45,7 @@
                    "Miscellaneous Symbols and Pictographs"
                    "Enclosed Alphanumeric Supplement"
                    "Supplemental Symbols and Pictographs"))
-    (push "JoyPixels" (cadr (assoc block unicode-fonts-block-font-mapping)))))
+    (push "Twemoji" (cadr (assoc block unicode-fonts-block-font-mapping)))))
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))

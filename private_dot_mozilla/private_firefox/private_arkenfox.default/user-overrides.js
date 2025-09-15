@@ -3,7 +3,7 @@ user_pref("network.http.http3.enabled", true);
 
 // Fonts
 // See: https://wiki.archlinux.org/title/Firefox#Font_troubleshooting
-user_pref("font.name-list.emoji", "JoyPixels, Noto Color Emoji");
+user_pref("font.name-list.emoji", "emoji");
 user_pref("gfx.font_rendering.fontconfig.max_generic_substitutions", 127);
 user_pref("gfx.font_rendering.opentype_svg.enabled", false);
 
