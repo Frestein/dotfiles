@@ -82,16 +82,17 @@
       (:prefix ("t" . "toggle")
        :desc "Automatic line breaking" :n "a" #'auto-fill-mode)
       (:prefix ("s" . "search")
-       :desc "Search nerd icons" :n "n" #'nerd-icons-insert
-       (:when (modulep! :tools pass)
-         :n "p" nil ;; Disable defaults
-         :n "P" nil ;; Disable defaults
-         (:prefix ("p" . "project")
-          :desc "Search project" :n "p" #'+default/search-project
-          :desc "Search other project" :n "o" #'+default/search-other-project)
-         (:prefix ("P" . "Pass")
-          :desc "Username" :n "u" #'+pass/copy-user
-          :desc "Password" :n "p" #'+pass/consult)))
+               (:when (modulep! :tools pass)
+                 :n "p" nil ;; Disable defaults
+                 :n "P" nil ;; Disable defaults
+                 (:prefix ("p" . "project")
+                  :desc "Search project" :n "p" #'+default/search-project
+                  :desc "Search other project" :n "o" #'+default/search-other-project)
+                 (:prefix ("P" . "Pass")
+                  :desc "Username" :n "u" #'+pass/copy-user
+                  :desc "Password" :n "p" #'+pass/consult)))
+      (:prefix ("i" . "insert")
+       :desc "Nerd" :n "n" #'nerd-icons-insert)
       (:prefix ("o" . "open")
        :desc "Open URL using generic browser" :n "g" #'browse-url-generic
        :desc "Open URL" :n "w" #'browse-url
