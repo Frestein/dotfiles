@@ -2,6 +2,8 @@
 
 (use-package! telega
   :bind-keymap ("C-c t" . telega-prefix-map)
+  :bind (:map telega-msg-button-map
+              ("SPC" . nil))
   :hook (telega-root-mode . (lambda () (evil-snipe-local-mode -1)))
   :hook (telega-chat-mode . (lambda () (evil-snipe-local-mode -1)))
   :hook (telega-chatbuf-mode . (lambda () (evil-snipe-local-mode -1)))
@@ -150,13 +152,9 @@
   (defun telega-chatbuf--sponsored-messages-fetch ()
     "Disable fetching sponsored messages."))
 
-
 (map! (:leader
        (:prefix ("A" . "app")
         :desc "Telega" :n "t" telega-prefix-map)))
-
-(map! :map telega-msg-button-map
-      "SPC" nil)
 
 (use-package! telega-mnz
   :when (modulep! +mnz)
