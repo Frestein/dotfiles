@@ -54,7 +54,7 @@ c.spellcheck.languages = ["en-US", "ru-RU"]
 c.url.default_page = f"https://{instance_4get}/"
 c.url.start_pages = f"https://{instance_4get}/"
 c.url.searchengines = {
-    "DEFAULT": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
+    "DEFAULT": f"{instance_searxng}/?q={{"{{}}"}}",
     "4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
     "searxng": f"{instance_searxng}/?q={{"{{}}"}}",
     "paywall": "12ft.io/proxy?q={}",
