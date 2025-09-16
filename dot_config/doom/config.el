@@ -174,7 +174,9 @@
 
 ;; Org
 (setq org-directory "~/Documents/org/"
-      org-hide-emphasis-markers t)
+      org-hide-emphasis-markers t
+      org-archive-tag "archive"
+      org-element-archive-tag "archive")
 
 (map! :map org-mode-map
       :localleader
