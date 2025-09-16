@@ -18,6 +18,7 @@
   :config
   (setq telega-server-libs-prefix "/usr"
         telega-translate-to-language-by-default "ru"
+        telega-video-player-command "mpv"
         telega-use-images t
         telega-emoji-use-images nil
         telega-chat-input-markups '("org" nil "markdown2")
