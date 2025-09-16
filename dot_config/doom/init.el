@@ -85,6 +85,7 @@
        ;; collab            ; buffers with friends
        debugger             ; FIXME stepping through code, to help you add bugs
        ;; direnv
+       disk-usage
        ;; docker
        chezmoi
        (consult-gh +embark +nerd)  ; interactive interface for "Github CLI"
