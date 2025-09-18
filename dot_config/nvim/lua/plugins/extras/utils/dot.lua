@@ -32,17 +32,19 @@ return {
 		end
 
 		if fs.exists "kanata" then
-			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-
-			parser_config.kanata = {
-				install_info = {
-					url = "~/Projects/git/tree-sitter-kanata/",
-					files = { "src/parser.c" },
-					generate_requires_npm = true,
-					requires_generate_from_grammar = true,
-				},
-				filetype = "kanata",
-			}
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "TSUpdate",
+				callback = function()
+					require("nvim-treesitter.parsers").kanata = {
+						install_info = {
+							url = "https://github.com/Frestein/tree-sitter-kanata",
+							revision = "HEAD",
+							queries = "queries",
+						},
+						tier = 4,
+					}
+				end,
+			})
 
 			add "kanata"
 		end
