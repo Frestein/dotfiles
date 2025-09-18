@@ -1,5 +1,5 @@
 return {
-	"echasnovski/mini.move",
+	"nvim-mini/mini.move",
 	optional = true,
 	keys = {
 		{ mode = { "n", "x" }, "<M-h>", desc = "Move Left" },

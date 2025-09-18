@@ -20,7 +20,7 @@ local git_status = require("utils.git").new_git_status()
 
 return {
 	{
-		"echasnovski/mini.files",
+		"nvim-mini/mini.files",
 		optional = true,
 		opts = {
 			content = {

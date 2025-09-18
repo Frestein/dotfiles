@@ -1,5 +1,5 @@
 return {
-	"echasnovski/mini.align",
+	"nvim-mini/mini.align",
 	recommended = true,
 	desc = "Align text interactively",
 	event = "VeryLazy",
