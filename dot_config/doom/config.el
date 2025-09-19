@@ -215,7 +215,7 @@ If a region is active, emphasize it, else emphasize the word at point."
           :localleader
           "B" #'org-babel-tangle
           "e" nil
-          (:prefix ("e" . "emphazis")
+          (:prefix ("e" . "emphasize")
            :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
            :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
            :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
