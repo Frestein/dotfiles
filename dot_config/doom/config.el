@@ -106,7 +106,10 @@
                  :desc "Elfeed" :n "e" #'elfeed))
       (:prefix ("f" . "file")
                (:when (modulep! :emacs dired)
-                 :desc "Open directory in dirvish" :n "m" #'dirvish)))
+                 :desc "Open directory in dirvish" :n "m" #'dirvish))
+      (:prefix ("t" . "toggle")
+               (:when (modulep! :checkers jinx)
+                 :desc "Jinx Mode" "j" #'jinx-mode)))
 
 ;; Dired
 (setq delete-by-moving-to-trash t)

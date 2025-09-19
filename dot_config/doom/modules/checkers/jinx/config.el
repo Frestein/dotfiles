@@ -24,7 +24,3 @@
   ;; I prefer for `point' to end up at the start of the word,
   ;; not just after the end.
   (advice-add 'jinx-next :after (lambda (_) (left-word))))
-
-(map! (:leader
-       (:prefix ("t" . "toggle")
-        :desc "Jinx Mode" :n "j" #'jinx-mode)))
