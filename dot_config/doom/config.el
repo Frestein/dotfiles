@@ -63,53 +63,63 @@
   (remove-hook 'doom-first-file-hook #'ultra-scroll-mode))
 
 ;; Mappings
-(map! :map evil-normal-state-map
-      "C-h" #'evil-window-left
-      "C-j" #'evil-window-down
-      "C-k" #'evil-window-up
-      "C-l" #'evil-window-right
-      "H"   #'previous-buffer
-      "L"   #'next-buffer)
-
-(map! :map evil-visual-state-map
-      "gss" #'sort-lines)
-
-(map! (:when (modulep! :term vterm )
+(map! :n "C-h" #'evil-window-left
+      :n "C-j" #'evil-window-down
+      :n "C-k" #'evil-window-up
+      :n "C-l" #'evil-window-right
+      :desc "Previous buffer" :n "H"   #'previous-buffer
+      :desc "Next buffer" :n "L"   #'next-buffer
+      :v "gss" #'sort-lines
+      (:when (modulep! :term vterm )
         :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle
         :desc "Toggle vterm popup" :i "C-/" #'+vterm/toggle))
 
 (map! :leader
-      (:prefix ("t" . "toggle")
-       :desc "Automatic line breaking" :n "a" #'auto-fill-mode)
       (:prefix ("s" . "search")
                (:when (modulep! :tools pass)
-                 :n "p" nil ;; Disable defaults
-                 :n "P" nil ;; Disable defaults
+                 "p" nil ;; Disable defaults
+                 "P" nil ;; Disable defaults
                  (:prefix ("p" . "project")
-                  :desc "Search project" :n "p" #'+default/search-project
-                  :desc "Search other project" :n "o" #'+default/search-other-project)
+                  :desc "Search project" "p" #'+default/search-project
+                  :desc "Search other project" "o" #'+default/search-other-project)
                  (:prefix ("P" . "Pass")
-                  :desc "Username" :n "u" #'+pass/copy-user
-                  :desc "Password" :n "p" #'+pass/consult)))
+                  :desc "Username" "u" #'+pass/copy-user
+                  :desc "Password" "p" #'+pass/consult)))
       (:prefix ("i" . "insert")
-       :desc "Nerd" :n "n" #'nerd-icons-insert)
+       :desc "Nerd" "n" #'nerd-icons-insert)
       (:prefix ("o" . "open")
-       :desc "Open URL using generic browser" :n "g" #'browse-url-generic
-       :desc "Open URL" :n "w" #'browse-url
+       :desc "Open URL using generic browser" "g" #'browse-url-generic
+       :desc "Open URL" "w" #'browse-url
        (:when (modulep! :term vterm)
-         :desc "Open URL using text browser" :n "W" #'browse-url-text-vterm))
+         :desc "Open URL using text browser" "W" #'browse-url-text-vterm))
+      (:prefix ("c" . "code")
+               (:when (modulep! :tools 0x0)
+                 :desc "Pastebin code" "p" #'0x0-upload-text)
+               (:when (modulep! :tools screenshot)
+                 :desc "Screenshot code" "S" #'screenshot))
       (:prefix ("A" . "app")
+               (:when (modulep! :tools consult-gh)
+                 :desc "Github" "g" #'consult-gh)
+               (:when (modulep! :tools ebuku)
+                 :desc "Ebuku" "b" #'ebuku)
                (:when (modulep! :tools pass)
-                 :desc "Pass" :n "p" #'pass)
+                 :desc "Pass" "p" #'pass)
+               (:when (modulep! :app osm)
+                 :desc "Osm" "m" #'osm-prefix-map)
+               (:when (modulep! :app telega)
+                 :desc "Telega" "t" telega-prefix-map)
+               (:when (modulep! :tools trashed)
+                 :desc "Trashed" "T" #'trashed)
                (:when (modulep! :app rss)
-                 :desc "Elfeed (Summary)" :n "E" #'elfeed-summary
-                 :desc "Elfeed" :n "e" #'elfeed))
+                 :desc "Elfeed (Summary)" "E" #'elfeed-summary
+                 :desc "Elfeed" "e" #'elfeed))
       (:prefix ("f" . "file")
                (:when (modulep! :emacs dired)
-                 :desc "Open directory in dirvish" :n "m" #'dirvish))
+                 :desc "Open directory in dirvish" "m" #'dirvish))
       (:prefix ("t" . "toggle")
-               (:when (modulep! :checkers jinx)
-                 :desc "Jinx Mode" "j" #'jinx-mode)))
+       :desc "Automatic line breaking" "a" #'auto-fill-mode
+       (:when (modulep! :checkers jinx)
+         :desc "Jinx mode" "j" #'jinx-mode)))
 
 ;; Dired
 (setq delete-by-moving-to-trash t)

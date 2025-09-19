@@ -12,7 +12,3 @@
          ((getenv "HOME")
           (substitute-in-file-name "$HOME/.local/share/gosuki/gosuki.db"))
          (t "./gosuki.db"))))
-
-(map! (:leader
-       (:prefix ("A" . "app")
-        :desc "Ebuku" :n "b" #'ebuku)))

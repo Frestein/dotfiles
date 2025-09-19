@@ -12,10 +12,6 @@
   (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
   (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list))
 
-(map! (:leader
-       (:prefix ("A" . "app")
-        :desc "Github" :n "g" #'consult-gh)))
-
 (use-package! consult-gh-embark
   :when (modulep! +embark)
   :after (consult-gh embark embark-consult)

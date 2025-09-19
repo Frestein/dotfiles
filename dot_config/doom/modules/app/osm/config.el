@@ -5,7 +5,3 @@
   :custom
   (osm-server 'default)
   (osm-copyright t))
-
-(map! :leader
-      (:prefix ("A" . "app")
-       :desc "Osm" "m" #'osm-prefix-map))

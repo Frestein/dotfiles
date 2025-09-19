@@ -4,7 +4,3 @@
 
 (use-package! trashed
   :bind ("C-c T" . trashed))
-
-(map! (:leader
-       (:prefix ("A" . "app")
-        :desc "Trashed" :n "T" #'trashed)))

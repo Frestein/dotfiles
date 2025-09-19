@@ -1,9 +1,5 @@
 ;;; tools/screenshot/config.el -*- lexical-binding: t; -*-
 
-(map! :leader
-      (:prefix-map ("c" . "code")
-       :desc "Screenshot Code" "S" #'screenshot))
-
 (use-package! screenshot
   :hook (screenshot-buffer-creation-hook . g-screenshot-on-buffer-creation)
   :config

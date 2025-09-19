@@ -153,10 +153,6 @@
   (defun telega-chatbuf--sponsored-messages-fetch ()
     "Disable fetching sponsored messages."))
 
-(map! (:leader
-       (:prefix ("A" . "app")
-        :desc "Telega" :n "t" telega-prefix-map)))
-
 (use-package! telega-mnz
   :when (modulep! +mnz)
   :after-call telega
