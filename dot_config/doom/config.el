@@ -184,7 +184,10 @@
 (when (modulep! :tools magit)
   (setq magit-repository-directories
         '(("~/Projects/" . 2)
-          ("~/.local/share/chezmoi" . 1))))
+          ("~/.local/share/chezmoi/" . 1))))
+
+;; Projectile
+(setq projectile-project-search-path '(("~/Projects/" . 2)))
 
 ;; Org
 (setq org-directory "~/Documents/org/"
