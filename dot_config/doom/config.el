@@ -77,8 +77,8 @@
 (map! :leader
       (:prefix ("s" . "search")
                (:when (modulep! :tools pass)
-                 "p" nil ;; Disable defaults
-                 "P" nil ;; Disable defaults
+                 "p" nil
+                 "P" nil
                  (:prefix ("p" . "project")
                   :desc "Search project" "p" #'+default/search-project
                   :desc "Search other project" "o" #'+default/search-other-project)
@@ -195,11 +195,35 @@
       org-archive-tag "archive"
       org-element-archive-tag "archive")
 
-(map! :map org-mode-map
-      :localleader
-      :n "B" #'org-babel-tangle)
-
 (when (modulep! :lang org)
+  (after! org
+    (defun frestein/org-emphasize-dwim (char)
+      "Toggle org emphasis CHAR on word or selected region.
+If a region is active, emphasize it, else emphasize the word at point."
+      (interactive "cEmphasis char: ")
+      (if (use-region-p)
+          (org-emphasize char)
+        (save-excursion
+          (let ((bounds (bounds-of-thing-at-point 'word)))
+            (when bounds
+              (goto-char (car bounds))
+              (set-mark (cdr bounds))
+              (org-emphasize char)
+              (deactivate-mark))))))
+
+    (map! :map org-mode-map
+          :localleader
+          "B" #'org-babel-tangle
+          "e" nil
+          (:prefix ("e" . "emphazis")
+           :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
+           :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
+           :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
+           :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
+           :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
+           :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~)))
+          "E" #'org-export-dispatch))
+
   (defun frestein/org-fold-respect-startup-ignore-tag ()
     "Fold according to #+STARTUP: and ignore folding for tags from #+STARTUP_IGNORE:."
     (when (eq major-mode 'org-mode)
