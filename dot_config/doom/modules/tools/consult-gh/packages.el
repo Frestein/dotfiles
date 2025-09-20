@@ -4,7 +4,7 @@
 (when (modulep! :completion vertico)
   (package! consult-gh)
 
-  (package! consult-gh-embark
+  (package! consult-gh-transient
     :recipe (:host github :repo "armindarvish/consult-gh"
              :files ("consult-gh-transient.el")))
 
