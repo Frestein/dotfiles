@@ -21,6 +21,8 @@
         telega-video-player-command "mpv"
         telega-use-images t
         telega-emoji-use-images nil
+        telega-sticker-animated-play t ;; WARN: requires tgs2png
+        telega-animation-play-inline 20
         telega-chat-input-markups '("org" nil "markdown2")
         telega-currency-symbols-alist
         '(("EUR" . "€")     ;; Euro
