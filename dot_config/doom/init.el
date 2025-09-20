@@ -89,7 +89,7 @@
        disk-usage
        ;; docker
        chezmoi
-       (consult-gh +embark +nerd)  ; interactive interface for "Github CLI"
+       (consult-gh +nerd)   ; interactive interface for "Github CLI"
        ;; forgejo
        trashed              ; freedesktop.org trashcan
        screenshot

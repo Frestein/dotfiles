@@ -8,10 +8,14 @@
     :recipe (:host github :repo "armindarvish/consult-gh"
              :files ("consult-gh-transient.el")))
 
-  (when (modulep! +embark)
-    (package! consult-gh-embark
+  (package! consult-gh-embark
+    :recipe (:host github :repo "armindarvish/consult-gh"
+             :files ("consult-gh-embark.el")))
+
+  (when (modulep! :tools magit +forge)
+    (package! consult-gh-forge
       :recipe (:host github :repo "armindarvish/consult-gh"
-               :files ("consult-gh-embark.el"))))
+               :files ("consult-gh-forge.el"))))
 
   (when (modulep! +nerd)
     (package! consult-gh-nerd-icons
