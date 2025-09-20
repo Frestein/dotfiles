@@ -250,7 +250,6 @@ If a region is active, emphasize it, else emphasize the word at point."
   (map! :map telega-chat-mode-map
         :when (modulep! :app telega)
         :localleader
-        "lc" #'org-cliplink
         (:prefix ("e" . "emphasize")
          :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
          :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))

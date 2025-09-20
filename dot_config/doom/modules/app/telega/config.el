@@ -151,7 +151,17 @@
        ("Work"     . " "))))
 
   (defun telega-chatbuf--sponsored-messages-fetch ()
-    "Disable fetching sponsored messages."))
+    "Disable fetching sponsored messages.")
+
+  (map! :map telega-chat-mode-map
+        :localleader
+        (:prefix ("s" . "stickers")
+                 "f" #'telega-sticker-choose-favorite-or-recent
+                 "c" #'telega-stickerset-choose
+                 "t" #'telega-stickerset-trends
+                 "s" #'telega-stickerset-search)
+        (:when (modulep! :lang org)
+          "c" #'org-cliplink)))
 
 (use-package! telega-mnz
   :when (modulep! +mnz)
