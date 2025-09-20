@@ -23,6 +23,7 @@
         telega-emoji-use-images nil
         telega-sticker-animated-play t ;; WARN: requires tgs2png
         telega-animation-play-inline 20
+        telega-known-inline-bots (append telega-known-inline-bots '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare"))
         telega-chat-input-markups '("org" nil "markdown2")
         telega-currency-symbols-alist
         '(("EUR" . "€")     ;; Euro
@@ -155,8 +156,16 @@
   (defun telega-chatbuf--sponsored-messages-fetch ()
     "Disable fetching sponsored messages.")
 
+  (defun frestein/telega-chatbuf-inline-bot-choose ()
+    "Select an inline bot from telega-known-inline-bots and insert it."
+    (interactive)
+    (let ((bot (completing-read "Choose inline bot: " telega-known-inline-bots nil t)))
+      (when bot
+        (insert bot))))
+
   (map! :map telega-chat-mode-map
         :localleader
+        "@" #'frestein/telega-chatbuf-inline-bot-choose
         (:prefix ("s" . "stickers")
                  "f" #'telega-sticker-choose-favorite-or-recent
                  "c" #'telega-stickerset-choose
