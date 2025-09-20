@@ -502,3 +502,5 @@ It should be the title of the web page as returned by `rdrview'."
 
 ;; Misc
 (setq-default default-input-method "russian-computer")
+
+(setq calendar-week-start-day 1)
