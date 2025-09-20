@@ -1,6 +1,8 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
+(package! pinentry)
+
 (when (modulep! :app rss)
   (package! elfeed-summary))
 
