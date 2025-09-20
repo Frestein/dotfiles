@@ -444,13 +444,6 @@ It should be the title of the web page as returned by `rdrview'."
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
 
-;; GPG
-(setq epg-pinentry-mode 'loopback
-      epg-gpg-home-directory (getenv "GNUPGHOME"))
-
-(use-package! pinentry
-  :hook (doom-after-init . pinentry-start))
-
 ;; Pass
 (when (modulep! :tools pass)
   (when (executable-find "gopass")
