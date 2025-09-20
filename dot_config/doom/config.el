@@ -220,38 +220,50 @@
 
   (add-hook 'org-mode-hook #'frestein/org-fold-respect-startup-ignore-tag)
 
+  (defun frestein/org-emphasize-dwim (char)
+    "Toggle org emphasis CHAR on word or selected region.
+If a region is active, emphasize it, else emphasize the word at point."
+    (interactive "cEmphasis char: ")
+    (if (use-region-p)
+        (org-emphasize char)
+      (save-excursion
+        (let ((bounds (bounds-of-thing-at-point 'word)))
+          (when bounds
+            (goto-char (car bounds))
+            (set-mark (cdr bounds))
+            (org-emphasize char)
+            (deactivate-mark))))))
+
+  (map! :map org-mode-map
+        :after org
+        :localleader
+        "B" #'org-babel-tangle
+        (:prefix ("e" . "emphasize")
+         :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
+         :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
+         :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
+         :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
+         :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
+         :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~)))
+        "E" #'org-export-dispatch)
+
+  (map! :map telega-chat-mode-map
+        :when (modulep! :app telega)
+        :localleader
+        "lc" #'org-cliplink
+        (:prefix ("e" . "emphasize")
+         :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
+         :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
+         :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
+         :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
+         :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
+         :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~))))
+
   (use-package! org-super-agenda
     :hook (org-agenda-mode . org-super-agenda-mode))
 
   (use-package! corg
-    :hook (org-mode . corg-setup))
-
-  (after! org
-    (defun frestein/org-emphasize-dwim (char)
-      "Toggle org emphasis CHAR on word or selected region.
-If a region is active, emphasize it, else emphasize the word at point."
-      (interactive "cEmphasis char: ")
-      (if (use-region-p)
-          (org-emphasize char)
-        (save-excursion
-          (let ((bounds (bounds-of-thing-at-point 'word)))
-            (when bounds
-              (goto-char (car bounds))
-              (set-mark (cdr bounds))
-              (org-emphasize char)
-              (deactivate-mark))))))
-
-    (map! :map org-mode-map
-          :localleader
-          "B" #'org-babel-tangle
-          (:prefix ("e" . "emphasize")
-           :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
-           :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
-           :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
-           :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
-           :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
-           :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~)))
-          "E" #'org-export-dispatch)))
+    :hook (org-mode . corg-setup)))
 
 ;; Languages
 ;; Eglot
