@@ -63,12 +63,17 @@
   (remove-hook 'doom-first-file-hook #'ultra-scroll-mode))
 
 ;; Mappings
-(map! :n "C-h" #'evil-window-left
+(map! :n "C-a" #'evil-numbers/inc-at-pt
+      :v "C-a" #'evil-numbers/inc-at-pt-incremental
+      :v "C-S-a" #'evil-numbers/inc-at-pt
+      :n "C-x" #'evil-numbers/dec-at-pt
+      :v "C-x" #'evil-numbers/dec-at-pt-incremental
+      :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right
-      :desc "Previous buffer" :n "H"   #'previous-buffer
-      :desc "Next buffer" :n "L"   #'next-buffer
+      :desc "Previous buffer" :n "H" #'previous-buffer
+      :desc "Next buffer" :n "L" #'next-buffer
       :v "gss" #'sort-lines
       (:when (modulep! :term vterm )
         :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle
