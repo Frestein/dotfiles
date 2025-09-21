@@ -38,6 +38,7 @@
        unicode              ; extended unicode support for various languages
        (vc-gutter +pretty)  ; vcs diff in the fringe
        ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       volatile-highlights
        ;; window-select     ; visually switch windows
        workspaces           ; tab emulation, persistence & separate workspaces
        zen                  ; distraction-free coding or writing
