@@ -1,7 +1,6 @@
 ;;; tools/ebuku/config.el -*- lexical-binding: t; -*-
 
 (use-package! ebuku
-  :hook (ebuku-mode . (lambda () (evil-snipe-local-mode -1)))
   :config
   (setq ebuku-database-path
         (cond

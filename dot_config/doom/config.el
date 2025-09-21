@@ -505,6 +505,17 @@ It should be the title of the web page as returned by `rdrview'."
 ;; BUG: https://github.com/justbur/emacs-which-key/issues/345
 ;; which-key-show-operator-state-maps t
 
+;; Evil
+(when (modulep! :editor evil)
+  (after! evil-snipe
+    (when (modulep! :app telega)
+      (dolist (mode '(telega-root-mode telega-chat-mode telega-chatbuf-mode))
+        (unless (memq mode evil-snipe-disabled-modes)
+          (push mode evil-snipe-disabled-modes))))
+    (when (modulep! :tools ebuku)
+      (unless (memq 'ebuku-mode evil-snipe-disabled-modes)
+        (push 'ebuku-mode evil-snipe-disabled-modes)))))
+
 ;; Misc
 (setq-default default-input-method "russian-computer")
 

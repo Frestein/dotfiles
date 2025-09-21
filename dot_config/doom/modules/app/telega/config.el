@@ -4,9 +4,6 @@
   :bind-keymap ("C-c t" . telega-prefix-map)
   :bind (:map telega-msg-button-map
               ("SPC" . nil))
-  :hook (telega-root-mode . (lambda () (evil-snipe-local-mode -1)))
-  :hook (telega-chat-mode . (lambda () (evil-snipe-local-mode -1)))
-  :hook (telega-chatbuf-mode . (lambda () (evil-snipe-local-mode -1)))
   :hook (telega-load . telega-appindicator-mode)
   :hook (telega-load . telega-mode-line-mode)
   :hook (telega-load . telega-notifications-mode)
@@ -23,7 +20,8 @@
         telega-emoji-use-images nil
         telega-sticker-animated-play t ;; WARN: requires tgs2png
         telega-animation-play-inline 20
-        telega-known-inline-bots (append telega-known-inline-bots '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare"))
+        telega-known-inline-bots (append telega-known-inline-bots
+                                         '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare"))
         telega-chat-input-markups '("org" nil "markdown2")
         telega-currency-symbols-alist
         '(("EUR" . "€")     ;; Euro
