@@ -507,6 +507,13 @@ It should be the title of the web page as returned by `rdrview'."
 
 ;; Evil
 (when (modulep! :editor evil)
+  (when (modulep! :app telega)
+    (after! telega
+      (evil-collection-define-key 'normal 'telega-chat-mode-map
+        "Za" nil
+        "Zf" nil
+        "Zv" nil)))
+
   (after! evil-snipe
     (when (modulep! :app telega)
       (dolist (mode '(telega-root-mode telega-chat-mode telega-chatbuf-mode))

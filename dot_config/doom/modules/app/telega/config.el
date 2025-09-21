@@ -2,8 +2,21 @@
 
 (use-package! telega
   :bind-keymap ("C-c t" . telega-prefix-map)
-  :bind (:map telega-msg-button-map
-              ("SPC" . nil))
+  :bind ((:map telega-msg-button-map
+               ("SPC" . nil))
+         (:map telega-chat-mode-map
+               ("Za" . telega-chatbuf-attach-animation)
+               ("ZA" . telega-chatbuf-attach-audio)
+               ("Zc" . telega-chatbuf-attach-clipboard)
+               ("ZC" . telega-chatbuf-attach-checklist)
+               ("Zv" . telega-chatbuf-attach-video)
+               ("ZV" . telega-chatbuf-attach-voice-note)
+               ("Zd" . telega-chatbuf-attach-dice)
+               ("Zf" . telega-chatbuf-attach-file)
+               ("Zm" . telega-chatbuf-attach-media)
+               ("Zp" . telega-chatbuf-attach-poll)
+               ("Zs" . telega-chatbuf-attach-sticker)
+               ("Zz" . telega-chatbuf-attach)))
   :hook (telega-load . telega-appindicator-mode)
   :hook (telega-load . telega-mode-line-mode)
   :hook (telega-load . telega-notifications-mode)
@@ -162,15 +175,18 @@
         (insert bot))))
 
   (map! :map telega-chat-mode-map
-        :localleader
-        "@" #'frestein/telega-chatbuf-inline-bot-choose
-        (:prefix ("s" . "stickers")
-                 "f" #'telega-sticker-choose-favorite-or-recent
-                 "c" #'telega-stickerset-choose
-                 "t" #'telega-stickerset-trends
-                 "s" #'telega-stickerset-search)
-        (:when (modulep! :lang org)
-          "c" #'org-cliplink)))
+        (:localleader
+         "@" #'frestein/telega-chatbuf-inline-bot-choose
+         (:prefix ("i" . "input")
+                  "b" #'frestein/telega-chatbuf-inline-bot-choose
+                  "f" #'telega-chatbuf-input-formatting-set)
+         (:prefix ("s" . "stickers")
+                  "f" #'telega-sticker-choose-favorite-or-recent
+                  "c" #'telega-stickerset-choose
+                  "t" #'telega-stickerset-trends
+                  "s" #'telega-stickerset-search)
+         (:when (modulep! :lang org)
+           "c" #'org-cliplink))))
 
 (use-package! telega-mnz
   :when (modulep! +mnz)
