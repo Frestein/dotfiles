@@ -213,11 +213,7 @@
           (when (telega-chat-match-p chat '(type channel))
             (telega--getChatSponsoredMessages telega-chatbuf--chat
               (lambda (reply)
-                (plist-put chat :telega-sponsored-messages reply)
-                ;; (unless (equal tsm-orig reply)
-                ;;   (with-telega-chatbuf chat
-                ;;     (telega-chatbuf--chat-update "sponsored-messages")))
-                )))))))
+                (plist-put chat :telega-sponsored-messages reply))))))))
 
   (defun frestein/telega-chatbuf-inline-bot-choose ()
     "Select an inline bot from telega-known-inline-bots and insert it."
@@ -229,6 +225,10 @@
   (map! :map telega-chat-mode-map
         (:localleader
          "@" #'frestein/telega-chatbuf-inline-bot-choose
+         (:prefix ("t" . "translate")
+                  "r" #'telega-translate-region
+                  "R" #'telega-translate-region-inplace
+                  "a" #'telega-auto-translate-mode)
          (:prefix ("i" . "input")
                   "b" #'frestein/telega-chatbuf-inline-bot-choose
                   "f" #'telega-chatbuf-input-formatting-set)
