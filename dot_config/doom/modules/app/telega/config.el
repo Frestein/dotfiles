@@ -158,8 +158,26 @@
                                       ("Unread"   . " ")
                                       ("Work"     . " "))))
 
-  (defun telega-chatbuf--sponsored-messages-fetch ()
-    "Disable fetching sponsored messages.")
+  ;; WARN: TOS violation. Block sponsored messages.
+  ;; sponsored - Fetch messages but don't draw them.
+  ;; sponsored2 - Don't fetch messages.
+  (when (or (modulep! +sponsored) (modulep! +sponsored2))
+    (setq telega-inserter-for-sponsored-msg-button nil)
+
+    (defun telega-chatbuf--sponsored-messages-fetch ()
+      "Asynchronously fetch sponsored messages for the chatbuf."
+      (when (modulep! +sponsored)
+        (let* ((chat telega-chatbuf--chat)
+               (tsm-orig (plist-get chat :telega-sponsored-messages)))
+          (plist-put chat :telega-sponsored-messages nil)
+          (when (telega-chat-match-p chat '(type channel))
+            (telega--getChatSponsoredMessages telega-chatbuf--chat
+              (lambda (reply)
+                (plist-put chat :telega-sponsored-messages reply)
+                ;; (unless (equal tsm-orig reply)
+                ;;   (with-telega-chatbuf chat
+                ;;     (telega-chatbuf--chat-update "sponsored-messages")))
+                )))))))
 
   (defun frestein/telega-chatbuf-inline-bot-choose ()
     "Select an inline bot from telega-known-inline-bots and insert it."
