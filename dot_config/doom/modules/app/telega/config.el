@@ -65,7 +65,7 @@
           telega-symbol-blocked               "󰂭 "
           telega-symbol-boost                 " "
           telega-symbol-bulp                  " "
-          telega-symbol-chat-list             "󱉯 "
+          telega-symbol-chat-list             " "
           telega-symbol-checklist             " "
           telega-symbol-circle                " "
           telega-symbol-codeblock             ""
@@ -127,34 +127,31 @@
           telega-symbol-poll-options          (list "󰝦" "󰝥")
           telega-symbol-poll-multiple-options (list "󰄱" "󰱒")
           telega-symbol-dice-list             (list "󱅊" "󰇊" "󰇋" "󰇌" "󰇍" "󰇎" "󰇏")
-          telega-folder-icon-names (append telega-folder-icon-names
-                                           '("Airplane" "Art" "Book" "Code"
-                                             "Like" "Money" "Note" "Tech"))
-          telega-folder-icons-alist '(("All"      . "󰻞 ")
-                                      ("Airplane" . " ")
-                                      ("Art"      . "󰸌 ")
+          telega-folder-icons-alist '(("Airplane" . " ")
+                                      ("All"      . "󰻞 ")
                                       ("Book"     . " ")
                                       ("Bots"     . " ")
                                       ("Cat"      . "󰄛 ")
-                                      ("Channels" . " ")
-                                      ("Code"     . " ")
+                                      ("Channels" . " ")
                                       ("Crown"    . "󱇐 ")
+                                      ("Custom"   . "󰉖 ")
                                       ("Favorite" . " ")
                                       ("Flower"   . "󰉊 ")
                                       ("Game"     . " ")
                                       ("Groups"   . "󰭘 ")
                                       ("Home"     . " ")
+                                      ("Light"    . " ")
                                       ("Like"     . " ")
                                       ("Love"     . " ")
                                       ("Mask"     . "󰴂 ")
                                       ("Money"    . " ")
                                       ("Note"     . "󰺿 ")
+                                      ("Palette"  . "󰸌 ")
                                       ("Party"    . " ")
                                       ("Private"  . " ")
-                                      ("Setup"    . " ")
+                                      ("Setup"    . "󰨸 ")
                                       ("Sport"    . "󱅝 ")
                                       ("Study"    . " ")
-                                      ("Tech"     . " ")
                                       ("Trade"    . "󰄨 ")
                                       ("Travel"   . " ")
                                       ("Unmuted"  . " ")
