@@ -56,6 +56,17 @@
   (setq-default vterm-shell (executable-find "fish")
                 explicit-shell-file-name (executable-find "fish")))
 
+;; Personal Modules
+;; Telega
+(when (modulep! :app telega)
+  ;; Autostart
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+        (lambda (frame)
+          (with-selected-frame frame
+            (telega 'no-popup))))
+    (add-hook! doom-after-init (telega 'no-popup))))
+
 ;; Smooth scroll
 (when (modulep! :ui smooth-scroll)
   ;; Disable ultra-scroll
