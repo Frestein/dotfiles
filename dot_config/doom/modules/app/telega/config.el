@@ -33,6 +33,14 @@
         telega-emoji-use-images nil
         telega-sticker-animated-play t ;; WARN: requires tgs2png
         telega-animation-play-inline 20
+        telega-date-format-alist '((today          . "%I:%M %p")
+                                   (this-week      . "%I:%M %p")
+                                   (old            . "%d.%m.%y")
+                                   (date           . "%d.%m.%y")
+                                   (time           . "%I:%M %p")
+                                   (date-time      . "%d.%m.%y %a %I:%M %p")
+                                   (date-long      . "%d %B %Y")
+                                   (date-break-bar . "%d %B %Y %a"))
         telega-known-inline-bots (append telega-known-inline-bots
                                          '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare"))
         telega-chat-input-markups '("org" nil "markdown2")
