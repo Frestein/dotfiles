@@ -189,6 +189,15 @@
                                       ("Unread"   . " ")
                                       ("Work"     . " "))))
 
+  ;; INFO: Disable TODO debug message.
+  (defun telega--on-updateSuggestedActions (event)
+    (let ((added-actions (append (plist-get event :added_actions) nil))
+          (removed-actions (append (plist-get event :removed_actions) nil)))
+      (setq telega--suggested-actions
+            (append (seq-difference telega--suggested-actions removed-actions
+                                    #'equal)
+                    added-actions))))
+
   ;; WARN: TOS violation. Block sponsored messages.
   ;; sponsored - Fetch messages but don't draw them.
   ;; sponsored2 - Don't fetch messages.
