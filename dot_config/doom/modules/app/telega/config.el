@@ -30,12 +30,11 @@
         telega-translate-to-language-by-default "ru"
         telega-video-player-command "mpv"
         telega-use-images t
-        telega-emoji-use-images nil
         telega-sticker-animated-play t ;; WARN: requires tgs2png
         telega-animation-play-inline 20
-        telega-date-format-alist '((today          . "%I:%M %p")
-                                   (this-week      . "%I:%M %p")
-                                   (old            . "%d.%m.%y")
+        telega-date-format-alist '((today          . "%I:%M %p ")
+                                   (this-week      . "%I:%M %p ")
+                                   (old            . "%d.%m.%y ")
                                    (date           . "%d.%m.%y")
                                    (time           . "%I:%M %p")
                                    (date-time      . "%d.%m.%y %a %I:%M %p")
@@ -83,33 +82,54 @@
            )))
 
   (when (modulep! +icons)
-    (setq telega-symbols-emojify
+    (setq telega-emoji-use-images nil
+          telega-symbols-emojify
           (cl-reduce (lambda (emojify key)
                        (assq-delete-all key emojify))
-                     '(verified vertical-bar checkmark forum heavy-checkmark reply reply-quote horizontal-bar forward button-close)
+                     '(checkmark heavy-checkmark
+                       reply reply-quote forward
+                       button-close forum verified
+                       radiobox-off radiobox-on
+                       checkbox-off checkbox-on
+                       outline-close outline-open
+                       button-left button-right
+                       chat-list checklist
+                       folder multiple-folders
+                       reaction reaction-mark
+                       rewind-backward rewind-forward
+                       story story-reply
+                       video video-chat-active video-chat-passive
+                       ;; vbar-left vertical-bar horizontal-bar underline-bar
+                       alarm attachment audio author-hidden bell boost bulp
+                       contact distance eye failed favorite flames
+                       game invoice leave-comment lightning lock location
+                       member menu my-notes
+                       pause pending phone photo pin poll play premium
+                       right-arrow saved-messages-tag-end
+                       telegram-star timer-clock typing)
                      :initial-value telega-symbols-emojify)
           telega-symbol-alarm                 "󰯪 "
           telega-symbol-attachment            "󰁦"
           telega-symbol-audio                 ""
           telega-symbol-author-hidden         " "
           telega-symbol-bell                  " "
-          telega-symbol-blocked               "󰂭 "
+          telega-symbol-blocked               (propertize "󰂭" 'face 'error)
           telega-symbol-boost                 " "
           telega-symbol-bulp                  " "
           telega-symbol-chat-list             " "
           telega-symbol-checklist             " "
-          telega-symbol-circle                " "
+          telega-symbol-circle                ""
           telega-symbol-codeblock             ""
           telega-symbol-contact               " "
           telega-symbol-copyright             ""
-          telega-symbol-credit-card           " "
+          telega-symbol-credit-card           ""
           telega-symbol-direct-messages       "󰍥"
           telega-symbol-distance              " "
           telega-symbol-eye                   " "
-          telega-symbol-failed                ""
+          telega-symbol-failed                (propertize "" 'face 'error)
           telega-symbol-favorite              ""
           telega-symbol-flames                ""
-          telega-symbol-forum                 "󰠢 "
+          telega-symbol-forum                 "󰠢"
           telega-symbol-forward               ""
           telega-symbol-game                  " "
           telega-symbol-invoice               "󰗋 "
@@ -128,25 +148,27 @@
           telega-symbol-pending               "󰔟"
           telega-symbol-phone                 " "
           telega-symbol-photo                 ""
-          telega-symbol-pin                   ""
+          telega-symbol-pin                   (propertize "" 'face 'telega-shadow)
           telega-symbol-play                  ""
           telega-symbol-poll                  ""
-          telega-symbol-premium               " "
-          telega-symbol-reaction              " "
-          telega-symbol-reaction-mark         " "
+          telega-symbol-premium               (propertize "" 'face 'telega-blue)
+          telega-symbol-reaction              ""
+          telega-symbol-reaction-mark         ""
           telega-symbol-reply                 ""
           telega-symbol-right-arrow           "󰧂 "
-          telega-symbol-star                  "󰓎 "
+          telega-symbol-star                  (propertize "󰓎" 'face 'error)
           telega-symbol-story                 " "
           telega-symbol-story-reply           (compose-chars ? ?)
-          telega-symbol-telegram              " "
+          telega-symbol-telegram              (propertize " " 'face '(italic telega-blue))
           telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
           telega-symbol-timer-clock           "󰔛 "
           telega-symbol-verified              (propertize " " 'face 'telega-blue)
           telega-symbol-video                 ""
           telega-symbol-video-chat            "󰯜"
-          telega-symbol-video-chat-active     "󰯜"
-          telega-symbol-video-chat-passive    "󰯛"
+          telega-symbol-video-chat-active     (propertize "󰯜" 'face 'success)
+          telega-symbol-video-chat-passive    (propertize "󰯛" 'face 'telega-shadow)
+          telega-symbol-horizontal-bar        "─"
+          telega-symbol-vertical-bar          "│"
           telega-symbol-folder                "󰉖 "
           telega-symbol-multiple-folders      "󰉕 "
           telega-symbol-checkmark             "󰄬"
