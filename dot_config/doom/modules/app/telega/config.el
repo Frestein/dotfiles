@@ -83,7 +83,12 @@
            )))
 
   (when (modulep! +icons)
-    (setq telega-symbol-alarm                 "󰯪 "
+    (setq telega-symbols-emojify
+          (cl-reduce (lambda (emojify key)
+                       (assq-delete-all key emojify))
+                     '(verified vertical-bar checkmark forum heavy-checkmark reply reply-quote horizontal-bar forward button-close)
+                     :initial-value telega-symbols-emojify)
+          telega-symbol-alarm                 "󰯪 "
           telega-symbol-attachment            "󰁦"
           telega-symbol-audio                 ""
           telega-symbol-author-hidden         " "
@@ -105,7 +110,7 @@
           telega-symbol-favorite              ""
           telega-symbol-flames                ""
           telega-symbol-forum                 "󰠢 "
-          telega-symbol-forward               " "
+          telega-symbol-forward               ""
           telega-symbol-game                  " "
           telega-symbol-invoice               "󰗋 "
           telega-symbol-keyboard              " "
@@ -129,7 +134,7 @@
           telega-symbol-premium               " "
           telega-symbol-reaction              " "
           telega-symbol-reaction-mark         " "
-          telega-symbol-reply                 " "
+          telega-symbol-reply                 ""
           telega-symbol-right-arrow           "󰧂 "
           telega-symbol-star                  "󰓎 "
           telega-symbol-story                 " "
@@ -137,7 +142,7 @@
           telega-symbol-telegram              " "
           telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
           telega-symbol-timer-clock           "󰔛 "
-          telega-symbol-verified              " "
+          telega-symbol-verified              (propertize " " 'face 'telega-blue)
           telega-symbol-video                 ""
           telega-symbol-video-chat            "󰯜"
           telega-symbol-video-chat-active     "󰯜"
