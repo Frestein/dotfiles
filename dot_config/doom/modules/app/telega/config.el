@@ -155,7 +155,7 @@
           telega-symbol-reaction              ""
           telega-symbol-reaction-mark         ""
           telega-symbol-reply                 ""
-          telega-symbol-right-arrow           "󰧂 "
+          telega-symbol-right-arrow           " 󰧂 "
           telega-symbol-star                  (propertize "󰓎" 'face 'error)
           telega-symbol-story                 " "
           telega-symbol-story-reply           (compose-chars ? ?)
