@@ -173,6 +173,7 @@
           telega-symbol-telegram              (propertize " " 'face '(italic telega-blue))
           telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
           telega-symbol-timer-clock           "󰔛 "
+          telega-symbol-typing                "..."
           telega-symbol-verified              (propertize " " 'face 'telega-blue)
           telega-symbol-video                 ""
           telega-symbol-video-chat            "󰯜"
