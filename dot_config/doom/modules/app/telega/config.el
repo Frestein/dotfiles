@@ -31,7 +31,7 @@
         telega-video-player-command "mpv"
         telega-use-images t
         telega-sticker-animated-play t ;; WARN: requires tgs2png
-        telega-animation-play-inline 20
+        telega-animation-play-inline 60
         telega-date-format-alist '((today          . "%I:%M %p ")
                                    (this-week      . "%I:%M %p ")
                                    (old            . "%d.%m.%y ")
