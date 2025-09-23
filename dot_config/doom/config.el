@@ -1,7 +1,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Doom
-(setq use-package-always-defer t)
+;; (setq use-package-always-defer t)
 
 ;; User
 (setq user-full-name "Frestein"
@@ -180,10 +180,10 @@
         (push 'vc-state dirvish-side-attributes)))
 
     (dirvish-define-preview eza (file)
-                            "Use `eza' to generate directory preview."
-                            :require ("eza")
-                            (when (file-directory-p file)
-                              `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+      "Use `eza' to generate directory preview."
+      :require ("eza")
+      (when (file-directory-p file)
+        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
 
     (push 'eza dirvish-preview-dispatchers)
 
