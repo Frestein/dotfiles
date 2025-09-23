@@ -108,6 +108,17 @@
                        right-arrow saved-messages-tag-end
                        telegram-star timer-clock typing)
                      :initial-value telega-symbols-emojify)
+          telega-chat-prompt-insexp
+          '(telega-ins--with-face (unless (telega-chatbuf-match-p 'can-send-or-post)
+                                    'telega-shadow)
+             (telega-chatbuf-prompt-ins-default-sender-avatar)
+             (telega-chatbuf-prompt-ins-body)
+             (when (or (telega-chatbuf-match-p 'has-default-sender)
+                       (telega-chatbuf-match-p 'can-send-or-post))
+               (telega-chatbuf-prompt-ins-chat-avatar))
+             (telega-chatbuf-prompt-ins-topic 25)
+             (telega-auto-translate--chatbuf-prompt-ins-translation)
+             (telega-ins "  "))
           telega-symbol-alarm                 "󰯪 "
           telega-symbol-attachment            "󰁦"
           telega-symbol-audio                 ""
@@ -155,7 +166,7 @@
           telega-symbol-reaction              ""
           telega-symbol-reaction-mark         ""
           telega-symbol-reply                 ""
-          telega-symbol-right-arrow           " 󰧂 "
+          telega-symbol-right-arrow           "  "
           telega-symbol-star                  (propertize "󰓎" 'face 'error)
           telega-symbol-story                 " "
           telega-symbol-story-reply           (compose-chars ? ?)
