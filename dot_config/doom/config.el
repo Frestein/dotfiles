@@ -62,9 +62,9 @@
   ;; Autostart
   (if (daemonp)
       (add-hook 'after-make-frame-functions
-        (lambda (frame)
-          (with-selected-frame frame
-            (telega 'no-popup))))
+                (lambda (frame)
+                  (with-selected-frame frame
+                    (telega 'no-popup))))
     (add-hook! doom-after-init (telega 'no-popup))))
 
 ;; Smooth scroll
@@ -520,7 +520,13 @@ It should be the title of the web page as returned by `rdrview'."
 (when (modulep! :editor evil)
   (when (modulep! :app telega)
     (after! telega
+      (defun frestein/telega-chatbuf-cancel-both ()
+        (interactive)
+        (telega-chatbuf-filter-cancel)
+        (telega-chatbuf-thread-cancel))
+
       (evil-collection-define-key 'normal 'telega-chat-mode-map
+        "_" #'frestein/telega-chatbuf-cancel-both
         "Za" nil
         "Zf" nil
         "Zv" nil)))
