@@ -61,10 +61,7 @@
 (when (modulep! :app telega)
   ;; Autostart
   (if (daemonp)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                  (with-selected-frame frame
-                    (telega 'no-popup))))
+      (add-hook! server-after-make-frame (telega 'no-popup))
     (add-hook! doom-after-init (telega 'no-popup))))
 
 ;; Smooth scroll

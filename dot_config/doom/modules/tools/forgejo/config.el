@@ -6,6 +6,9 @@
         fj-user "Frestein"
         fj-token-use-auth-source nil)
 
-  (add-hook 'doom-init-ui-hook
-            (lambda ()
-              (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/fj.el")))))
+  (defun frestein/fj-set-token ()
+    (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/fj.el")))
+
+  (if (daemonp)
+      (add-hook! server-after-make-frame (frestein/fj-set-token))
+    (add-hook! doom-init-ui (frestein/fj-set-token))))
