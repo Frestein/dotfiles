@@ -202,6 +202,6 @@
        (rss +org)           ; emacs as an RSS reader
 
        :config
-       ;; literate
+       literate
        compile-angel        ; auto byte/native-compile all elisp files
        (default +bindings +smartparens))

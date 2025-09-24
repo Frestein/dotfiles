@@ -1,10 +1,96 @@
+#+title: Frestein's Doom Emacs
+#+author: Frestein
+#+description: Frestein's Doom Emacs config with personal modules.
+#+startup: content
+#+startup_ignore: toc_3
+
+* Table of Contents :toc_3:
+- [[#doom][Doom]]
+  - [[#about-this-config][About This Config]]
+  - [[#user][User]]
+  - [[#theme][Theme]]
+  - [[#fonts][Fonts]]
+- [[#shell][Shell]]
+- [[#mappings][Mappings]]
+- [[#evil][Evil]]
+- [[#which-key][Which-Key]]
+- [[#xdg][XDG]]
+- [[#org-mode][Org Mode]]
+- [[#magit][Magit]]
+- [[#projectile][Projectile]]
+- [[#file-manager][File Manager]]
+  - [[#dired][Dired]]
+  - [[#dirvish][Dirvish]]
+- [[#languages][Languages]]
+  - [[#treesit][Treesit]]
+  - [[#eglot][Eglot]]
+- [[#www][WWW]]
+  - [[#eww][EWW]]
+  - [[#elfeed][Elfeed]]
+- [[#printer][Printer]]
+- [[#password-manager][Password Manager]]
+- [[#global-auto-revert][Global Auto Revert]]
+- [[#line-settings][Line Settings]]
+- [[#smooth-scroll][Smooth Scroll]]
+- [[#hl-todo][HL-Todo]]
+- [[#zen][Zen]]
+- [[#misc][Misc]]
+- [[#personal-modules][Personal Modules]]
+  - [[#app][App]]
+    - [[#ement][ement]]
+    - [[#osm][osm]]
+    - [[#telega][telega]]
+  - [[#checkers][Checkers]]
+    - [[#jinx][jinx]]
+  - [[#config][Config]]
+    - [[#compile-angel][compile-angel]]
+  - [[#editor][Editor]]
+    - [[#drag-stuff][drag-stuff]]
+    - [[#ialign][ialign]]
+  - [[#emacs][Emacs]]
+    - [[#epg][epg]]
+  - [[#input][Input]]
+    - [[#reverse-im][reverse-im]]
+  - [[#term][Term]]
+    - [[#eat][eat]]
+  - [[#tools][Tools]]
+    - [[#0x0][0x0]]
+    - [[#chezmoi][chezmoi]]
+    - [[#consult-gh][consult-gh]]
+    - [[#disk-usage][disk-usage]]
+    - [[#ebuku][ebuku]]
+    - [[#forgejo][forgejo]]
+    - [[#git-auto-commit][git-auto-commit]]
+    - [[#reader][reader]]
+    - [[#screenshot][screenshot]]
+    - [[#trashed][trashed]]
+  - [[#ui][UI]]
+    - [[#frames-only][frames-only]]
+    - [[#smart-cursor][smart-cursor]]
+    - [[#volatile-highlights][volatile-highlights]]
+
+* Doom
+
+** About This Config
+
+** User
+
+#+begin_src emacs-lisp :tangle yes
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
+#+end_src
 
+** Theme
+
+#+begin_src emacs-lisp :tangle yes
 (setq doom-theme 'doom-gruvbox)
+#+end_src
 
+** Fonts
+
+#+begin_src emacs-lisp :tangle yes
 (setq doom-font                (font-spec :family "Maple Mono NF" :size 14)
       doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
@@ -30,12 +116,20 @@
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
+#+end_src
 
+* Shell
+
+#+begin_src emacs-lisp :tangle yes
 (setq shell-file-name (executable-find "bash"))
 (when (executable-find "fish")
   (setq-default vterm-shell (executable-find "fish")
                 explicit-shell-file-name (executable-find "fish")))
+#+end_src
 
+* Mappings
+
+#+begin_src emacs-lisp :tangle yes
 (map! :n "C-a" #'evil-numbers/inc-at-pt
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
       :v "C-S-a" #'evil-numbers/inc-at-pt
@@ -98,7 +192,11 @@
        :desc "Automatic line breaking" "a" #'auto-fill-mode
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode)))
+#+end_src
 
+* Evil
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :editor evil)
   (when (modulep! :app telega)
     (after! telega
@@ -121,15 +219,27 @@
     (when (modulep! :tools ebuku)
       (unless (memq 'ebuku-mode evil-snipe-disabled-modes)
         (push 'ebuku-mode evil-snipe-disabled-modes)))))
+#+end_src
 
+* Which-Key
+
+#+begin_src emacs-lisp :tangle yes
 (setq which-key-idle-delay 0.2
       ;; BUG: https://github.com/justbur/emacs-which-key/issues/345
       ;; which-key-show-operator-state-maps t
       )
+#+end_src
 
+* XDG
+
+#+begin_src emacs-lisp :tangle yes
 (use-package! xdg
   :demand t)
+#+end_src
 
+* Org Mode
+
+#+begin_src emacs-lisp :tangle yes
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org")
       org-hide-emphasis-markers t
       org-log-done 'time)
@@ -206,21 +316,39 @@ If a region is active, emphasize it, else emphasize the word at point."
 
   (use-package! corg
     :hook (org-mode . corg-setup)))
+#+end_src
 
+* Magit
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :tools magit)
   (setq magit-repository-directories `(("~/Projects" . 2)
                                        (,(xdg-user-dir "DOCUMENTS") . 1)
                                        ("~/.local/share/chezmoi" . 1))))
+#+end_src
 
+* Projectile
+
+#+begin_src emacs-lisp :tangle yes
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
+#+end_src
 
+* File Manager
+
+** Dired
+
+#+begin_src emacs-lisp :tangle yes
 (setq delete-by-moving-to-trash t
       dired-mouse-drag-files t
       mouse-drag-and-drop-region-cross-program t)
 
 (map! :map dired-mode-map
       :v "u" #'dired-unmark)
+#+end_src
 
+** Dirvish
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :emacs dired +dirvish)
   (use-package! dirvish
     :config
@@ -269,7 +397,15 @@ If a region is active, emphasize it, else emphasize the word at point."
           "<mouse-2>" #'dired-mouse-find-file-other-window
           "<mouse-3>" #'dired-mouse-find-file
           :n "gd" #'dirvish-quick-access)))
+#+end_src
 
+* Languages
+
+** Treesit
+
+** Eglot
+
+#+begin_src emacs-lisp :tangle yes
 (defun is-arch-linux-p ()
   "Return t if the current system is Arch Linux."
   (with-temp-buffer
@@ -286,7 +422,11 @@ If a region is active, emphasize it, else emphasize the word at point."
         (when (modulep! :lang qt +lsp)
           (set-eglot-client! mode '("qmlls6"))
           (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))))
+#+end_src
 
+* WWW
+
+#+begin_src emacs-lisp :tangle yes
 (setq browse-url-text-browser (executable-find "cha")
       browse-url-generic-program (executable-find "qutebrowser"))
 
@@ -321,7 +461,14 @@ If a region is active, emphasize it, else emphasize the word at point."
         (switch-to-buffer buf)
         (vterm-send-string (concat "g \C-u" encoded-url "\r"))
         (delete-other-windows)))))
+#+end_src
 
+** EWW
+
+Requirements:
+- [[https://github.com/eafer/rdrview][rdrview: Firefox Reader View as a command line tool]]
+
+#+begin_src emacs-lisp :tangle yes
 (defvar eww-urls
   '("www.opennet.ru" "lwn.net")
   "List of domains to open using eww browser.")
@@ -388,7 +535,11 @@ It should be the title of the web page as returned by `rdrview'."
 
   (map! :map eww-mode-map
         :n "R" #'frestein-eww-readable))
+#+end_src
 
+** Elfeed
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :app rss)
   (after! elfeed
     (setq elfeed-search-filter "@2-week-ago +unread -youtube -reddit -x")
@@ -417,7 +568,11 @@ It should be the title of the web page as returned by `rdrview'."
               (group (:title . "Art") (:elements (query . (and youtube art))))
               (group (:title . "Tech") (:elements (query . (and youtube tech))))
               (group (:title . "Music") (:elements (query . (and youtube music))))))))))
+#+end_src
 
+* Printer
+
+#+begin_src emacs-lisp :tangle yes
 (after! lpr
   (setq lpr-lp-system t
         lpr-command "lp"
@@ -447,7 +602,11 @@ It should be the title of the web page as returned by `rdrview'."
                  (cons (concat "-P " pages) pdf-misc-print-program-args)
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
+#+end_src
 
+* Password Manager
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :tools pass)
   (when (executable-find "gopass")
     (setq backup-directory-alist
@@ -463,17 +622,35 @@ It should be the title of the web page as returned by `rdrview'."
   (use-package! pass
     :config
     (setq pass-show-keybindings nil)))
+#+end_src
 
+* Global Auto Revert
+
+A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x auto-revert-mode, or you can set it to be turned on globally with ‘global-auto-revert-mode’. I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ‘dired’ buffers.
+
+#+begin_src emacs-lisp :tangle yes
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
+#+end_src
 
+* Line Settings
+
+#+begin_src emacs-lisp :tangle yes
 (setq display-line-numbers-type 'relative)
+#+end_src
 
+* Smooth Scroll
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :ui smooth-scroll)
   ;; Disable ultra-scroll
   (remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
   (remove-hook 'doom-first-file-hook #'ultra-scroll-mode))
+#+end_src
 
+* HL-Todo
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :ui hl-todo)
   (after! hl-todo
     (let ((frestein/hl-todo-keyword-faces
@@ -494,24 +671,85 @@ It should be the title of the web page as returned by `rdrview'."
               (if existing
                   (when faces (setcdr existing faces))
                 (push (cons a faces) hl-todo-keyword-faces)))))))))
+#+end_src
 
+* Zen
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :ui zen)
   (setq +zen-text-scale 0
         writeroom-width 100))
+#+end_src
 
+* Misc
+
+#+begin_src emacs-lisp :tangle yes
 (setq default-input-method "russian-computer"
       calendar-week-start-day 1
       confirm-kill-emacs nil)
 
 (when (not (modulep! :ui doom-dashboard))
   (setq initial-buffer-choice 'eshell))
+#+end_src
+* Personal Modules
 
+** App
+
+*** ement
+
+*** osm
+
+*** telega
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :app telega)
   ;; Autostart
   (if (daemonp)
       (add-hook! server-after-make-frame (telega 'no-popup))
     (add-hook! doom-after-init (telega 'no-popup))))
+#+end_src
 
+** Checkers
+
+*** jinx
+
+** Config
+
+*** compile-angel
+
+** Editor
+
+*** drag-stuff
+
+*** ialign
+
+** Emacs
+
+*** epg
+
+** Input
+
+*** reverse-im
+
+** Term
+
+*** eat
+
+** Tools
+
+*** 0x0
+
+*** chezmoi
+
+*** consult-gh
+
+*** disk-usage
+
+*** ebuku
+
+*** forgejo
+
+#+begin_src emacs-lisp :tangle yes
 (when (modulep! :tools forgejo)
   (setq fj-host "https://codeberg.org"
         fj-user "Frestein"
@@ -523,3 +761,21 @@ It should be the title of the web page as returned by `rdrview'."
   (if (daemonp)
       (add-hook! server-after-make-frame (frestein/fj-set-token))
     (add-hook! doom-init-ui (frestein/fj-set-token))))
+#+end_src
+
+*** git-auto-commit
+
+*** reader
+
+*** screenshot
+
+*** trashed
+
+** UI
+
+*** frames-only
+
+*** smart-cursor
+
+*** volatile-highlights
+
