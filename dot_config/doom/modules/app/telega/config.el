@@ -30,6 +30,7 @@
         telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega")
         telega-translate-to-language-by-default "ru"
         telega-video-player-command "mpv"
+        telega-chat-show-deleted-messages-for '(not saved-messages)
         telega-use-images t
         telega-sticker-animated-play t ;; WARN: requires tgs2png
         telega-animation-play-inline 60
