@@ -220,7 +220,8 @@
 (setq org-directory "~/Documents/org/"
       org-hide-emphasis-markers t
       org-archive-tag "archive"
-      org-element-archive-tag "archive")
+      org-element-archive-tag "archive"
+      org-log-done 'time)
 
 (when (modulep! :lang org)
   (defun frestein/org-fold-respect-startup-ignore-tag ()
