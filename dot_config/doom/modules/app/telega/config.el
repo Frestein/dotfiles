@@ -17,16 +17,17 @@
                ("Zp" . telega-chatbuf-attach-poll)
                ("Zs" . telega-chatbuf-attach-sticker)
                ("Zz" . telega-chatbuf-attach)))
-  :hook (telega-load . telega-appindicator-mode)
-  :hook (telega-load . telega-mode-line-mode)
-  :hook (telega-load . telega-notifications-mode)
+  :hook ((telega-load . telega-appindicator-mode)
+         (telega-load . telega-mode-line-mode)
+         (telega-load . telega-notifications-mode))
   :init
-  (setq telega-directory (expand-file-name "~/.local/share/telega")
-        telega-database-dir (expand-file-name "~/.local/share/telega")
-        telega-cache-dir (expand-file-name "~/.cache/telega/cache")
-        telega-temp-dir (expand-file-name "~/.cache/telega/temp"))
+  (setq telega-directory (concat (getenv "XDG_DATA_HOME") "/telega")
+        telega-database-dir (concat (getenv "XDG_DATA_HOME") "/telega/db")
+        telega-cache-dir (concat (getenv "XDG_CACHE_HOME") "/telega/cache")
+        telega-temp-dir (concat (getenv "XDG_CACHE_HOME") "/telega/temp"))
   :config
   (setq telega-server-libs-prefix "/usr"
+        telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega")
         telega-translate-to-language-by-default "ru"
         telega-video-player-command "mpv"
         telega-use-images t
