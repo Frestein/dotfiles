@@ -210,6 +210,7 @@
 (when (modulep! :tools magit)
   (setq magit-repository-directories
         '(("~/Projects/" . 2)
+          ("~/Documents/" . 1)
           ("~/.local/share/chezmoi/" . 1))))
 
 ;; Projectile
