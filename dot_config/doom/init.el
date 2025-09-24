@@ -57,6 +57,7 @@
        ;; parinfer          ; turn lisp into python, sort of
        ;; rotate-text       ; cycle region at point between text candidates
        snippets             ; my elves. They type so I don't have to
+       ;; (whitespace +guess +trim)  ; a butler for your whitespace
        ;; word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
@@ -103,7 +104,7 @@
        ;; llm               ; when I said you needed friends, I didn't mean...
        (lsp +eglot +booster)  ; M-x vscode
        (magit +forge)       ; a git porcelain for Emacs
-       git-auto-commit-mode
+       git-auto-commit
        ;; make              ; run make tasks from Emacs
        (pass +auth)         ; password manager for nerds
        ebuku                ; bookmark manager for nerds
