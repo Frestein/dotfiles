@@ -290,7 +290,7 @@
 
 (use-package! telega-mnz
   :when (modulep! +mnz)
-  :after-call telega
+  :after telega
   :hook (telega-load  . global-telega-mnz-mode)
   :config
   (setq telega-mnz-use-language-detection 32))
@@ -301,7 +301,7 @@
 ;; TODO: WIP
 ;; (use-package! telega-dashboard
 ;;   :when (modulep! +dashboard)
-;;   :after-call telega
+;;   :after telega
 ;;   :config
 ;;   (add-to-list '+doom-dashboard-menu-sections
 ;;                '("Important telega chats"
@@ -312,21 +312,21 @@
 
 (use-package! telega-emacs-stories
   :when (modulep! +stories)
-  :after-call telega
+  :after telega
   :hook (telega-load  . telega-emacs-stories-mode)
   :bind (:map telega-root-mode-map
               ("v e" . telega-view-emacs-stories)))
 
 (use-package! telega-url-shorten-nerd
   :when (modulep! +icons)
-  :after-call telega
+  :after telega
   :hook (telega-load  . global-telega-url-shorten-nerd-mode))
 
 (use-package! telega-adblock
   :when (modulep! +adblock)
-  :after-call telega
+  :after telega
   :hook (telega-load  . telega-adblock-mode))
 
 (use-package! telega-dired-dwim
   :when (modulep! :emacs dired)
-  :after-call telega)
+  :after telega)
