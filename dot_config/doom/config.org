@@ -1,5 +1,5 @@
 #+title: Frestein's Doom Emacs
-#+author: Frestein
+#+author: Frestein (frestein@tuta.io)
 #+description: Frestein's Doom Emacs config with personal modules.
 #+startup: content
 #+startup_ignore: toc_3
@@ -58,7 +58,7 @@
     - [[#consult-gh][consult-gh]]
     - [[#disk-usage][disk-usage]]
     - [[#ebuku][ebuku]]
-    - [[#forgejo][forgejo]]
+    - [[#fj][fj]]
     - [[#git-auto-commit][git-auto-commit]]
     - [[#reader][reader]]
     - [[#screenshot][screenshot]]
@@ -759,20 +759,22 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 
 *** ebuku
 
-*** forgejo
+*** fj
 
 #+begin_src emacs-lisp :tangle yes
-(when (modulep! :tools forgejo)
+(when (modulep! :tools fj)
   (setq fj-host "https://codeberg.org"
-        fj-user "Frestein"
-        fj-token-use-auth-source nil)
+        fj-user "Frestein")
 
-  (defun frestein/fj-set-token ()
-    (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/fj.el")))
+  (when (modulep! :tools pass +auth)
+    (setq fj-token-use-auth-source nil)
 
-  (if (daemonp)
-      (add-hook! server-after-make-frame (frestein/fj-set-token))
-    (add-hook! doom-init-ui (frestein/fj-set-token))))
+    (defun frestein/fj-set-token ()
+      (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/fj.el")))
+
+    (if (daemonp)
+        (add-hook! server-after-make-frame (frestein/fj-set-token))
+      (add-hook! doom-init-ui (frestein/fj-set-token)))))
 #+end_src
 
 *** git-auto-commit

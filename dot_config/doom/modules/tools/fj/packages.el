@@ -1,5 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
-;;; app/forgejo/packages.el
+;;; tools/fj/packages.el
 
 (package! fj
   :recipe (:host codeberg :repo "martianh/fj.el"

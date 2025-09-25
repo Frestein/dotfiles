@@ -93,7 +93,7 @@
        ;; docker
        chezmoi
        (consult-gh +nerd)   ; interactive interface for "Github CLI"
-       forgejo
+       fj                   ; client for forgejo instances
        trashed              ; freedesktop.org trashcan
        screenshot
        0x0
