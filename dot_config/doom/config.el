@@ -147,6 +147,10 @@
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode)))
 
+;; XDG
+(use-package! xdg
+  :demand t)
+
 ;; Dired
 (setq delete-by-moving-to-trash t)
 (setq dired-mouse-drag-files t)
@@ -162,14 +166,14 @@
     (dirvish-peek-mode t)
 
     (setq dirvish-quick-access-entries
-          '(("h" "~/"                                 "Home")
-            ("d" "~/Downloads/"                       "Downloads")
-            ("D" "~/Documents/"                       "Documents")
-            ("v" "~/Videos/"                          "Videos")
-            ("m" "~/Music/"                           "Music")
-            ("c" "~/.config/"                         "Config")
+          `(("h" "~/"                                 "Home")
+            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
+            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
+            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
+            ("m" ,(xdg-user-dir "MUSIC")              "Music")
+            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
             ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
-            ("p" "~/Pictures/"                        "Pictures")
+            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
             ("P" "~/Projects/"                        "Projects")
             ("M" "/mnt/"                              "Drives")
             ("t" "~/.local/share/Trash/files/"        "TrashCan")))
@@ -208,16 +212,15 @@
 ;; Git
 ;; Magit
 (when (modulep! :tools magit)
-  (setq magit-repository-directories
-        '(("~/Projects/" . 2)
-          ("~/Documents/" . 1)
-          ("~/.local/share/chezmoi/" . 1))))
+  (setq magit-repository-directories `(("~/Projects" . 2)
+                                       (,(xdg-user-dir "DOCUMENTS") . 1)
+                                       ("~/.local/share/chezmoi" . 1))))
 
 ;; Projectile
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
 
 ;; Org
-(setq org-directory "~/Documents/org/"
+(setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org")
       org-hide-emphasis-markers t
       org-log-done 'time)
 
