@@ -1,5 +1,18 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(setq doom-upgrade-command
+      (format "%s upgrade -B --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s"))
+      doom-reload-command
+      (format "%s sync -B -e --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s")))
+
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
 

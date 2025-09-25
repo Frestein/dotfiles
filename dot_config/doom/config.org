@@ -6,7 +6,6 @@
 
 * Table of Contents :toc_3:
 - [[#doom][Doom]]
-  - [[#about-this-config][About This Config]]
   - [[#user][User]]
   - [[#theme][Theme]]
   - [[#fonts][Fonts]]
@@ -71,13 +70,26 @@
 
 * Doom
 
-** About This Config
+#+begin_src emacs-lisp :tangle yes
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+(setq doom-upgrade-command
+      (format "%s upgrade -B --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s"))
+      doom-reload-command
+      (format "%s sync -B -e --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s")))
+#+end_src
 
 ** User
 
 #+begin_src emacs-lisp :tangle yes
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
 #+end_src
