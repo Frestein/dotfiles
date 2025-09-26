@@ -146,9 +146,16 @@
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org")
       org-hide-emphasis-markers t
       org-log-done 'time
-      org-display-custom-times t
-      org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p")
-      org-agenda-timegrid-use-ampm t)
+      ;; BUG: The second format is displayed incorrectly.
+      ;;
+      ;; For example:
+      ;; SCHEDULED: <2025-09-26 Fri 02:00 PM-16:00>
+      ;; The end time is shown in 24-hour format instead of using %I:%M %p.
+      ;;
+      ;; org-display-custom-times t
+      ;; org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p")
+      org-agenda-timegrid-use-ampm t
+      org-agenda-restore-windows-after-quit t)
 
 (after! org
   (setq org-archive-tag "archive"
