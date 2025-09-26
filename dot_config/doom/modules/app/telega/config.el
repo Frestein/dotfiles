@@ -242,6 +242,20 @@
                                     #'equal)
                     added-actions))))
 
+  ;; INFO: Add space after vertical bar in folder prefix
+  (defun telega-folders-insert-default (&optional fmt-spec)
+    "Default inserter for the folders prefixing chat's title."
+    (let ((fmt-spec (or fmt-spec (eval-when-compile
+                                   (propertize "%F" 'face 'bold)))))
+      (if telega-tdlib--chat-folder-tags-p
+          (telega-folders-insert-as-tags fmt-spec telega-chat-folders)
+        (when (cond ((> (length telega-chat-folders) 1)
+                     (telega-ins (telega-symbol 'multiple-folders)))
+                    (telega-chat-folders
+                     (telega-ins (telega-folder-format
+                                  fmt-spec (car telega-chat-folders)))))
+          (telega-ins (concat (telega-symbol 'vertical-bar) " "))))))
+
   ;; WARN: TOS violation. Block sponsored messages.
   ;; sponsored - Fetch messages but don't draw them.
   ;; sponsored2 - Don't fetch messages.
