@@ -2,7 +2,9 @@
 
 (use-package! telega
   :bind-keymap ("C-c t" . telega-prefix-map)
-  :bind ((:map telega-msg-button-map
+  :bind ((:map telega-root-mode-map
+               ("gVD" . telega-view-default))
+         (:map telega-msg-button-map
                ("SPC" . nil)
                ("C-p" . telega-msg-previous)
                ("C-n" . telega-msg-next))
@@ -31,9 +33,11 @@
   :config
   (setq telega-server-libs-prefix "/usr"
         telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega")
+        telega-root-default-view-function 'telega-view-folders
         telega-translate-to-language-by-default "ru"
         telega-video-player-command "mpv"
         telega-chat-show-deleted-messages-for '(not saved-messages)
+        telega-sticker-size '(8 . 26)
         telega-use-images t
         telega-sticker-animated-play t ;; WARN: requires tgs2png
         telega-animation-play-inline 60
@@ -47,7 +51,7 @@
                                    (date-break-bar . "%d %B %Y %a"))
         telega-known-inline-bots (append telega-known-inline-bots
                                          '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare"))
-        telega-chat-input-markups '("org" nil "markdown2")
+        telega-chat-input-markups '("org" "markdown2")
         telega-currency-symbols-alist '(("EUR" . "€")     ;; Euro
                                         ("USD" . "$")     ;; US Dollar
                                         ("RUB" . "₽")     ;; Russian Ruble
