@@ -255,6 +255,11 @@
               (lambda (reply)
                 (plist-put chat :telega-sponsored-messages reply))))))))
 
+  ;; INFO: Ignore messages from blocked senders.
+  (when (modulep! +blocked)
+    (add-hook 'telega-msg-ignore-predicates
+              (telega-match-gen-predicate 'msg '(sender is-blocked))))
+
   (defun frestein/telega-chatbuf-inline-bot-choose ()
     "Select an inline bot from telega-known-inline-bots and insert it."
     (interactive)
