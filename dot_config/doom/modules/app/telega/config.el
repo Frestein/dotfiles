@@ -21,7 +21,8 @@
                ("Zz" . telega-chatbuf-attach)))
   :hook ((telega-load . telega-appindicator-mode)
          (telega-load . telega-mode-line-mode)
-         (telega-load . telega-notifications-mode))
+         (telega-load . telega-notifications-mode)
+         (telega-load . telega-autoplay-mode))
   :init
   (setq telega-directory (concat (getenv "XDG_DATA_HOME") "/telega")
         telega-database-dir (concat (getenv "XDG_DATA_HOME") "/telega/db")
