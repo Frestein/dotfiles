@@ -171,14 +171,15 @@
           telega-symbol-reaction              ""
           telega-symbol-reaction-mark         ""
           telega-symbol-reply                 ""
+          telega-symbol-reply-quote           ""
           telega-symbol-right-arrow           "  "
           telega-symbol-star                  (propertize "󰓎" 'face 'error)
-          telega-symbol-story                 " "
-          telega-symbol-story-reply           (compose-chars ? ?)
+          telega-symbol-story                 ""
+          telega-symbol-story-reply           ""
           telega-symbol-telegram              (propertize " " 'face '(italic telega-blue))
           telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
           telega-symbol-timer-clock           "󰔛 "
-          telega-symbol-typing                "..."
+          telega-symbol-typing                ""
           telega-symbol-verified              (propertize " " 'face 'telega-blue)
           telega-symbol-video                 ""
           telega-symbol-video-chat            "󰯜"
