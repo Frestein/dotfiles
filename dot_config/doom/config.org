@@ -64,6 +64,7 @@
     - [[#screenshot][screenshot]]
     - [[#trashed][trashed]]
   - [[#ui][UI]]
+    - [[#colorful][colorful]]
     - [[#frames-only][frames-only]]
     - [[#smart-cursor][smart-cursor]]
     - [[#volatile-highlights][volatile-highlights]]
@@ -202,6 +203,8 @@
                  :desc "Open directory in dirvish" "m" #'dirvish))
       (:prefix ("t" . "toggle")
        :desc "Automatic line breaking" "a" #'auto-fill-mode
+       (:when (modulep! :ui colorful)
+         :desc "Colorful mode" "C" #'global-colorful-mode)
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode)))
 #+end_src
@@ -796,6 +799,8 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 *** trashed
 
 ** UI
+
+*** colorful
 
 *** frames-only
 

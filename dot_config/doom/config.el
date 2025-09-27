@@ -109,6 +109,8 @@
                  :desc "Open directory in dirvish" "m" #'dirvish))
       (:prefix ("t" . "toggle")
        :desc "Automatic line breaking" "a" #'auto-fill-mode
+       (:when (modulep! :ui colorful)
+         :desc "Colorful mode" "C" #'global-colorful-mode)
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode)))
 
