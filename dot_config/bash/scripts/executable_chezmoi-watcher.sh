@@ -5,6 +5,7 @@ WATCHED_DIRS=(
     "${XDG_CONFIG_HOME:-$HOME/.config}/doom"
     "${XDG_CONFIG_HOME:-$HOME/.config}/quickshell"
 )
+MIN_INTERVAL=4
 
 declare -A last_event_time
 
@@ -30,7 +31,7 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${WATCHED_DIRS[@]}" | whi
     now=$(date +%s)
     last=${last_event_time["$rel_path"]:-0}
 
-    if ((now - last < 2)); then
+    if ((now - last < MIN_INTERVAL)); then
         continue
     fi
 
