@@ -7,7 +7,6 @@
 .config/czkawka/
 .config/dconf/
 .config/doom/custom.el
-.config/doom/README.org
 .config/doom.d/
 .config/discord/
 .config/Electron/
@@ -63,6 +62,14 @@
 .config/wayland-pipewire-idle-inhibit/
 .config/weechat/
 .config/wireshark/
+.config/yazi/flavors/*/LICENSE-tmtheme
+.config/yazi/**/.gitignore
+.config/yazi/**/.github
+.config/yazi/**/*.png
+.config/yazi/**/*.gif
+.config/yazi/**/.editorconfig
+.config/yazi/**/.luarc.json
+.config/yazi/**/stylua.toml
 .config/YouTube\ Music/
 .config/yt-x/extensions
 .config/yt-x/*.json
@@ -72,6 +79,9 @@
 .config/user-dirs*
 
 **/__pycache__/
+**/README.org
+**/README.md
+**/LICENSE
 
 # $HOME/Tools/bgutil-ytdlp-pot-provider
 **/node_modules/
