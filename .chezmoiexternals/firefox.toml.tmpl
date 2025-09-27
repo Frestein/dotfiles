@@ -1,3 +1,5 @@
+{{- if (env "CZ_EXT") }}
+
 [".mozilla/firefox/arkenfox.default/chrome/includes"]
 type = "archive"
 url = "https://github.com/cascadefox/cascade/archive/main.tar.gz"
@@ -5,3 +7,5 @@ exact = true
 stripComponents = 3
 refreshPeriod = "168h"
 include = ["*/chrome/includes/**", "*/integrations/gruvbox/**"]
+
+{{- end }}

@@ -1,3 +1,5 @@
+{{- if (env "CZ_EXT") }}
+
 [".config/Kvantum/Gruvbox_Light_Green"]
 type = "archive"
 url = {{ gitHubLatestReleaseAssetURL "sachnr/gruvbox-kvantum-themes" "Gruvbox_Light_Green.tar.gz" | quote }}
@@ -23,3 +25,5 @@ url = "https://github.com/EliverLara/Nordic/archive/master.tar.gz"
 include = ["*/kde/kvantum/Nordic-Darker-Solid/**"]
 refreshPeriod = "168h"
 stripComponents = 4
+
+{{- end }}

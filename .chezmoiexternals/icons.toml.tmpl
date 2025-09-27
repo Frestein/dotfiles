@@ -1,6 +1,10 @@
-[".local/share/themes/Gruvbox-Material-Dark"]
+{{- if (env "CZ_EXT") }}
+
+[".local/share/icons/Gruvbox-Material-Dark"]
 type = "archive"
 url = "https://github.com/TheGreatMcPain/gruvbox-material-gtk/archive/master.tar.gz"
-include = ["*/themes/Gruvbox-Material-Dark/**"]
+include = ["*/icons/Gruvbox-Material-Dark/**"]
 refreshPeriod = "168h"
 stripComponents = 3
+
+{{- end }}

@@ -61,6 +61,13 @@ alias dm='doom'
 
 # chezmoi
 alias cz='chezmoi'
+alias czs='chezmoi status'
+alias czd='chezmoi diff'
+alias cza='chezmoi apply'
+alias czx='env CZ_EXT=1 chezmoi'
+alias czsx='env CZ_EXT=1 chezmoi status'
+alias czdx='env CZ_EXT=1 chezmoi diff'
+alias czax='env CZ_EXT=1 chezmoi apply'
 
 # ansible
 alias a='ansible'

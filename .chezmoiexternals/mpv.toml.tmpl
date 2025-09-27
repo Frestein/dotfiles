@@ -1,3 +1,5 @@
+{{- if (env "CZ_EXT") }}
+
 [".config/mpv/shaders"]
 type = "archive"
 url = "https://github.com/iwalton3/default-shader-pack/archive/master.tar.gz"
@@ -89,3 +91,5 @@ include = ["*/sponsorblock_shared/**"]
 type = "file"
 url = "https://raw.githubusercontent.com/po5/mpv_sponsorblock/refs/heads/master/sponsorblock.lua"
 refreshPeriod = "168h"
+
+{{- end }}

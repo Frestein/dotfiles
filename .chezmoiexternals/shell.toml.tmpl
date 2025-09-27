@@ -1,3 +1,5 @@
+{{- if (env "CZ_EXT") }}
+
 [".local/bin/0x0"]
 type = "file"
 url = "https://raw.githubusercontent.com/Calinou/0x0/refs/heads/master/bin/0x0"
@@ -9,3 +11,5 @@ type = "file"
 url = "https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/bin/fzf-preview.sh"
 refreshPeriod = "168h"
 executable = true
+
+{{- end }}
