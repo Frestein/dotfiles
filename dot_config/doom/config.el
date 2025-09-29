@@ -232,6 +232,9 @@ If a region is active, emphasize it, else emphasize the word at point."
   (use-package! org-super-agenda
     :hook (org-agenda-mode . org-super-agenda-mode))
 
+  (use-package! org-expose-emphasis-markers
+    :hook (org-mode . org-expose-emphasis-markers-mode))
+
   (use-package! corg
     :hook (org-mode . corg-setup)))
 
