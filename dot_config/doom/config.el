@@ -1,17 +1,13 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(setq doom-upgrade-command
-      (format "%s upgrade -B --aot"
-              ;; INFO: /usr/bin/env doesn't exist on Android
-              (if (featurep :system 'android)
-                  "sh %s"
-                "%s"))
-      doom-reload-command
-      (format "%s sync -B -e --aot"
-              ;; INFO: /usr/bin/env doesn't exist on Android
-              (if (featurep :system 'android)
-                  "sh %s"
-                "%s")))
+(when (not (modulep! :ui doom-dashboard))
+  (setq-default inhibit-startup-screen t
+                inhibit-startup-message t
+                inhibit-startup-echo-area-message t
+                initial-scratch-message ""
+                initial-buffer-choice (lambda ()
+                                        (org-agenda-list)
+                                        (get-buffer "*Org Agenda*"))))
 
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
@@ -43,6 +39,19 @@
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
+
+(setq doom-upgrade-command
+      (format "%s upgrade -B --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s"))
+      doom-reload-command
+      (format "%s sync -B -e --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s")))
 
 (setq shell-file-name (executable-find "bash"))
 (when (executable-find "fish")
@@ -535,9 +544,6 @@ It should be the title of the web page as returned by `rdrview'."
 (setq default-input-method "russian-computer"
       calendar-week-start-day 1
       confirm-kill-emacs nil)
-
-(when (not (modulep! :ui doom-dashboard))
-  (setq initial-buffer-choice 'eshell))
 
 (when (modulep! :app telega)
   ;; Autostart

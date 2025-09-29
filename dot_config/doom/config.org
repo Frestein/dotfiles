@@ -5,10 +5,12 @@
 #+startup_ignore: toc_3
 
 * Table of Contents :toc_3:
+- [[#startup][Startup]]
+- [[#user][User]]
 - [[#doom][Doom]]
-  - [[#user][User]]
   - [[#theme][Theme]]
   - [[#fonts][Fonts]]
+  - [[#commands][Commands]]
 - [[#shell][Shell]]
 - [[#mappings][Mappings]]
 - [[#evil][Evil]]
@@ -69,31 +71,29 @@
     - [[#smart-cursor][smart-cursor]]
     - [[#volatile-highlights][volatile-highlights]]
 
-* Doom
+* Startup
 
 #+begin_src emacs-lisp :tangle yes
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(setq doom-upgrade-command
-      (format "%s upgrade -B --aot"
-              ;; INFO: /usr/bin/env doesn't exist on Android
-              (if (featurep :system 'android)
-                  "sh %s"
-                "%s"))
-      doom-reload-command
-      (format "%s sync -B -e --aot"
-              ;; INFO: /usr/bin/env doesn't exist on Android
-              (if (featurep :system 'android)
-                  "sh %s"
-                "%s")))
+(when (not (modulep! :ui doom-dashboard))
+  (setq-default inhibit-startup-screen t
+                inhibit-startup-message t
+                inhibit-startup-echo-area-message t
+                initial-scratch-message ""
+                initial-buffer-choice (lambda ()
+                                        (org-agenda-list)
+                                        (get-buffer "*Org Agenda*"))))
 #+end_src
 
-** User
+* User
 
 #+begin_src emacs-lisp :tangle yes
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
 #+end_src
+
+* Doom
 
 ** Theme
 
@@ -129,6 +129,23 @@
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
+#+end_src
+
+** Commands
+
+#+begin_src emacs-lisp :tangle yes
+(setq doom-upgrade-command
+      (format "%s upgrade -B --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s"))
+      doom-reload-command
+      (format "%s sync -B -e --aot"
+              ;; INFO: /usr/bin/env doesn't exist on Android
+              (if (featurep :system 'android)
+                  "sh %s"
+                "%s")))
 #+end_src
 
 * Shell
@@ -720,9 +737,6 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 (setq default-input-method "russian-computer"
       calendar-week-start-day 1
       confirm-kill-emacs nil)
-
-(when (not (modulep! :ui doom-dashboard))
-  (setq initial-buffer-choice 'eshell))
 #+end_src
 * Personal Modules
 
