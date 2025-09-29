@@ -5,7 +5,7 @@ WATCHED_DIRS=(
     "${XDG_CONFIG_HOME:-$HOME/.config}/doom"
     "${XDG_CONFIG_HOME:-$HOME/.config}/quickshell"
 )
-MIN_INTERVAL=4
+MIN_INTERVAL=2
 
 declare -A last_event_time
 
