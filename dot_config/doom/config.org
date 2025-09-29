@@ -220,11 +220,14 @@
         (telega-chatbuf-filter-cancel)
         (telega-chatbuf-thread-cancel))
 
+      (evil-collection-define-key 'normal 'telega-root-mode-map
+        "gVD" #'telega-view-default)
+
       (evil-collection-define-key 'normal 'telega-chat-mode-map
         "_" #'frestein/telega-chatbuf-cancel-both
-        "Za" nil
-        "Zf" nil
-        "Zv" nil)))
+        "Za" #'telega-chatbuf-attach-animation
+        "Zf" #'telega-chatbuf-attach-file
+        "Zv" #'telega-chatbuf-attach-video)))
 
   (after! evil-snipe
     (when (modulep! :app telega)

@@ -2,5 +2,4 @@
 
 (setq delete-by-moving-to-trash t)
 
-(use-package! trashed
-  :bind ("C-c T" . trashed))
+(use-package! trashed)

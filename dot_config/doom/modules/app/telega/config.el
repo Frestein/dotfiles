@@ -1,26 +1,6 @@
 ;;; app/telega/config.el -*- lexical-binding: t; -*-
 
 (use-package! telega
-  :bind-keymap ("C-c t" . telega-prefix-map)
-  :bind ((:map telega-root-mode-map
-               ("gVD" . telega-view-default))
-         (:map telega-msg-button-map
-               ("SPC" . nil)
-               ("C-p" . telega-msg-previous)
-               ("C-n" . telega-msg-next))
-         (:map telega-chat-mode-map
-               ("Za" . telega-chatbuf-attach-animation)
-               ("ZA" . telega-chatbuf-attach-audio)
-               ("Zc" . telega-chatbuf-attach-clipboard)
-               ("ZC" . telega-chatbuf-attach-checklist)
-               ("Zv" . telega-chatbuf-attach-video)
-               ("ZV" . telega-chatbuf-attach-voice-note)
-               ("Zd" . telega-chatbuf-attach-dice)
-               ("Zf" . telega-chatbuf-attach-file)
-               ("Zm" . telega-chatbuf-attach-media)
-               ("Zp" . telega-chatbuf-attach-poll)
-               ("Zs" . telega-chatbuf-attach-sticker)
-               ("Zz" . telega-chatbuf-attach)))
   :hook ((telega-load . telega-appindicator-mode)
          (telega-load . telega-mode-line-mode)
          (telega-load . telega-notifications-mode)
@@ -285,33 +265,46 @@
       (when bot
         (insert bot))))
 
-  (map! :map telega-chat-mode-map
-        :n "C-p" #'telega-msg-previous
-        :n "C-n" #'telega-msg-next
-        (:localleader
-         "@" #'frestein/telega-chatbuf-inline-bot-choose
-         (:prefix ("t" . "translate")
-                  "r" #'telega-translate-region
-                  "R" #'telega-translate-region-inplace
-                  "a" #'telega-auto-translate-mode)
-         (:prefix ("i" . "input")
-                  "b" #'frestein/telega-chatbuf-inline-bot-choose
-                  "f" #'telega-chatbuf-input-formatting-set)
-         (:prefix ("d" . "describe")
-                  "w" #'telega-describe-connected-websites
-                  "s" #'telega-describe-active-sessions
-                  "n" #'telega-describe-network
-                  "N" #'telega-describe-notifications
-                  "p" #'telega-describe-privacy-settings
-                  "c" #'telega-describe-chat
-                  "C" #'telega-describe-chat-members)
-         (:prefix ("s" . "stickers")
-                  "f" #'telega-sticker-choose-favorite-or-recent
-                  "c" #'telega-stickerset-choose
-                  "t" #'telega-stickerset-trends
-                  "s" #'telega-stickerset-search)
-         (:when (modulep! :lang org)
-           "c" #'org-cliplink))))
+  (map! (:map telega-msg-button-map
+         "SPC" nil
+         :n "C-p" #'telega-msg-previous
+         :n "C-n" #'telega-msg-next)
+        (:map telega-chat-mode-map
+         :n "C-p" #'telega-msg-previous
+         :n "C-n" #'telega-msg-next
+         :n "ZA" #'telega-chatbuf-attach-audio
+         :n "Zc" #'telega-chatbuf-attach-clipboard
+         :n "ZC" #'telega-chatbuf-attach-checklist
+         :n "ZV" #'telega-chatbuf-attach-voice-note
+         :n "Zd" #'telega-chatbuf-attach-dice
+         :n "Zm" #'telega-chatbuf-attach-media
+         :n "Zp" #'telega-chatbuf-attach-poll
+         :n "Zs" #'telega-chatbuf-attach-sticker
+         :n "Zz" #'telega-chatbuf-attach
+         (:localleader
+          "@" #'frestein/telega-chatbuf-inline-bot-choose
+          (:prefix ("t" . "translate")
+                   "r" #'telega-translate-region
+                   "R" #'telega-translate-region-inplace
+                   "a" #'telega-auto-translate-mode)
+          (:prefix ("i" . "input")
+                   "b" #'frestein/telega-chatbuf-inline-bot-choose
+                   "f" #'telega-chatbuf-input-formatting-set)
+          (:prefix ("d" . "describe")
+                   "w" #'telega-describe-connected-websites
+                   "s" #'telega-describe-active-sessions
+                   "n" #'telega-describe-network
+                   "N" #'telega-describe-notifications
+                   "p" #'telega-describe-privacy-settings
+                   "c" #'telega-describe-chat
+                   "C" #'telega-describe-chat-members)
+          (:prefix ("s" . "stickers")
+                   "f" #'telega-sticker-choose-favorite-or-recent
+                   "c" #'telega-stickerset-choose
+                   "t" #'telega-stickerset-trends
+                   "s" #'telega-stickerset-search)
+          (:when (modulep! :lang org)
+            "c" #'org-cliplink)))))
 
 (use-package! telega-mnz
   :when (modulep! +mnz)
@@ -323,24 +316,12 @@
 (use-package! language-detection
   :when (modulep! +mnz))
 
-;; TODO: WIP
-;; (use-package! telega-dashboard
-;;   :when (modulep! +dashboard)
-;;   :after-call telega
-;;   :config
-;;   (add-to-list '+doom-dashboard-menu-sections
-;;                '("Important telega chats"
-;;                  :icon (nerd-icons-faicon "nf-fa-comment" :face 'doom-dashboard-menu-title)
-;;                  :action (lambda () (telega-dashboard-show))
-;;                  :when (featurep 'telega-dashboard))
-;;                t))
-
 (use-package! telega-emacs-stories
   :when (modulep! +stories)
   :after-call telega
   :hook (telega-load  . telega-emacs-stories-mode)
   :bind (:map telega-root-mode-map
-              ("v e" . telega-view-emacs-stories)))
+              ("gVe" . telega-view-emacs-stories)))
 
 (use-package! telega-url-shorten-nerd
   :when (modulep! +icons)
