@@ -67,6 +67,8 @@
 
 (map! :leader
       (:prefix ("s" . "search")
+               (:when (modulep! :completion vertico)
+                 :desc "Ripgrep" "g" #'consult-ripgrep)
                (:when (modulep! :tools pass)
                  "p" nil
                  "P" nil
