@@ -16,15 +16,15 @@
 - [[#evil][Evil]]
 - [[#which-key][Which-Key]]
 - [[#xdg][XDG]]
-- [[#org-mode][Org Mode]]
 - [[#magit][Magit]]
 - [[#projectile][Projectile]]
 - [[#file-manager][File Manager]]
   - [[#dired][Dired]]
   - [[#dirvish][Dirvish]]
 - [[#languages][Languages]]
-  - [[#treesit][Treesit]]
-  - [[#eglot][Eglot]]
+  - [[#org][Org]]
+  - [[#markdown][Markdown]]
+  - [[#qml][QML]]
 - [[#www][WWW]]
   - [[#eww][EWW]]
   - [[#elfeed][Elfeed]]
@@ -274,7 +274,90 @@
   :demand t)
 #+end_src
 
-* Org Mode
+* Magit
+
+#+begin_src emacs-lisp :tangle yes
+(when (modulep! :tools magit)
+  (setq magit-repository-directories `(("~/Projects" . 2)
+                                       (,(xdg-user-dir "DOCUMENTS") . 1)
+                                       ("~/.local/share/chezmoi" . 1))))
+#+end_src
+
+* Projectile
+
+#+begin_src emacs-lisp :tangle yes
+(setq projectile-project-search-path '(("~/Projects/" . 2)))
+#+end_src
+
+* File Manager
+
+** Dired
+
+#+begin_src emacs-lisp :tangle yes
+(setq delete-by-moving-to-trash t
+      dired-mouse-drag-files t
+      mouse-drag-and-drop-region-cross-program t)
+
+(map! :map dired-mode-map
+      :v "u" #'dired-unmark)
+#+end_src
+
+** Dirvish
+
+#+begin_src emacs-lisp :tangle yes
+(when (modulep! :emacs dired +dirvish)
+  (use-package! dirvish
+    :config
+    (dirvish-peek-mode t)
+
+    (setq dirvish-quick-access-entries
+          `(("h" "~/"                                 "Home")
+            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
+            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
+            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
+            ("m" ,(xdg-user-dir "MUSIC")              "Music")
+            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
+            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
+            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
+            ("P" "~/Projects/"                        "Projects")
+            ("M" "/mnt/"                              "Drives")
+            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+
+    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
+          dirvish-side-attributes '(collapse))
+
+    (when (modulep! :emacs dired +icons)
+      (setq dirvish-subtree-always-show-state t)
+      (cl-callf append dirvish-attributes '(nerd-icons))
+      (cl-callf append dirvish-side-attributes '(nerd-icons)))
+
+    (when (modulep! :ui vc-gutter)
+      ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
+      ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
+      ;; visible in the terminal.
+      (when (or (daemonp) (display-graphic-p))
+        (push 'vc-state dirvish-side-attributes)))
+
+    (dirvish-define-preview eza (file)
+      "Use `eza' to generate directory preview."
+      :require ("eza")
+      (when (file-directory-p file)
+        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+
+    (push 'eza dirvish-preview-dispatchers)
+
+    (setq mouse-1-click-follows-link nil)
+
+    (map! :map dirvish-mode-map
+          "<mouse-1>" #'dirvish-subtree-toggle-or-open
+          "<mouse-2>" #'dired-mouse-find-file-other-window
+          "<mouse-3>" #'dired-mouse-find-file
+          :n "gd" #'dirvish-quick-access)))
+#+end_src
+
+* Languages
+
+** Org
 
 #+begin_src emacs-lisp :tangle yes
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org")
@@ -368,92 +451,19 @@ If a region is active, emphasize it, else emphasize the word at point."
     :hook (org-mode . corg-setup)))
 #+end_src
 
-* Magit
+** Markdown
 
 #+begin_src emacs-lisp :tangle yes
-(when (modulep! :tools magit)
-  (setq magit-repository-directories `(("~/Projects" . 2)
-                                       (,(xdg-user-dir "DOCUMENTS") . 1)
-                                       ("~/.local/share/chezmoi" . 1))))
+(custom-theme-set-faces! 'doom-gruvbox
+  '(markdown-header-face-1 :inherit outline-1)
+  '(markdown-header-face-2 :inherit outline-2)
+  '(markdown-header-face-3 :inherit outline-3)
+  '(markdown-header-face-4 :inherit outline-4)
+  '(markdown-header-face-5 :inherit outline-5)
+  '(markdown-header-face-6 :inherit outline-6))
 #+end_src
 
-* Projectile
-
-#+begin_src emacs-lisp :tangle yes
-(setq projectile-project-search-path '(("~/Projects/" . 2)))
-#+end_src
-
-* File Manager
-
-** Dired
-
-#+begin_src emacs-lisp :tangle yes
-(setq delete-by-moving-to-trash t
-      dired-mouse-drag-files t
-      mouse-drag-and-drop-region-cross-program t)
-
-(map! :map dired-mode-map
-      :v "u" #'dired-unmark)
-#+end_src
-
-** Dirvish
-
-#+begin_src emacs-lisp :tangle yes
-(when (modulep! :emacs dired +dirvish)
-  (use-package! dirvish
-    :config
-    (dirvish-peek-mode t)
-
-    (setq dirvish-quick-access-entries
-          `(("h" "~/"                                 "Home")
-            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
-            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
-            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
-            ("m" ,(xdg-user-dir "MUSIC")              "Music")
-            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
-            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
-            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
-            ("P" "~/Projects/"                        "Projects")
-            ("M" "/mnt/"                              "Drives")
-            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
-
-    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
-          dirvish-side-attributes '(collapse))
-
-    (when (modulep! :emacs dired +icons)
-      (setq dirvish-subtree-always-show-state t)
-      (cl-callf append dirvish-attributes '(nerd-icons))
-      (cl-callf append dirvish-side-attributes '(nerd-icons)))
-
-    (when (modulep! :ui vc-gutter)
-      ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
-      ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
-      ;; visible in the terminal.
-      (when (or (daemonp) (display-graphic-p))
-        (push 'vc-state dirvish-side-attributes)))
-
-    (dirvish-define-preview eza (file)
-      "Use `eza' to generate directory preview."
-      :require ("eza")
-      (when (file-directory-p file)
-        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
-
-    (push 'eza dirvish-preview-dispatchers)
-
-    (setq mouse-1-click-follows-link nil)
-
-    (map! :map dirvish-mode-map
-          "<mouse-1>" #'dirvish-subtree-toggle-or-open
-          "<mouse-2>" #'dired-mouse-find-file-other-window
-          "<mouse-3>" #'dired-mouse-find-file
-          :n "gd" #'dirvish-quick-access)))
-#+end_src
-
-* Languages
-
-** Treesit
-
-** Eglot
+** QML
 
 #+begin_src emacs-lisp :tangle yes
 (defun is-arch-linux-p ()
@@ -465,7 +475,6 @@ If a region is active, emphasize it, else emphasize the word at point."
       (re-search-forward "^ID=arch" nil t))))
 
 (when (modulep! :tools lsp +eglot)
-  ;; qml
   (when (is-arch-linux-p)
     (when (modulep! :lang qt)
       (defun +qt-common-config (mode)

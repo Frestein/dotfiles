@@ -159,6 +159,69 @@
 (use-package! xdg
   :demand t)
 
+(when (modulep! :tools magit)
+  (setq magit-repository-directories `(("~/Projects" . 2)
+                                       (,(xdg-user-dir "DOCUMENTS") . 1)
+                                       ("~/.local/share/chezmoi" . 1))))
+
+(setq projectile-project-search-path '(("~/Projects/" . 2)))
+
+(setq delete-by-moving-to-trash t
+      dired-mouse-drag-files t
+      mouse-drag-and-drop-region-cross-program t)
+
+(map! :map dired-mode-map
+      :v "u" #'dired-unmark)
+
+(when (modulep! :emacs dired +dirvish)
+  (use-package! dirvish
+    :config
+    (dirvish-peek-mode t)
+
+    (setq dirvish-quick-access-entries
+          `(("h" "~/"                                 "Home")
+            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
+            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
+            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
+            ("m" ,(xdg-user-dir "MUSIC")              "Music")
+            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
+            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
+            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
+            ("P" "~/Projects/"                        "Projects")
+            ("M" "/mnt/"                              "Drives")
+            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+
+    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
+          dirvish-side-attributes '(collapse))
+
+    (when (modulep! :emacs dired +icons)
+      (setq dirvish-subtree-always-show-state t)
+      (cl-callf append dirvish-attributes '(nerd-icons))
+      (cl-callf append dirvish-side-attributes '(nerd-icons)))
+
+    (when (modulep! :ui vc-gutter)
+      ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
+      ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
+      ;; visible in the terminal.
+      (when (or (daemonp) (display-graphic-p))
+        (push 'vc-state dirvish-side-attributes)))
+
+    (dirvish-define-preview eza (file)
+      "Use `eza' to generate directory preview."
+      :require ("eza")
+      (when (file-directory-p file)
+        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+
+    (push 'eza dirvish-preview-dispatchers)
+
+    (setq mouse-1-click-follows-link nil)
+
+    (map! :map dirvish-mode-map
+          "<mouse-1>" #'dirvish-subtree-toggle-or-open
+          "<mouse-2>" #'dired-mouse-find-file-other-window
+          "<mouse-3>" #'dired-mouse-find-file
+          :n "gd" #'dirvish-quick-access)))
+
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org")
       org-hide-emphasis-markers t
       org-log-done 'time
@@ -249,68 +312,13 @@ If a region is active, emphasize it, else emphasize the word at point."
   (use-package! corg
     :hook (org-mode . corg-setup)))
 
-(when (modulep! :tools magit)
-  (setq magit-repository-directories `(("~/Projects" . 2)
-                                       (,(xdg-user-dir "DOCUMENTS") . 1)
-                                       ("~/.local/share/chezmoi" . 1))))
-
-(setq projectile-project-search-path '(("~/Projects/" . 2)))
-
-(setq delete-by-moving-to-trash t
-      dired-mouse-drag-files t
-      mouse-drag-and-drop-region-cross-program t)
-
-(map! :map dired-mode-map
-      :v "u" #'dired-unmark)
-
-(when (modulep! :emacs dired +dirvish)
-  (use-package! dirvish
-    :config
-    (dirvish-peek-mode t)
-
-    (setq dirvish-quick-access-entries
-          `(("h" "~/"                                 "Home")
-            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
-            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
-            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
-            ("m" ,(xdg-user-dir "MUSIC")              "Music")
-            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
-            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
-            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
-            ("P" "~/Projects/"                        "Projects")
-            ("M" "/mnt/"                              "Drives")
-            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
-
-    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
-          dirvish-side-attributes '(collapse))
-
-    (when (modulep! :emacs dired +icons)
-      (setq dirvish-subtree-always-show-state t)
-      (cl-callf append dirvish-attributes '(nerd-icons))
-      (cl-callf append dirvish-side-attributes '(nerd-icons)))
-
-    (when (modulep! :ui vc-gutter)
-      ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
-      ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
-      ;; visible in the terminal.
-      (when (or (daemonp) (display-graphic-p))
-        (push 'vc-state dirvish-side-attributes)))
-
-    (dirvish-define-preview eza (file)
-      "Use `eza' to generate directory preview."
-      :require ("eza")
-      (when (file-directory-p file)
-        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
-
-    (push 'eza dirvish-preview-dispatchers)
-
-    (setq mouse-1-click-follows-link nil)
-
-    (map! :map dirvish-mode-map
-          "<mouse-1>" #'dirvish-subtree-toggle-or-open
-          "<mouse-2>" #'dired-mouse-find-file-other-window
-          "<mouse-3>" #'dired-mouse-find-file
-          :n "gd" #'dirvish-quick-access)))
+(custom-theme-set-faces! 'doom-gruvbox
+  '(markdown-header-face-1 :inherit outline-1)
+  '(markdown-header-face-2 :inherit outline-2)
+  '(markdown-header-face-3 :inherit outline-3)
+  '(markdown-header-face-4 :inherit outline-4)
+  '(markdown-header-face-5 :inherit outline-5)
+  '(markdown-header-face-6 :inherit outline-6))
 
 (defun is-arch-linux-p ()
   "Return t if the current system is Arch Linux."
@@ -321,7 +329,6 @@ If a region is active, emphasize it, else emphasize the word at point."
       (re-search-forward "^ID=arch" nil t))))
 
 (when (modulep! :tools lsp +eglot)
-  ;; qml
   (when (is-arch-linux-p)
     (when (modulep! :lang qt)
       (defun +qt-common-config (mode)
