@@ -336,3 +336,7 @@
 (use-package! telega-dired-dwim
   :when (modulep! :emacs dired)
   :after-call telega)
+
+(use-package! ol-telega
+  :when (modulep! :lang org)
+  :after-call telega)
