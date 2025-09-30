@@ -162,7 +162,12 @@
 (when (modulep! :tools magit)
   (setq magit-repository-directories `(("~/Projects" . 2)
                                        (,(xdg-user-dir "DOCUMENTS") . 1)
-                                       ("~/.local/share/chezmoi" . 1))))
+                                       ("~/.local/share/chezmoi" . 1)))
+
+  (when (modulep! :ui hl-todo)
+    (use-package! magit-todos
+      :after magit
+      :hook (magit-mode . magit-todos-mode))))
 
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
 

@@ -9,3 +9,7 @@
   (package! org-expose-emphasis-markers)
   (package! corg
     :recipe (:host github :repo "isamert/corg.el")))
+
+(when (and (modulep! :tools magit)
+           (modulep! :ui hl-todo))
+  (package! magit-todos))
