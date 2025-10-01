@@ -95,7 +95,6 @@
        chezmoi
        (consult-gh +nerd)   ; interactive interface for "Github CLI"
        fj                   ; client for forgejo instances
-       trashed              ; freedesktop.org trashcan
        screenshot
        0x0
        ;; editorconfig      ; let someone else argue about tabs vs spaces
@@ -113,7 +112,9 @@
        ;; reader            ; an all-in-one document reader
        ;; terraform         ; infrastructure as code
        ;; tmux              ; an API for interacting with tmux
+       trashed              ; freedesktop.org trashcan
        tree-sitter          ; syntax and parsing, sitting in a tree...
+       tldr
        ;; upload            ; map local to remote projects via ssh/ftp
 
        :os
