@@ -1,4 +1,4 @@
-;;; config/chezmoi/config.el -*- lexical-binding: t; -*-
+;;; tools/chezmoi/config.el -*- lexical-binding: t; -*-
 
 (defvar chezmoi-dir "~/.local/share/chezmoi/"
   "Location of the chezmoi directory")
