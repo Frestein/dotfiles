@@ -125,6 +125,8 @@
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode)))
 
+(setq evil-echo-state nil)
+
 (when (modulep! :editor evil)
   (when (modulep! :app telega)
     (after! telega

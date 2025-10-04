@@ -231,6 +231,8 @@
 * Evil
 
 #+begin_src emacs-lisp :tangle yes
+(setq evil-echo-state nil)
+
 (when (modulep! :editor evil)
   (when (modulep! :app telega)
     (after! telega
