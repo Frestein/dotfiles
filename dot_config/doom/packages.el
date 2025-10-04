@@ -10,6 +10,6 @@
   (package! corg
     :recipe (:host github :repo "isamert/corg.el")))
 
-(when (and (modulep! :tools magit)
-           (modulep! :ui hl-todo))
-  (package! magit-todos))
+(when (modulep! :tools magit)
+  (when (modulep! :ui hl-todo)
+    (package! magit-todos)))

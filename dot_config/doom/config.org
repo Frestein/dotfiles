@@ -56,6 +56,7 @@
     - [[#eat][eat]]
   - [[#tools][Tools]]
     - [[#0x0][0x0]]
+    - [[#blamer][blamer]]
     - [[#chezmoi][chezmoi]]
     - [[#consult-gh][consult-gh]]
     - [[#disk-usage][disk-usage]]
@@ -222,6 +223,8 @@
                  :desc "Open directory in dirvish" "m" #'dirvish))
       (:prefix ("t" . "toggle")
        :desc "Automatic line breaking" "a" #'auto-fill-mode
+       (:when (modulep! :tools blamer)
+         :desc "Blamer mode" "B" #'global-blamer-mode)
        (:when (modulep! :ui colorful)
          :desc "Colorful mode" "C" #'global-colorful-mode)
        (:when (modulep! :checkers jinx)
@@ -801,6 +804,13 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 ** Tools
 
 *** 0x0
+
+*** blamer
+
+#+begin_src emacs-lisp :tangle no
+(when (modulep! :tools blamer)
+  (add-hook 'doom-after-init-hook #'global-blamer-mode))
+#+end_src
 
 *** chezmoi
 
