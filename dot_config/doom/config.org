@@ -100,6 +100,9 @@
 
 #+begin_src emacs-lisp :tangle yes
 (setq doom-theme 'doom-gruvbox)
+
+(custom-theme-set-faces! 'doom-gruvbox
+  `(mode-line :background ,(doom-color 'base3) :foreground ,(doom-color 'modeline-fg)))
 #+end_src
 
 ** Fonts
