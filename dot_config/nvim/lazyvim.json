@@ -67,8 +67,7 @@
     "plugins.extras.utils.mason.disable",
     "plugins.extras.utils.paperplanes",
     "plugins.extras.utils.scope",
-    "plugins.extras.utils.silicon",
-    "plugins.extras.utils.store"
+    "plugins.extras.utils.silicon"
   ],
   "install_version": 8,
   "news": {
