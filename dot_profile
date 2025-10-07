@@ -17,7 +17,6 @@ export PATH="$BUN_HOME/bin:$GOPATH/bin:$CARGO_HOME/bin:$XDG_CONFIG_HOME/emacs/bi
 
 export SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
 export EMACSDIR="$XDG_CONFIG_HOME/emacs"
-export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/gopass/stores/root"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
@@ -31,6 +30,10 @@ export RLWRAP_HOME="$XDG_DATA_HOME/rlwrap"
 export CUPS_CONFIG_DIR="$XDG_CONFIG_HOME/cups"
 export CUPS_CACHE_DIR="$XDG_CACHE_HOME/cups"
 export CUPS_DATA_DIR="$XDG_DATA_HOME/cups"
+
+
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export GPG_TTY="$(tty)"
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
