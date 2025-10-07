@@ -21,7 +21,6 @@
     "lazyvim.plugins.extras.util.chezmoi",
     "lazyvim.plugins.extras.util.dot",
     "lazyvim.plugins.extras.util.mini-hipatterns",
-    "plugins.extras.ai.supermaven",
     "plugins.extras.autocmds.lintinfo",
     "plugins.extras.coding.colorful-menu",
     "plugins.extras.editor.dial",
