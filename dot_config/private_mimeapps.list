@@ -1,9 +1,9 @@
 [Added Associations]
 application/json=nvim.desktop;emacsclient.desktop;emacs.desktop;
 application/pdf=org.pwmt.zathura.desktop;emacsclient.desktop;emacs.desktop;
-application/pgp-encrypted=nvim.desktop;
-application/pgp-keys=nvim.desktop;
-application/pgp-signature=nvim.desktop;
+application/pgp-encrypted=nvim.desktop;emacsclient.desktop;emacs.desktop;
+application/pgp-keys=nvim.desktop;emacsclient.desktop;emacs.desktop;
+application/pgp-signature=nvim.desktop;emacsclient.desktop;emacs.desktop;
 application/postscript=org.pwmt.zathura.desktop;
 application/x-desktop=nvim.desktop;emacsclient.desktop;emacs.desktop;
 application/x-shellscript=nvim.desktop;emacsclient.desktop;emacs.desktop;
@@ -48,9 +48,9 @@ x-scheme-handler/tonsite=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.de
 [Default Applications]
 application/json=nvim.desktop;emacsclient.desktop;emacs.desktop;
 application/pdf=org.pwmt.zathura.desktop;emacsclient.desktop;emacs.desktop;
-application/pgp-encrypted=nvim.desktop;
-application/pgp-keys=nvim.desktop;
-application/pgp-signature=nvim.desktop;
+application/pgp-encrypted=nvim.desktop;emacsclient.desktop;emacs.desktop;
+application/pgp-keys=nvim.desktop;emacsclient.desktop;emacs.desktop;
+application/pgp-signature=nvim.desktop;emacsclient.desktop;emacs.desktop;
 application/postscript=org.pwmt.zathura.desktop;
 application/x-desktop=nvim.desktop;emacsclient.desktop;emacs.desktop;
 application/x-shellscript=nvim.desktop;emacsclient.desktop;emacs.desktop;
