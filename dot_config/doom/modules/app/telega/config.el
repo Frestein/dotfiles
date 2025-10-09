@@ -153,7 +153,7 @@
           telega-symbol-pin                   (propertize "" 'face 'telega-shadow)
           telega-symbol-play                  ""
           telega-symbol-poll                  ""
-          telega-symbol-premium               (propertize "" 'face 'telega-blue)
+          telega-symbol-premium               (propertize " 󰦥" 'face 'telega-blue)
           telega-symbol-reaction              ""
           telega-symbol-reaction-mark         ""
           telega-symbol-reply                 ""
