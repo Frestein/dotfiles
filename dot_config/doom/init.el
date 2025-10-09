@@ -87,6 +87,7 @@
        :tools
        ;; ansible
        ;; biblio            ; Writes a PhD for you (citation needed)
+       biome
        blamer
        ;; collab            ; buffers with friends
        debugger             ; FIXME stepping through code, to help you add bugs

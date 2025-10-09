@@ -14,6 +14,9 @@
 
 (setq doom-theme 'doom-gruvbox)
 
+(custom-theme-set-faces! 'doom-gruvbox
+  `(mode-line :background ,(doom-color 'base3) :foreground ,(doom-color 'modeline-fg)))
+
 (setq doom-font                (font-spec :family "Maple Mono NF" :size 14)
       doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
@@ -566,6 +569,12 @@ It should be the title of the web page as returned by `rdrview'."
   (if (daemonp)
       (add-hook! server-after-make-frame (telega 'no-popup))
     (add-hook! doom-after-init (telega 'no-popup))))
+
+(when (modulep! :tools biome)
+  (after! biome
+    (setq biome-query-coords
+          '(("Saint-Petersburg, Russia" 59.938732 30.316229)
+            ("Mednogorsk, Russia" 51.404944 57.580314)))))
 
 (when (modulep! :tools fj)
   (setq fj-host "https://codeberg.org"

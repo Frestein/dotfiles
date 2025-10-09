@@ -56,6 +56,7 @@
     - [[#eat][eat]]
   - [[#tools][Tools]]
     - [[#0x0][0x0]]
+    - [[#biome][biome]]
     - [[#blamer][blamer]]
     - [[#chezmoi][chezmoi]]
     - [[#consult-gh][consult-gh]]
@@ -807,6 +808,16 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 ** Tools
 
 *** 0x0
+
+*** biome
+
+#+begin_src emacs-lisp :tangle yes
+(when (modulep! :tools biome)
+  (after! biome
+    (setq biome-query-coords
+          '(("Saint-Petersburg, Russia" 59.938732 30.316229)
+            ("Mednogorsk, Russia" 51.404944 57.580314)))))
+#+end_src
 
 *** blamer
 
