@@ -1,0 +1,61 @@
+Create Both
+Expunge Both
+SyncState *
+
+IMAPAccount gmail
+Host imap.gmail.com
+User fresteinart@gmail.com
+PassCmd "gopass show -o email_services/isync/accounts.google.com/fresteinart@gmail.com"
+TLSType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+SubFolders Verbatim
+Path ~/Documents/mail/gmail/
+Inbox ~/Documents/mail/gmail/inbox
+
+Channel gmail-inbox
+Far :gmail-remote:
+Near :gmail-local:
+Patterns "INBOX"
+
+Channel gmail-starred
+Far :gmail-remote:"[Gmail]/Starred"
+Near :gmail-local:starred
+
+Channel gmail-important
+Far :gmail-remote:"[Gmail]/Important"
+Near :gmail-local:important
+
+Channel gmail-sent
+Far :gmail-remote:"[Gmail]/Sent Mail"
+Near :gmail-local:sent
+
+Channel gmail-drafts
+Far :gmail-remote:"[Gmail]/Drafts"
+Near :gmail-local:drafts
+
+Channel gmail-all
+Far :gmail-remote:"[Gmail]/All Mail"
+Near :gmail-local:all
+
+Channel gmail-spam
+Far :gmail-remote:"[Gmail]/Spam"
+Near :gmail-local:spam
+
+Channel gmail-trash
+Far :gmail-remote:"[Gmail]/Trash"
+Near :gmail-local:trash
+
+Group gmail
+Channel gmail-inbox
+Channel gmail-starred
+Channel gmail-important
+Channel gmail-sent
+Channel gmail-drafts
+Channel gmail-all
+Channel gmail-spam
+Channel gmail-trash
