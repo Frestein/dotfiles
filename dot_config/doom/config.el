@@ -10,7 +10,7 @@
                                         (get-buffer "*Org Agenda*"))))
 
 (setq user-full-name "Frestein"
-      user-mail-address "frestein@tuta.io")
+      user-mail-address "fresteinart@gmail.com")
 
 (setq doom-theme 'doom-gruvbox)
 
@@ -478,6 +478,36 @@ It should be the title of the web page as returned by `rdrview'."
               (group (:title . "Art") (:elements (query . (and youtube art))))
               (group (:title . "Tech") (:elements (query . (and youtube tech))))
               (group (:title . "Music") (:elements (query . (and youtube music))))))))))
+
+(when (modulep! :email mu4e)
+  (after! mu4e
+    (setq mu4e-root-maildir (expand-file-name "~/Documents/mail")
+          mu4e-attachment-dir "~/Downloads/mu4e"
+          mu4e-update-interval 300
+          sendmail-program (executable-find "msmtp")
+          message-send-mail-function #'message-send-mail-with-sendmail
+          message-sendmail-f-is-evil t
+          send-mail-function #'sendmail-send-it
+          doom-modeline-mu4e t)
+
+    (when (modulep! :email mu4e +gmail)
+      ;; don't need to run cleanup after indexing for gmail
+      (setq mu4e-index-cleanup nil
+            ;; because gmail uses labels as folders we can use lazy check since
+            ;; messages don't really "move"
+            mu4e-index-lazy-check t))
+
+    (when (modulep! :email mu4e +org)
+      (setq +mu4e-compose-org-msg-toggle-next nil)))
+
+  (set-email-account! "gmail"
+                      '((mu4e-sent-folder   . "/gmail/sent")
+                        (mu4e-drafts-folder . "/gmail/drafts")
+                        (mu4e-trash-folder  . "/gmail/trash")
+                        (mu4e-refile-folder . "/gmail/all")
+                        (smtpmail-smtp-user . "fresteinart@gmail.com")
+                        (mu4e-compose-signature . "Frestein"))
+                      t))
 
 (after! lpr
   (setq lpr-lp-system t
