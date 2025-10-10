@@ -3,6 +3,7 @@ Description=Waybar autohide script
 After=waybar.service
 
 [Service]
+ExecStartPre=/usr/bin/sleep 2
 ExecStart=%h/.config/hypr/scripts/waybar_autohide.sh
 Restart=on-failure
 
