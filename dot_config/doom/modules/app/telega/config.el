@@ -54,22 +54,25 @@
                                         ("MXN" . "MX$")   ;; Mexican Peso
                                         ("BRL" . "R$"))   ;; Brazilian Real
         telega-builtin-palettes-alist
-        '((light
-           ((:outline "#cc241d") (:foreground "#bb3e06")     (:background "#fbf1c7"))
-           ((:outline "#d65d0e") (:foreground "DarkOrange3") (:background "#fbf1c7"))
-           ((:outline "#897ea6") (:foreground "purple3")     (:background "#fbf1c7"))
-           ((:outline "#98971a") (:foreground "#98971a")     (:background "#fbf1c7"))
-           ((:outline "#689d6a") (:foreground "cyan4")       (:background "#fbf1c7"))
-           ((:outline "#458588") (:foreground "#458588")     (:background "#fbf1c7"))
-           ((:outline "#b16286") (:foreground "DeepPink3")   (:background "#fbf1c7")))
+        `((light
+           ((:outline "#cc241d") (:foreground "#bb3e06")     (:background ,(doom-color 'bg)))
+           ((:outline "#d65d0e") (:foreground "DarkOrange3") (:background ,(doom-color 'bg)))
+           ((:outline "#897ea6") (:foreground "purple3")     (:background ,(doom-color 'bg)))
+           ((:outline "#98971a") (:foreground "#98971a")     (:background ,(doom-color 'bg)))
+           ((:outline "#689d6a") (:foreground "cyan4")       (:background ,(doom-color 'bg)))
+           ((:outline "#458588") (:foreground "#458588")     (:background ,(doom-color 'bg)))
+           ((:outline "#b16286") (:foreground "DeepPink3")   (:background ,(doom-color 'bg))))
           (dark
-           ((:outline "#fb4934") (:foreground "#cc241d")     (:background "#282828"))
-           ((:outline "#fe8019") (:foreground "DarkOrange2") (:background "#282828"))
-           ((:outline "#d3869b") (:foreground "violet")      (:background "#282828"))
-           ((:outline "#b8bb26") (:foreground "#b8bb26")     (:background "#282828"))
-           ((:outline "#8ec07c") (:foreground "cyan3")       (:background "#282828"))
-           ((:outline "#83a598") (:foreground "#83a598")     (:background "#282828"))
-           ((:outline "#d3869b") (:foreground "#d3869b")     (:background "#282828")))))
+           ((:outline "#fb4934") (:foreground "#cc241d")     (:background ,(doom-color 'bg)))
+           ((:outline "#fe8019") (:foreground "DarkOrange2") (:background ,(doom-color 'bg)))
+           ((:outline "#d3869b") (:foreground "violet")      (:background ,(doom-color 'bg)))
+           ((:outline "#b8bb26") (:foreground "#b8bb26")     (:background ,(doom-color 'bg)))
+           ((:outline "#8ec07c") (:foreground "cyan3")       (:background ,(doom-color 'bg)))
+           ((:outline "#83a598") (:foreground "#83a598")     (:background ,(doom-color 'bg)))
+           ((:outline "#d3869b") (:foreground "#d3869b")     (:background ,(doom-color 'bg))))))
+
+  (custom-set-faces!
+    `(telega-msg-heading :background ,(doom-color 'base3) :extend t))
 
   (when (modulep! +icons)
     (setq telega-emoji-use-images nil
