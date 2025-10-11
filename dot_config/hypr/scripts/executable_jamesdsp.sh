@@ -10,10 +10,10 @@ toggle_bypass() {
     state=$(jamesdsp --get master_enable)
     if [ "$state" = "true" ]; then
         jamesdsp --set master_enable=false
-        "${NOTIFY_CMD[@]}" "JamesDSP" "Bypass disabled"
+        "${NOTIFY_CMD[@]}" "JamesDSP" "Bypass enabled"
     else
         jamesdsp --set master_enable=true
-        "${NOTIFY_CMD[@]}" "JamesDSP" "Bypass enabled"
+        "${NOTIFY_CMD[@]}" "JamesDSP" "Bypass disabled"
     fi
 }
 
@@ -27,13 +27,13 @@ show_current_state() {
     [ -z "$preset" ] && preset="(none)"
 
     bypass_state=$(jamesdsp --get master_enable)
-    if [ "$bypass_state" = "true" ]; then
+    if [ "$bypass_state" = "false" ]; then
         bypass_state="enabled"
     else
         bypass_state="disabled"
     fi
 
-    "${NOTIFY_CMD[@]}" "JamesDSP" "Preset: $preset\nBypass: $bypass_state"
+    "${NOTIFY_CMD[@]}" "JamesDSP" "Bypass: $bypass_state\nPreset: $preset"
 }
 
 choose_and_load_preset() {
