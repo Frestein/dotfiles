@@ -21,7 +21,7 @@ return {
 					pictures_dir = os.getenv "HOME" .. "/Pictures"
 				end
 
-				local screenshots_dir = pictures_dir .. "/Screenshots"
+				local screenshots_dir = pictures_dir .. "/screenshots"
 				vim.fn.mkdir(screenshots_dir, "p")
 
 				local filename = os.date "C%H.%M.%S-D%m.%d.%Y" .. ".png"

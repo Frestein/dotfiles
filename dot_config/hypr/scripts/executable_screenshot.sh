@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SCREENSHOTS_DIR="$(xdg-user-dir PICTURES)/Screenshots"
+SCREENSHOTS_DIR="$(xdg-user-dir PICTURES)/screenshots"
 NOTIFY_CMD=(notify-send -h string:x-dunst-stack-tag:screenshot)
 DATE_FORMAT="C%H.%M.%S-D%m.%d.%Y"
 HYPRSHOT_OPTS=(-F ppm --raw --freeze)
