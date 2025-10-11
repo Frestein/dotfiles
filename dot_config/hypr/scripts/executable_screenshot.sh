@@ -30,7 +30,7 @@ capture() {
     local mode="$1"
     local extra_args=()
     if [ -n "$2" ]; then
-        read -r -a extra_args <<< "$2"
+        read -r -a extra_args <<<"$2"
     fi
 
     local timestamp
