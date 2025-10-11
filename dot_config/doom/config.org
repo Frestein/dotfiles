@@ -292,10 +292,25 @@
                                        (,(xdg-user-dir "DOCUMENTS") . 1)
                                        ("~/.local/share/chezmoi" . 1)))
 
+  (defun my-magit-todos-ignore-tangled-files (filename)
+    "Return nil if an `.org` file with the same basename exists in the same directory,
+ignoring all other files with the same basename."
+    (let* ((basename (file-name-sans-extension (file-name-nondirectory filename)))
+           (org-file (concat basename ".org"))
+           (dir (file-name-directory filename))
+           (org-path (when dir (expand-file-name org-file dir))))
+      (if (and org-path (file-exists-p org-path)
+               (not (string-suffix-p ".org" filename)))
+          nil
+        filename)))
+
   (when (modulep! :ui hl-todo)
     (use-package! magit-todos
       :after magit
-      :hook (magit-mode . magit-todos-mode))))
+      :hook (magit-mode . magit-todos-mode)
+      :custom
+      (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP" "KLUDGE" "DONT" "OKAY" "PROG" "THEM" "NEXT" "DONE"))
+      (magit-todos-filename-filter #'my-magit-todos-ignore-tangled-files))))
 #+end_src
 
 * Projectile
