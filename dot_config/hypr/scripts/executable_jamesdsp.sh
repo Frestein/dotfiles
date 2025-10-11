@@ -33,7 +33,7 @@ show_current_state() {
         bypass_state="disabled"
     fi
 
-    "${NOTIFY_CMD[@]}" "JamesDSP" "Current preset: $preset\nBypass: $bypass_state"
+    "${NOTIFY_CMD[@]}" "JamesDSP" "Preset: $preset\nBypass: $bypass_state"
 }
 
 choose_and_load_preset() {
