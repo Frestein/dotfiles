@@ -10,7 +10,7 @@
                                         (get-buffer "*Org Agenda*"))))
 
 (setq user-full-name "Frestein"
-      user-mail-address "fresteinart@gmail.com")
+      user-mail-address "frestein@tuta.io")
 
 (setq doom-theme 'doom-gruvbox)
 
@@ -515,12 +515,13 @@ It should be the title of the web page as returned by `rdrview'."
     (when (modulep! :email mu4e +org)
       (setq +mu4e-compose-org-msg-toggle-next nil)))
 
-  (set-email-account! "gmail"
-                      '((mu4e-sent-folder   . "/gmail/sent")
-                        (mu4e-drafts-folder . "/gmail/drafts")
-                        (mu4e-trash-folder  . "/gmail/trash")
-                        (mu4e-refile-folder . "/gmail/all")
-                        (smtpmail-smtp-user . "fresteinart@gmail.com")
+  (set-email-account! "fresteinart@gmail.com"
+                      '((mu4e-sent-folder       . "/gmail/sent")
+                        (mu4e-drafts-folder     . "/gmail/drafts")
+                        (mu4e-trash-folder      . "/gmail/trash")
+                        (mu4e-refile-folder     . "/gmail/all")
+                        (smtpmail-smtp-user     . "fresteinart@gmail.com")
+                        (user-mail-address      . "fresteinart@gmail.com")
                         (mu4e-compose-signature . "Frestein"))
                       t))
 
