@@ -680,13 +680,25 @@ It should be the title of the web page as returned by `rdrview'."
             mu4e-index-lazy-check t))
 
     (when (modulep! :email mu4e +org)
-      (setq +mu4e-compose-org-msg-toggle-next nil)))
+      (setq +mu4e-compose-org-msg-toggle-next nil))
+
+    (map! :map mu4e-main-mode-map
+          :n "q" (λ! (mu4e-quit t))
+          :n "Q" #'mu4e-quit))
 
   (set-email-account! "fresteinart@gmail.com"
                       '((mu4e-sent-folder       . "/gmail/sent")
                         (mu4e-drafts-folder     . "/gmail/drafts")
                         (mu4e-trash-folder      . "/gmail/trash")
                         (mu4e-refile-folder     . "/gmail/all")
+                        (mu4e-maildir-shortcuts . (("/gmail/inbox" . ?i)
+                                                   ("/gmail/important" . ?I)
+                                                   ("/gmail/starred" . ?s)
+                                                   ("/gmail/sent" . ?S)
+                                                   ("/gmail/drafts" . ?d)
+                                                   ("/gmail/all" . ?a)
+                                                   ("/gmail/spam" . ?t)
+                                                   ("/gmail/trash" . ?T)))
                         (smtpmail-smtp-user     . "fresteinart@gmail.com")
                         (user-mail-address      . "fresteinart@gmail.com")
                         (mu4e-compose-signature . "Frestein"))
