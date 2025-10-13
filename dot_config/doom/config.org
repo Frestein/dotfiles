@@ -847,6 +847,12 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 
 *** compile-angel
 
+#+begin_src emacs-lisp :tangle no
+(when (modulep! :config compile-angel)
+  ;; Compile automatically when an Elisp file is saved
+  (add-hook emacs-lisp-mode-hook #'compile-angel-on-save-local-mode))
+#+end_src
+
 ** Editor
 
 *** drag-stuff
