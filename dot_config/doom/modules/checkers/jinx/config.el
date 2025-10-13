@@ -1,7 +1,7 @@
 ;;; checkers/jinx/config.el -*- lexical-binding: t; -*-
 
 (use-package! jinx
-  :hook (doom-init-ui . global-jinx-mode)
+  :hook (doom-first-file . global-jinx-mode)
   :bind (("C-M-$" . jinx-languages)
          ([remap ispell-word] . #'jinx-correct))
   :config
