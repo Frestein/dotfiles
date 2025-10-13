@@ -13,3 +13,6 @@
 (when (modulep! :tools magit)
   (when (modulep! :ui hl-todo)
     (package! magit-todos)))
+
+(when (modulep! :config default +gnupg)
+  (package! pinentry))

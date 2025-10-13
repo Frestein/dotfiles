@@ -65,7 +65,6 @@
        (dired +icons +dirvish)  ; making dired pretty [functional]
        electric             ; smarter, keyword-based electric-indent
        eww                  ; the internet is gross
-       epg                  ; user interface to gnupg
        (ibuffer +icons)     ; interactive buffer management
        tramp                ; remote files at your arthritic fingertips
        undo                 ; persistent, smarter undo for your inevitable mistakes
@@ -208,4 +207,4 @@
        :config
        literate
        compile-angel        ; auto byte/native-compile all elisp files
-       (default +bindings +smartparens))
+       (default +bindings +smartparens +gnupg))

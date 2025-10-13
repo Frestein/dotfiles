@@ -30,6 +30,7 @@
   - [[#elfeed][Elfeed]]
   - [[#mu4e][Mu4e]]
 - [[#printer][Printer]]
+- [[#easypg][EasyPG]]
 - [[#password-manager][Password Manager]]
 - [[#global-auto-revert][Global Auto Revert]]
 - [[#line-settings][Line Settings]]
@@ -49,8 +50,6 @@
   - [[#editor][Editor]]
     - [[#drag-stuff][drag-stuff]]
     - [[#ialign][ialign]]
-  - [[#emacs][Emacs]]
-    - [[#epg][epg]]
   - [[#input][Input]]
     - [[#reverse-im][reverse-im]]
   - [[#term][Term]]
@@ -728,6 +727,16 @@ It should be the title of the web page as returned by `rdrview'."
         (pdf-misc-print-document filename)))))
 #+end_src
 
+* EasyPG
+
+#+begin_src emacs-lisp :tangle yes
+(setq epg-gpg-home-directory (getenv "GNUPGHOME"))
+
+(when (modulep! :config default +gnupg)
+  (use-package! pinentry
+    :hook (doom-after-init . pinentry-start)))
+#+end_src
+
 * Password Manager
 
 #+begin_src emacs-lisp :tangle yes
@@ -843,10 +852,6 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 *** drag-stuff
 
 *** ialign
-
-** Emacs
-
-*** epg
 
 ** Input
 

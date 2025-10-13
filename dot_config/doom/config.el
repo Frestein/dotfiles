@@ -555,6 +555,12 @@ It should be the title of the web page as returned by `rdrview'."
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
 
+(setq epg-gpg-home-directory (getenv "GNUPGHOME"))
+
+(when (modulep! :config default +gnupg)
+  (use-package! pinentry
+    :hook (doom-after-init . pinentry-start)))
+
 (when (modulep! :tools pass)
   (when (executable-find "gopass")
     (setq backup-directory-alist
