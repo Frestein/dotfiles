@@ -535,7 +535,14 @@ It should be the title of the web page as returned by `rdrview'."
                         (smtpmail-smtp-user     . "fresteinart@gmail.com")
                         (user-mail-address      . "fresteinart@gmail.com")
                         (mu4e-compose-signature . "Frestein"))
-                      t))
+                      t)
+
+  (if (daemonp)
+      (add-hook! doom-first-input
+        (let ((current (current-buffer)))
+          (mu4e 'no-popup)
+          (switch-to-buffer current)))
+    (add-hook! doom-init-ui (mu4e 'no-popup))))
 
 (after! lpr
   (setq lpr-lp-system t
@@ -629,9 +636,8 @@ It should be the title of the web page as returned by `rdrview'."
       confirm-kill-emacs nil)
 
 (when (modulep! :app telega)
-  ;; Autostart
   (if (daemonp)
-      (add-hook! server-after-make-frame (telega 'no-popup))
+      (add-hook! doom-first-input (telega 'no-popup))
     (add-hook! doom-after-init (telega 'no-popup))))
 
 (when (modulep! :tools biome)
@@ -651,5 +657,5 @@ It should be the title of the web page as returned by `rdrview'."
       (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/fj.el")))
 
     (if (daemonp)
-        (add-hook! server-after-make-frame (frestein/fj-set-token))
+        (add-hook! doom-first-input (frestein/fj-set-token))
       (add-hook! doom-init-ui (frestein/fj-set-token)))))
