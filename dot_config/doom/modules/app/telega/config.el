@@ -34,25 +34,25 @@
         telega-known-inline-bots (append telega-known-inline-bots
                                          '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare"))
         telega-chat-input-markups '("org" "markdown2")
-        telega-currency-symbols-alist '(("EUR" . "€")     ;; Euro
-                                        ("USD" . "$")     ;; US Dollar
-                                        ("RUB" . "₽")     ;; Russian Ruble
-                                        ("GBP" . "£")     ;; British Pound
-                                        ("JPY" . "¥")     ;; Japanese Yen
-                                        ("CNY" . "¥")     ;; Chinese Yuan (same symbol as Yen)
-                                        ("INR" . "₹")     ;; Indian Rupee
-                                        ("KRW" . "₩")     ;; South Korean Won
-                                        ("TRY" . "₺")     ;; Turkish Lira
-                                        ("UAH" . "₴")     ;; Ukrainian Hryvnia
-                                        ("PLN" . "zł")    ;; Polish Zloty (zł)
-                                        ("NGN" . "₦")     ;; Nigerian Naira
-                                        ("KZT" . "₸")     ;; Kazakhstan Tenge
-                                        ("THB" . "฿")     ;; Thai Baht
-                                        ("CHF" . "Fr")    ;; Swiss Franc (Fr)
-                                        ("AUD" . "A$")    ;; Australian Dollar
-                                        ("CAD" . "C$")    ;; Canadian Dollar
-                                        ("MXN" . "MX$")   ;; Mexican Peso
-                                        ("BRL" . "R$"))   ;; Brazilian Real
+        telega-currency-symbols-alist '(("EUR" . "€") ;; Euro
+                                        ("USD" . "$") ;; US Dollar
+                                        ("RUB" . "₽") ;; Russian Ruble
+                                        ("GBP" . "£") ;; British Pound
+                                        ("JPY" . "¥") ;; Japanese Yen
+                                        ("CNY" . "¥") ;; Chinese Yuan (same symbol as Yen)
+                                        ("INR" . "₹") ;; Indian Rupee
+                                        ("KRW" . "₩") ;; South Korean Won
+                                        ("TRY" . "₺") ;; Turkish Lira
+                                        ("UAH" . "₴") ;; Ukrainian Hryvnia
+                                        ("PLN" . "zł")  ;; Polish Zloty (zł)
+                                        ("NGN" . "₦")   ;; Nigerian Naira
+                                        ("KZT" . "₸")   ;; Kazakhstan Tenge
+                                        ("THB" . "฿")   ;; Thai Baht
+                                        ("CHF" . "Fr")  ;; Swiss Franc (Fr)
+                                        ("AUD" . "A$")  ;; Australian Dollar
+                                        ("CAD" . "C$")  ;; Canadian Dollar
+                                        ("MXN" . "MX$") ;; Mexican Peso
+                                        ("BRL" . "R$")) ;; Brazilian Real
         telega-builtin-palettes-alist
         `((light
            ((:outline "#cc241d") (:foreground "#bb3e06")     (:background ,(doom-color 'bg)))
@@ -241,6 +241,53 @@
                                   fmt-spec (car telega-chat-folders)))))
           (telega-ins (concat (telega-symbol 'vertical-bar) " "))))))
 
+  (defun telega--chat-observable-p (msg)
+    (let ((chat (telega-msg-chat msg)))
+      (with-telega-chatbuf chat
+        (and (telega-chatbuf--msg-observable-p msg)
+             (not (telega-chatbuf--history-state-get :newer-freezed))))))
+
+  ;; INFO: Override default notification logic
+  ;; Many thanks - tychoish!
+  ;; https://github.com/tychoish/.emacs.d/blob/bc32c80e53f0bc4ad7655871ee4672ff31693b77/lisp/tychoish-core.el#L1267
+  (defun telega-notifications-msg-notify-p (msg)
+    "Return non-nil if message MSG should pop-up notification."
+    (let* ((chat (telega-msg-chat msg))
+           (title (plist-get chat :title)))
+      (cond
+       ;; Chat window is open and viable: skip
+       ((telega--chat-observable-p msg)
+        (progn (telega-debug "NOTIFY-CHECK: observed chat [%s], skip notify" title) nil))
+
+       ;; If it's muted: skip
+       ((telega-chat-muted-p chat)
+        (progn (telega-debug "NOTIFY-CHECK: muted chat [%s], skip notify" title) nil))
+
+       ;; For group chats where I am not a member: skip
+       ((telega-chat-match-p chat '(and (type basicgroup supergroup channel) (not me-is-member)))
+        (progn (telega-debug "NOTIFY-CHECK: group chat where I am not a member [%s], skip notify" title) nil))
+
+       ;; Message I sent (from another device): skip
+       ((telega-msg-match-p msg '(sender me))
+        (progn (telega-debug "NOTIFY-CHECK: message I sent [%s], skip notify" title) nil))
+
+       ;; Message that is a mention but notification of mentions are disabled: skip
+       ((and (plist-get msg :contains_unread_mention)
+             (telega-chat-notification-setting chat :disable_mention_notifications))
+        (progn (telega-debug "NOTIFY-CHECK: contains a mention [%s], skip notify" title) nil))
+
+       ;; For chats that are DM, secret or bots: notify
+       ((telega-chat-match-p chat '(or (type private secret bot)))
+        (progn (telega-debug "NOTIFY-CHECK: is DM or BOT [%s], can notify" title) t))
+
+       ;; For groups where I am a member: notify
+       ((telega-chat-match-p chat 'me-is-member)
+        (progn (telega-debug "NOTIFY-CHECK: member of a group [%s], can notify" title) t))
+
+       ;; Otherwise notify anyway with a warning message
+       (t
+        (progn (message (format "TELEGA-NOTIFY: unexpected message [%s], notifying anyway" title)) t)))))
+
   ;; WARN: TOS violation. Block sponsored messages.
   ;; sponsored - Fetch messages but don't draw them.
   ;; sponsored2 - Don't fetch messages.
@@ -262,6 +309,14 @@
   (when (modulep! +blocked)
     (add-hook 'telega-msg-ignore-predicates
               (telega-match-gen-predicate 'msg '(sender is-blocked))))
+
+  (defun telega-debug-mode ()
+    "Toggle telega debug mode"
+    (interactive)
+    (setq telega-debug (not telega-debug))
+    (if telega-debug
+        (message "Telega-Debug mode enabled")
+      (message "Telega-Debug mode disabled")))
 
   (defun frestein/telega-chatbuf-inline-bot-choose ()
     "Select an inline bot from telega-known-inline-bots and insert it."
