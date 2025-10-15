@@ -235,9 +235,8 @@ c.qt.args = [
     "font-cache-shared-handle",
     "ignore-gpu-blocklist",
     "num-raster-threads=4",
-    "enable-features=VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL,AcceleratedVideoEncoder",
-    # Chromium 131+
-    # "enable-features=VaapiIgnoreDriverChecks,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,AcceleratedVideoEncoder",
+    "enable-features=VaapiIgnoreDriverChecks,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoEncoder",
+    # TEST: AcceleratedVideoDecodeLinuxZeroCopyGL
 ]
 c.qt.workarounds.disable_accelerated_2d_canvas = "never"
 
