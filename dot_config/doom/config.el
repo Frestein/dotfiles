@@ -631,6 +631,28 @@ It should be the title of the web page as returned by `rdrview'."
   (setq +zen-text-scale 0
         writeroom-width 100))
 
+(when (modulep! :app everywhere)
+  (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
+  (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
+
+  (require 'json)
+  (defun emacs-everywhere--app-info-linux-hyprland ()
+    "Return information on the current active window, on a Linux Hyprland session."
+    (let* ((json-string (emacs-everywhere--call "hyprctl" "-j" "activewindow"))
+           (json-object (json-read-from-string json-string))
+           (window-id (cdr (assoc 'address json-object)))
+           (app-name (cdr (assoc 'class json-object)))
+           (window-title (cdr (assoc 'title json-object)))
+           (window-geometry (list (aref (cdr (assoc 'at json-object)) 0)
+                                  (aref (cdr (assoc 'at json-object)) 1)
+                                  (aref (cdr (assoc 'size json-object)) 0)
+                                  (aref (cdr (assoc 'size json-object)) 1))))
+      (make-emacs-everywhere-app
+       :id window-id
+       :class app-name
+       :title window-title
+       :geometry window-geometry))))
+
 (setq default-input-method "russian-computer"
       calendar-week-start-day 1
       confirm-kill-emacs nil)
