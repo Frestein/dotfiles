@@ -6,7 +6,7 @@
                 inhibit-startup-echo-area-message t
                 initial-scratch-message ""
                 initial-buffer-choice (lambda ()
-                                        (org-agenda-list)
+                                        (org-agenda nil "d")
                                         (get-buffer "*Org Agenda*"))))
 
 (setq user-full-name "Frestein"
