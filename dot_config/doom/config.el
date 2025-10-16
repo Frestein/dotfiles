@@ -261,7 +261,91 @@ ignoring all other files with the same basename."
       ;; org-display-custom-times t
       ;; org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p")
       org-agenda-timegrid-use-ampm t
-      org-agenda-restore-windows-after-quit t)
+      org-agenda-restore-windows-after-quit t
+      org-agenda-files (list (concat org-directory "/agenda"))
+      org-agenda-custom-commands '(("d" "Daily Agenda"
+                                    ((agenda ""
+                                             ((org-agenda-span 'day)
+                                              (org-agenda-start-day "+0d")
+                                              (org-deadline-warning-days 7)))
+                                     (tags-todo "+PRIORITY=\"A\""
+                                                ((org-agenda-overriding-header "High Priority Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+PRIORITY=\"B\""
+                                                ((org-agenda-overriding-header "Medium Priority Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+PRIORITY=\"C\""
+                                                ((org-agenda-overriding-header "Low Priority Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
+                                   ("r" "Weekly Review"
+                                    ((agenda ""
+                                             ((org-agenda-overriding-header "Completed Tasks")
+                                              (org-agenda-start-with-log-mode t)
+                                              (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                                              (org-agenda-span 'week)))
+                                     (agenda ""
+                                             ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
+                                              (org-agenda-start-with-log-mode t)
+                                              (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                                              (org-agenda-span 'week)))))
+                                   ("p" "Personal"
+                                    ((tags-todo "+personal+projects"
+                                                ((org-agenda-overriding-header "Project Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+management"
+                                                ((org-agenda-overriding-header "Management Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+research"
+                                                ((org-agenda-overriding-header "Research Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+tech"
+                                                ((org-agenda-overriding-header "Tech Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+sport"
+                                                ((org-agenda-overriding-header "Sport Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+art"
+                                                ((org-agenda-overriding-header "Art Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+leisure"
+                                                ((org-agenda-overriding-header "Leisure Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+home"
+                                                ((org-agenda-overriding-header "Home Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+health"
+                                                ((org-agenda-overriding-header "Health Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+personal+problems"
+                                                ((org-agenda-overriding-header "Problem Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
+                                   ("w" "Work"
+                                    ((tags-todo "+work+personal"
+                                                ((org-agenda-overriding-header "Personal Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+work+freelance"
+                                                ((org-agenda-overriding-header "Freelance Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
+                                   ("i" "Inbox" todo ".*"
+                                    ((org-agenda-files '("~/Documents/org/inbox.org"))
+                                     (org-agenda-overriding-header "Unprocessed Inbox Items")))
+                                   ("u" "Untagged" tags-todo "-{.*}"
+                                    ((org-agenda-overriding-header "Untagged Tasks")))))
 
 (after! org
   (setq org-archive-tag "archive"
