@@ -859,12 +859,17 @@ It should be the title of the web page as returned by `rdrview'."
                         (mu4e-compose-signature . "Frestein"))
                       t)
 
-  (if (daemonp)
-      (add-hook! doom-first-input
-        (let ((current (current-buffer)))
-          (mu4e 'no-popup)
-          (switch-to-buffer current)))
-    (add-hook! doom-init-ui (mu4e 'no-popup))))
+  (defun mu4e-process-running-p ()
+    "Check if mu process is running."
+    (not (string-equal (shell-command-to-string "pgrep -x mu") "")))
+
+  (unless (mu4e-process-running-p)
+    (if (daemonp)
+        (add-hook! doom-first-input
+          (let ((current (current-buffer)))
+            (mu4e 'no-popup)
+            (switch-to-buffer current)))
+      (add-hook! doom-init-ui (mu4e 'no-popup)))))
 #+end_src
 
 * Printer
