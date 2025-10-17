@@ -263,11 +263,40 @@ ignoring all other files with the same basename."
       org-agenda-timegrid-use-ampm t
       org-agenda-restore-windows-after-quit t
       org-agenda-files (list (concat org-directory "/agenda"))
+      org-tag-alist '(;; Places
+                      ("@home" . ?H)
+                      ("@shop" . ?S)
+                      ("@hospital" . ?L)
+
+                      ;; Devices
+                      ("@computer" . ?C)
+                      ("@phone" . ?P)
+
+                      ;; Transport
+                      ("@bike" . ?b)
+
+                      ;; Activities
+                      ("@work" . ?w)
+                      ("@freelance" . ?f)
+                      ("@personal" . ?p)
+                      ("@research" . ?r)
+                      ("@management" . ?m)
+                      ("@tech" . ?t)
+                      ("@art" . ?a)
+                      ("@sport" . ?s)
+                      ("@health" . ?h)
+                      ("@leisure" . ?l)
+                      ("@errands" . ?e))
       org-agenda-custom-commands '(("d" "Daily Agenda"
                                     ((agenda ""
                                              ((org-agenda-span 'day)
                                               (org-agenda-start-day "+0d")
                                               (org-deadline-warning-days 7)))
+                                     (todo ".*"
+                                           ((org-agenda-files '("~/Documents/org/inbox.org"))
+                                            (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
+                                     (tags-todo "-{.*}"
+                                                ((org-agenda-overriding-header "Untagged Tasks")))
                                      (tags-todo "+PRIORITY=\"A\""
                                                 ((org-agenda-overriding-header "High Priority Tasks")
                                                  (org-agenda-skip-function
@@ -292,60 +321,60 @@ ignoring all other files with the same basename."
                                               (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                                               (org-agenda-span 'week)))))
                                    ("p" "Personal"
-                                    ((tags-todo "+personal+projects"
-                                                ((org-agenda-overriding-header "Project Tasks")
-                                                 (org-agenda-skip-function
-                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+management"
+                                    ((tags-todo "+@personal+@management-@research"
                                                 ((org-agenda-overriding-header "Management Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+research"
+                                     (tags-todo "+@personal+@research"
                                                 ((org-agenda-overriding-header "Research Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+tech"
+                                     (tags-todo "+@personal+@tech-@research"
                                                 ((org-agenda-overriding-header "Tech Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+sport"
+                                     (tags-todo "+@personal+@sport-@research"
                                                 ((org-agenda-overriding-header "Sport Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+art"
+                                     (tags-todo "+@personal+@art-@research"
                                                 ((org-agenda-overriding-header "Art Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+leisure"
+                                     (tags-todo "+personal+@leisure"
                                                 ((org-agenda-overriding-header "Leisure Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+home"
+                                     (tags-todo "+@personal+@home"
                                                 ((org-agenda-overriding-header "Home Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+health"
+                                     (tags-todo "+@personal+@health-problem-@research"
                                                 ((org-agenda-overriding-header "Health Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+personal+problems"
+                                     (tags-todo "+@personal+problem"
                                                 ((org-agenda-overriding-header "Problem Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
-                                   ("w" "Work"
-                                    ((tags-todo "+work+personal"
+                                   ("P" "Projects"
+                                    ((tags-todo "+@project+@personal"
                                                 ((org-agenda-overriding-header "Personal Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
-                                     (tags-todo "+work+freelance"
-                                                ((org-agenda-overriding-header "Freelance Tasks")
+                                     (tags-todo "+@project-@personal"
+                                                ((org-agenda-overriding-header "Contribution Tasks")
                                                  (org-agenda-skip-function
                                                   '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
-                                   ("i" "Inbox" todo ".*"
-                                    ((org-agenda-files '("~/Documents/org/inbox.org"))
-                                     (org-agenda-overriding-header "Unprocessed Inbox Items")))
-                                   ("u" "Untagged" tags-todo "-{.*}"
-                                    ((org-agenda-overriding-header "Untagged Tasks")))))
+                                   ("w" "Work"
+                                    ((tags-todo "+@work+@personal"
+                                                ((org-agenda-overriding-header "Personal Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                     (tags-todo "+@work+@freelance"
+                                                ((org-agenda-overriding-header "Freelance Tasks")
+                                                 (org-agenda-skip-function
+                                                  '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))))
 
 (after! org
   (setq org-archive-tag "archive"
