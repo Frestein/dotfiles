@@ -1038,9 +1038,14 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 
 #+begin_src emacs-lisp :tangle yes
 (when (modulep! :app telega)
-  (if (daemonp)
-      (add-hook! doom-first-input (telega 'no-popup))
-    (add-hook! doom-after-init (telega 'no-popup))))
+  (defun telega-server-process-running-p ()
+    "Check if telega-server process is running."
+    (not (string-equal (shell-command-to-string "pgrep -x telega-server") "")))
+
+  (unless (telega-server-process-running-p)
+    (if (daemonp)
+        (add-hook! doom-first-input (telega 'no-popup))
+      (add-hook! doom-after-init (telega 'no-popup)))))
 #+end_src
 
 ** Checkers

@@ -812,9 +812,14 @@ It should be the title of the web page as returned by `rdrview'."
       confirm-kill-emacs nil)
 
 (when (modulep! :app telega)
-  (if (daemonp)
-      (add-hook! doom-first-input (telega 'no-popup))
-    (add-hook! doom-after-init (telega 'no-popup))))
+  (defun telega-server-process-running-p ()
+    "Check if telega-server process is running."
+    (not (string-equal (shell-command-to-string "pgrep -x telega-server") "")))
+
+  (unless (telega-server-process-running-p)
+    (if (daemonp)
+        (add-hook! doom-first-input (telega 'no-popup))
+      (add-hook! doom-after-init (telega 'no-popup)))))
 
 (when (modulep! :tools biome)
   (after! biome
