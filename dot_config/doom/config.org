@@ -529,6 +529,12 @@ ignoring all other files with the same basename."
                                                    (org-agenda-skip-function
                                                     '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))))
 
+  (dolist (hook '(org-after-tags-change-hook
+                  org-after-refile-insert-hook
+                  org-after-todo-state-change-hook
+                  org-capture-after-finalize-hook))
+    (add-hook hook #'org-save-all-org-buffers))
+
   (defun frestein/org-agenda-delete-empty-blocks ()
     "Remove empty agenda blocks. A block is identified as empty
 if there are fewer than 2 non-empty lines in the block
@@ -624,6 +630,10 @@ If a region is active, emphasize it, else emphasize the word at point."
          :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
          :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
          :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~))))
+
+  (map! :map org-agenda-mode-map
+        :localleader
+        "s" #'org-save-all-org-buffers)
 
   (use-package! org-super-agenda
     :hook (org-agenda-mode . org-super-agenda-mode))
