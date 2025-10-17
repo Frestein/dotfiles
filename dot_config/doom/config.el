@@ -7,6 +7,7 @@
                 initial-scratch-message ""
                 initial-buffer-choice (lambda ()
                                         (org-agenda nil "d")
+                                        (delete-other-windows)
                                         (get-buffer "*Org Agenda*"))))
 
 (setq user-full-name "Frestein"

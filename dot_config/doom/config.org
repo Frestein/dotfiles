@@ -5,6 +5,7 @@
 #+startup_ignore: toc_3
 
 * Table of Contents :toc_3:
+- [[#lexical-binding][Lexical-Binding]]
 - [[#startup][Startup]]
 - [[#user][User]]
 - [[#doom][Doom]]
@@ -74,11 +75,15 @@
     - [[#smart-cursor][smart-cursor]]
     - [[#volatile-highlights][volatile-highlights]]
 
-* Startup
+* Lexical-Binding
 
 #+begin_src emacs-lisp :tangle yes
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+end_src
 
+* Startup
+
+#+begin_src emacs-lisp :tangle yes
 (when (not (modulep! :ui doom-dashboard))
   (setq-default inhibit-startup-screen t
                 inhibit-startup-message t
@@ -86,6 +91,7 @@
                 initial-scratch-message ""
                 initial-buffer-choice (lambda ()
                                         (org-agenda nil "d")
+                                        (delete-other-windows)
                                         (get-buffer "*Org Agenda*"))))
 #+end_src
 
