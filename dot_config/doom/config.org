@@ -537,6 +537,17 @@ ignoring all other files with the same basename."
                                                    (org-agenda-skip-function
                                                     '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))))
 
+  (defmacro ignore-args (fnc)
+    "Returns function that ignores its arguments and invokes FNC."
+    `(lambda (&rest _rest)
+       (funcall ,fnc)))
+
+  (advice-add 'org-deadline :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add 'org-schedule :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add 'org-todo :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+
   (dolist (hook '(org-after-tags-change-hook
                   org-after-refile-insert-hook
                   org-after-todo-state-change-hook
