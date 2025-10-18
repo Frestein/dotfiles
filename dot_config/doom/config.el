@@ -274,7 +274,8 @@ ignoring all other files with the same basename."
   (after! org
     (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil))
 
-  (setq org-tag-alist '((:startgroup . "Places")
+  (setq org-todo-repeat-to-state "LOOP"
+        org-tag-alist '((:startgroup . "Places")
                         ("@home" . ?H)
                         ("@shop" . ?S)
                         ("@hospital" . ?L)
@@ -315,15 +316,15 @@ ignoring all other files with the same basename."
                                        (tags-todo "+PRIORITY=\"A\""
                                                   ((org-agenda-overriding-header "High Priority Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+PRIORITY=\"B\""
                                                   ((org-agenda-overriding-header "Medium Priority Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+PRIORITY=\"C\""
                                                   ((org-agenda-overriding-header "Low Priority Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))
                                      ("r" "Weekly Review"
                                       ((agenda ""
                                                ((org-agenda-overriding-header "Completed Tasks")
@@ -339,57 +340,58 @@ ignoring all other files with the same basename."
                                       ((tags-todo "+@personal+@management-@research"
                                                   ((org-agenda-overriding-header "Management Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@personal+@research"
                                                   ((org-agenda-overriding-header "Research Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@personal+@tech-@research"
                                                   ((org-agenda-overriding-header "Tech Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@personal+@sport-@research"
                                                   ((org-agenda-overriding-header "Sport Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@personal+@art-@research"
                                                   ((org-agenda-overriding-header "Art Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+personal+@leisure"
                                                   ((org-agenda-overriding-header "Leisure Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@personal+@home"
                                                   ((org-agenda-overriding-header "Home Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@personal+@health-problem-@research"
                                                   ((org-agenda-overriding-header "Health Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@personal+problem"
                                                   ((org-agenda-overriding-header "Problem Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))
                                      ("P" "Projects"
                                       ((tags-todo "+@project+@personal"
                                                   ((org-agenda-overriding-header "Personal Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@project-@personal"
                                                   ((org-agenda-overriding-header "Contribution Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))
                                      ("w" "Work"
                                       ((tags-todo "+@work+@personal"
                                                   ((org-agenda-overriding-header "Personal Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
                                        (tags-todo "+@work+@freelance"
                                                   ((org-agenda-overriding-header "Freelance Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE")))))))))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP"))))))))
+        org-refile-targets '((org-agenda-files :maxlevel . 6)))
 
   (defmacro ignore-args (fnc)
     "Returns function that ignores its arguments and invokes FNC."
