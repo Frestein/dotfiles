@@ -399,6 +399,7 @@ ignoring all other files with the same basename."
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org")
       org-agenda-files (list (concat org-directory "/agenda"))
       org-hide-emphasis-markers t
+      org-edit-src-persistent-message nil
       org-log-done 'time
       ;; BUG: The second format is displayed incorrectly.
       ;;
@@ -416,6 +417,9 @@ ignoring all other files with the same basename."
         org-element-archive-tag "archive"))
 
 (when (modulep! :lang org)
+  (after! org
+    (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil))
+
   (setq org-tag-alist '(;; Places
                         ("@home" . ?H)
                         ("@shop" . ?S)
