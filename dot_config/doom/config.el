@@ -274,19 +274,22 @@ ignoring all other files with the same basename."
   (after! org
     (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil))
 
-  (setq org-tag-alist '(;; Places
+  (setq org-tag-alist '((:startgroup . "Places")
                         ("@home" . ?H)
                         ("@shop" . ?S)
                         ("@hospital" . ?L)
+                        (:endgroup)
 
-                        ;; Devices
+                        (:startgroup . "Devices")
                         ("@computer" . ?C)
                         ("@phone" . ?P)
+                        (:endgroup)
 
-                        ;; Transport
+                        (:startgroup . "Transport")
                         ("@bike" . ?b)
+                        (:endgroup)
 
-                        ;; Activities
+                        (:startgroup . "Activities")
                         ("@work" . ?w)
                         ("@freelance" . ?f)
                         ("@personal" . ?p)
@@ -297,7 +300,8 @@ ignoring all other files with the same basename."
                         ("@sport" . ?s)
                         ("@health" . ?h)
                         ("@leisure" . ?l)
-                        ("@errands" . ?e))
+                        ("@errands" . ?e)
+                        (:endgroup))
         org-agenda-custom-commands '(("d" "Daily Agenda"
                                       ((agenda ""
                                                ((org-agenda-span 'day)
