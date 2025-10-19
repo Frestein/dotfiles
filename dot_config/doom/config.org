@@ -418,6 +418,60 @@ ignoring all other files with the same basename."
 
 (when (modulep! :lang org)
   (after! org
+    (when (modulep! :email mu4e)
+      (setq +org-capture-emails-file "inbox.org"))
+
+    (defvar +org-capture-inbox-file "inbox.org"
+      "Default target for all entries.")
+
+    (defvar +org-capture-metrics-file "metrics.org"
+      "Default target for metrics entries.")
+
+    (setq org-capture-templates
+          `(("p" "Personal Tasks/Notes")
+            ("pt" "Personal Task" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Tasks")
+             "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n\n%a\n\n%i"
+             :prepend t
+             :empty-lines 1)
+            ("pn" "Personal Note" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Notes")
+             "* %u %?\n\n%a\n\n%i"
+             :prepend t
+             :empty-lines 1)
+            ("P" "Project Tasks/Notes")
+            ("Pt" "Project Task" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Project Tasks")
+             "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n\n%a\n\n%i"
+             :prepend t
+             :empty-lines 1)
+            ("Pn" "Project Note" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Notes")
+             "* %u %?\n\n%a\n\n%i"
+             :prepend t
+             :empty-lines 1)
+            ("w" "Work Tasks/Notes")
+            ("wt" "Work Task" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Work Tasks")
+             "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n\n%a\n\n%i"
+             :prepend t
+             :empty-lines 1)
+            ("wn" "Work Note" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Work Notes")
+             "* %u %?\n\n%a\n\n%i"
+             :prepend t
+             :empty-lines 1)
+            ("m" "Metrics")
+            ("mw" "Weight" table-line
+             (file+headline ,(expand-file-name +org-capture-metrics-file org-directory) "Weight")
+             "| %U | %^{Weight} kg | %^{Note} |"
+             :prepend t
+             :kill-buffer t)
+            ("j" "Journal" entry
+             (file+olp+datetree ,(expand-file-name +org-capture-journal-file org-directory))
+             "* %U %?"
+             :prepend t)))
+
     (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil))
 
   (setq org-todo-repeat-to-state "LOOP"
@@ -447,6 +501,7 @@ ignoring all other files with the same basename."
                         ("@sport" . ?s)
                         ("@health" . ?h)
                         ("@leisure" . ?l)
+                        ("@metrics" . ?M)
                         ("@errands" . ?e)
                         (:endgroup))
         org-agenda-custom-commands '(("d" "Daily Agenda"
@@ -454,9 +509,9 @@ ignoring all other files with the same basename."
                                                ((org-agenda-span 'day)
                                                 (org-agenda-start-day "+0d")
                                                 (org-deadline-warning-days 7)))
-                                       (todo ".*"
-                                             ((org-agenda-files '("~/Documents/org/inbox.org"))
-                                              (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
+                                       (tags-todo ".*"
+                                                  ((org-agenda-files '("~/Documents/org/inbox.org"))
+                                                   (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
                                        (tags-todo "-{.*}"
                                                   ((org-agenda-overriding-header "Untagged Tasks")))
                                        (tags-todo "+PRIORITY=\"A\""
