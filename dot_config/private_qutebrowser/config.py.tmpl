@@ -51,10 +51,10 @@ c.editor.command = [
 ]
 c.spellcheck.languages = ["en-US", "ru-RU"]
 
-c.url.default_page = f"https://{instance_4get}/"
-c.url.start_pages = f"https://{instance_4get}/"
+c.url.default_page = "https://start.duckduckgo.com/"
+c.url.start_pages = "https://start.duckduckgo.com/"
 c.url.searchengines = {
-    "DEFAULT": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
+    "DEFAULT": "duckduckgo.com/?q={}",
     "4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
     "searxng": f"{instance_searxng}/?q={{"{{}}"}}",
     "ddg": "duckduckgo.com/?q={}",
