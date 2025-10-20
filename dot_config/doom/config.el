@@ -451,7 +451,7 @@ ignoring all other files with the same basename."
                                                   ((org-agenda-overriding-header "Freelance Tasks")
                                                    (org-agenda-skip-function
                                                     '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP"))))))))
-        org-refile-targets '((org-agenda-files :maxlevel . 5)))
+        org-refile-targets '((org-agenda-files :maxlevel . 6)))
 
   (defmacro ignore-args (fnc)
     "Returns function that ignores its arguments and invokes FNC."
