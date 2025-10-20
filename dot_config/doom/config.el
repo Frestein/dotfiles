@@ -710,6 +710,21 @@ It should be the title of the web page as returned by `rdrview'."
           elfeed-goodies/feed-source-column-width 36
           elfeed-goodies/tag-column-width 28)
 
+    (when (modulep! :app rss +org)
+      ;; INFO: https://github.com/remyhonig/elfeed-org/issues/99
+      (defun rmh-elfeed-org-import-trees (tree-id)
+        "Get trees with \":ID:\" property or tag of value TREE-ID.
+Return trees with TREE-ID as the value of the id property or
+with a tag of the same value.  Setting an \":ID:\" property is not
+recommended but I support it for backward compatibility of
+current users."
+        (org-element-map
+            (org-element-parse-buffer)
+            'headline
+          (lambda (h)
+            (when (or (member tree-id (org-get-tags h))
+                      (equal tree-id (org-element-property :ID h))) h)))))
+
     (map! :map elfeed-search-mode-map
           :localleader
           :desc "Update feeds" "u" #'elfeed-update)))
