@@ -272,6 +272,9 @@ ignoring all other files with the same basename."
 
 (when (modulep! :lang org)
   (after! org
+    (setq +org-habit-graph-padding 1
+          +org-habit-graph-window-ratio 0.25)
+
     (when (modulep! :email mu4e)
       (setq +org-capture-emails-file "inbox.org"))
 
@@ -285,7 +288,7 @@ ignoring all other files with the same basename."
           `(("p" "Personal Tasks/Notes")
             ("pt" "Personal Task" entry
              (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Tasks")
-             "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n\n%a\n\n%i"
+             "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%a\n\n%i"
              :prepend t
              :empty-lines 1)
             ("pn" "Personal Note" entry
@@ -296,7 +299,7 @@ ignoring all other files with the same basename."
             ("P" "Project Tasks/Notes")
             ("Pt" "Project Task" entry
              (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Project Tasks")
-             "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n\n%a\n\n%i"
+             "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%a\n\n%i"
              :prepend t
              :empty-lines 1)
             ("Pn" "Project Note" entry
@@ -307,7 +310,7 @@ ignoring all other files with the same basename."
             ("w" "Work Tasks/Notes")
             ("wt" "Work Task" entry
              (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Work Tasks")
-             "* TODO %?\n:PROPERTIES:\n:Created: %U\n:END:\n\n%a\n\n%i"
+             "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%a\n\n%i"
              :prepend t
              :empty-lines 1)
             ("wn" "Work Note" entry
@@ -331,6 +334,7 @@ ignoring all other files with the same basename."
   (setq org-todo-repeat-to-state "LOOP"
         org-tag-alist '((:startgroup . "Places")
                         ("@home" . ?H)
+                        ("@gym" . ?G)
                         ("@shop" . ?S)
                         ("@hospital" . ?L)
                         (:endgroup)
@@ -344,19 +348,20 @@ ignoring all other files with the same basename."
                         ("@bike" . ?b)
                         (:endgroup)
 
-                        (:startgroup . "Activities")
-                        ("@work" . ?w)
-                        ("@freelance" . ?f)
-                        ("@personal" . ?p)
-                        ("@research" . ?r)
-                        ("@management" . ?m)
+                        (:startgroup . "Type")
                         ("@tech" . ?t)
                         ("@art" . ?a)
                         ("@sport" . ?s)
                         ("@health" . ?h)
-                        ("@leisure" . ?l)
+                        (:endgroup)
+
+                        (:startgroup . "Activities")
+                        ("@programming" . ?p)
+                        ("@research" . ?r)
+                        ("@management" . ?m)
                         ("@metrics" . ?M)
                         ("@errands" . ?e)
+                        ("@leisure" . ?l)
                         (:endgroup))
         org-agenda-custom-commands '(("d" "Daily Agenda"
                                       ((agenda ""
@@ -446,7 +451,7 @@ ignoring all other files with the same basename."
                                                   ((org-agenda-overriding-header "Freelance Tasks")
                                                    (org-agenda-skip-function
                                                     '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP"))))))))
-        org-refile-targets '((org-agenda-files :maxlevel . 6)))
+        org-refile-targets '((org-agenda-files :maxlevel . 5)))
 
   (defmacro ignore-args (fnc)
     "Returns function that ignores its arguments and invokes FNC."
