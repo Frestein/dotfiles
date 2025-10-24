@@ -207,7 +207,13 @@
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
        (:when (modulep! :term vterm)
-         :desc "Open URL using text browser" "W" #'browse-url-text-vterm))
+         :desc "Open URL using text browser" "W" #'browse-url-text-vterm)
+       (:prefix ("a" . "org agenda")
+        :desc "Daily Agenda" "d" (lambda () (interactive) (org-agenda nil "d"))
+        :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))
+        :desc "Personal Tasks" "p" (lambda () (interactive) (org-agenda nil "p"))
+        :desc "Project Tasks" "P" (lambda () (interactive) (org-agenda nil "P"))
+        :desc "Work Tasks" "w" (lambda () (interactive) (org-agenda nil "w"))))
       (:prefix ("c" . "code")
                (:when (modulep! :tools 0x0)
                  :desc "Pastebin code" "p" #'0x0-upload-text)
@@ -417,19 +423,19 @@ ignoring all other files with the same basename."
 
 (when (modulep! :lang org)
   (after! org
-    (setq +org-habit-graph-padding 1
-          +org-habit-graph-window-ratio 0.25)
-
-    (when (modulep! :email mu4e)
-      (setq +org-capture-emails-file "inbox.org"))
-
     (defvar +org-capture-inbox-file "inbox.org"
       "Default target for all entries.")
 
     (defvar +org-capture-metrics-file "metrics.org"
       "Default target for metrics entries.")
 
-    (setq org-capture-templates
+    (when (modulep! :email mu4e)
+      (setq +org-capture-emails-file "inbox.org"))
+
+    (setq +org-habit-graph-padding 1
+          +org-habit-graph-window-ratio 0.25
+          org-refile-targets '((org-agenda-files :maxlevel . 6))
+          org-capture-templates
           `(("p" "Personal Tasks/Notes")
             ("pt" "Personal Task" entry
              (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Tasks")
@@ -497,16 +503,13 @@ ignoring all other files with the same basename."
                         ("@tech" . ?t)
                         ("@art" . ?a)
                         ("@sport" . ?s)
-                        ("@health" . ?h)
                         (:endgroup)
 
                         (:startgroup . "Activities")
                         ("@programming" . ?p)
                         ("@research" . ?r)
                         ("@management" . ?m)
-                        ("@metrics" . ?M)
                         ("@errands" . ?e)
-                        ("@leisure" . ?l)
                         (:endgroup))
         org-agenda-custom-commands '(("d" "Daily Agenda"
                                       ((agenda ""
@@ -595,8 +598,7 @@ ignoring all other files with the same basename."
                                        (tags-todo "+@work+@freelance"
                                                   ((org-agenda-overriding-header "Freelance Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP"))))))))
-        org-refile-targets '((org-agenda-files :maxlevel . 6)))
+                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))))
 
   (defmacro ignore-args (fnc)
     "Returns function that ignores its arguments and invokes FNC."
