@@ -6,4 +6,4 @@ After=graphical-session.target
 
 [Service]
 Type=oneshot
-ExecStart=waypaper --random
+ExecStart=/usr/bin/waypaper --random
