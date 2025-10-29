@@ -203,6 +203,7 @@
        ;; everywhere        ; *leave* Emacs!? You must be joking
        ;; irc               ; how neckbeards socialize
        (rss +org)           ; emacs as an RSS reader
+       srs                  ; spaced repetition system inside Org-mode
 
        :config
        literate

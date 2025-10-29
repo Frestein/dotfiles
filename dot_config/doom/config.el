@@ -96,6 +96,8 @@
       (:prefix ("o" . "open")
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
+       (:when (modulep! :app srs)
+         :desc "SRS review" "s" #'org-srs-review-start)
        (:when (modulep! :term vterm)
          :desc "Open URL using text browser" "W" #'browse-url-text-vterm)
        (:prefix ("a" . "org agenda")
