@@ -3,6 +3,11 @@
 (use-package org-srs
   :after org
   :config
+  (defun org-srs-review-start-org-directory ()
+    "Start a review session for items located in the org-directory."
+    (interactive)
+    (org-srs-review-start org-directory))
+
   (map! :map org-mode-map
         :localleader
         (:prefix ("S" . "srs")
