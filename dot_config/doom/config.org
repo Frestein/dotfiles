@@ -94,6 +94,7 @@
                 initial-buffer-choice (lambda ()
                                         (org-agenda nil "d")
                                         (delete-other-windows)
+                                        (add-hook 'doom-first-input-hook #'org-agenda-redo nil t)
                                         (get-buffer "*Org Agenda*"))))
 #+end_src
 
