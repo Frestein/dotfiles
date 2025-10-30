@@ -96,6 +96,8 @@
       (:prefix ("o" . "open")
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
+       (:when (modulep! :app pomm)
+         :desc "Third Time" "." #'pomm-third-time)
        (:when (modulep! :app srs)
          :desc "SRS review" "s" #'org-srs-review-start-org-directory)
        (:when (modulep! :term vterm)
