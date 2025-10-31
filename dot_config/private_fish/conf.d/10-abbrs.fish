@@ -53,13 +53,7 @@ abbr -a -- dm doom
 
 # chezmoi
 abbr -a -- cz chezmoi
-abbr -a -- czs chezmoi status
-abbr -a -- czd chezmoi diff
-abbr -a -- cza chezmoi apply
 abbr -a -- czx env CZ_EXT=1 chezmoi
-abbr -a -- czsx env CZ_EXT=1 chezmoi status
-abbr -a -- czdx env CZ_EXT=1 chezmoi diff
-abbr -a -- czax env CZ_EXT=1 chezmoi apply
 
 # ansible
 abbr -a -- a ansible
