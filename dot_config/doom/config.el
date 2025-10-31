@@ -8,8 +8,10 @@
                 initial-buffer-choice (lambda ()
                                         (org-agenda nil "d")
                                         (delete-other-windows)
-                                        (add-hook 'doom-first-input-hook #'org-agenda-redo nil t)
-                                        (get-buffer "*Org Agenda*"))))
+                                        (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
+                                        (get-buffer "*Org Agenda*")))
+
+  (add-hook 'doom-first-input-hook #'org-agenda-redo))
 
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
