@@ -714,6 +714,13 @@ It should be the title of the web page as returned by `rdrview'."
         :n "R" #'frestein-eww-readable))
 
 (when (modulep! :app rss)
+  (defun frestein/elfeed-open-and-update ()
+    "Wrapper to load the elfeed db from disk before opening, force update search and feeds"
+    (interactive)
+    (elfeed)
+    (elfeed-search-update--force)
+    (elfeed-update))
+
   (after! elfeed
     (setq elfeed-search-filter "@2-week-ago +unread -reddit"
           elfeed-goodies/feed-source-column-width 36
