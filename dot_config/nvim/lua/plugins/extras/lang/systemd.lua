@@ -9,7 +9,7 @@ return {
 		"neovim/nvim-lspconfig",
 		optional = true,
 		opts = function()
-			vim.lsp.enable "systemd_ls"
+			vim.lsp.enable "systemd_lsp"
 		end,
 	},
 
