@@ -90,6 +90,7 @@
        blamer
        ;; collab            ; buffers with friends
        debugger             ; FIXME stepping through code, to help you add bugs
+       (daemons +systemd +lsp)   ; manage your daemons
        ;; direnv
        disk-usage
        ;; docker

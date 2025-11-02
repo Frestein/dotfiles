@@ -103,6 +103,8 @@
          :desc "Third Time" "." #'pomm-third-time)
        (:when (modulep! :app srs)
          :desc "SRS review" "s" #'org-srs-review-start-org-directory)
+       (:when (modulep! :tools daemons)
+         :desc "Daemons" "D" #'daemons)
        (:when (modulep! :term vterm)
          :desc "Open URL using text browser" "W" #'browse-url-text-vterm)
        (:prefix ("a" . "org agenda")
