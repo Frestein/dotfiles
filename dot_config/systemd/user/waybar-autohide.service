@@ -5,6 +5,7 @@ After=waybar.service
 [Service]
 ExecStartPre=/usr/bin/sleep 2
 ExecStart=%h/.config/hypr/scripts/waybar_autohide.sh
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
 Restart=on-failure
 
 [Install]
