@@ -1,7 +1,8 @@
 [Unit]
-Description=JDSP4Linux 
+Description=JDSP4Linux
 PartOf=graphical-session.target
-After=graphical-session.target
+After=graphical-session.target pipewire.service
+BindsTo=pipewire.service
 
 [Service]
 ExecStartPre=/usr/bin/sleep 2
@@ -11,4 +12,4 @@ Restart=on-failure
 Slice=app-graphical.slice
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=pipewire.service
