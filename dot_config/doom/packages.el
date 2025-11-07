@@ -4,6 +4,9 @@
 (when (modulep! :lang org)
   (package! org-super-agenda)
   (package! org-expose-emphasis-markers)
+  ;; TODO: Adjust when this is added to GNU ELPA
+  (package! org-contacts
+    :recipe (:host github :repo "emacsmirror/org-contacts"))
   (package! corg
     :recipe (:host github :repo "isamert/corg.el")))
 

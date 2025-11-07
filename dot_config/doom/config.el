@@ -586,6 +586,36 @@ If a region is active, emphasize it, else emphasize the word at point."
   (use-package! org-expose-emphasis-markers
     :hook (org-mode . org-expose-emphasis-markers-mode))
 
+  (use-package! org-contacts
+    :after org
+    :custom
+    (org-contacts-files (list (file-name-concat org-directory "contacts.org")))
+    :config
+    (setq org-capture-templates
+          (append org-capture-templates
+                  `(("c" "Contacts" entry
+                     (file ,(car org-contacts-files))
+                     "* %(org-contacts-template-name)
+:PROPERTIES:
+:EMAIL: %(org-contacts-template-email)
+:PHONE: %^{Phone}
+:ALIAS: %^{Alias}
+:NICKNAME: %^{Nickname}
+:IGNORE:
+:ICON: %^{Icon}
+:NOTE: %^{Note}
+:ADDRESS: %^{Address}
+:BIRTHDAY: %^{Birthday (dd-mm-yyyy)}
+:END:"))))
+
+    (when (modulep! :email mu4e)
+      (after! mu4e
+        (setq mu4e-org-contacts-file (car org-contacts-files))
+        (add-to-list 'mu4e-headers-actions
+                     '("org-contact-add" . mu4e-action-add-org-contact) t)
+        (add-to-list 'mu4e-view-actions
+                     '("org-contact-add" . mu4e-action-add-org-contact) t))))
+
   (use-package! corg
     :hook (org-mode . corg-setup)))
 
