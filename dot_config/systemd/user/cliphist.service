@@ -1,5 +1,5 @@
 [Unit]
-Description=Wayland clipboard manager with support for multimedia 
+Description=Wayland clipboard manager with support for multimedia
 Documentation=https://github.com/sentriz/cliphist
 PartOf=graphical-session.target
 After=graphical-session.target
