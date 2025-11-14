@@ -1,10 +1,14 @@
 [Unit]
 Description=SSH key agent
 Documentation=man:ssh-agent(1)
-After=graphical.target
+PartOf=graphical-session.target
+After=graphical-session.target
 
 [Service]
+Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+# DISPLAY required for ssh-askpass to work
+Environment=DISPLAY=:0
 ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target

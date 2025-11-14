@@ -1,12 +1,12 @@
 [Unit]
 Description=Waybar autohide script
-After=waybar.service
+PartOf=graphical-session.target waybar.service
+After=graphical-session.target waybar.service
 
 [Service]
 ExecStartPre=/usr/bin/sleep 2
 ExecStart=%h/.config/hypr/scripts/waybar_autohide.sh
-ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
 Restart=on-failure
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
