@@ -200,7 +200,7 @@
        calendar
        ement                ; Matrix client
        osm                  ; OpenStreetMap viewer
-       (telega +mnz +stories +icons +sponsored2 +blocked)  ; the best telegram client ever
+       (telega +mnz +icons +sponsored2 +blocked)  ; the best telegram client ever
        ;; emms
        ;; everywhere        ; *leave* Emacs!? You must be joking
        ;; irc               ; how neckbeards socialize
