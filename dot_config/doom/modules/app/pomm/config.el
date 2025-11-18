@@ -7,6 +7,13 @@
         pomm-audio-enabled t
         pomm-audio-player-executable (executable-find "mpv"))
 
+  (define-minor-mode pomm-audio-mode
+    "Global minor mode for toggling the pomodoro timer audio playback."
+    :require 'pomm
+    :group 'pomm
+    :global t
+    (setq pomm-audio-enabled (if pomm-audio-mode t nil)))
+
   ;; INFO: correct mpv
   (defun pomm--maybe-play-sound (kind)
     (when pomm-audio-enabled
