@@ -29,6 +29,7 @@ image_bound = [10000, 10000]
 [plugin]
 prepend_previewers = [
   { mime = "audio/*", run = "exifaudio" },
+  { mime = "application/epub+zip", run = "epub-preview" },
   { mime = "image/{vnd.djvu,x-djvu,djvu}", run = "djvu-view" },
 ]
 prepend_fetchers = [
