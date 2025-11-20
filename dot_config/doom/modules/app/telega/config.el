@@ -17,7 +17,8 @@
         telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega")
         telega-root-default-view-function 'telega-view-folders
         telega-translate-to-language-by-default "ru"
-        telega-video-player-command "mpv"
+        telega-video-player-command (executable-find "mpv")
+        telega-video-play-incrementally nil
         telega-chat-show-deleted-messages-for '(not saved-messages)
         telega-sticker-size '(8 . 26)
         telega-use-images t

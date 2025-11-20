@@ -4,7 +4,6 @@
   :hook (doom-after-init . pomm-mode-line-mode)
   :config
   (setq alert-default-style 'libnotify
-        pomm-audio-enabled t
         pomm-audio-player-executable (executable-find "mpv"))
 
   (define-minor-mode pomm-audio-mode
