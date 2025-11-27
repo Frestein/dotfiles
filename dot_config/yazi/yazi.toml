@@ -27,10 +27,22 @@ prepend_rules = [
 image_bound = [10000, 10000]
 
 [plugin]
+prepend_preloaders = [
+  { mime = "application/openxmlformats-officedocument.*", run = "office" },
+  { mime = "application/oasis.opendocument.*", run = "office" },
+  { mime = "application/ms-*", run = "office" },
+  { mime = "application/msword", run = "office" },
+  { name = "*.docx", run = "office" },
+]
 prepend_previewers = [
   { mime = "audio/*", run = "exifaudio" },
   { mime = "application/epub+zip", run = "epub-preview" },
   { mime = "image/{vnd.djvu,x-djvu,djvu}", run = "djvu-view" },
+  { mime = "application/openxmlformats-officedocument.*", run = "office" },
+  { mime = "application/oasis.opendocument.*", run = "office" },
+  { mime = "application/ms-*", run = "office" },
+  { mime = "application/msword", run = "office" },
+  { name = "*.docx", run = "office" },
 ]
 prepend_fetchers = [
   { id = "git", name = "*", run = "git" },
