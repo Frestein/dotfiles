@@ -945,6 +945,13 @@ current users."
        :title window-title
        :geometry window-geometry))))
 
+;; BUG: ws-butler removes last line in Org files despite require-final-newline
+;; https://github.com/lewang/ws-butler/issues/26
+(when (modulep! :editor whitespace +trim)
+  (after! ws-butler
+    (pushnew! ws-butler-global-exempt-modes
+              'org-mode)))
+
 (setq default-input-method "russian-computer"
       calendar-week-start-day 1
       confirm-kill-emacs nil)
