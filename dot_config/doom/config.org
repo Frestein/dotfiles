@@ -222,10 +222,7 @@
          :desc "Open URL using text browser" "W" #'browse-url-text-vterm)
        (:prefix ("a" . "org agenda")
         :desc "Daily Agenda" "d" (lambda () (interactive) (org-agenda nil "d"))
-        :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))
-        :desc "Personal Tasks" "p" (lambda () (interactive) (org-agenda nil "p"))
-        :desc "Project Tasks" "P" (lambda () (interactive) (org-agenda nil "P"))
-        :desc "Work Tasks" "w" (lambda () (interactive) (org-agenda nil "w"))))
+        :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))))
       (:prefix ("c" . "code")
                (:when (modulep! :tools 0x0)
                  :desc "Pastebin code" "p" #'0x0-upload-text)
@@ -435,6 +432,46 @@ ignoring all other files with the same basename."
 
 (when (modulep! :lang org)
   (after! org
+    (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil)
+
+    (with-no-warnings
+      (custom-declare-face '+org-todo-next  '((t (:inherit (bold font-lock-property-use-face org-todo)))) ""))
+
+    (setq org-todo-keywords
+          '((sequence
+             "NEXT(n)"                  ; Next Action
+             "TODO(t)"                  ; Someday/Maybe
+             "PROJ(p)"                  ; Project
+             "WAIT(w)"                  ; Waiting for
+             "LOOP(l)"                  ; Recurring
+             "STRT(s)"                  ; Active/In Progress
+             "HOLD(h)"                  ; On Hold
+             "|"
+             "DONE(d)"                  ; Completed
+             )
+            (sequence
+             "[ ](T)"                   ; Action
+             "[-](S)"                   ; Active/In Progress
+             "[?](W)"                   ; On Hold
+             "|"
+             "[X](D)")                  ; Completed
+            (sequence
+             "|"
+             "OKAY(O)"
+             "YES(Y)"
+             "NO(N)"))
+          org-todo-keyword-faces
+          '(("NEXT" . +org-todo-next)
+            ("PROJ" . +org-todo-project)
+            ("WAIT" . +org-todo-onhold)
+            ("STRT" . +org-todo-active)
+            ("HOLD" . +org-todo-onhold)
+            ("[-]"  . +org-todo-active)
+            ("[?]"  . +org-todo-onhold)
+            ("NO"   . +org-todo-cancel)))
+
+    (setq org-todo-repeat-to-state "LOOP")
+
     (defvar +org-capture-inbox-file "inbox.org"
       "Default target for all entries.")
 
@@ -444,40 +481,14 @@ ignoring all other files with the same basename."
     (when (modulep! :email mu4e)
       (setq +org-capture-emails-file "inbox.org"))
 
-    (setq +org-habit-graph-padding 1
-          +org-habit-graph-window-ratio 0.25
-          org-refile-targets '((org-agenda-files :maxlevel . 6))
-          org-capture-templates
-          `(("p" "Personal Tasks/Notes")
-            ("pt" "Personal Task" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Tasks")
+    (setq org-capture-templates
+          `(("t" "Task" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Tasks")
              "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%a\n\n%i"
              :prepend t
              :empty-lines 1)
-            ("pn" "Personal Note" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Notes")
-             "* %u %?\n\n%a\n\n%i"
-             :prepend t
-             :empty-lines 1)
-            ("P" "Project Tasks/Notes")
-            ("Pt" "Project Task" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Project Tasks")
-             "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%a\n\n%i"
-             :prepend t
-             :empty-lines 1)
-            ("Pn" "Project Note" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Personal Notes")
-             "* %u %?\n\n%a\n\n%i"
-             :prepend t
-             :empty-lines 1)
-            ("w" "Work Tasks/Notes")
-            ("wt" "Work Task" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Work Tasks")
-             "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%a\n\n%i"
-             :prepend t
-             :empty-lines 1)
-            ("wn" "Work Note" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Work Notes")
+            ("n" "Note" entry
+             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Notes")
              "* %u %?\n\n%a\n\n%i"
              :prepend t
              :empty-lines 1)
@@ -492,10 +503,14 @@ ignoring all other files with the same basename."
              "* %U %?"
              :prepend nil)))
 
-    (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil))
+    (setq org-refile-targets '((org-agenda-files :maxlevel . 6)))
 
-  (setq org-todo-repeat-to-state "LOOP"
-        org-tag-alist '((:startgroup . "Place")
+    (add-to-list 'org-modules 'org-habit)
+
+    (setq +org-habit-graph-padding 1
+          +org-habit-graph-window-ratio 0.25))
+
+  (setq org-tag-alist '((:startgroup . "Place")
                         ("@home" . ?H)
                         ("@garage" . ?G)
                         ("@gym" . ?W)
@@ -509,6 +524,10 @@ ignoring all other files with the same basename."
                         ("@computer" . ?C)
                         ("@phone" . ?P)
                         (:endgrouptag)
+
+                        (:startgroup . "Difficulty")
+                        ("@easy" . ?E)
+                        (:endgroup)
 
                         (:startgroup . "Type")
                         ("@tech" . ?T)
@@ -526,29 +545,58 @@ ignoring all other files with the same basename."
                         ("@programming" . ?p)
                         ("@system" . ?a)
                         ("@errands" . ?e)
-                        (:endgroup))
-        org-agenda-custom-commands '(("d" "Daily Agenda"
+                        (:endgroup)))
+
+  (setq org-agenda-custom-commands '(("d" "Daily Agenda"
                                       ((agenda ""
                                                ((org-agenda-span 'day)
                                                 (org-agenda-start-day "+0d")
                                                 (org-deadline-warning-days 7)))
+                                       (tags-todo "+@easy"
+                                                  ((org-agenda-overriding-header "Easy Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"A\""
+                                                  ((org-agenda-overriding-header "High Priority Next Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"B\""
+                                                  ((org-agenda-overriding-header "Medium Priority Next Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"C\""
+                                                  ((org-agenda-overriding-header "Low Priority Next Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"A\""
+                                                  ((org-agenda-overriding-header "High Priority Waiting For Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"B\""
+                                                  ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"C\""
+                                                  ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"A\""
+                                                  ((org-agenda-overriding-header "High Priority Someday/Maybe Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"B\""
+                                                  ((org-agenda-overriding-header "Medium Priority Someday/Maybe Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                       (tags-todo "+PRIORITY=\"C\""
+                                                  ((org-agenda-overriding-header "Low Priority Someday/Maybe Tasks")
+                                                   (org-agenda-skip-function
+                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP")))))
                                        (tags-todo ".*"
                                                   ((org-agenda-files '("~/Documents/org/inbox.org"))
                                                    (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
                                        (tags-todo "-{.*}"
-                                                  ((org-agenda-overriding-header "Untagged Tasks")))
-                                       (tags-todo "+PRIORITY=\"A\""
-                                                  ((org-agenda-overriding-header "High Priority Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+PRIORITY=\"B\""
-                                                  ((org-agenda-overriding-header "Medium Priority Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+PRIORITY=\"C\""
-                                                  ((org-agenda-overriding-header "Low Priority Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))
+                                                  ((org-agenda-overriding-header "Untagged Tasks")))))
                                      ("r" "Weekly Review"
                                       ((agenda ""
                                                ((org-agenda-overriding-header "Completed Tasks")
@@ -559,62 +607,7 @@ ignoring all other files with the same basename."
                                                ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
                                                 (org-agenda-start-with-log-mode t)
                                                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                                                (org-agenda-span 'week)))))
-                                     ("p" "Personal"
-                                      ((tags-todo "+@personal+@management-@research"
-                                                  ((org-agenda-overriding-header "Management Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@personal+@research"
-                                                  ((org-agenda-overriding-header "Research Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@personal+@tech-@research"
-                                                  ((org-agenda-overriding-header "Tech Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@personal+@sport-@research"
-                                                  ((org-agenda-overriding-header "Sport Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@personal+@art-@research"
-                                                  ((org-agenda-overriding-header "Art Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+personal+@leisure"
-                                                  ((org-agenda-overriding-header "Leisure Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@personal+@home"
-                                                  ((org-agenda-overriding-header "Home Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@personal+@health-problem-@research"
-                                                  ((org-agenda-overriding-header "Health Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@personal+problem"
-                                                  ((org-agenda-overriding-header "Problem Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))
-                                     ("P" "Projects"
-                                      ((tags-todo "+@project+@personal"
-                                                  ((org-agenda-overriding-header "Personal Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@project-@personal"
-                                                  ((org-agenda-overriding-header "Contribution Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))
-                                     ("w" "Work"
-                                      ((tags-todo "+@work+@personal"
-                                                  ((org-agenda-overriding-header "Personal Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))
-                                       (tags-todo "+@work+@freelance"
-                                                  ((org-agenda-overriding-header "Freelance Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("WAIT" "IDEA" "DONE" "LOOP")))))))))
+                                                (org-agenda-span 'week)))))))
 
   (defmacro ignore-args (fnc)
     "Returns function that ignores its arguments and invokes FNC."
@@ -733,13 +726,14 @@ If a region is active, emphasize it, else emphasize the word at point."
         :localleader
         "s" #'org-save-all-org-buffers)
 
-  (use-package! org-super-agenda
-    :hook (org-agenda-mode . org-super-agenda-mode))
-
   (use-package! org-expose-emphasis-markers
     :hook (org-mode . org-expose-emphasis-markers-mode))
 
+  (use-package! corg
+    :hook (org-mode . corg-setup))
+
   (use-package! org-contacts
+    :when (modulep! :lang org +contacts2)
     :after org
     :custom
     (org-contacts-files (list (file-name-concat org-directory "contacts.org")))
@@ -769,8 +763,9 @@ If a region is active, emphasize it, else emphasize the word at point."
         (add-to-list 'mu4e-view-actions
                      '("org-contact-add" . mu4e-action-add-org-contact) t))))
 
-  (use-package! corg
-    :hook (org-mode . corg-setup)))
+  (use-package! org-super-agenda
+    :when (modulep! :lang org +super)
+    :hook (org-agenda-mode . org-super-agenda-mode)))
 #+end_src
 
 ** Markdown
