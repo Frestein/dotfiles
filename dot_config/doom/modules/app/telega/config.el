@@ -3,7 +3,6 @@
 (use-package! telega
   :hook ((telega-load . telega-appindicator-mode)
          (telega-load . telega-mode-line-mode)
-         (telega-load . telega-notifications-mode)
          (telega-load . telega-autoplay-mode)
          (telega-chat-mode . turn-off-smartparens-mode)
          (telega-chat-mode . doom-disable-show-paren-mode-h))

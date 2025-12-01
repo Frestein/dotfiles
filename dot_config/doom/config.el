@@ -781,6 +781,7 @@ current users."
     (setq mu4e-root-maildir (expand-file-name "~/Documents/mail")
           mu4e-attachment-dir "~/Downloads/mu4e"
           mu4e-update-interval 300
+          mu4e-notification-support nil
           sendmail-program (executable-find "msmtp")
           message-send-mail-function #'message-send-mail-with-sendmail
           message-sendmail-f-is-evil t
