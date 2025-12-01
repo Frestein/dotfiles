@@ -1171,6 +1171,10 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 (setq default-input-method "russian-computer"
       calendar-week-start-day 1
       confirm-kill-emacs nil)
+
+;; Security
+(setq gnutls-verify-error t ; Prompts user if there are certificate issues
+      tls-checktrust t)     ; Ensure SSL/TLS connections undergo trust verification
 #+end_src
 * Personal Modules
 

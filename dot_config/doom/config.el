@@ -954,6 +954,10 @@ current users."
       calendar-week-start-day 1
       confirm-kill-emacs nil)
 
+;; Security
+(setq gnutls-verify-error t ; Prompts user if there are certificate issues
+      tls-checktrust t)     ; Ensure SSL/TLS connections undergo trust verification
+
 (when (modulep! :app telega)
   (defun telega-server-process-running-p ()
     "Check if telega-server process is running."
