@@ -358,14 +358,16 @@ ignoring all other files with the same basename."
 
     (add-to-list 'org-modules 'org-habit)
 
-    (setq +org-habit-graph-padding 1
+    (setq org-habit-show-habits-only-for-today nil
+          +org-habit-graph-padding 1
           +org-habit-graph-window-ratio 0.25))
 
   (setq org-tag-alist '((:startgroup . "Place")
                         ("@home" . ?H)
-                        ("@garage" . ?G)
-                        ("@gym" . ?W)
-                        ("@shop" . ?S)
+                        ("@gym" . ?G)
+                        ("@garage" . ?B)
+                        ("@street" . ?S)
+                        ("@shop" . ?M)
                         ("@hospital" . ?L)
                         (:endgroup)
 
