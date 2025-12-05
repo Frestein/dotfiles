@@ -767,7 +767,19 @@ If a region is active, emphasize it, else emphasize the word at point."
 
   (use-package! org-super-agenda
     :when (modulep! :lang org +super)
-    :hook (org-agenda-mode . org-super-agenda-mode)))
+    :hook (org-agenda-mode . org-super-agenda-mode))
+
+  (when (modulep! :lang org +roam)
+    (use-package! websocket
+      :after org-roam)
+
+    (use-package! org-roam-ui
+      :after org-roam
+      :config
+      (setq org-roam-ui-sync-theme t
+            org-roam-ui-follow t
+            org-roam-ui-update-on-save t
+            org-roam-ui-open-on-start t))))
 #+end_src
 
 ** Markdown

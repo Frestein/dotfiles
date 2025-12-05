@@ -13,7 +13,10 @@
       :recipe (:host github :repo "emacsmirror/org-contacts")))
 
   (when (modulep! :lang org +super)
-    (package! org-super-agenda)))
+    (package! org-super-agenda))
+
+  (when (modulep! :lang org +roam)
+    (package! org-roam-ui)))
 
 (when (modulep! :tools magit)
   (when (modulep! :ui hl-todo)
