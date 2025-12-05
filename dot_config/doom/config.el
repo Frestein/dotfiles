@@ -175,6 +175,10 @@
       ;; which-key-show-operator-state-maps t
       )
 
+(when (modulep! :completion corfu)
+  (after! corfu
+    (setq corfu-auto nil)))
+
 (use-package! xdg
   :demand t)
 

@@ -16,6 +16,7 @@
 - [[#mappings][Mappings]]
 - [[#evil][Evil]]
 - [[#which-key][Which-Key]]
+- [[#corfu][Corfu]]
 - [[#xdg][XDG]]
 - [[#magit][Magit]]
 - [[#projectile][Projectile]]
@@ -295,6 +296,14 @@
       ;; BUG: https://github.com/justbur/emacs-which-key/issues/345
       ;; which-key-show-operator-state-maps t
       )
+#+end_src
+
+* Corfu
+
+#+begin_src emacs-lisp :tangle yes
+(when (modulep! :completion corfu)
+  (after! corfu
+    (setq corfu-auto nil)))
 #+end_src
 
 * XDG
