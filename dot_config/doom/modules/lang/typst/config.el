@@ -68,7 +68,6 @@
 
   (map! :map typst-ts-mode-map
         :localleader
-        "w" #'typst-ts-watch-mode
         (:prefix ("p" . "preview")
                  "p" #'typst-preview-mode
                  "s" #'typst-preview-send-position
