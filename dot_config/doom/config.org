@@ -419,9 +419,9 @@ ignoring all other files with the same basename."
 ** Org
 
 #+begin_src emacs-lisp :tangle yes
-(setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org")
-      org-agenda-files (list (concat org-directory "/agenda"))
-      org-hide-emphasis-markers t
+(setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org"))
+(setq org-agenda-files (list (concat org-directory "/agenda")))
+(setq org-hide-emphasis-markers t
       org-edit-src-persistent-message nil
       org-log-done 'time
       ;; BUG: The second format is displayed incorrectly.
@@ -441,6 +441,8 @@ ignoring all other files with the same basename."
 
 (when (modulep! :lang org)
   (after! org
+    (pushnew! org-default-properties "CREATED")
+
     (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil)
 
     (with-no-warnings
@@ -493,12 +495,7 @@ ignoring all other files with the same basename."
     (setq org-capture-templates
           `(("t" "Task" entry
              (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Tasks")
-             "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%a\n\n%i"
-             :prepend t
-             :empty-lines 1)
-            ("n" "Note" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Notes")
-             "* %u %?\n\n%a\n\n%i"
+             "* TODO [#B] %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
              :prepend t
              :empty-lines 1)
             ("m" "Metrics")
@@ -506,11 +503,7 @@ ignoring all other files with the same basename."
              (file+headline ,(expand-file-name +org-capture-metrics-file org-directory) "Weight")
              "| %U | %^{Weight} kg | %^{Note} |"
              :prepend t
-             :kill-buffer t)
-            ("j" "Journal" entry
-             (file+olp+datetree ,(expand-file-name +org-capture-journal-file org-directory))
-             "* %U %?"
-             :prepend nil)))
+             :kill-buffer t)))
 
     (setq org-refile-targets '((org-agenda-files :maxlevel . 6)))
 
@@ -779,6 +772,31 @@ If a region is active, emphasize it, else emphasize the word at point."
     :hook (org-agenda-mode . org-super-agenda-mode))
 
   (when (modulep! :lang org +roam)
+    (after! org
+      (pushnew! org-agenda-files (concat org-roam-directory org-roam-dailies-directory)))
+    (after! org-roam
+      (pushnew! org-default-properties "ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE")
+
+      (setq org-roam-capture-templates
+            '(("d" "default" plain
+               "%?"
+               :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                  "#+title: ${title}\n")
+               :unnarrowed t)))
+
+      (setq org-roam-dailies-directory "journal/")
+      (setq org-roam-dailies-capture-templates
+            '(("n" "Note" entry
+               "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :target (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n\n")
+               :empty-lines 1)
+              ("t" "Task" entry
+               "* NEXT [#B] %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :target (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n\n")
+               :empty-lines 1))))
+
     (use-package! websocket
       :after org-roam)
 
