@@ -62,8 +62,8 @@ x-scheme-handler/git+https=handlr-regex.desktop;
 x-scheme-handler/http=handlr-regex.desktop;
 x-scheme-handler/https=handlr-regex.desktop;org.qutebrowser.qutebrowser.desktop;
 x-scheme-handler/terminal=footclient.desktop;
-x-scheme-handler/tg=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;
-x-scheme-handler/tonsite=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;
+x-scheme-handler/tg=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;userapp-AyuGram Desktop-40HUG3.desktop;
+x-scheme-handler/tonsite=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;userapp-AyuGram Desktop-DL3TG3.desktop;
 
 [Default Applications]
 application/epub+zip=org.pwmt.zathura.desktop;emacsclient.desktop;emacs.desktop;
@@ -129,5 +129,5 @@ x-scheme-handler/git+https=handlr-regex.desktop;
 x-scheme-handler/http=handlr-regex.desktop;
 x-scheme-handler/https=handlr-regex.desktop;org.qutebrowser.qutebrowser.desktop;
 x-scheme-handler/terminal=footclient.desktop;
-x-scheme-handler/tg=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;
-x-scheme-handler/tonsite=io.github.tdesktop_x64.TDesktop.desktop;org.telegram.desktop.desktop;
+x-scheme-handler/tg=userapp-AyuGram Desktop-40HUG3.desktop
+x-scheme-handler/tonsite=userapp-AyuGram Desktop-DL3TG3.desktop
