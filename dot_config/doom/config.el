@@ -956,8 +956,9 @@ current users."
                 (push (cons a faces) hl-todo-keyword-faces)))))))))
 
 (when (modulep! :ui zen)
-  (setq +zen-text-scale 0
-        writeroom-width 100))
+  (setq +zen-text-scale 0)
+  (setq +zen-mixed-pitch-modes nil)
+  (setq writeroom-width 100))
 
 (when (modulep! :app everywhere)
   (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
