@@ -1,0 +1,10 @@
+[Unit]
+Description=Update dmenu-extended cache
+Wants=dmenu-extended-update-db.timer
+
+[Service]
+Type=oneshot
+ExecStart=dmenu_extended_cache_build
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Run dmenu-extended-update-db.service every 20 minutes
+Requires=dmenu-extended-update-db.service
+
+[Timer]
+Unit=dmenu-extended-update-db.service
+OnCalendar=*:0/20
+
+[Install]
+WantedBy=timers.target
