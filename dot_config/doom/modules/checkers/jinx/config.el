@@ -18,8 +18,8 @@
                  '(jinx (vertico-grid-annotate . 25))))
 
   (after! evil-commands
-    (global-set-key [remap evil-next-flyspell-error] #'jinx-next)
-    (global-set-key [remap evil-prev-flyspell-error] #'jinx-previous))
+    (keymap-global-set "<remap> <evil-next-flyspell-error>" #'jinx-next)
+    (keymap-global-set "<remap> <evil-prev-flyspell-error>" #'jinx-previous))
 
   ;; I prefer for `point' to end up at the start of the word,
   ;; not just after the end.
