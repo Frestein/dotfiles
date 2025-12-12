@@ -133,6 +133,8 @@
       (:prefix ("f" . "file")
                (:when (modulep! :emacs dired)
                  :desc "Open directory in dirvish" "m" #'dirvish))
+      (:prefix ("h" . "help")
+               "e" #'toggle-echo-area-messages)
       (:prefix ("t" . "toggle")
        :desc "Automatic line breaking" "a" #'auto-fill-mode
        (:when (modulep! :tools blamer)
@@ -976,6 +978,15 @@ current users."
        :class app-name
        :title window-title
        :geometry window-geometry))))
+
+(defun toggle-echo-area-messages ()
+  "Toggle the log of recent echo-area messages: the `*Messages*' buffer.
+The number of messages retained in that buffer is specified by
+the variable `message-log-max'."
+  (interactive)
+  (if-let ((win (get-buffer-window (messages-buffer))))
+      (quit-window nil win)
+    (view-echo-area-messages)))
 
 ;; BUG: ws-butler removes last line in Org files despite require-final-newline
 ;; https://github.com/lewang/ws-butler/issues/26
