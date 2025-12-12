@@ -12,6 +12,7 @@
   - [[#theme][Theme]]
   - [[#fonts][Fonts]]
   - [[#commands][Commands]]
+  - [[#docs][Docs]]
 - [[#shell][Shell]]
 - [[#mappings][Mappings]]
 - [[#evil][Evil]]
@@ -165,6 +166,12 @@
               (if (featurep :system 'android)
                   "sh %s"
                 "%s")))
+#+end_src
+
+** Docs
+
+#+begin_src emacs-lisp :tangle yes
+(remove-hook 'doom-docs-mode-hook #'doom-docs--display-menu-h)
 #+end_src
 
 * Shell

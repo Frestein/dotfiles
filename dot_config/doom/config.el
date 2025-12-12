@@ -60,6 +60,8 @@
                   "sh %s"
                 "%s")))
 
+(remove-hook 'doom-docs-mode-hook #'doom-docs--display-menu-h)
+
 (setq shell-file-name (executable-find "bash"))
 (when (executable-find "fish")
   (setq-default vterm-shell (executable-find "fish")
