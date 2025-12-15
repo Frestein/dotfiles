@@ -804,7 +804,31 @@ If a region is active, emphasize it, else emphasize the word at point."
                "* NEXT [#B] %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
                :target (file+head "%<%Y-%m-%d>.org"
                                   "#+title: %<%Y-%m-%d>\n\n")
-               :empty-lines 1))))
+               :empty-lines 1)))
+
+      ;; INFO: filter org-tags-alist keywords
+      ;; https://github.com/org-roam/org-roam/issues/2477
+      (defun org-roam-tag-completions ()
+        "Return list of tags for completions within Org-roam."
+        (let ((roam-tags (mapcar #'car (org-roam-db-query [:select :distinct [tag] :from tags])))
+              (org-tags (cl-loop for tagg in org-tag-alist
+                                 nconc (pcase tagg
+                                         ('(:newline)
+                                          nil)
+                                         ('(:grouptags)
+                                          nil)
+                                         ('(:startgrouptag)
+                                          nil)
+                                         ('(:endgrouptag)
+                                          nil)
+                                         (`(:startgroup . ,_)
+                                          nil)
+                                         (`(:endgroup . ,_)
+                                          nil)
+                                         (`(,tag . ,_)
+                                          (list tag))
+                                         (_ nil)))))
+          (seq-uniq (append roam-tags org-tags)))))
 
     (use-package! websocket
       :after org-roam)
