@@ -5,12 +5,12 @@ corner-roundness = 0
 initial-tool = "brush"                                    # possible values: pointer, crop, line, arrow, rectangle, text, marker, blur, brush
 copy-command = "wl-copy"
 annotation-size-factor = 2
-output-filename = "/tmp/screenshot-%d-%m-%Y-%H:%M:%S.png"
+output-filename = "~/Pictures/screenshots/%m.%d.%Y-%H:%M:%S.png"
 action-on-enter = "save-to-clipboard"                     # possible values: save-to-clipboard, save-to-file
 save-after-copy = false
 default-hide-toolbars = false
 primary-highlighter = "block"                             # possible values: block, freehand
-disable-notifications = false
+disable-notifications = true
 
 [font]
 family = "monospace"

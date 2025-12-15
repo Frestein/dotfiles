@@ -76,7 +76,6 @@
 .config/pavucontrol.ini
 .config/QtProject.conf
 .config/syncthingtray.ini
-.config/user-dirs*
 
 **/__pycache__/
 **/README.org
