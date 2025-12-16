@@ -561,14 +561,15 @@ If a region is active, emphasize it, else emphasize the word at point."
         :after org
         :localleader
         "B" #'org-babel-tangle
+        "D" #'org-insert-drawer
+        "E" #'org-export-dispatch
         (:prefix ("e" . "emphasize")
          :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
          :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
          :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
          :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
          :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
-         :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~)))
-        "E" #'org-export-dispatch)
+         :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~))))
 
   (map! :map telega-chat-mode-map
         :when (modulep! :app telega)
