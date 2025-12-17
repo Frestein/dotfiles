@@ -12,7 +12,10 @@ window=$(jq -r '.[] | select(.monitor != -1 ) | "\(.address)\t\(.workspace.name)
     column -t -s $'\t' |
     sed -e "s|$current_addr|focused ->|" -e 's|@icon@|\x0icon\x1f|' |
     sort -r |
-    fuzzel -d -p " " -w 120)
+    fuzzel -d \
+        --minimal-lines \
+        -p " " \
+        -w 120)
 
 addr=$(awk '{print $1}' <<<"$window")
 ws=$(awk '{print $2}' <<<"$window")

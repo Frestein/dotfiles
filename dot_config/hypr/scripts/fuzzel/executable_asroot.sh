@@ -27,7 +27,7 @@ run_command() {
 
 options=" Foot\n Neovim\n󰇥 Yazi\n󰑩 Zapret\n󰒒 DNSCrypt\n Etckeeper"
 selected_option=$(echo "$options" | fuzzel -d \
-    -l 6 \
+    --minimal-lines \
     -p " " \
     --placeholder "Root ")
 command=$(echo "$selected_option" | grep -o -E "[a-zA-Z]+")

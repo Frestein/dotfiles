@@ -59,6 +59,7 @@ fuzzel_menu() {
     printf '%s\n' "${menu_opts[@]}" | fuzzel \
         --dmenu \
         --prompt "$prompt " \
+        --placeholder "Choose..." \
         --minimal-lines
 }
 
@@ -85,7 +86,7 @@ walker_menu() {
 define_menu
 
 # Choose options
-main_choice=$(show_menu "Select" "${main_opts[@]}") || exit 1
+main_choice=$(show_menu "Screenshot" "${main_opts[@]}") || exit 1
 
 case "$main_choice" in
 "󰹑 Capture") mode="normal" ;;
@@ -93,7 +94,7 @@ case "$main_choice" in
 *) exit 1 ;;
 esac
 
-type_choice=$(show_menu "Type Of Screenshot" "${screenshot_opts[@]}") || exit 1
+type_choice=$(show_menu "Type" "${screenshot_opts[@]}") || exit 1
 case "$type_choice" in
 "󰍺 All Screen") option_type="screen" ;;
 "󰍹 Active Screen") option_type="active" ;;

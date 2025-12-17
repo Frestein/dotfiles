@@ -1,5 +1,5 @@
 enable_selector = true
-selector = "fuzzel -d -p 'Open With '"
+selector = "fuzzel -d -p 'Open with ' --placeholder='Choose...' --minimal-lines"
 term_exec_args = ''
 expand_wildcards = false
 

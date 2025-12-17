@@ -3,7 +3,7 @@
 NOTIFY_CMD=(notify-send -h string:x-dunst-stack-tag:jamesdsp)
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/jamesdsp"
 STATE_FILE="${STATE_DIR}/preset"
-DMENU_CMD="${DMENU:-fuzzel -d}"
+DMENU_CMD="${DMENU:-fuzzel -d --minimal-lines}"
 
 toggle_bypass() {
     local state
@@ -43,7 +43,7 @@ choose_and_load_preset() {
     presets=$(jamesdsp --list-presets)
 
     local chosen
-    chosen=$(printf '%s\n' "$presets" | eval "$DMENU_CMD -l 7") || return 1
+    chosen=$(printf '%s\n' "$presets" | eval "$DMENU_CMD") || return 1
 
     if [ -n "$chosen" ]; then
         jamesdsp --load-preset "$chosen"

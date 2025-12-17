@@ -27,7 +27,7 @@ run_command() {
 
 options="󰗽 Logout\n Lock\n󰯈 Kill window\n Reload\n Reboot\n Shutdown"
 selected_option=$(echo "$options" | fuzzel -d \
-    -l 6 \
+    --minimal-lines \
     -p " ")
 command=$(echo "$selected_option" | grep -o -E "[a-zA-Z]+")
 
