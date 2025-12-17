@@ -47,7 +47,7 @@
 
   (when (modulep! +lsp)
     (when (modulep! :tools lsp +eglot)
-      (set-eglot-client! 'typst-ts-mode "tinymist"))
+      (set-eglot-client! 'typst-ts-mode '("tinymist")))
 
     (add-hook 'typst-ts-mode-local-vars-hook #'lsp!))
 
