@@ -238,11 +238,23 @@
                   :desc "Password" "p" #'+pass/consult)))
       (:prefix ("i" . "insert")
        :desc "Nerd" "n" #'nerd-icons-insert)
+      (:when (modulep! :app pomm)
+        (:prefix ("P" . "pomm")
+                 (:prefix ("t" . "Third Time")
+                          "s" #'pomm-third-time-start
+                          "S" #'pomm-third-time-stop
+                          "t" #'pomm-third-time-switch
+                          "o" #'pomm-third-time)
+                 (:prefix ("p" . "Pomodoro")
+                          "s" #'pomm-start
+                          "S" #'pomm-stop
+                          "o" #'pomm)))
       (:prefix ("o" . "open")
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
        (:when (modulep! :app pomm)
-         :desc "Third Time" "." #'pomm-third-time)
+         :desc "Third Time" "," #'pomm-third-time
+         :desc "Pomodoro" "." #'pomm)
        (:when (modulep! :app srs)
          :desc "SRS review" "s" #'org-srs-review-start-org-directory)
        (:when (modulep! :tools daemons)
