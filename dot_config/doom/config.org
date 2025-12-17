@@ -159,13 +159,31 @@
               ;; INFO: /usr/bin/env doesn't exist on Android
               (if (featurep :system 'android)
                   "sh %s"
-                "%s"))
-      doom-reload-command
+                "%s")))
+
+(setq doom-reload-command
       (format "%s sync -B -e --aot"
               ;; INFO: /usr/bin/env doesn't exist on Android
               (if (featurep :system 'android)
                   "sh %s"
                 "%s")))
+
+(defun frestein/current-emacs-is-systemd-service-p ()
+  "Check if current Emacs process is started by a systemd user service."
+  (let* ((ppid (string-to-number
+                (shell-command-to-string
+                 (format "ps -o ppid= -p %d" (emacs-pid)))))
+         (ppid-cmd (shell-command-to-string
+                    (format "ps -o args= -p %d" ppid))))
+    (string-match-p "systemd --user" ppid-cmd)))
+
+(defun doom/restart ()
+  "Restart Emacs (use systemd if current process is from a service)."
+  (interactive)
+  (if (frestein/current-emacs-is-systemd-service-p)
+      (start-process "systemd-restart" nil "systemctl" "--user" "restart" "emacs")
+    (require 'restart-emacs)
+    (restart-emacs)))
 #+end_src
 
 ** Docs
@@ -203,6 +221,9 @@
         :desc "Toggle vterm popup" :i "C-/" #'+vterm/toggle))
 
 (map! :leader
+      (:prefix ("q" . "quit/session")
+       :desc "Restart Emacs" "r" #'doom/restart
+       :desc "Restart & restore Emacs" "R" #'doom/restart-and-restore)
       (:prefix ("s" . "search")
                (:when (modulep! :completion vertico)
                  :desc "Ripgrep" "g" #'consult-ripgrep)
