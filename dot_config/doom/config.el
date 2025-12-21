@@ -378,7 +378,9 @@ ignoring all other files with the same basename."
       "Default target for metrics entries.")
 
     (when (modulep! :email mu4e)
-      (setq +org-capture-emails-file "inbox.org"))
+      (setq +org-capture-emails-file
+            (expand-file-name "next.org"
+                              (car (last org-agenda-files)))))
 
     (setq org-capture-templates
           `(("t" "Task" entry
@@ -904,6 +906,79 @@ current users."
 
     (when (modulep! :email mu4e +org)
       (setq +mu4e-compose-org-msg-toggle-next nil))
+
+    ;; INFO: override
+    ;; Adding emails to the agenda
+    ;; Perfect for when you see an email you want to reply to
+    ;; later, but don't want to forget about
+    (defun +mu4e/capture-msg-to-agenda (arg)
+      "Refile a message and add a entry in `+org-capture-emails-file' with a
+deadline.  Default deadline is today.  With one prefix, deadline
+is tomorrow.  With two prefixes, select the deadline."
+      (interactive "p")
+      (let ((sec "^* Email")
+            (msg (mu4e-message-at-point)))
+        (when msg
+          ;; put the message in the agenda
+          (with-current-buffer (find-file-noselect
+                                (expand-file-name +org-capture-emails-file org-directory))
+            (save-excursion
+              ;; find header section
+              (goto-char (point-min))
+              (when (re-search-forward sec nil t)
+                (let (org-M-RET-may-split-line
+                      (lev (org-outline-level))
+                      (folded-p (invisible-p (line-end-position)))
+                      (from (plist-get msg :from)))
+                  (when (consp (car from)) ; Occurs when using mu4e 1.8+.
+                    (setq from (car from)))
+                  (unless (keywordp (car from)) ; If using mu4e <= 1.6.
+                    (setq from (list :name (or (caar from) (cdar from)))))
+                  ;; place the subheader
+                  (when folded-p (show-branches))   ; unfold if necessary
+                  (org-end-of-meta-data)            ; skip property drawer
+                  (org-insert-todo-heading 1)       ; insert a todo heading
+                  (when (= (org-outline-level) lev) ; demote if necessary
+                    (org-do-demote))
+                  ;; insert message, context tag, created time and deadline
+                  (insert (concat "[#B] Respond to "
+                                  "[[mu4e:msgid:"
+                                  (plist-get msg :message-id) "]["
+                                  (truncate-string-to-width
+                                   (plist-get from :name) 25 nil nil t)
+                                  " - "
+                                  (truncate-string-to-width
+                                   (plist-get msg :subject) 80 nil nil t)
+                                  "]]. "))
+                  (org-set-tags-to "@email")
+                  (org-deadline nil
+                                (cond ((= arg 1) (format-time-string "%Y-%m-%d"))
+                                      ((= arg 4) "+1d")))
+                  (org-set-property "CREATED" (format-time-string "[%Y-%m-%d %a %H:%M]"))
+                  (org-update-parent-todo-statistics)
+
+                  ;; blank-line
+                  ;; (goto-char (org-entry-end-position))
+                  ;; (newline)
+
+                  ;; refold as necessary
+                  ;; (if folded-p
+                  ;;     (progn
+                  ;;       (org-up-heading-safe)
+                  ;;       (hide-subtree))
+                  ;;   (hide-entry))
+                  ))))
+          ;; refile the message and update
+          ;; (cond ((eq major-mode 'mu4e-view-mode)
+          ;;        (mu4e-view-mark-for-refile))
+          ;;       ((eq major-mode 'mu4e-headers-mode)
+          ;;        (mu4e-headers-mark-for-refile)))
+          (message "Refiled \"%s\" and added to the agenda for %s"
+                   (truncate-string-to-width
+                    (plist-get msg :subject) 40 nil nil t)
+                   (cond ((= arg 1) "today")
+                         ((= arg 4) "tomorrow")
+                         (t         "later"))))))
 
     (map! :map mu4e-main-mode-map
           :n "q" (λ! (mu4e-quit t))
