@@ -844,11 +844,11 @@ If a region is active, emphasize it, else emphasize the word at point."
                :target (file+head "%<%Y-%m-%d>.org"
                                   "#+title: %<%Y-%m-%d>\n\n")
                :empty-lines 1)
-             ("d" "Deadline Task" entry
-             "* NEXT [#B] %?\nDEADLINE: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
-             :target (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n\n")
-             :empty-lines 1)))
+              ("d" "Deadline Task" entry
+               "* NEXT [#B] %?\nDEADLINE: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :target (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n\n")
+               :empty-lines 1)))
 
       ;; INFO: filter org-tags-alist keywords
       ;; https://github.com/org-roam/org-roam/issues/2477
