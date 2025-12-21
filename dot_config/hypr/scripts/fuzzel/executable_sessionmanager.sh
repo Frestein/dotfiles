@@ -3,7 +3,7 @@
 run_command() {
     case "$1" in
     "Logout")
-        hyprctl dispatch exec 'uwsm stop'
+        uwsm stop
         ;;
     "Lock")
         hyprlock
