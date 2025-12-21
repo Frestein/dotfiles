@@ -916,8 +916,7 @@ If a region is active, emphasize it, else emphasize the word at point."
 * WWW
 
 #+begin_src emacs-lisp :tangle yes
-(setq browse-url-text-browser (executable-find "cha")
-      browse-url-generic-program (executable-find "qutebrowser"))
+(setq-default browse-url-text-browser (executable-find "cha"))
 
 (when (modulep! :term vterm)
   (defun close-vterm-buffer-on-exit (_buffer _event)

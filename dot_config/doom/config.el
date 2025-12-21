@@ -745,8 +745,7 @@ If a region is active, emphasize it, else emphasize the word at point."
           (set-eglot-client! mode '("qmlls6"))
           (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))))
 
-(setq browse-url-text-browser (executable-find "cha")
-      browse-url-generic-program (executable-find "qutebrowser"))
+(setq-default browse-url-text-browser (executable-find "cha"))
 
 (when (modulep! :term vterm)
   (defun close-vterm-buffer-on-exit (_buffer _event)

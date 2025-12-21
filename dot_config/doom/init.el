@@ -199,6 +199,7 @@
 
        :app
        calendar
+       qutebrowser
        ement                ; Matrix client
        osm                  ; OpenStreetMap viewer
        (telega +mnz +icons +sponsored2 +blocked)  ; the best telegram client ever
