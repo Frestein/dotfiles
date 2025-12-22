@@ -715,7 +715,19 @@ If a region is active, emphasize it, else emphasize the word at point."
                                          (`(,tag . ,_)
                                           (list tag))
                                          (_ nil)))))
-          (seq-uniq (append roam-tags org-tags)))))
+          (seq-uniq (append roam-tags org-tags))))
+
+      ;; INFO: Can go to dailies directly
+      ;; https://github.com/org-roam/org-roam/issues/2134
+      ;; https://github.com/org-roam/org-roam/pull/2141#issuecomment-3021291947 - Thanks!
+      (defun frestein/org-roam-dailies--capture-goto-quick (fn time &optional goto keys)
+        "Skip prompt for capture template with dailies goto functions."
+        (apply fn time goto
+               (if goto
+                   (list (car (car org-roam-dailies-capture-templates)))
+                 (list keys))))
+
+      (advice-add #'org-roam-dailies--capture :around #'frestein/org-roam-dailies--capture-goto-quick))
 
     (use-package! websocket
       :after org-roam)
