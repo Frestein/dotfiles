@@ -58,6 +58,7 @@
     "plugins.extras.ui.line-hints.blame",
     "plugins.extras.ui.line-hints.symbol-usage",
     "plugins.extras.ui.style.popups.rounded",
+    "plugins.extras.utils.chezmoi",
     "plugins.extras.utils.dot",
     "plugins.extras.utils.gpg",
     "plugins.extras.utils.langmapper",
