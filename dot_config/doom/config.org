@@ -678,6 +678,8 @@ ignoring all other files with the same basename."
   (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-todo :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
+  (advice-add 'org-capture-finalize :after (ignore-args #'org-agenda-redo-all))
+  (advice-add 'org-agenda-redo :around #'doom-shut-up-a)
 
   (dolist (hook '(org-after-tags-change-hook
                   org-after-refile-insert-hook
