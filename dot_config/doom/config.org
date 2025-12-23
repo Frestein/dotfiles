@@ -94,11 +94,17 @@
                 inhibit-startup-message t
                 inhibit-startup-echo-area-message t
                 initial-scratch-message ""
-                initial-buffer-choice (lambda ()
-                                        (org-agenda nil "d")
-                                        (delete-other-windows)
-                                        (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
-                                        (get-buffer "*Org Agenda*")))
+                initial-buffer-choice
+                (lambda ()
+                  (if (get-buffer "*Org Agenda*")
+                      (if (get-buffer-window "*Org Agenda*" 'visible)
+                          (eshell "γνῶθι σεαυτόν")
+                        (get-buffer "*Org Agenda*"))
+                    (progn
+                      (org-agenda nil "d")
+                      (delete-other-windows)
+                      (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
+                      (get-buffer "*Org Agenda*")))))
 
   (add-hook 'doom-first-input-hook #'org-agenda-redo))
 #+end_src
