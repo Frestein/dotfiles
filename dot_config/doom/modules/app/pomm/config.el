@@ -13,24 +13,6 @@
     :global t
     (setq pomm-audio-enabled (if pomm-audio-mode t nil)))
 
-  ;; INFO: Correct notification title for third-time
-  (defun pomm-third-time--dispatch-notification (kind)
-    "Dispatch a notification about a start of a period.
-
-KIND is the same as in `pomm-third-time--state'"
-    (alert
-     (pcase kind
-       ('break (concat pomm-third-time-break-message
-                       (format "\nTime available: %s"
-                               (pomm-third-time--format-period
-                                (pomm-third-time--break-time)))))
-       ('work (concat pomm-work-message
-                      (when (> (pomm-third-time--break-time) 0)
-                        (format "\nBreak time remaining: %s"
-                                (pomm-third-time--format-period
-                                 (pomm-third-time--break-time)))))))
-     :title "Third Time"))
-
   ;; INFO: correct mpv
   (defun pomm--maybe-play-sound (kind)
     (when pomm-audio-enabled
