@@ -330,6 +330,8 @@
          :n "C-p" #'telega-msg-previous
          :n "C-n" #'telega-msg-next)
         (:map telega-chat-mode-map
+         :n [tab] #'telega-button-forward
+         :n [backtab] #'telega-button-backward
          :n "C-p" #'telega-msg-previous
          :n "C-n" #'telega-msg-next
          :n "ZA" #'telega-chatbuf-attach-audio
