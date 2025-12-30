@@ -35,7 +35,7 @@ prepend_keymap = [
   { on = ["g", "v"], run = "cd ~/Videos", desc = "~/Videos" },
   { on = ["g", "p"], run = "cd ~/Pictures", desc = "~/Pictures" },
   { on = ["g", "P"], run = "cd ~/Projects", desc = "~/Projects" },
-  { on = ["g", "t"], run = "plugin recycle-bin open", desc = "Trash" },
+  { on = ["g", "t"], run = "plugin recycle-bin -- open", desc = "Trash" },
   { on = ["g", "."], run = "hidden toggle", desc = "Toggle hidden" },
   { on = ["g", "?"], run = "help", desc = "Open help" },
   # Zoxide
@@ -63,7 +63,7 @@ prepend_keymap = [
   # What-size
   { on = [".", "s"], run = "plugin what-size", desc = "Show the size of the selected files or cwd" },
   # Preview
-  { on = ["p", "m"], run = "plugin toggle-pane max-preview", desc = "Toggle maximaze preview" },
+  { on = "T", run = "plugin toggle-pane max-preview", desc = "Toggle maximaze preview" },
   # Zoom
   { on = "=", run = "plugin zoom 1", desc = "Zoom in hovered file" },
   { on = "-", run = "plugin zoom -1", desc = "Zoom out hovered file" },
@@ -77,10 +77,7 @@ prepend_keymap = [
   { on = ["\\", "g", "v"], run = "plugin vcs-files", desc = "Show Git file changes" },
   # Trash
   { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },
-  { on = ["R", "e"], run = "plugin recycle-bin empty", desc = "Empty Trash" },
-  { on = ["R", "d"], run = "plugin recycle-bin delete", desc = "Delete from Trash" },
-  { on = ["R", "D"], run = "plugin recycle-bin emptyDays", desc = "Empty by days deleted" },
-  { on = ["R", "r"], run = "plugin recycle-bin restore", desc = "Restore from Trash" },
+  { on = "R", run = "plugin recycle-bin", desc = "Open recycle bin menu" },
   # Thumbnail
   { on = ["g", "V"], run = "plugin thumbnail", desc = "Open current directory in gallery" },
 ]
