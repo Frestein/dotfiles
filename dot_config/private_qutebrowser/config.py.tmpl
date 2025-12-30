@@ -273,7 +273,7 @@ unbind(";i")
 unbind(";I")
 
 # Configuration management
-bind("\ce", "config-edit")
+bind("\\ce", "config-edit")
 bind("\\rc", "config-source")
 bind("\\ra", "adblock-update")
 bind("\\rg", "greasemonkey-reload")
@@ -304,7 +304,7 @@ bind("gp", "tab-pin")
 bind("<Ctrl-m>", "tab-mute")
 
 # Media
-bind("\m", "spawn umpv {url}")
+bind("\\m", "spawn umpv {url}")
 bind(";m", "hint --rapid links spawn umpv {hint-url}")
 
 # Navigation
@@ -341,10 +341,10 @@ bind(";iD", "hint --rapid images download")
 bind("gF", "spawn -u openfeeds")
 
 # Password management
-bind("\pl", "gopass-login")
-bind("\pu", "gopass-username")
-bind("\pp", "gopass-password")
-bind("\po", "gopass-otp")
+bind("\\pl", "gopass-login")
+bind("\\pu", "gopass-username")
+bind("\\pp", "gopass-password")
+bind("\\po", "gopass-otp")
 
 # Tridactyl quickmarks
 qsites = {
@@ -369,13 +369,13 @@ for k, v in qsites.items():
     bind("gn" + k, "open -t " + v)
 
 # Kinopoisk
-bind("\k", "kinopoisk-to-cx")
+bind("\\k", "kinopoisk-to-cx")
 
 # Git
-bind("\gc", "git-clone")
+bind("\\gc", "git-clone")
 
 # Misc
-bind("\qr", "qr")
+bind("\\qr", "qr")
 bind("tt", "translate")
 bind("tt", "translate", mode="caret")
 bind("cm", "clear-messages")
