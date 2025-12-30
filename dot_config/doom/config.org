@@ -606,6 +606,24 @@ ignoring all other files with the same basename."
                         ("@errands" . ?e)
                         (:endgroup)))
 
+  (defun frestein/org-skip-subtree-if-priority (priority)
+    "Skip an agenda subtree if it has a priority of PRIORITY.
+
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (pri-value (* 1000 (- org-lowest-priority priority)))
+          (pri-current (org-get-priority (thing-at-point 'line t))))
+      (if (= pri-value pri-current)
+          subtree-end
+        nil)))
+
+  (defun frestein/org-skip-subtree-if-habit ()
+    "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (string= (org-entry-get nil "STYLE") "habit")
+          subtree-end
+        nil)))
+
   (setq org-agenda-custom-commands '(("d" "Daily Agenda"
                                       ((agenda ""
                                                ((org-agenda-span 'day)
@@ -613,44 +631,53 @@ ignoring all other files with the same basename."
                                                 (org-deadline-warning-days 7)))
                                        (tags-todo "+@easy"
                                                   ((org-agenda-overriding-header "Easy Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE" "LOOP")))))
+                                                   (org-agenda-skip-function '(or (frestein/org-skip-subtree-if-habit)
+                                                                                  (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
                                        (tags-todo "+PRIORITY=\"A\""
                                                   ((org-agenda-overriding-header "High Priority Next Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"B\""
                                                   ((org-agenda-overriding-header "Medium Priority Next Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"C\""
                                                   ((org-agenda-overriding-header "Low Priority Next Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"A\""
                                                   ((org-agenda-overriding-header "High Priority Waiting For Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"B\""
                                                   ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"C\""
                                                   ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"A\""
                                                   ((org-agenda-overriding-header "High Priority Someday/Maybe Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"B\""
                                                   ((org-agenda-overriding-header "Medium Priority Someday/Maybe Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
                                        (tags-todo "+PRIORITY=\"C\""
                                                   ((org-agenda-overriding-header "Low Priority Someday/Maybe Tasks")
                                                    (org-agenda-skip-function
-                                                    '(org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP")))))
+                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
                                        (tags-todo ".*"
                                                   ((org-agenda-files '("~/Documents/org/inbox.org"))
                                                    (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
