@@ -3,3 +3,19 @@
 [flavor]
 dark = "gruvbox-dark"
 light = "gruvbox-dark"
+
+[mgr]
+border_symbol = "│"
+
+[indicator]
+padding = { open = "█", close = "█" }
+
+[tabs]
+active = { fg = "#282828", bg = "#A89984" }
+inactive = { fg = "#A89984", bg = "#282828" }
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+[status]
+sep_left = { open = "", close = "" }
+sep_right = { open = "", close = "" }

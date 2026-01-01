@@ -1,7 +1,13 @@
 local function setup()
 	local sorting_rules = {
 		["Downloads"] = { by = "mtime", reverse = true, dir_first = false },
+		["Telegram Desktop"] = { by = "mtime", reverse = true, dir_first = false },
+		["AyuGram Desktop"] = { by = "mtime", reverse = true, dir_first = false },
 		["64Gram Desktop"] = { by = "mtime", reverse = true, dir_first = false },
+		["mu4e"] = { by = "mtime", reverse = true, dir_first = false },
+		["telega"] = { by = "mtime", reverse = true, dir_first = false },
+		["records"] = { by = "mtime", reverse = true, dir_first = false },
+		["screenshots"] = { by = "mtime", reverse = true, dir_first = false },
 		default = { by = "alphabetical", reverse = false, dir_first = true },
 	}
 
@@ -16,7 +22,7 @@ local function setup()
 			end
 		end
 
-		ya.manager_emit("sort", {
+		ya.emit("sort", {
 			rule.by,
 			reverse = rule.reverse,
 			dir_first = rule.dir_first,

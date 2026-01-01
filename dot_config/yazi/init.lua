@@ -8,73 +8,86 @@ require("full-border"):setup({
 	type = ui.Border.PLAIN,
 })
 
+-- INFO: Use full mode indicator
+-- https://github.com/sxyazi/yazi/issues/3332#issuecomment-3533974507
+function Status:mode()
+	local mode = tostring(self._tab.mode):upper()
+
+	local style = self:style()
+	return ui.Line({
+		ui.Span(th.status.sep_left.open):fg(style.main:bg()):bg("reset"),
+		ui.Span(" " .. mode .. " "):style(style.main),
+		ui.Span(th.status.sep_left.close):fg(style.main:bg()):bg(style.alt:bg()),
+	})
+end
+
 -- "light" | "dark"
-local gruvbox_theme = require("yatline-gruvbox"):setup("dark")
-
-require("yatline"):setup({
-	theme = gruvbox_theme,
-
-	permissions_t_fg = "green",
-	permissions_r_fg = "yellow",
-	permissions_w_fg = "red",
-	permissions_x_fg = "cyan",
-	permissions_s_fg = "darkgray",
-
-	tab_width = 20,
-	tab_use_inverse = false,
-
-	selected = { icon = "󰻭", fg = "yellow" },
-	copied = { icon = "", fg = "green" },
-	cut = { icon = "", fg = "red" },
-
-	total = { icon = "󰮍", fg = "yellow" },
-	succ = { icon = "", fg = "green" },
-	fail = { icon = "", fg = "red" },
-	found = { icon = "󰮕", fg = "blue" },
-	processed = { icon = "󰐍", fg = "green" },
-
-	show_background = true,
-
-	display_header_line = true,
-	display_status_line = true,
-
-	header_line = {
-		left = {
-			section_a = {},
-			section_b = {},
-			section_c = {},
-		},
-		right = {
-			section_a = {},
-			section_b = {},
-			section_c = {},
-		},
-	},
-
-	status_line = {
-		left = {
-			section_a = {
-				{ type = "string", custom = false, name = "tab_mode" },
-			},
-			section_b = {
-				{ type = "string", custom = false, name = "hovered_name" },
-			},
-			section_c = {
-				{ type = "string", custom = false, name = "hovered_size" },
-			},
-		},
-		right = {
-			section_a = {
-				{ type = "line", custom = false, name = "tabs", params = { "right" } },
-			},
-			section_b = {},
-			section_c = {
-				{ type = "string", custom = false, name = "cursor_position" },
-				{ type = "coloreds", custom = false, name = "permissions" },
-			},
-		},
-	},
-})
+-- local gruvbox_theme = require("yatline-gruvbox"):setup("dark")
+--
+-- require("yatline"):setup({
+-- 	theme = gruvbox_theme,
+--
+-- 	permissions_t_fg = "green",
+-- 	permissions_r_fg = "yellow",
+-- 	permissions_w_fg = "red",
+-- 	permissions_x_fg = "cyan",
+-- 	permissions_s_fg = "darkgray",
+--
+-- 	tab_width = 20,
+-- 	tab_use_inverse = false,
+--
+-- 	selected = { icon = "󰻭", fg = "yellow" },
+-- 	copied = { icon = "", fg = "green" },
+-- 	cut = { icon = "", fg = "red" },
+--
+-- 	total = { icon = "󰮍", fg = "yellow" },
+-- 	succ = { icon = "", fg = "green" },
+-- 	fail = { icon = "", fg = "red" },
+-- 	found = { icon = "󰮕", fg = "blue" },
+-- 	processed = { icon = "󰐍", fg = "green" },
+--
+-- 	show_background = true,
+--
+-- 	display_header_line = true,
+-- 	display_status_line = true,
+--
+-- 	header_line = {
+-- 		left = {
+-- 			section_a = {},
+-- 			section_b = {},
+-- 			section_c = {},
+-- 		},
+-- 		right = {
+-- 			section_a = {},
+-- 			section_b = {},
+-- 			section_c = {},
+-- 		},
+-- 	},
+--
+-- 	status_line = {
+-- 		left = {
+-- 			section_a = {
+-- 				{ type = "string", custom = false, name = "tab_mode" },
+-- 			},
+-- 			section_b = {
+-- 				{ type = "string", custom = false, name = "hovered_name" },
+-- 			},
+-- 			section_c = {
+-- 				{ type = "string", custom = false, name = "hovered_size" },
+-- 			},
+-- 		},
+-- 		right = {
+-- 			section_a = {
+-- 				{ type = "line", custom = false, name = "tabs", params = { "right" } },
+-- 			},
+-- 			section_b = {},
+-- 			section_c = {
+-- 				{ type = "string", custom = false, name = "cursor_position" },
+-- 				{ type = "coloreds", custom = false, name = "permissions" },
+-- 			},
+-- 		},
+-- 	},
+-- })
 
 local githead_config = {
 	order = {

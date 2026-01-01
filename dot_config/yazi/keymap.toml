@@ -3,12 +3,8 @@
 [mgr]
 prepend_keymap = [
   { on = "<Enter>", run = "noop" },
-  { on = "<F1>", run = "noop" },
-  { on = "~", run = "noop" },
   { on = "q", run = "plugin confirm-quit", desc = "Quit the process" },
   # Hopping
-  { on = "j", run = "plugin arrow 1", desc = "Next file" },
-  { on = "k", run = "plugin arrow -1", desc = "Previous file" },
   { on = "J", run = "plugin parent-arrow 1", desc = "Next parent directory" },
   { on = "K", run = "plugin parent-arrow -1", desc = "Previous parent directory" },
   # Seeking
