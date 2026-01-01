@@ -100,6 +100,8 @@
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right
+      :desc "Previous buffer" :n "<mouse-8>" #'previous-buffer
+      :desc "Next buffer" :n "<mouse-9>" #'next-buffer
       :desc "Previous buffer" :n "H" #'previous-buffer
       :desc "Next buffer" :n "L" #'next-buffer
       :v "gss" #'sort-lines
@@ -653,8 +655,10 @@ If a region is active, emphasize it, else emphasize the word at point."
          :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~))))
 
   (map! :map org-agenda-mode-map
-        :localleader
-        "s" #'org-save-all-org-buffers)
+        "<mouse-8>" #'org-agenda-earlier
+        "<mouse-9>" #'org-agenda-later
+        (:localleader
+         "s" #'org-save-all-org-buffers))
 
   (use-package! org-expose-emphasis-markers
     :hook (org-mode . org-expose-emphasis-markers-mode))
