@@ -342,7 +342,7 @@ ignoring all other files with the same basename."
     (set-popup-rule! "^\\*Org Src" :side 'right :size 0.5 :quit nil :select t :autosave t :modeline t :ttl nil)
 
     (with-no-warnings
-      (custom-declare-face '+org-todo-next  '((t (:inherit (bold font-lock-property-use-face org-todo)))) ""))
+      (custom-declare-face '+org-todo-next '((t (:inherit (bold font-lock-variable-name-face org-todo)))) ""))
 
     (setq org-todo-keywords
           '((sequence
