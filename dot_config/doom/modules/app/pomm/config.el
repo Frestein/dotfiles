@@ -19,8 +19,8 @@
       (unless pomm-audio-player-executable
         (error "No audio player executable! Set 'pomm-audio-player-executable'")
         (setq pomm-audio-enabled nil))
-      (when-let ((play-sound (or (not (eq 'tick kind)) pomm-audio-tick-enabled))
-                 (sound (alist-get kind pomm-audio-files)))
+      (when-let* ((play-sound (or (not (eq 'tick kind)) pomm-audio-tick-enabled))
+                  (sound (alist-get kind pomm-audio-files)))
         (let* ((cmd (split-string pomm-audio-player-executable))
                (prog (car cmd))
                (args (cdr cmd)))
