@@ -1180,7 +1180,7 @@ is tomorrow.  With two prefixes, select the deadline."
 The number of messages retained in that buffer is specified by
 the variable `message-log-max'."
   (interactive)
-  (if-let*  ((win (get-buffer-window (messages-buffer))))
+  (if-let* ((win (get-buffer-window (messages-buffer))))
       (quit-window nil win)
     (view-echo-area-messages)))
 

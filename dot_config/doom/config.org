@@ -1408,7 +1408,7 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 The number of messages retained in that buffer is specified by
 the variable `message-log-max'."
   (interactive)
-  (if-let*  ((win (get-buffer-window (messages-buffer))))
+  (if-let* ((win (get-buffer-window (messages-buffer))))
       (quit-window nil win)
     (view-echo-area-messages)))
 
@@ -1427,6 +1427,7 @@ the variable `message-log-max'."
 (setq gnutls-verify-error t ; Prompts user if there are certificate issues
       tls-checktrust t)     ; Ensure SSL/TLS connections undergo trust verification
 #+end_src
+
 * Personal Modules
 
 ** App
