@@ -1076,6 +1076,9 @@ is tomorrow.  With two prefixes, select the deadline."
   (setq ps-printer-name "Samsung_SCX-3200_Series"))
 
 (when (modulep! :tools pdf)
+  (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
+  (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
+
   (use-package! pdf-misc
     :after pdf-view
     :bind (:map pdf-view-mode-map
