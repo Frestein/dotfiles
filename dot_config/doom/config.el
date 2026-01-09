@@ -1,6 +1,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(when (not (modulep! :ui doom-dashboard))
+(when (and (not (modulep! :ui doom-dashboard))
+           (modulep! :lang org))
   (setq-default inhibit-startup-screen t
                 inhibit-startup-message t
                 inhibit-startup-echo-area-message t
@@ -18,9 +19,6 @@
                       (get-buffer "*Org Agenda*")))))
 
   (add-hook 'doom-first-input-hook #'org-agenda-redo))
-
-(setq user-full-name "Frestein"
-      user-mail-address "frestein@tuta.io")
 
 (setq doom-theme 'doom-gruvbox)
 
@@ -86,10 +84,168 @@
 
 (remove-hook 'doom-docs-mode-hook #'doom-docs--display-menu-h)
 
+(setq user-full-name "Frestein"
+      user-mail-address "frestein@tuta.io")
+
+(defun toggle-echo-area-messages ()
+  "Toggle the log of recent echo-area messages: the `*Messages*' buffer.
+The number of messages retained in that buffer is specified by
+the variable `message-log-max'."
+  (interactive)
+  (if-let* ((win (get-buffer-window (messages-buffer))))
+      (quit-window nil win)
+    (view-echo-area-messages)))
+
+(use-package! xdg
+  :demand t)
+
 (setq shell-file-name (executable-find "bash"))
 (when (executable-find "fish")
   (setq-default vterm-shell (executable-find "fish")
                 explicit-shell-file-name (executable-find "fish")))
+
+(when (modulep! :app everywhere)
+  (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
+  (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
+
+  (require 'json)
+  (defun emacs-everywhere--app-info-linux-hyprland ()
+    "Return information on the current active window, on a Linux Hyprland session."
+    (let* ((json-string (emacs-everywhere--call "hyprctl" "-j" "activewindow"))
+           (json-object (json-read-from-string json-string))
+           (window-id (cdr (assoc 'address json-object)))
+           (app-name (cdr (assoc 'class json-object)))
+           (window-title (cdr (assoc 'title json-object)))
+           (window-geometry (list (aref (cdr (assoc 'at json-object)) 0)
+                                  (aref (cdr (assoc 'at json-object)) 1)
+                                  (aref (cdr (assoc 'size json-object)) 0)
+                                  (aref (cdr (assoc 'size json-object)) 1))))
+      (make-emacs-everywhere-app
+       :id window-id
+       :class app-name
+       :title window-title
+       :geometry window-geometry))))
+
+(setq epg-gpg-home-directory (getenv "GNUPGHOME"))
+
+(when (modulep! :config default +gnupg)
+  (use-package! pinentry
+    :hook (doom-after-init . pinentry-start)))
+
+(when (modulep! :tools pass)
+  (when (executable-find "gopass")
+    (setq backup-directory-alist
+          (append
+           '(("/dev/shm/gopass.*" . nil))
+           backup-directory-alist)))
+
+  (use-package! password-store
+    :config
+    (when (executable-find "gopass")
+      (setq password-store-executable (executable-find "gopass"))))
+
+  (use-package! pass
+    :config
+    (setq pass-show-keybindings nil)))
+
+(setq gnutls-verify-error t) ; Prompts user if there are certificate issues
+(setq tls-checktrust t)      ; Ensure SSL/TLS connections undergo trust verification
+
+(setq delete-by-moving-to-trash t
+      dired-mouse-drag-files t
+      mouse-drag-and-drop-region-cross-program t)
+
+(map! :map dired-mode-map
+      :v "u" #'dired-unmark)
+
+(when (modulep! :emacs dired +dirvish)
+  (use-package! dirvish
+    :config
+    (dirvish-peek-mode t)
+
+    (setq dirvish-quick-access-entries
+          `(("h" "~/"                                 "Home")
+            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
+            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
+            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
+            ("m" ,(xdg-user-dir "MUSIC")              "Music")
+            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
+            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
+            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
+            ("P" "~/Projects/"                        "Projects")
+            ("M" "/mnt/"                              "Drives")
+            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+
+    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
+          dirvish-side-attributes '(collapse))
+
+    (when (modulep! :emacs dired +icons)
+      (setq dirvish-subtree-always-show-state t)
+      (cl-callf append dirvish-attributes '(nerd-icons))
+      (cl-callf append dirvish-side-attributes '(nerd-icons)))
+
+    (when (modulep! :ui vc-gutter)
+      ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
+      ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
+      ;; visible in the terminal.
+      (when (or (daemonp) (display-graphic-p))
+        (push 'vc-state dirvish-side-attributes)))
+
+    (dirvish-define-preview eza (file)
+      "Use `eza' to generate directory preview."
+      :require ("eza")
+      (when (file-directory-p file)
+        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+
+    (push 'eza dirvish-preview-dispatchers)
+
+    (setq mouse-1-click-follows-link nil)
+
+    (map! :map dirvish-mode-map
+          "<mouse-1>" #'dirvish-subtree-toggle-or-open
+          "<mouse-2>" #'dired-mouse-find-file-other-window
+          "<mouse-3>" #'dired-mouse-find-file
+          :n "gd" #'dirvish-quick-access)))
+
+(setq default-input-method "russian-computer")
+(setq calendar-week-start-day 1)
+(setq display-line-numbers-type 'relative)
+(setq confirm-kill-emacs nil)
+
+(global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+
+(setq evil-echo-state nil)
+
+(when (modulep! :editor evil)
+  (when (modulep! :app telega)
+    (after! telega
+      (defun frestein/telega-chatbuf-cancel-both ()
+        (interactive)
+        (telega-chatbuf-filter-cancel)
+        (telega-chatbuf-thread-cancel))
+
+      (evil-collection-define-key 'normal 'telega-root-mode-map
+        "gVD" #'telega-view-default)
+
+      (evil-collection-define-key 'normal 'telega-chat-mode-map
+        "_" #'frestein/telega-chatbuf-cancel-both
+        "Za" #'telega-chatbuf-attach-animation
+        "Zf" #'telega-chatbuf-attach-file
+        "Zv" #'telega-chatbuf-attach-video))))
+
+(when (modulep! :editor evil)
+  (after! evil-snipe
+    (when (modulep! :app telega)
+      (dolist (mode '(telega-root-mode telega-chat-mode telega-chatbuf-mode))
+        (unless (memq mode evil-snipe-disabled-modes)
+          (push mode evil-snipe-disabled-modes))))
+    (when (modulep! :tools ebuku)
+      (unless (memq 'ebuku-mode evil-snipe-disabled-modes)
+        (push 'ebuku-mode evil-snipe-disabled-modes)))))
+
+(setq which-key-idle-delay 0.2)
+;; (setq which-key-show-operator-state-maps t) ; BUG: https://github.com/justbur/emacs-which-key/issues/345
 
 (map! :n "C-a" #'evil-numbers/inc-at-pt
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
@@ -187,45 +343,47 @@
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode)))
 
-(setq evil-echo-state nil)
-
-(when (modulep! :editor evil)
-  (when (modulep! :app telega)
-    (after! telega
-      (defun frestein/telega-chatbuf-cancel-both ()
-        (interactive)
-        (telega-chatbuf-filter-cancel)
-        (telega-chatbuf-thread-cancel))
-
-      (evil-collection-define-key 'normal 'telega-root-mode-map
-        "gVD" #'telega-view-default)
-
-      (evil-collection-define-key 'normal 'telega-chat-mode-map
-        "_" #'frestein/telega-chatbuf-cancel-both
-        "Za" #'telega-chatbuf-attach-animation
-        "Zf" #'telega-chatbuf-attach-file
-        "Zv" #'telega-chatbuf-attach-video)))
-
-  (after! evil-snipe
-    (when (modulep! :app telega)
-      (dolist (mode '(telega-root-mode telega-chat-mode telega-chatbuf-mode))
-        (unless (memq mode evil-snipe-disabled-modes)
-          (push mode evil-snipe-disabled-modes))))
-    (when (modulep! :tools ebuku)
-      (unless (memq 'ebuku-mode evil-snipe-disabled-modes)
-        (push 'ebuku-mode evil-snipe-disabled-modes)))))
-
-(setq which-key-idle-delay 0.2
-      ;; BUG: https://github.com/justbur/emacs-which-key/issues/345
-      ;; which-key-show-operator-state-maps t
-      )
-
 (when (modulep! :completion corfu)
   (after! corfu
     (setq corfu-auto nil)))
 
-(use-package! xdg
-  :demand t)
+;; BUG: ws-butler removes last line in Org files despite require-final-newline
+;; https://github.com/lewang/ws-butler/issues/26
+(when (modulep! :editor whitespace +trim)
+  (after! ws-butler
+    (pushnew! ws-butler-global-exempt-modes
+              'org-mode)))
+
+(when (modulep! :ui smooth-scroll)
+  ;; Disable ultra-scroll
+  (remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
+  (remove-hook 'doom-first-file-hook #'ultra-scroll-mode))
+
+(when (modulep! :ui zen)
+  (setq +zen-text-scale 0)
+  (setq +zen-mixed-pitch-modes nil)
+  (setq writeroom-width 100))
+
+(when (modulep! :ui hl-todo)
+  (after! hl-todo
+    (let ((frestein/hl-todo-keyword-faces
+           '(("TODO" (font-lock-variable-name-face bold) nil)
+             ("FIX"  (error bold) nil)
+             ("WARN"  (warning bold) ("WARNING" "XXX"))
+             ("PERF"  (font-lock-variable-name-face bold) ("OPTIM" "PERFORMANCE" "OPTIMIZE"))
+             ("NOTE"  (success bold) ("INFO"))
+             ("TEST"  (font-lock-variable-name-face bold) ("TESTING" "PASSED" "FAILED")))))
+      (dolist (e frestein/hl-todo-keyword-faces)
+        (let ((kw (car e)) (faces (cadr e)) (alts (caddr e)))
+          (if (assoc kw hl-todo-keyword-faces)
+              (when faces
+                (setcdr (assoc kw hl-todo-keyword-faces) faces))
+            (push (cons kw faces) hl-todo-keyword-faces))
+          (dolist (a alts)
+            (let ((existing (assoc a hl-todo-keyword-faces)))
+              (if existing
+                  (when faces (setcdr existing faces))
+                (push (cons a faces) hl-todo-keyword-faces)))))))))
 
 (when (modulep! :tools magit)
   (setq magit-repository-directories `(("~/Projects" . 2)
@@ -254,61 +412,42 @@ ignoring all other files with the same basename."
 
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
 
-(setq delete-by-moving-to-trash t
-      dired-mouse-drag-files t
-      mouse-drag-and-drop-region-cross-program t)
+(when (modulep! :tools pdf)
+  (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
+  (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
 
-(map! :map dired-mode-map
-      :v "u" #'dired-unmark)
+  (map! :map pdf-view-mode-map
+        :n "gp" #'pdf-view-goto-page))
 
-(when (modulep! :emacs dired +dirvish)
-  (use-package! dirvish
+(after! lpr
+  (setq lpr-lp-system t
+        lpr-command "lp"
+        lpr-add-switches nil
+        lpr-printer-switch "-d"
+        printer-name "Samsung_SCX-3200_Series"))
+
+(after! ps-print
+  (setq ps-printer-name "Samsung_SCX-3200_Series"))
+
+(when (modulep! :tools pdf)
+  (use-package! pdf-misc
+    :after pdf-view
+    :bind (:map pdf-view-mode-map
+                ([remap pdf-misc-print-document] . 'frestein/pdf-misc-print-pages))
     :config
-    (dirvish-peek-mode t)
+    (setq pdf-misc-print-program-executable (executable-find "lp"))
 
-    (setq dirvish-quick-access-entries
-          `(("h" "~/"                                 "Home")
-            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
-            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
-            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
-            ("m" ,(xdg-user-dir "MUSIC")              "Music")
-            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
-            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
-            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
-            ("P" "~/Projects/"                        "Projects")
-            ("M" "/mnt/"                              "Drives")
-            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
-
-    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
-          dirvish-side-attributes '(collapse))
-
-    (when (modulep! :emacs dired +icons)
-      (setq dirvish-subtree-always-show-state t)
-      (cl-callf append dirvish-attributes '(nerd-icons))
-      (cl-callf append dirvish-side-attributes '(nerd-icons)))
-
-    (when (modulep! :ui vc-gutter)
-      ;; The vc-gutter module uses `diff-hl-dired-mode' + `diff-hl-margin-mode'
-      ;; for diffs in dirvish buffers. `vc-state' uses overlays, so they won't be
-      ;; visible in the terminal.
-      (when (or (daemonp) (display-graphic-p))
-        (push 'vc-state dirvish-side-attributes)))
-
-    (dirvish-define-preview eza (file)
-      "Use `eza' to generate directory preview."
-      :require ("eza")
-      (when (file-directory-p file)
-        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
-
-    (push 'eza dirvish-preview-dispatchers)
-
-    (setq mouse-1-click-follows-link nil)
-
-    (map! :map dirvish-mode-map
-          "<mouse-1>" #'dirvish-subtree-toggle-or-open
-          "<mouse-2>" #'dired-mouse-find-file-other-window
-          "<mouse-3>" #'dired-mouse-find-file
-          :n "gd" #'dirvish-quick-access)))
+    (defun frestein/pdf-misc-print-pages(filename pages &optional interactive-p)
+      "Wrapper for `pdf-misc-print-document` to add page selection support"
+      (interactive (list (pdf-view-buffer-file-name)
+                         (read-string "Page range (empty for all pages): "
+                                      (number-to-string (pdf-view-current-page)))
+                         t) pdf-view-mode)
+      (let ((pdf-misc-print-program-args
+             (if (not (string-blank-p pages))
+                 (cons (concat "-P " pages) pdf-misc-print-program-args)
+               pdf-misc-print-program-args)))
+        (pdf-misc-print-document filename)))))
 
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org"))
 (setq org-agenda-files (list (concat org-directory "/agenda")))
@@ -1218,143 +1357,6 @@ is tomorrow.  With two prefixes, select the deadline."
             (mu4e 'no-popup)
             (switch-to-buffer current)))
       (add-hook! doom-init-ui (mu4e 'no-popup)))))
-
-(after! lpr
-  (setq lpr-lp-system t
-        lpr-command "lp"
-        lpr-add-switches nil
-        lpr-printer-switch "-d"
-        printer-name "Samsung_SCX-3200_Series"))
-
-(after! ps-print
-  (setq ps-printer-name "Samsung_SCX-3200_Series"))
-
-(when (modulep! :tools pdf)
-  (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
-  (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
-
-  (use-package! pdf-misc
-    :after pdf-view
-    :bind (:map pdf-view-mode-map
-                ([remap pdf-misc-print-document] . 'frestein/pdf-misc-print-pages))
-    :config
-    (setq pdf-misc-print-program-executable (executable-find "lp"))
-
-    (defun frestein/pdf-misc-print-pages(filename pages &optional interactive-p)
-      "Wrapper for `pdf-misc-print-document` to add page selection support"
-      (interactive (list (pdf-view-buffer-file-name)
-                         (read-string "Page range (empty for all pages): "
-                                      (number-to-string (pdf-view-current-page)))
-                         t) pdf-view-mode)
-      (let ((pdf-misc-print-program-args
-             (if (not (string-blank-p pages))
-                 (cons (concat "-P " pages) pdf-misc-print-program-args)
-               pdf-misc-print-program-args)))
-        (pdf-misc-print-document filename)))))
-
-(setq epg-gpg-home-directory (getenv "GNUPGHOME"))
-
-(when (modulep! :config default +gnupg)
-  (use-package! pinentry
-    :hook (doom-after-init . pinentry-start)))
-
-(when (modulep! :tools pass)
-  (when (executable-find "gopass")
-    (setq backup-directory-alist
-          (append
-           '(("/dev/shm/gopass.*" . nil))
-           backup-directory-alist)))
-
-  (use-package! password-store
-    :config
-    (when (executable-find "gopass")
-      (setq password-store-executable (executable-find "gopass"))))
-
-  (use-package! pass
-    :config
-    (setq pass-show-keybindings nil)))
-
-(global-auto-revert-mode t)
-(setq global-auto-revert-non-file-buffers t)
-
-(setq display-line-numbers-type 'relative)
-
-(when (modulep! :ui smooth-scroll)
-  ;; Disable ultra-scroll
-  (remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
-  (remove-hook 'doom-first-file-hook #'ultra-scroll-mode))
-
-(when (modulep! :ui hl-todo)
-  (after! hl-todo
-    (let ((frestein/hl-todo-keyword-faces
-           '(("TODO" (font-lock-variable-name-face bold) nil)
-             ("FIX"  (error bold) nil)
-             ("WARN"  (warning bold) ("WARNING" "XXX"))
-             ("PERF"  (font-lock-variable-name-face bold) ("OPTIM" "PERFORMANCE" "OPTIMIZE"))
-             ("NOTE"  (success bold) ("INFO"))
-             ("TEST"  (font-lock-variable-name-face bold) ("TESTING" "PASSED" "FAILED")))))
-      (dolist (e frestein/hl-todo-keyword-faces)
-        (let ((kw (car e)) (faces (cadr e)) (alts (caddr e)))
-          (if (assoc kw hl-todo-keyword-faces)
-              (when faces
-                (setcdr (assoc kw hl-todo-keyword-faces) faces))
-            (push (cons kw faces) hl-todo-keyword-faces))
-          (dolist (a alts)
-            (let ((existing (assoc a hl-todo-keyword-faces)))
-              (if existing
-                  (when faces (setcdr existing faces))
-                (push (cons a faces) hl-todo-keyword-faces)))))))))
-
-(when (modulep! :ui zen)
-  (setq +zen-text-scale 0)
-  (setq +zen-mixed-pitch-modes nil)
-  (setq writeroom-width 100))
-
-(when (modulep! :app everywhere)
-  (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
-  (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
-
-  (require 'json)
-  (defun emacs-everywhere--app-info-linux-hyprland ()
-    "Return information on the current active window, on a Linux Hyprland session."
-    (let* ((json-string (emacs-everywhere--call "hyprctl" "-j" "activewindow"))
-           (json-object (json-read-from-string json-string))
-           (window-id (cdr (assoc 'address json-object)))
-           (app-name (cdr (assoc 'class json-object)))
-           (window-title (cdr (assoc 'title json-object)))
-           (window-geometry (list (aref (cdr (assoc 'at json-object)) 0)
-                                  (aref (cdr (assoc 'at json-object)) 1)
-                                  (aref (cdr (assoc 'size json-object)) 0)
-                                  (aref (cdr (assoc 'size json-object)) 1))))
-      (make-emacs-everywhere-app
-       :id window-id
-       :class app-name
-       :title window-title
-       :geometry window-geometry))))
-
-(defun toggle-echo-area-messages ()
-  "Toggle the log of recent echo-area messages: the `*Messages*' buffer.
-The number of messages retained in that buffer is specified by
-the variable `message-log-max'."
-  (interactive)
-  (if-let* ((win (get-buffer-window (messages-buffer))))
-      (quit-window nil win)
-    (view-echo-area-messages)))
-
-;; BUG: ws-butler removes last line in Org files despite require-final-newline
-;; https://github.com/lewang/ws-butler/issues/26
-(when (modulep! :editor whitespace +trim)
-  (after! ws-butler
-    (pushnew! ws-butler-global-exempt-modes
-              'org-mode)))
-
-(setq default-input-method "russian-computer"
-      calendar-week-start-day 1
-      confirm-kill-emacs nil)
-
-;; Security
-(setq gnutls-verify-error t ; Prompts user if there are certificate issues
-      tls-checktrust t)     ; Ensure SSL/TLS connections undergo trust verification
 
 (when (modulep! :app telega)
   (defun telega-server-process-running-p ()
