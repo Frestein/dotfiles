@@ -76,6 +76,7 @@
        ;; shell             ; simple shell REPL for Emacs
        ;; term              ; basic terminal emulator for Emacs
        vterm                ; the best terminal emulation in Emacs
+       eee                  ; external terminal
 
        :checkers
        syntax               ; tasing you for every semicolon you forget
