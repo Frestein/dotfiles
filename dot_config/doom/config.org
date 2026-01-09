@@ -1320,7 +1320,64 @@ If a region is active, emphasize it, else emphasize the word at point."
                    (list (car (car org-roam-dailies-capture-templates)))
                  (list keys))))
 
-      (advice-add #'org-roam-dailies--capture :around #'frestein/org-roam-dailies--capture-goto-quick))
+      (advice-add #'org-roam-dailies--capture :around #'frestein/org-roam-dailies--capture-goto-quick)
+
+      ;; INFO: QoL dwim for words
+      ;; https://github.com/org-roam/org-roam/pull/2588
+      (cl-defun frestein/org-roam-node-insert (&optional filter-fn &key templates info)
+        "Find an Org-roam node and insert (where the point is) an \"id:\" link to it.
+If a region is active the link is put around the region text.
+If a word is at point the link is put around that word.
+Otherwise the link is inserted with the node's formatted title as description.
+FILTER-FN is a function to filter out nodes: it takes an `org-roam-node',
+and when nil is returned the node will be filtered out.
+The TEMPLATES, if provided, override the list of capture templates (see
+`org-roam-capture-'.)
+The INFO, if provided, is passed to the underlying `org-roam-capture-'."
+        (interactive)
+        (unwind-protect
+            ;; Group functions together to avoid inconsistent state on quit
+            (atomic-change-group
+              (let* (beg end
+                         (region-text
+                          (cond
+                           ((region-active-p)
+                            (setq beg (set-marker (make-marker) (region-beginning)))
+                            (setq end (set-marker (make-marker) (region-end)))
+                            (org-link-display-format (buffer-substring-no-properties beg end)))
+                           ((thing-at-point 'word)
+                            (let ((bounds (bounds-of-thing-at-point 'word)))
+                              (setq beg (set-marker (make-marker) (car bounds)))
+                              (setq end (set-marker (make-marker) (cdr bounds)))
+                              (org-link-display-format (buffer-substring-no-properties beg end))))))
+                         (node (org-roam-node-read region-text filter-fn))
+                         (description (or region-text
+                                          (org-roam-node-formatted node))))
+                (if (org-roam-node-id node)
+                    (progn
+                      (when region-text
+                        (delete-region beg end)
+                        (set-marker beg nil)
+                        (set-marker end nil))
+                      (let ((id (org-roam-node-id node)))
+                        (insert (org-link-make-string
+                                 (concat "id:" id)
+                                 description))
+                        (run-hook-with-args 'org-roam-post-node-insert-hook
+                                            id
+                                            description)))
+                  (org-roam-capture-
+                   :node node
+                   :info info
+                   :templates templates
+                   :props (append
+                           (when (and beg end)
+                             (list :region (cons beg end)))
+                           (list :link-description description
+                                 :finalize 'insert-link))))))
+          (deactivate-mark)))
+
+      (advice-add 'org-roam-node-insert :override #'frestein/org-roam-node-insert))
 
     (use-package! websocket
       :after org-roam)
