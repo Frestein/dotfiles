@@ -113,7 +113,7 @@
        ebuku                ; bookmark manager for nerds
        pdf                  ; pdf enhancements
        nov                  ; epub reader
-       ;; reader            ; an all-in-one document reader
+       reader               ; an all-in-one document reader
        ;; terraform         ; infrastructure as code
        ;; tmux              ; an API for interacting with tmux
        trashed              ; freedesktop.org trashcan
