@@ -916,7 +916,7 @@ If a region is active, emphasize it, else emphasize the word at point."
     (if (use-region-p)
         (org-emphasize char)
       (save-excursion
-        (let ((bounds (bounds-of-thing-at-point 'word)))
+        (let ((bounds (bounds-of-thing-at-point 'symbol)))
           (when bounds
             (goto-char (car bounds))
             (set-mark (cdr bounds))
@@ -1079,21 +1079,22 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
         (unwind-protect
             ;; Group functions together to avoid inconsistent state on quit
             (atomic-change-group
-              (let* (beg end
-                         (region-text
-                          (cond
-                           ((region-active-p)
-                            (setq beg (set-marker (make-marker) (region-beginning)))
-                            (setq end (set-marker (make-marker) (region-end)))
-                            (org-link-display-format (buffer-substring-no-properties beg end)))
-                           ((thing-at-point 'word)
-                            (let ((bounds (bounds-of-thing-at-point 'word)))
-                              (setq beg (set-marker (make-marker) (car bounds)))
-                              (setq end (set-marker (make-marker) (cdr bounds)))
-                              (org-link-display-format (buffer-substring-no-properties beg end))))))
-                         (node (org-roam-node-read region-text filter-fn))
-                         (description (or region-text
-                                          (org-roam-node-formatted node))))
+              (let* (beg
+                     end
+                     (region-text
+                      (cond
+                       ((region-active-p)
+                        (setq beg (set-marker (make-marker) (region-beginning)))
+                        (setq end (set-marker (make-marker) (region-end)))
+                        (org-link-display-format (buffer-substring-no-properties beg end)))
+                       ((thing-at-point 'symbol)
+                        (let ((bounds (bounds-of-thing-at-point 'symbol)))
+                          (setq beg (set-marker (make-marker) (car bounds)))
+                          (setq end (set-marker (make-marker) (cdr bounds)))
+                          (org-link-display-format (buffer-substring-no-properties beg end))))))
+                     (node (org-roam-node-read region-text filter-fn))
+                     (description (or region-text
+                                      (org-roam-node-formatted node))))
                 (if (org-roam-node-id node)
                     (progn
                       (when region-text
