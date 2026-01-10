@@ -41,7 +41,7 @@ export EDITOR="$VISUAL"
 
 export TERMINAL=footclient
 export TERM="$TERMINAL"
-export TERMCMD="$TERMINAL --title='foot-yazi-flt'"
+export TERMCMD="$TERMINAL --title='footclient-center-half-float-yazi'"
 
 export BROWSER=qutebrowser
 
