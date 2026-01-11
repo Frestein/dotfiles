@@ -909,6 +909,7 @@ if there are fewer than 2 non-empty lines in the block
 
   (add-hook 'org-mode-hook #'frestein/org-fold-respect-startup-ignore-tag)
 
+  ;; QoL
   (defun frestein/org-emphasize-dwim (char)
     "Toggle org emphasis CHAR on word or selected region.
 If a region is active, emphasize it, else emphasize the word at point."
@@ -923,12 +924,31 @@ If a region is active, emphasize it, else emphasize the word at point."
             (org-emphasize char)
             (deactivate-mark))))))
 
+  ;; QoL
+  (defun frestein/org-insert-link-dwim ()
+    "If region is active use it, otherwise mark the symbol at point (if any), then call `org-insert-link'."
+    (interactive)
+    (cond
+     ((use-region-p)
+      (org-insert-link))
+     ((let ((bounds (bounds-of-thing-at-point 'symbol)))
+        (when bounds
+          (goto-char (car bounds))
+          (set-mark (cdr bounds))
+          (org-insert-link)
+          (deactivate-mark)
+          t)))
+     (t
+      (call-interactively #'org-insert-link))))
+
   (map! :map org-mode-map
         :after org
         :localleader
         "B" #'org-babel-tangle
         "D" #'org-insert-drawer
         "E" #'org-export-dispatch
+        (:prefix ("l" . "links")
+                 "l" #'frestein/org-insert-link-dwim)
         (:prefix ("e" . "emphasize")
          :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
          :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
