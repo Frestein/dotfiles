@@ -386,11 +386,12 @@ the variable `message-log-max'."
 (setq calendar-week-start-day 1)
 (setq display-line-numbers-type 'relative)
 (setq confirm-kill-emacs nil)
+(setq recentf-max-saved-items 500)
 #+end_src
 
 *** Global Auto Revert
 
-A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x auto-revert-mode, or you can set it to be turned on globally with ‘global-auto-revert-mode’. I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ‘dired’ buffers.
+A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x ~auto-revert-mode~, or you can set it to be turned on globally with ~global-auto-revert-mode~. I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ~dired~ buffers.
 
 #+begin_src emacs-lisp :tangle yes
 (global-auto-revert-mode t)

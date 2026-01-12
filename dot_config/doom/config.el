@@ -211,6 +211,7 @@ the variable `message-log-max'."
 (setq calendar-week-start-day 1)
 (setq display-line-numbers-type 'relative)
 (setq confirm-kill-emacs nil)
+(setq recentf-max-saved-items 500)
 
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
