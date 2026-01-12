@@ -926,9 +926,9 @@ If a region is active, emphasize it, else emphasize the word at point."
             (deactivate-mark))))))
 
   ;; QoL
-  (defun frestein/org-insert-link-dwim ()
+  (defun frestein/org-insert-link-dwim (&optional arg)
     "If region is active use it, otherwise mark the symbol at point (if any), then call `org-insert-link'."
-    (interactive)
+    (interactive "P")
     (cond
      ((use-region-p)
       (org-insert-link))
@@ -936,7 +936,9 @@ If a region is active, emphasize it, else emphasize the word at point."
         (when bounds
           (goto-char (car bounds))
           (set-mark (cdr bounds))
-          (org-insert-link)
+          (if arg
+              (call-interactively #'org-insert-link)
+            (org-insert-link))
           (deactivate-mark)
           t)))
      (t
