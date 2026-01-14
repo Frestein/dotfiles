@@ -201,6 +201,7 @@
 
        :app
        calendar
+       ;; calibre
        qutebrowser
        ement                ; Matrix client
        osm                  ; OpenStreetMap viewer
