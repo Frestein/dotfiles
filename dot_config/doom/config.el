@@ -231,9 +231,13 @@ the variable `message-log-max'."
 
       (evil-collection-define-key 'normal 'telega-chat-mode-map
         "_" #'frestein/telega-chatbuf-cancel-both
+
         "Za" #'telega-chatbuf-attach-animation
         "Zf" #'telega-chatbuf-attach-file
-        "Zv" #'telega-chatbuf-attach-video))))
+        "Zv" #'telega-chatbuf-attach-video
+
+        (kbd "<tab>") 'telega-button-forward
+        (kbd "<backtab>") 'telega-button-backward))))
 
 (when (modulep! :editor evil)
   (after! evil-snipe
