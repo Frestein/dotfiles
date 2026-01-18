@@ -25,14 +25,14 @@
 (custom-theme-set-faces! 'doom-gruvbox
   `(mode-line :background ,(doom-color 'base3) :foreground ,(doom-color 'modeline-fg)))
 
-(setq doom-font                (font-spec :family "Maple Mono NF" :size 14)
-      doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
-      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
-      doom-serif-font          (font-spec :family "Noto Serif" :size 14)
-      doom-emoji-font          (font-spec :family "Twemoji" :size 14)
+(setq doom-font                (font-spec :family "Maple Mono NF" :size 14))
+(setq doom-big-font            (font-spec :family "Maple Mono NF" :size 24))
+(setq doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
+(setq doom-serif-font          (font-spec :family "Noto Serif" :size 14))
+(setq doom-emoji-font          (font-spec :family "Twemoji" :size 14))
 
-      doom-symbol-font doom-font
-      doom-symbol-fallback-font-families '("Twemoji"))
+(setq doom-symbol-font doom-font)
+(setq doom-symbol-fallback-font-families '("Twemoji"))
 
 (after! telega
   (setq telega-emoji-font-family "Twemoji"))
@@ -47,6 +47,28 @@
                    "Enclosed Alphanumeric Supplement"
                    "Supplemental Symbols and Pictographs"))
     (push "Twemoji" (cadr (assoc block unicode-fonts-block-font-mapping)))))
+
+(after! ligature
+  ;; Enable all Maple Font ligatures
+  ;; https://github.com/subframe7536/maple-font/blob/variable/source/features/README.md#ligatures
+  (ligature-set-ligatures
+   't '("::" ":::" "?:" ":?" ":?>" "<:" ":>" ":<" "<:<" ">:>" "__" "#{"
+	"#[" "#(" "#?" "#!" "#:" "#=" "#_" "#__" "#_(" "]#" "#######"
+	"<<" "<<<" ">>" ">>>" "{{" "}}" "{|" "|}" "{{--" "{{!--" "--}}"
+	"[|" "|]" "!!" "||" "??" "???" "&&" "&&&" "//" "///" "/*" "/**"
+	"*/" "++" "+++" ";;" ";;;" ".." "..." ".?" "?." "..<" ".=" "<~"
+	"~>" "~~" "<~>" "<~~" "~~>" "-~" "~-" "~@" "~~~~~~~"
+	"0xA12 0x56 1920x1080" "<>" "</" "/>" "</>" "<+" "+>" "<+>" "<*"
+	"*>" "<*>" ">=" "<=" "<=<" ">=>" "==" "===" "!=" "!==" "=/="
+	"=!=" "|=" "<=>" "<==>" "<==" "==>" "=>" "<=|" "|=>" "=<=" "=>="
+	"=======" ">=<" ":=" "=:" ":=:" "=:=" "\\ \' \." "--" "---"
+	"<!--" "<#--" "<!---->" "<->" "<-->" "->" "<-" "-->" "<--" ">->"
+	"<-<" "|->" "<-|" "-------" ">--" "--<" "<|||" "|||>" "<||"
+	"||>" "<|" "|>" "<|>" "_|_" "[TRACE]" "[DEBUG]" "[INFO]"
+	"[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "[FIXME]" "[NOTE]"
+	"[HACK]" "[MARK]" "[ERROR]" "[WARNING]" "todo))" "fixme))" "Cl"
+	"al" "cl" "el" "il" "tl" "ul" "xl" "ff" "tt" "all" "ell" "ill"
+	"ull" "ll")))
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))

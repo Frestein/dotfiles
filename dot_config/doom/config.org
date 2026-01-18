@@ -10,6 +10,10 @@
 - [[#doom][Doom]]
   - [[#theme][Theme]]
   - [[#fonts][Fonts]]
+    - [[#symbols][Symbols]]
+    - [[#unicode][Unicode]]
+    - [[#ligatures][Ligatures]]
+    - [[#faces][Faces]]
   - [[#commands][Commands]]
   - [[#misc][Misc]]
 - [[#personal][Personal]]
@@ -136,18 +140,26 @@
 ** Fonts
 
 #+begin_src emacs-lisp :tangle yes
-(setq doom-font                (font-spec :family "Maple Mono NF" :size 14)
-      doom-big-font            (font-spec :family "Maple Mono NF" :size 24)
-      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14)
-      doom-serif-font          (font-spec :family "Noto Serif" :size 14)
-      doom-emoji-font          (font-spec :family "Twemoji" :size 14)
+(setq doom-font                (font-spec :family "Maple Mono NF" :size 14))
+(setq doom-big-font            (font-spec :family "Maple Mono NF" :size 24))
+(setq doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
+(setq doom-serif-font          (font-spec :family "Noto Serif" :size 14))
+(setq doom-emoji-font          (font-spec :family "Twemoji" :size 14))
+#+end_src
 
-      doom-symbol-font doom-font
-      doom-symbol-fallback-font-families '("Twemoji"))
+*** Symbols
+
+#+begin_src emacs-lisp :tangle yes
+(setq doom-symbol-font doom-font)
+(setq doom-symbol-fallback-font-families '("Twemoji"))
 
 (after! telega
   (setq telega-emoji-font-family "Twemoji"))
+#+end_src
 
+*** Unicode
+
+#+begin_src emacs-lisp :tangle yes
 (after! unicode-fonts
   (setq unicode-fonts-fallback-font-list doom-symbol-fallback-font-families)
 
@@ -158,7 +170,37 @@
                    "Enclosed Alphanumeric Supplement"
                    "Supplemental Symbols and Pictographs"))
     (push "Twemoji" (cadr (assoc block unicode-fonts-block-font-mapping)))))
+#+end_src
 
+*** Ligatures
+
+#+begin_src emacs-lisp :tangle yes
+(after! ligature
+  ;; Enable all Maple Font ligatures
+  ;; https://github.com/subframe7536/maple-font/blob/variable/source/features/README.md#ligatures
+  (ligature-set-ligatures
+   't '("::" ":::" "?:" ":?" ":?>" "<:" ":>" ":<" "<:<" ">:>" "__" "#{"
+	"#[" "#(" "#?" "#!" "#:" "#=" "#_" "#__" "#_(" "]#" "#######"
+	"<<" "<<<" ">>" ">>>" "{{" "}}" "{|" "|}" "{{--" "{{!--" "--}}"
+	"[|" "|]" "!!" "||" "??" "???" "&&" "&&&" "//" "///" "/*" "/**"
+	"*/" "++" "+++" ";;" ";;;" ".." "..." ".?" "?." "..<" ".=" "<~"
+	"~>" "~~" "<~>" "<~~" "~~>" "-~" "~-" "~@" "~~~~~~~"
+	"0xA12 0x56 1920x1080" "<>" "</" "/>" "</>" "<+" "+>" "<+>" "<*"
+	"*>" "<*>" ">=" "<=" "<=<" ">=>" "==" "===" "!=" "!==" "=/="
+	"=!=" "|=" "<=>" "<==>" "<==" "==>" "=>" "<=|" "|=>" "=<=" "=>="
+	"=======" ">=<" ":=" "=:" ":=:" "=:=" "\\ \' \." "--" "---"
+	"<!--" "<#--" "<!---->" "<->" "<-->" "->" "<-" "-->" "<--" ">->"
+	"<-<" "|->" "<-|" "-------" ">--" "--<" "<|||" "|||>" "<||"
+	"||>" "<|" "|>" "<|>" "_|_" "[TRACE]" "[DEBUG]" "[INFO]"
+	"[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "[FIXME]" "[NOTE]"
+	"[HACK]" "[MARK]" "[ERROR]" "[WARNING]" "todo))" "fixme))" "Cl"
+	"al" "cl" "el" "il" "tl" "ul" "xl" "ff" "tt" "all" "ell" "ill"
+	"ull" "ll")))
+#+end_src
+
+*** Faces
+
+#+begin_src emacs-lisp :tangle yes
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
 #+end_src
