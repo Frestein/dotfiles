@@ -146,6 +146,7 @@
           telega-symbol-member                " "
           telega-symbol-mode                  ""
           telega-symbol-my-notes              ""
+          telega-symbol-menu                  "󰍜"
           telega-symbol-online-status         ""
           telega-symbol-outline-close         "󰍟"
           telega-symbol-outline-open          "󰍝"
