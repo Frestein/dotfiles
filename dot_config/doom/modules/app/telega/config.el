@@ -72,7 +72,8 @@
            ((:outline "#d3869b") (:foreground "#d3869b")     (:background ,(doom-color 'bg))))))
 
   (custom-set-faces!
-    `(telega-msg-heading :background ,(doom-color 'base3) :extend t))
+    `(telega-msg-heading :background ,(doom-color 'base3) :extend t)
+    '(telega-entity-type-code :inherit font-lock-number-face))
 
   (setq telega-chat-header-line-format
         '((:eval (telega-chatbuf-header-concat
@@ -562,7 +563,9 @@ argument - MSG to insert additional information after header."
       (when bot
         (insert bot))))
 
-  (map! (:map telega-msg-button-map
+  (map! (:map telega-root-mode-map
+         :n "A" #'telega-chat-toggle-archive)
+        (:map telega-msg-button-map
          "SPC" nil
          :n "C-p" #'telega-msg-previous
          :n "C-n" #'telega-msg-next)
@@ -597,7 +600,15 @@ argument - MSG to insert additional information after header."
                    "p" #'telega-describe-privacy-settings
                    "c" #'telega-describe-chat
                    "C" #'telega-describe-chat-members)
-          (:prefix ("s" . "stickers")
+          (:prefix ("s" . "search")
+                   "s" #'telega-chatbuf-filter-search
+                   "S" #'telega-chatbuf-filter-by-sender
+                   "t" #'telega-chatbuf-filter-by-topic
+                   "p" #'telega-chatbuf-filter-scheduled
+                   "h" #'telega-chatbuf-filter-hashtag
+                   "f" #'telega-chatbuf-filter
+                   "F" #'telega-chatbuf-filter-favorite)
+          (:prefix ("S" . "stickers")
                    "f" #'telega-sticker-choose-favorite-or-recent
                    "c" #'telega-stickerset-choose
                    "t" #'telega-stickerset-trends
