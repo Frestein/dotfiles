@@ -973,6 +973,7 @@ If a region is active, emphasize it, else emphasize the word at point."
   (map! :map org-mode-map
         :after org
         :localleader
+        "v" #'org-insert-structure-template
         "B" #'org-babel-tangle
         "D" #'org-insert-drawer
         "E" #'org-export-dispatch
