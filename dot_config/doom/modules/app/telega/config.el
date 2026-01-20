@@ -74,6 +74,24 @@
   (custom-set-faces!
     `(telega-msg-heading :background ,(doom-color 'base3) :extend t))
 
+  (setq telega-chat-header-line-format
+        '((:eval (telega-chatbuf-header-concat
+                  " " (telega-chatbuf-header-msg-filter)))
+          (:eval (telega-chatbuf-header-concat
+                  " " (telega-chatbuf-header-preview-mode)))
+          (:eval (telega-chatbuf-header-concat
+                  " " (telega-chatbuf-header-highlight-text)))
+          (:eval (telega-mode-line-align
+                  'center
+                  (telega-chatbuf-header-concat
+                   " " (telega-chatbuf-header-messages-count))
+                  telega-chat-fill-column))
+          (:eval (telega-mode-line-align
+                  'right
+                  (telega-chatbuf-header-concat
+                   " " (telega-chatbuf-header-topic 30))
+                  telega-chat-fill-column))))
+
   (when (modulep! +icons)
     (setq telega-emoji-use-images nil
           telega-symbols-emojify
@@ -218,7 +236,25 @@
                                       ("Travel"   . " ")
                                       ("Unmuted"  . " ")
                                       ("Unread"   . " ")
-                                      ("Work"     . " "))))
+                                      ("Work"     . " ")))
+
+    (setq telega-chat-preview-mode-lighter
+          (concat " " (telega-symbol 'mode) "Preview"))
+    (setq telega-edit-file-mode-lighter
+          (concat " " (telega-symbol 'mode) "Edit"))
+    (setq telega-auto-translate-mode-lighter
+          (concat " " (telega-symbol 'mode) "Translate"))
+    (setq telega-chat-auto-fill-mode-lighter
+          (concat " " (telega-symbol 'mode) "Auto-Fill"))
+    (setq telega-highlight-text-mode-lighter
+          (concat " " (telega-symbol 'mode) "Highlight"))
+    (setq telega-squash-message-mode-lighter
+          (concat " " (telega-symbol 'mode) "Squash"))
+    (setq telega-play-media-sequence-mode-lighter
+          (concat " " (telega-symbol 'mode) "Media Sequence"))
+    (when (modulep! +mnz)
+      (setq telega-mnz-mode-lighter
+            (concat " " (telega-symbol 'mode) "Mnz"))))
 
   ;; INFO: Redesign, make topic icon optional
   (defun frestein/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
@@ -255,24 +291,6 @@
              :with-maybe-pin-p t))))))
 
   (advice-add 'telega-chatbuf-header-topic :override #'frestein/telega-chatbuf-header-topic)
-
-  (setq telega-chat-header-line-format
-        '((:eval (telega-chatbuf-header-concat
-                  " " (telega-chatbuf-header-msg-filter 'no-cancel-button)))
-          (:eval (telega-chatbuf-header-concat
-                  " " (telega-chatbuf-header-preview-mode)))
-          (:eval (telega-chatbuf-header-concat
-                  " " (telega-chatbuf-header-highlight-text)))
-          (:eval (telega-mode-line-align
-                  'center
-                  (telega-chatbuf-header-concat
-                   " " (telega-chatbuf-header-messages-count))
-                  telega-chat-fill-column))
-          (:eval (telega-mode-line-align
-                  'right
-                  (telega-chatbuf-header-concat
-                   " " (telega-chatbuf-header-topic 30))
-                  telega-chat-fill-column))))
 
   ;; INFO: Redesign topic
   (defun frestein/telega-ins--message-header (msg &optional msg-chat msg-sender
