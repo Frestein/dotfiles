@@ -253,8 +253,9 @@
     (setq telega-play-media-sequence-mode-lighter
           (concat " " (telega-symbol 'mode) "Media Sequence"))
     (when (modulep! +mnz)
-      (setq telega-mnz-mode-lighter
-            (concat " " (telega-symbol 'mode) "Mnz"))))
+      (after! telega-mnz
+        (setq telega-mnz-mode-lighter
+              (concat " " (telega-symbol 'mode) "Mnz")))))
 
   ;; INFO: Redesign, make topic icon optional
   (defun frestein/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
