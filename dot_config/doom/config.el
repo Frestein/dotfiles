@@ -104,7 +104,8 @@
     (require 'restart-emacs)
     (restart-emacs)))
 
-(remove-hook 'doom-docs-mode-hook #'doom-docs--display-menu-h)
+(with-eval-after-load "lib/docs"
+  (remove-hook! 'doom-docs-mode-hook #'doom-docs--display-menu-h))
 
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
