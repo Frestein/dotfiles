@@ -376,6 +376,34 @@ the variable `message-log-max'."
   (after! corfu
     (setq corfu-auto nil)))
 
+;; thx Sarg https://github.com/doomemacs/doomemacs/pull/8634/changes
+(when (modulep! :completion vertico)
+  (with-eval-after-load "lib/help"
+    (defvar frestein/doom-module-descriptions
+      (with-temp-buffer
+        (seq-filter
+         'identity
+         (mapcar
+          (lambda (hm)
+            (when-let* ((f (cadr hm))
+                        (name (car hm))
+                        ((file-regular-p f)))
+              (insert-file-contents f nil 0 1024 t)
+              (goto-char (point-min))
+              (when (search-forward "#+subtitle: " nil t)
+                (cons name
+                      (propertize (string-trim (buffer-substring (point) (line-end-position)))
+                                  'face (get-text-property 0 'face name))))))
+          (doom--help-modules-list))))))
+
+  (after! marginalia
+    (defun marginalia-annotate-doom-module (cand)
+      (marginalia--fields
+       ((cdr (assoc-string cand frestein/doom-module-descriptions)))))
+
+    (add-to-list 'marginalia-prompt-categories '("\\<Describe module\\>" . doom-module))
+    (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
+
 ;; BUG: ws-butler removes last line in Org files despite require-final-newline
 ;; https://github.com/lewang/ws-butler/issues/26
 (when (modulep! :editor whitespace +trim)
