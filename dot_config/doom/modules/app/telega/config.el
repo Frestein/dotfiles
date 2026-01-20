@@ -7,10 +7,10 @@
          (telega-chat-mode . turn-off-smartparens-mode)
          (telega-chat-mode . doom-disable-show-paren-mode-h))
   :init
-  (setq telega-directory (concat (getenv "XDG_DATA_HOME") "/telega")
-        telega-database-dir (concat (getenv "XDG_DATA_HOME") "/telega/db")
-        telega-cache-dir (concat (getenv "XDG_CACHE_HOME") "/telega/cache")
-        telega-temp-dir (concat (getenv "XDG_CACHE_HOME") "/telega/temp"))
+  (setq telega-directory    (concat (getenv "XDG_DATA_HOME")  "/telega")
+        telega-database-dir (concat (getenv "XDG_DATA_HOME")  "/telega/db")
+        telega-cache-dir    (concat (getenv "XDG_CACHE_HOME") "/telega/cache")
+        telega-temp-dir     (concat (getenv "XDG_CACHE_HOME") "/telega/temp"))
   :config
   (setq telega-server-libs-prefix "/usr"
         telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega")
@@ -109,7 +109,7 @@
              (when (or (telega-chatbuf-match-p 'has-default-sender)
                        (telega-chatbuf-match-p 'can-send-or-post))
                (telega-chatbuf-prompt-ins-chat-avatar))
-             (telega-chatbuf-prompt-ins-topic 25)
+             (telega-chatbuf-prompt-ins-topic 20 t)
              (telega-auto-translate--chatbuf-prompt-ins-translation)
              (telega-ins "  "))
           telega-symbol-alarm                 "󰯪 "
@@ -168,6 +168,7 @@
           telega-symbol-telegram              (propertize " " 'face '(italic telega-blue))
           telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
           telega-symbol-timer-clock           "󰔛 "
+          telega-symbol-topic                 " #"
           telega-symbol-typing                ""
           telega-symbol-verified              (propertize " " 'face 'telega-blue)
           telega-symbol-video                 ""
@@ -217,6 +218,222 @@
                                       ("Unmuted"  . " ")
                                       ("Unread"   . " ")
                                       ("Work"     . " "))))
+
+  ;; INFO: Redesign, make topic icon optional
+  (defun frestein/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
+    "Inserter for the current topic in the chatbuf's input prompt."
+    (telega-chatbuf--dirtiness-init "topic")
+
+    (when (telega-topic-match-p telega-chatbuf--topic
+            '(type forum sm dm))
+      (telega-ins--with-attrs (list :max max-width :align 'left :elide t
+                                    :face 'telega-shadow)
+        (telega-ins (telega-symbol 'topic))
+        (telega-ins--topic-title telega-chatbuf--topic
+          :with-icon-p with-topic-icon-p
+          :with-maybe-pin-p t))))
+
+  (advice-add 'telega-chatbuf-prompt-ins-topic :override #'frestein/telega-chatbuf-prompt-ins-topic)
+
+  ;; INFO: Redesign, make topic icon optional
+  (defun frestein/telega-chatbuf-header-topic (&optional max-width with-topic-icon-p)
+    "Formatter for the chatbuf's topic or messages thread."
+    (telega-chatbuf--dirtiness-init "topic")
+
+    (when telega-chatbuf--topic
+      (telega-ins--as-string
+       (telega-ins--with-attrs (list :max (or max-width 40) :align 'left :elide t)
+         (if (telega-topic-match-p telega-chatbuf--topic '(type thread))
+             (progn
+               (telega-ins--with-face 'telega-shadow
+                 (telega-ins (telega-symbol 'reply)))
+               (telega-ins--content-one-line (telega-chatbuf--topic-thread-msg)))
+           (telega-ins (telega-symbol 'topic))
+           (telega-ins--topic-title telega-chatbuf--topic
+             :with-icon-p with-topic-icon-p
+             :with-maybe-pin-p t))))))
+
+  (advice-add 'telega-chatbuf-header-topic :override #'frestein/telega-chatbuf-header-topic)
+
+  (setq telega-chat-header-line-format
+        '((:eval (telega-chatbuf-header-concat
+                  " " (telega-chatbuf-header-msg-filter 'no-cancel-button)))
+          (:eval (telega-chatbuf-header-concat
+                  " " (telega-chatbuf-header-preview-mode)))
+          (:eval (telega-chatbuf-header-concat
+                  " " (telega-chatbuf-header-highlight-text)))
+          (:eval (telega-mode-line-align
+                  'center
+                  (telega-chatbuf-header-concat
+                   " " (telega-chatbuf-header-messages-count))
+                  telega-chat-fill-column))
+          (:eval (telega-mode-line-align
+                  'right
+                  (telega-chatbuf-header-concat
+                   " " (telega-chatbuf-header-topic 30))
+                  telega-chat-fill-column))))
+
+  ;; INFO: Redesign topic
+  (defun frestein/telega-ins--message-header (msg &optional msg-chat msg-sender
+                                                  addon-inserter)
+    "Insert message's MSG header, everything except for message content.
+MSG-CHAT - Chat for which to insert message header.
+MSG-SENDER - Sender of the message.
+If ADDON-INSERTER function is specified, it is called with one
+argument - MSG to insert additional information after header."
+    (let* ((date-and-status
+            (when (eq telega-msg-heading-trail 'date-and-status)
+              (telega-ins--as-string
+               (telega-ins--message-date-and-status msg))))
+           (dwidth (- telega-chat-fill-column
+                      (if (stringp date-and-status)
+                          (string-width date-and-status)
+                        0)))
+           (chat (or msg-chat (telega-msg-chat msg)))
+           (sender (or msg-sender (telega-msg-sender msg)))
+           (telega-palette-context 'msg-header)
+           (palette (telega-msg-sender-palette sender)))
+      (cl-assert sender)
+      (telega-ins--with-props
+          (list 'action (lambda (button)
+                          ;; NOTE: check for custom message :action first
+                          ;; - [RESEND] button uses :action
+                          ;; - via @bot link uses :action
+                          (or (telega-button--action button)
+                              (telega-describe-msg-sender sender))))
+        (telega-ins--with-face
+            (telega-face-with-palette 'telega-msg-heading palette :background)
+          (telega-ins--with-attrs (list :max (- dwidth (telega-current-column))
+                                        :align 'left
+                                        :elide t
+                                        :elide-trail 20)
+            ;; NOTE: if channel post has a signature, then use it instead
+            ;; of username to shorten message header
+            (let ((signature (telega-tl-str msg :author_signature)))
+              (telega-ins--msg-sender sender
+                :with-username-p (not signature))
+              (when signature
+                (telega-ins--with-face (telega-msg-sender-title-faces sender)
+                  (telega-ins " --" signature))))
+
+            ;; Admin badge if any
+            (when (telega-user-p sender)
+              (when-let ((admin (telega-chat-admin-get chat sender)))
+                (telega-ins--with-face 'telega-shadow
+                  (telega-ins " ("
+                              (or (telega-tl-str admin :custom_title)
+                                  (if (plist-get admin :is_owner)
+                                      (telega-i18n "lng_owner_badge")
+                                    (telega-i18n "lng_admin_badge")))
+                              ")"))))
+
+            ;; Sender's boost count
+            (let ((boost-count (plist-get msg :sender_boost_count)))
+              (unless (telega-zerop boost-count)
+                (telega-ins--with-face (assq :foreground palette)
+                  (telega-ins " " (telega-symbol 'boost))
+                  (when (> boost-count 1)
+                    (telega-ins-fmt "%d" boost-count)))))
+
+            ;; Paid stars
+            (let ((paid-stars (plist-get msg :paid_message_star_count)))
+              (unless (telega-zerop paid-stars)
+                (telega-ins " " (telega-symbol 'telegram-star))
+                (telega-ins-fmt "%d" paid-stars)))
+
+            ;; via <bot>
+            (when-let* ((via-bot-user-id (plist-get msg :via_bot_user_id))
+                        (via-bot (unless (zerop via-bot-user-id)
+                                   (telega-user-get via-bot-user-id)))
+                        (bot-title (telega-ins--as-string
+                                    ;; Use custom :action for clickable @bot link
+                                    (telega-ins--text-button
+                                        (telega-user-title via-bot 'username)
+                                      'face 'telega-username
+                                      :action (lambda (_msg_ignored)
+                                                (telega-describe-user via-bot))))))
+              (telega-ins " " (telega-i18n "lng_inline_bot_via"
+                                :inline_bot bot-title)))
+
+            ;; Edited date
+            (let ((edited-date (plist-get msg :edit_date)))
+              (unless (zerop edited-date)
+                (telega-ins--with-face 'telega-shadow
+                  (telega-ins " " (telega-i18n "lng_edited") " ")
+                  (telega-ins--date (plist-get msg :edit_date)))))
+
+            ;; Interaction info
+            (telega-ins--msg-interaction-info msg chat)
+
+            (when-let ((fav (telega-msg-favorite-p msg)))
+              (telega-ins " " (telega-symbol 'favorite))
+              ;; Also show comment to the favorite message
+              (telega-ins--with-face 'telega-shadow
+                (telega-ins-prefix "("
+                  (when (telega-ins (plist-get fav :comment))
+                    (telega-ins ")")))))
+
+            ;; Maybe pinned message?
+            (when (plist-get msg :is_pinned)
+              (telega-ins " " (telega-symbol 'pin)))
+
+            ;; message auto-deletion time
+            (let ((auto-delete-in (plist-get msg :auto_delete_in)))
+              (unless (telega-zerop auto-delete-in)
+                (telega-ins " " (telega-symbol 'flames)
+                            (telega-duration-human-readable auto-delete-in 1))))
+
+            ;; Show language code if translation replaces message's content
+            (when-let ((translated (plist-get msg :telega-translated)))
+              (when (with-telega-chatbuf chat
+                      telega-translate-replace-content)
+                (telega-ins--with-face 'telega-shadow
+                  (telega-ins " ["
+                              (telega-symbol 'right-arrow)
+                              (plist-get translated :to_language_code)
+                              "]"))))
+
+            (when (numberp telega-debug)
+              (telega-ins-fmt " (ID=%d)" (plist-get msg :id)))
+
+            ;; Resend button in case message sent failed
+            ;; Use custom :action to resend message
+            (when-let ((send-state (plist-get msg :sending_state)))
+              (when (and (eq (telega--tl-type send-state)
+                             'messageSendingStateFailed)
+                         (plist-get send-state :can_retry))
+                (telega-ins " ")
+                (telega-ins--box-button "RESEND"
+                  :action #'telega-msg-resend)))
+
+            (when addon-inserter
+              (cl-assert (functionp addon-inserter))
+              (funcall addon-inserter msg))
+
+            ;; Message's topic aligned to the right
+            (when-let* ((topic (telega-msg-topic msg))
+                        (show-topic-p
+                         (telega-msg-match-p msg telega-msg-temex-show-topic))
+                        (topic-title (telega-ins--as-string
+                                      (telega-ins (telega-symbol 'topic))
+                                      (telega-ins--topic-title topic
+                                        :with-icon-p t
+                                        :with-maybe-pin-p t))))
+              (telega-ins--move-to-column
+               (- dwidth (string-width topic-title)))
+              (telega-ins--with-props
+                  (list 'face 'telega-topic-button
+                        :action #'telega-msg-show-topic-info
+                        :help-echo "Show topic info")
+                (telega-ins topic-title))))
+
+          (when telega-msg-heading-trail
+            (telega-ins--move-to-column dwidth))
+          (telega-ins date-and-status)
+
+          (telega-ins "\n")))))
+
+  (advice-add 'telega-ins--message-header :override #'frestein/telega-ins--message-header)
 
   ;; INFO: Disable TODO debug message.
   (defun telega--on-updateSuggestedActions (event)
