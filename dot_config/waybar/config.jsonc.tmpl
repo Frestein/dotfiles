@@ -1,14 +1,23 @@
+// vim: ft=jsonc
 // -*- mode: jsonc -*-
 {
+  "$schema": "https://raw.githubusercontent.com/Magniquick/waybar-config-schema/main/schema.json",
   "layer": "top",
   "height": 30,
   "spacing": 4,
   "start_hidden": true,
   "reload_style_on_change": true,
-  "modules-left": ["hyprland/submap", "tray"],
-  "modules-center": ["hyprland/workspaces"],
+  "modules-left": [
+    "custom/power",
+    "custom/dismiss_notifications",
+    "custom/autohide_lock",
+    "hyprland/submap",
+    "tray"
+  ],
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
   "modules-right": [
-    "mpd",
     "hyprland/language",
     "wireplumber",
     "custom/brightness",
@@ -16,14 +25,24 @@
     "memory",
     "temperature",
     "network",
-    "clock",
     "custom/weather",
-    "custom/dismiss_notifications",
-    "custom/power"
+    "clock"
   ],
   "hyprland/workspaces": {
     "all-outputs": true,
-    "format": "{id}"
+    "format": "{icon}",
+    "format-icons": {
+      "1": "Ⅰ",
+      "2": "Ⅱ",
+      "3": "Ⅲ",
+      "4": "Ⅳ",
+      "5": "Ⅴ",
+      "6": "Ⅵ",
+      "7": "Ⅶ",
+      "8": "Ⅷ",
+      "9": "Ⅸ",
+      "10": "Ⅹ"
+    }
   },
   "hyprland/language": {
     "format": " {short}",
@@ -31,7 +50,7 @@
     "on-click": "hyprctl switchxkblayout kanata next"
   },
   "hyprland/submap": {
-    "format": "🧩 {}",
+    "format": "󰘳 {}",
     "max-length": 16,
     "tooltip": false
   },
@@ -99,37 +118,31 @@
     "spacing": 10
   },
   "clock": {
-    "interval": 60,
-    "tooltip": true,
     "format": "󱑎 {:%I:%M}",
-    "tooltip-format": " {:%A, %B %d %Y}"
+    "format-alt": " {:%A, %B %d %Y}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#b8bb26'><b>{}</b></span>",
+        "days": "<span color='#fbf1c7'><b>{}</b></span>",
+        "weeks": "<span color='#83a598'><b>W{}</b></span>",
+        "weekdays": "<span color='#d3869b'><b>{}</b></span>",
+        "today": "<span color='#fabd2f'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-click-forward": "tz_up",
+      "on-click-backward": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
   },
-  // "clock": {
-  //   "format": "󱑎 {:%I:%M}",
-  //   "format-alt": " {:%A, %B %d %Y}",
-  //   "tooltip-format": "<tt><small>{calendar}</small></tt>",
-  //   "calendar": {
-  //     "mode": "month",
-  //     "mode-mon-col": 3,
-  //     "weeks-pos": "right",
-  //     "on-scroll": 1,
-  //     "on-click-right": "mode",
-  //     "format": {
-  //       "months": "<span color='#ffead3'><b>{}</b></span>",
-  //       "days": "<span color='#ecc6d9'><b>{}</b></span>",
-  //       "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-  //       "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-  //       "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
-  //     }
-  //   },
-  //   "actions": {
-  //     "on-click-right": "mode",
-  //     "on-click-forward": "tz_up",
-  //     "on-click-backward": "tz_down",
-  //     "on-scroll-up": "shift_up",
-  //     "on-scroll-down": "shift_down"
-  //   }
-  // },
   "cpu": {
     "format": " {usage}%"
   },
@@ -167,7 +180,7 @@
     "interval": 60,
     "exec-if": "exit 0",
     "tooltip-format": "Uptime: {}",
-    "menu": "on-click",
+    "menu": "on-click-right",
     "menu-file": "{{ .chezmoi.destDir }}/.config/waybar/modules/power.xml",
     "menu-actions": {
       "logout": "uwsm stop",
@@ -199,16 +212,23 @@
   },
   "custom/dismiss_notifications": {
     "exec-if": "command -v makoctl",
-    "exec": "( makoctl list | grep -q 'Notification' && echo '\nDismiss Notifications\n' ) || echo '\nNo Notifications\nnone' ",
+    "exec": "( makoctl list | grep -q 'Notification' && echo '\nDismiss Notifications\n' ) || echo '\nNo Notifications' ",
     "format": "{}",
     "on-click": "makoctl dismiss -a",
     "interval": 3
+  },
+  "custom/autohide_lock": {
+    "exec-if": "true",
+    "exec": "LOCK=\"/run/user/$(id -u)/waybar-autohide.lock\"; if [ -f \"$LOCK\" ]; then echo '\nLocked'; else echo ''; fi",
+    "format": "{}",
+    "on-click": "bash -lc 'LOCK=\"/run/user/$(id -u)/waybar-autohide.lock\"; if [ -f \"$LOCK\" ]; then rm -f \"$LOCK\"; else touch \"$LOCK\"; fi; pkill -SIGRTMIN+8 waybar'",
+    "signal": 8
   },
   "custom/weather": {
     "format": "{}°",
     "tooltip": true,
     "interval": 3600,
-    "exec": "wttrbar --nerd --location {{ gopass "personal/location" }}",
+    "exec": "wttrbar --nerd --ampm --hide-conditions --location {{ gopass "personal/location" }}",
     "return-type": "json"
   }
 }

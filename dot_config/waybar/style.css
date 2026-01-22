@@ -43,6 +43,29 @@ button:hover {
   box-shadow: inset 0 -3px @bright7;
 }
 
+tooltip {
+  color: @bright7;
+  background-color: @regular0;
+  text-shadow: none;
+  border: solid 2px @bright0;
+  border-radius: 0;
+}
+
+.modules-left,
+.modules-right {
+  padding: 0 10px;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+  margin-left: 0;
+}
+
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+  margin-right: 0;
+}
+
 #workspaces button {
   padding: 0 5px;
   background-color: transparent;
@@ -67,6 +90,11 @@ button:hover {
   box-shadow: inset 0 -3px @bright7;
 }
 
+#window,
+#workspaces {
+  margin: 0 4px;
+}
+
 #clock,
 #battery,
 #cpu,
@@ -84,41 +112,29 @@ button:hover {
 #scratchpad,
 #power-profiles-daemon,
 #mpd,
+#cpu,
+#language,
+#wireplumber,
 #image.distro,
-#custom-power,
+#submap,
 #custom-weather,
 #custom-pacman,
 #custom-brightness {
-  padding: 0 10px;
+  padding: 0 5px;
   color: @bright7;
 }
 
-#custom-dismiss_notifications {
-  padding: 0 0;
+#custom-power,
+#custom-dismiss_notifications,
+#custom-autohide_lock {
+  padding: 0 5px 0 0;
   color: @bright7;
 }
 
-#window,
-#workspaces {
-  margin: 0 4px;
-}
-
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-  margin-left: 0;
-}
-
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
-  margin-right: 0;
-}
-
-#cpu {
-  color: @bright7;
-}
-
-#wireplumber {
-  color: @bright7;
+#custom-autohide_lock {
+  padding-top: 0.2rem;
+  padding-left: 0.2rem;
+  font-size: 1.3rem;
 }
 
 #tray > .passive {
@@ -131,17 +147,6 @@ button:hover {
 
 #idle_inhibitor.activated {
   color: @bright7;
-}
-
-#mpd {
-  color: @bright7;
-}
-
-#language {
-  color: @bright7;
-  padding: 0 5px;
-  margin: 0 5px;
-  min-width: 16px;
 }
 
 #scratchpad {
@@ -171,11 +176,4 @@ button:hover {
 
 #privacy-item.audio-out {
   background-color: @regular4;
-}
-
-tooltip {
-  color: @bright7;
-  background-color: @regular0;
-  text-shadow: none;
-  border: solid 2px @bright0;
 }

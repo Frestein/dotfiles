@@ -7,6 +7,12 @@ TOLERANCE=10
 CENTER_X=$((SCREEN_WIDTH / 2))
 
 while true; do
+    LOCK="/run/user/$(id -u)/waybar-autohide.lock"
+
+    if [[ -f "$LOCK" ]]; then
+        continue
+    fi
+
     sleep 0.1
 
     fullscreen=$(hyprctl activewindow | grep "fullscreen:" | awk '{print $2}')
