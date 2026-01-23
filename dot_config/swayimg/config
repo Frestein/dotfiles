@@ -231,8 +231,8 @@ q = exit
 # Mouse related
 ScrollLeft = step_right 5
 ScrollRight = step_left 5
-ScrollUp = next_file
-ScrollDown = prev_file
+ScrollUp = prev_file
+ScrollDown = next_file
 Ctrl+ScrollUp = zoom +10
 Ctrl+ScrollDown = zoom -10
 Shift+ScrollUp = step_up 5
