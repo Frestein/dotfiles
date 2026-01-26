@@ -1,0 +1,7 @@
+[Unit]
+Description=Restart waybar
+
+[Service]
+Type=oneshot
+ExecStart=systemctl --user restart waybar
+ExecStart=notify-send "Waybar: Config changed. Restarting..."
