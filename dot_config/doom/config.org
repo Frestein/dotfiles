@@ -759,7 +759,7 @@ ignoring all other files with the same basename."
   (setq lpr-lp-system t
         lpr-command "lp"
         lpr-add-switches nil
-        lpr-printer-switch "-d"
+        lpr-printer-switch "-d "
         printer-name "Samsung_SCX-3200_Series"))
 
 (after! ps-print
