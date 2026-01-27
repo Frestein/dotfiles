@@ -1,5 +1,5 @@
 [Unit]
-Description=Watch waybar for changes
+Description=Watch waybar for config changes
 
 [Path]
 PathModified=%h/.config/waybar/config.jsonc
