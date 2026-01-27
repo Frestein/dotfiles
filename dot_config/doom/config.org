@@ -584,7 +584,12 @@ Disable evil-snipe on specific modes.
                (:when (modulep! :tools trashed)
                  :desc "Trashed" "T" #'trashed)
                (:when (modulep! :app rss)
-                 :desc "Elfeed" "e" #'elfeed))
+                 :desc "Elfeed" "n" #'elfeed)
+               (:when (modulep! :app ement)
+                 (:prefix ("e" . "ement")
+                          "c" #'ement-connect
+                          "l" #'ement-room-list
+                          "v" #'ement-room-view)))
       (:prefix ("f" . "file")
                (:when (modulep! :emacs dired)
                  :desc "Open directory in dirvish" "m" #'dirvish)
