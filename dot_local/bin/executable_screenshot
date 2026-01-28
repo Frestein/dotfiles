@@ -18,11 +18,18 @@
 menu_command="fuzzel"
 editor_command="${GRIMBLAST_EDITOR:-satty --filename}"
 date_format="%m.%d.%Y-%H:%M:%S"
-# Options
+
+# Interactive menu defaults
 main_opts=("󰹑 Capture" "󰁫 Timer capture")
 screenshot_opts=("󰍺 All Screen" "󰍹 Active Screen" "󱣴 Capture Area")
 timer_opts=("2s" "4s" "6s" "8s" "10s")
 action_opts=(" Copy" " Save" " Copy & Save" " Edit")
+
+# CLI defaults
+cli_mode="now"
+cli_type="screen"
+cli_countdown=0
+cli_action="copy"
 
 # Detect available menu program
 define_menu() {
@@ -83,11 +90,151 @@ walker_menu() {
         -p "$prompt"
 }
 
+# Timer notifications (reuse notify-send if available)
+timer_notify() {
+    local t="$1"
+    if command -v notify-send >/dev/null 2>&1; then
+        notify-send -t 1000 "Taking Screenshot in $t"
+    else
+        printf 'Taking Screenshot in %s\n' "$t"
+    fi
+}
+
+timer_countdown() {
+    local countdown="$1"
+    for ((i = countdown; i > 0; i--)); do
+        if ((i <= 10 || i == countdown)); then
+            timer_notify "$i"
+        fi
+        sleep 1
+    done
+}
+
+takescreenshot() {
+    local grim_cmd=(grimblast --notify "$cli_action" "$cli_type")
+
+    [[ $cli_action == "edit" ]] && grim_cmd+=("--filetype" "ppm")
+
+    env DATE_FORMAT="$date_format" \
+        GRIMBLAST_EDITOR="$editor_command" \
+        "${grim_cmd[@]}"
+}
+
+usage() {
+    cat <<EOF
+Usage: ${0##*/} [OPTION]
+
+Options:
+  --now                Capture immediately (all-screen / output)
+  --active             Capture active window
+  --area               Capture selected region or window
+  --copy               Copy to clipboard (same as action 'copy')
+  --save               Save to Pictures (same as action 'save')
+  --copysave           Copy & save
+  --edit               Open in editor
+  --delay [1-10]       Capture with delay (seconds)
+  --help, -h           Show this help
+
+Examples:
+  ${0##*/} --now --save
+  ${0##*/} --delay 4 --area --copysave
+EOF
+}
+
+# Parse CLI arguments
+parse_cli() {
+    # Defaults if user uses --now: capture whole visible outputs (screen)
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        --now)
+            cli_mode="now"
+            cli_type="screen"
+            shift
+            ;;
+        --delay)
+            cli_mode="delay"
+            if [[ -n "$2" && "$2" =~ ^[0-9]+$ ]]; then
+                if ((1 <= $2 && $2 <= 10)); then
+                    cli_countdown="$2"
+                    shift 2
+                else
+                    echo "Invalid delay: $2 (must be 1–10)" >&2
+                    exit 1
+                fi
+            else
+                echo "Invalid or missing delay value" >&2
+                exit 1
+            fi
+            ;;
+        --active)
+            cli_type="active"
+            shift
+            ;;
+        --area)
+            cli_type="area"
+            shift
+            ;;
+        --copy)
+            cli_action="copy"
+            shift
+            ;;
+        --save)
+            cli_action="save"
+            shift
+            ;;
+        --copysave)
+            cli_action="copysave"
+            shift
+            ;;
+        --edit)
+            cli_action="edit"
+            shift
+            ;;
+        --help | -h)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Invalid option: $1" >&2
+            usage
+            exit 1
+            ;;
+        esac
+    done
+
+    # Reasonable defaults if some flags missing:
+    # If no type provided but mode now/delay is used, default to 'screen'
+    if [[ -z "$cli_type" && ("$cli_mode" == "now" || "$cli_mode" == "delay") ]]; then
+        cli_type="screen"
+    fi
+    # If no action provided default to 'save'
+    if [[ -z "$cli_action" ]]; then
+        cli_action="save"
+    fi
+}
+
+main_cli() {
+    parse_cli "$@"
+
+    if [[ "$cli_mode" == "delay" ]]; then
+        timer_countdown "$cli_countdown"
+    fi
+
+    takescreenshot
+}
+
+# If any CLI args present, run CLI mode; otherwise fall back to interactive menu
+if [[ $# -gt 0 ]]; then
+    define_menu >/dev/null 2>&1 # ensure menu detection so takescreenshot can still rely on editor_command etc.
+    main_cli "$@"
+    exit $?
+fi
+
+# Interactive menu
 define_menu
 
 # Choose options
 main_choice=$(show_menu "Screenshot" "${main_opts[@]}") || exit 1
-
 case "$main_choice" in
 "󰹑 Capture") mode="normal" ;;
 "󰁫 Timer capture") mode="timer" ;;
@@ -114,27 +261,13 @@ case "$action_choice" in
 " Edit") option_action="edit" ;;
 esac
 
-# Timer function
-timer() {
-    for ((i = countdown; i > 0; i--)); do
-        #First time and 10 last seconds
-        if ((i <= 10 || i == countdown)); then
-            notify-send -t 1000 "Taking Screenshot in $i"
-        fi
-        sleep 1
-    done
-}
+# Use interactive choices to set CLI vars for takescreenshot
+cli_action="${option_action:-save}"
+cli_type="${option_type:-screen}"
+cli_countdown="${countdown:-0}"
 
-# Take screenshot
-takescreenshot() {
-    local grim_cmd=(grimblast --notify "$option_action" "$option_type")
+if [[ $mode == "timer" && -n "$cli_countdown" ]]; then
+    timer_countdown "$cli_countdown"
+fi
 
-    [[ $option_action == "edit" ]] && grim_cmd+=("--filetype" "ppm")
-
-    env DATE_FORMAT="$date_format" \
-        GRIMBLAST_EDITOR="$editor_command" \
-        "${grim_cmd[@]}"
-}
-
-[[ $mode == "timer" ]] && timer
 takescreenshot
