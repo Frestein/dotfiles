@@ -1,11 +1,17 @@
+encryption = "gpg"
+
+[gpg]
+args = "--quiet"
+recipient = "0xFD0E948816D7FF43"
+
 [diff]
 pager = "delta"
 
 [merge]
 command = "nvim"
 args = [
-    "-d",
-    "{{ `{{ .Destination }}` }}",
-    "{{ `{{ .Source }}` }}",
-    "{{ `{{ .Target }}` }}",
+  "-d",
+  "{{ `{{ .Destination }}` }}",
+  "{{ `{{ .Source }}` }}",
+  "{{ `{{ .Target }}` }}",
 ]
