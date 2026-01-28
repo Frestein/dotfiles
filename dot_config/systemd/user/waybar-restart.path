@@ -1,5 +1,10 @@
 [Unit]
 Description=Watch waybar for config changes
+PartOf=graphical-session.target waybar.service
+After=graphical-session.target waybar.service
 
 [Path]
 PathModified=%h/.config/waybar/config.jsonc
+
+[Install]
+WantedBy=graphical-session.target
