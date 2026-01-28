@@ -322,7 +322,9 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
       :v "gss" #'sort-lines
       (:when (modulep! :term vterm )
         :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle
-        :desc "Toggle vterm popup" :i "C-/" #'+vterm/toggle))
+        :desc "Toggle vterm popup" :i "C-/" #'+vterm/toggle)
+      (:when (modulep! :tools zoxide)
+        :n "gZ" #'zoxide-find-file))
 
 (map! :leader
       (:prefix ("q" . "quit/session")
@@ -394,6 +396,8 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
                           "l" #'ement-room-list
                           "v" #'ement-room-view)))
       (:prefix ("f" . "file")
+               (:when (modulep! :tools zoxide)
+                 :desc "Zoxide" "z" #'zoxide-find-file)
                (:when (modulep! :emacs dired)
                  :desc "Open directory in dirvish" "m" #'dirvish)
                (:when (modulep! :term eee)

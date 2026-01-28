@@ -120,6 +120,7 @@
        tree-sitter          ; syntax and parsing, sitting in a tree...
        tldr
        ;; upload            ; map local to remote projects via ssh/ftp
+       zoxide
 
        :os
        (:if (featurep :system 'macos) macos)  ; improve compatibility with macOS
