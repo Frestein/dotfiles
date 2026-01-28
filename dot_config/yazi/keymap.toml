@@ -35,14 +35,16 @@ prepend_keymap = [
   { on = ["g", "."], run = "hidden toggle", desc = "Toggle hidden" },
   { on = ["g", "?"], run = "help", desc = "Open help" },
   # Zoxide
-  { on = ["z", "z"], run = "plugin zoxide", desc = "Jump to a directory via zoxide" },
-  { on = ["z", "a"], run = 'shell -- zoxide add "$PWD"', desc = "Save the current directory to zoxide" },
-  { on = ["z", "d"], run = 'shell -- zoxide remove "$PWD"', desc = "Remove the current directory from zoxide" },
+  { on = ["z", "z"], run = "plugin zoxide", desc = "Zoxide" },
+  { on = ["z", "a"], run = "shell -- zoxide add .", desc = "Add to zoxide" },
+  { on = ["z", "r"], run = "shell -- zoxide remove .", desc = "Remove from zoxide" },
   { on = "Z", run = "plugin fzf" },
   # Chezmoi
-  { on = ["C", "a"], run = 'shell -- chezmoi add "$@"', desc = "Add to chezmoi" },
-  { on = ["C", "A"], run = 'shell -- chezmoi re-add "$@"', desc = "Re-add to chezmoi" },
-  { on = ["C", "e"], run = 'shell -- chezmoi edit "$@"', desc = "Edit in chezmoi" },
+  { on = ["C", "a"], run = "shell -- chezmoi add %s", desc = "Add to chezmoi" },
+  { on = ["C", "A"], run = "shell -- chezmoi add --encrypt %s", desc = "Add to chezmoi (encrypted)" },
+  { on = ["C", "r"], run = "shell -- chezmoi re-add %s", desc = "Re-add to chezmoi" },
+  { on = ["C", "R"], run = "shell -- chezmoi re-add --encrypt %s", desc = "Re-add to chezmoi (encrypted)" },
+  { on = ["C", "e"], run = "shell -- chezmoi edit %s", desc = "Edit in chezmoi" },
   # Bookmarks
   { on = ["b", "a"], run = "plugin bookmarks -- save", desc = "Save the current position as a bookmark" },
   { on = ["b", "b"], run = "plugin bookmarks -- jump", desc = "Jump to a bookmark" },
