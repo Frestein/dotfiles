@@ -14,7 +14,7 @@ terminal = false
 regexes = ['^https?://youtu\.be/.*']
 
 [[handlers]]
-exec = "sh -c 'url=%u; if command -v curl >/dev/null 2>&1; then swayimg \"exec://curl -so- \"$url\"\"; else swayimg \"exec://wget -qO- \"$url\"\"; fi'"
+exec = "sh -c 'url=%u; if command -v curl >/dev/null 2>&1; then curl -sL \"$url\" | swayimg -; else wget -qO- \"$url\" | swayimg -; fi'"
 terminal = false
 regexes = ['^https?://images\.steamusercontent\.com/ugc/\d+/[A-Za-z0-9]+/?$']
 
