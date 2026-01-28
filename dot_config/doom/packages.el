@@ -1,6 +1,12 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
+(when (modulep! :term eshell)
+  (package! esh-autosuggest)
+
+  (when (executable-find "atuin")
+    (package! eshell-atuin)))
+
 (when (modulep! :lang org)
   (package! org-expose-emphasis-markers)
 

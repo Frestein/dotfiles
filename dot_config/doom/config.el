@@ -124,8 +124,39 @@ the variable `message-log-max'."
 
 (setq shell-file-name (executable-find "bash"))
 (when (executable-find "fish")
-  (setq-default vterm-shell (executable-find "fish")
-                explicit-shell-file-name (executable-find "fish")))
+  (setq-default explicit-shell-file-name (executable-find "fish"))
+
+  (after! vterm
+    (setq-default vterm-shell (executable-find "fish"))))
+
+(when (modulep! :term eshell)
+  (after! eshell
+    (map! :map eshell-mode-map
+          :localleader
+          (:when (executable-find "atuin")
+            "s" #'frestein/eshell-history)))
+
+  (use-package! esh-autosuggest
+    :hook (eshell-mode . esh-autosuggest-mode)
+    :config
+    (map! :map eshell-mode-map
+          :i "C-\\" #'esh-autosuggest-complete-word))
+
+  (use-package! eshell-atuin
+    :when (executable-find "atuin")
+    :hook (eshell-mode . eshell-atuin-mode)
+    :config
+    (defun frestein/eshell-history (&optional arg)
+      "Search eshell command history; by default use '+eshell/search-history'.
+If called with a prefix argument, use 'eshell-atuin-history' instead."
+      (interactive "P")
+      (if arg
+          (eshell-atuin-history)
+        (+eshell/search-history)))
+
+    (when (modulep! :completion vertico)
+      (setq eshell-atuin-search-fields '(time duration command))
+      (setq eshell-atuin-history-format "%-160c %t + %d"))))
 
 (when (modulep! :app everywhere)
   (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
