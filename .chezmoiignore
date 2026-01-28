@@ -71,7 +71,6 @@
 .config/yazi/**/.luarc.json
 .config/yazi/**/stylua.toml
 .config/yazi/**/.stylua.toml
-.config/YouTube\ Music/
 .config/yt-x/extensions
 .config/yt-x/*.json
 .config/pavucontrol.ini
