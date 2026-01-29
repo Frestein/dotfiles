@@ -19,6 +19,7 @@
 - [[#personal][Personal]]
   - [[#user][User]]
   - [[#functions][Functions]]
+  - [[#misc-1][Misc]]
 - [[#system-integration][System Integration]]
   - [[#xdg][XDG]]
   - [[#shell][Shell]]
@@ -27,7 +28,7 @@
   - [[#security][Security]]
     - [[#easypg][EasyPG]]
     - [[#password-manager][Password Manager]]
-    - [[#misc-1][Misc]]
+    - [[#misc-2][Misc]]
 - [[#file-manager][File Manager]]
   - [[#dired][Dired]]
   - [[#dirvish][Dirvish]]
@@ -271,6 +272,18 @@ the variable `message-log-max'."
   (if-let* ((win (get-buffer-window (messages-buffer))))
       (quit-window nil win)
     (view-echo-area-messages)))
+#+end_src
+
+** Misc
+
+#+begin_src emacs-lisp :tangle yes
+;; Increase how much is read from processes in a single chunk
+(setq read-process-output-max (* 2 1024 1024)) ; 1024kb
+
+(setq process-adaptive-read-buffering nil)
+
+;; Don't ping things that look like domain names.
+(setq ffap-machine-p-known 'reject)
 #+end_src
 
 * System Integration

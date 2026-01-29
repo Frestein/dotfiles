@@ -119,6 +119,14 @@ the variable `message-log-max'."
       (quit-window nil win)
     (view-echo-area-messages)))
 
+;; Increase how much is read from processes in a single chunk
+(setq read-process-output-max (* 2 1024 1024)) ; 1024kb
+
+(setq process-adaptive-read-buffering nil)
+
+;; Don't ping things that look like domain names.
+(setq ffap-machine-p-known 'reject)
+
 (use-package! xdg
   :demand t)
 
