@@ -1,6 +1,5 @@
 ;;; app/osm/config.el -*- lexical-binding: t; -*-
 
 (use-package! osm
-  :custom
-  (osm-server 'default)
-  (osm-copyright t))
+  :config
+  (setq osm-copyright nil))
