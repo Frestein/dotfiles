@@ -1287,21 +1287,13 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   '(markdown-header-face-5 :inherit outline-5)
   '(markdown-header-face-6 :inherit outline-6))
 
-(defun is-arch-linux-p ()
-  "Return t if the current system is Arch Linux."
-  (with-temp-buffer
-    (when (file-readable-p "/etc/os-release")
-      (insert-file-contents "/etc/os-release")
-      (goto-char (point-min))
-      (re-search-forward "^ID=arch" nil t))))
-
-(when (modulep! :tools lsp +eglot)
-  (when (is-arch-linux-p)
-    (when (modulep! :lang qt)
-      (defun +qt-common-config (mode)
-        (when (modulep! :lang qt +lsp)
-          (set-eglot-client! mode '("qmlls6"))
-          (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))))
+(when (and (modulep! :lang qt)
+           (not (executable-find "qmlls"))
+           (executable-find "qmlls6"))
+  (defun +qt-common-config (mode)
+    (when (modulep! :lang qt +lsp)
+      (set-eglot-client! mode '("qmlls6"))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
 
 (setq-default browse-url-text-browser (executable-find "cha"))
 
