@@ -419,7 +419,11 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
        (:when (modulep! :ui colorful)
          :desc "Colorful mode" "C" #'global-colorful-mode)
        (:when (modulep! :checkers jinx)
-         :desc "Jinx mode" "j" #'jinx-mode)))
+         :desc "Jinx mode" "j" #'jinx-mode))
+      (:prefix ("n" . "notes")
+               (:when (modulep! :lang org +roam)
+                 (:prefix ("r" . "roam")
+                          "s" nil))))
 
 (when (modulep! :completion corfu)
   (after! corfu
@@ -1246,7 +1250,23 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
                                  :finalize 'insert-link))))))
           (deactivate-mark)))
 
+
       (advice-add 'org-roam-node-insert :override #'frestein/org-roam-node-insert))
+
+    (use-package! org-mem
+      :after org
+      :config
+      (setq org-mem-watch-dirs (list org-roam-directory))
+      (setq org-roam-db-update-on-save nil)
+      (setq org-mem-roamy-do-overwrite-real-db t)
+      (org-mem-roamy-db-mode)
+
+      ;; Disable Doom's additional syncs from `+org-init-roam-h'
+      (after! org-roam
+        (org-roam-db-autosync-disable)
+
+        (undefadvice! +org-roam-try-init-db-a (&rest _)
+          :before #'org-roam-db-query)))
 
     (use-package! websocket
       :after org-roam)
