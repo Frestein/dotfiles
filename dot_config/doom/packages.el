@@ -23,7 +23,8 @@
 
   (when (modulep! :lang org +roam)
     (package! org-roam-ui)
-    (package! org-mem)))
+    (when (modulep! :lang org +mem)
+      (package! org-mem))))
 
 (when (modulep! :tools magit)
   (when (modulep! :ui hl-todo)

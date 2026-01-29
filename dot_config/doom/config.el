@@ -423,7 +423,8 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
       (:prefix ("n" . "notes")
                (:when (modulep! :lang org +roam)
                  (:prefix ("r" . "roam")
-                          "s" nil))))
+                          (:when (modulep! :lang org +mem)
+                            "s" nil)))))
 
 (when (modulep! :completion corfu)
   (after! corfu
@@ -1254,6 +1255,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
       (advice-add 'org-roam-node-insert :override #'frestein/org-roam-node-insert))
 
     (use-package! org-mem
+      :when (modulep! :lang org +mem)
       :after org
       :config
       (setq org-mem-watch-dirs (list org-roam-directory))

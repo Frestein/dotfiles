@@ -661,7 +661,8 @@ Disable evil-snipe on specific modes.
       (:prefix ("n" . "notes")
                (:when (modulep! :lang org +roam)
                  (:prefix ("r" . "roam")
-                          "s" nil))))
+                          (:when (modulep! :lang org +mem)
+                            "s" nil)))))
 #+end_src
 
 ** Completion 
@@ -1548,6 +1549,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
       (advice-add 'org-roam-node-insert :override #'frestein/org-roam-node-insert))
 
     (use-package! org-mem
+      :when (modulep! :lang org +mem)
       :after org
       :config
       (setq org-mem-watch-dirs (list org-roam-directory))
