@@ -32,3 +32,5 @@
 
 (when (modulep! :config default +gnupg)
   (package! pinentry))
+
+(package! cl-libify)
