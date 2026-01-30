@@ -636,7 +636,9 @@ argument - MSG to insert additional information after header."
 (use-package! telega-url-shorten-nerd
   :when (modulep! +icons)
   :after-call telega
-  :hook (telega-load  . global-telega-url-shorten-nerd-mode))
+  :hook (telega-load  . global-telega-url-shorten-nerd-mode)
+  :config
+  (setq telega-url-shorten-nerd-use-images nil))
 
 (use-package! telega-adblock
   :when (modulep! +adblock)
