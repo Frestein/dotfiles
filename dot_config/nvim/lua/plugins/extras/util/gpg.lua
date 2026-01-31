@@ -1,9 +1,9 @@
-vim.filetype.add({
+vim.filetype.add {
 	extension = {
 		gpg = "gpg",
 		asc = "gpg",
 	},
-})
+}
 
 return {
 	"benoror/gpg.nvim",
