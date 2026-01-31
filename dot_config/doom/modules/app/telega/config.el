@@ -12,48 +12,52 @@
         telega-cache-dir    (concat (getenv "XDG_CACHE_HOME") "/telega/cache")
         telega-temp-dir     (concat (getenv "XDG_CACHE_HOME") "/telega/temp"))
   :config
-  (setq telega-server-libs-prefix "/usr"
-        telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega")
-        telega-root-default-view-function 'telega-view-folders
-        telega-translate-to-language-by-default "ru"
-        telega-video-player-command (executable-find "mpv")
-        telega-video-play-incrementally nil
-        telega-chat-show-deleted-messages-for '(not saved-messages)
-        telega-sticker-size '(8 . 26)
-        telega-use-images t
-        telega-sticker-animated-play t ;; WARN: requires tgs2png
-        telega-animation-play-inline 60
-        telega-date-format-alist '((today          . "%I:%M %p ")
+  (setq telega-server-libs-prefix "/usr")
+  (setq telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega"))
+  (setq telega-root-default-view-function 'telega-view-folders)
+  (setq telega-translate-to-language-by-default "ru")
+  (setq telega-video-player-command (executable-find "mpv"))
+  (setq telega-video-play-incrementally nil)
+  (setq telega-chat-show-deleted-messages-for '(not saved-messages))
+  (setq telega-chat-input-markups '("org" "markdown2"))
+  (setq telega-sticker-size '(8 . 26))
+  (setq telega-use-images t)
+  (setq telega-animation-play-inline 60)
+  (when (executable-find "tgs2png")
+    (setq telega-sticker-animated-play t))
+  (setq telega-known-inline-bots (append telega-known-inline-bots
+                                         '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare")))
+
+  (setq telega-date-format-alist '((today          . "%I:%M %p ")
                                    (this-week      . "%I:%M %p ")
                                    (old            . "%d.%m.%y ")
                                    (date           . "%d.%m.%y")
                                    (time           . "%I:%M %p")
                                    (date-time      . "%d.%m.%y %a %I:%M %p")
                                    (date-long      . "%d %B %Y")
-                                   (date-break-bar . "%d %B %Y %a"))
-        telega-known-inline-bots (append telega-known-inline-bots
-                                         '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare"))
-        telega-chat-input-markups '("org" "markdown2")
-        telega-currency-symbols-alist '(("EUR" . "€") ;; Euro
-                                        ("USD" . "$") ;; US Dollar
-                                        ("RUB" . "₽") ;; Russian Ruble
-                                        ("GBP" . "£") ;; British Pound
-                                        ("JPY" . "¥") ;; Japanese Yen
-                                        ("CNY" . "¥") ;; Chinese Yuan (same symbol as Yen)
-                                        ("INR" . "₹") ;; Indian Rupee
-                                        ("KRW" . "₩") ;; South Korean Won
-                                        ("TRY" . "₺") ;; Turkish Lira
-                                        ("UAH" . "₴") ;; Ukrainian Hryvnia
-                                        ("PLN" . "zł")  ;; Polish Zloty (zł)
-                                        ("NGN" . "₦")   ;; Nigerian Naira
-                                        ("KZT" . "₸")   ;; Kazakhstan Tenge
-                                        ("THB" . "฿")   ;; Thai Baht
-                                        ("CHF" . "Fr")  ;; Swiss Franc (Fr)
-                                        ("AUD" . "A$")  ;; Australian Dollar
-                                        ("CAD" . "C$")  ;; Canadian Dollar
-                                        ("MXN" . "MX$") ;; Mexican Peso
-                                        ("BRL" . "R$")) ;; Brazilian Real
-        telega-builtin-palettes-alist
+                                   (date-break-bar . "%d %B %Y %a")))
+
+  (setq telega-currency-symbols-alist '(("EUR" . "€")    ;; Euro
+                                        ("USD" . "$")    ;; US Dollar
+                                        ("RUB" . "₽")    ;; Russian Ruble
+                                        ("GBP" . "£")    ;; British Pound
+                                        ("JPY" . "¥")    ;; Japanese Yen
+                                        ("CNY" . "¥")    ;; Chinese Yuan (same symbol as Yen)
+                                        ("INR" . "₹")    ;; Indian Rupee
+                                        ("KRW" . "₩")    ;; South Korean Won
+                                        ("TRY" . "₺")    ;; Turkish Lira
+                                        ("UAH" . "₴")    ;; Ukrainian Hryvnia
+                                        ("PLN" . "zł")   ;; Polish Zloty (zł)
+                                        ("NGN" . "₦")    ;; Nigerian Naira
+                                        ("KZT" . "₸")    ;; Kazakhstan Tenge
+                                        ("THB" . "฿")    ;; Thai Baht
+                                        ("CHF" . "Fr")   ;; Swiss Franc (Fr)
+                                        ("AUD" . "A$")   ;; Australian Dollar
+                                        ("CAD" . "C$")   ;; Canadian Dollar
+                                        ("MXN" . "MX$")  ;; Mexican Peso
+                                        ("BRL" . "R$"))) ;; Brazilian Real
+
+  (setq telega-builtin-palettes-alist
         `((light
            ((:outline "#cc241d") (:foreground "#bb3e06")     (:background ,(doom-color 'bg)))
            ((:outline "#d65d0e") (:foreground "DarkOrange3") (:background ,(doom-color 'bg)))
@@ -94,8 +98,9 @@
                   telega-chat-fill-column))))
 
   (when (modulep! +icons)
-    (setq telega-emoji-use-images nil
-          telega-symbols-emojify
+    (setq telega-emoji-use-images nil)
+
+    (setq telega-symbols-emojify
           (cl-reduce (lambda (emojify key)
                        (assq-delete-all key emojify))
                      '(checkmark heavy-checkmark
@@ -119,8 +124,9 @@
                        pause pending phone photo pin poll play premium
                        right-arrow saved-messages-tag-end
                        telegram-star timer-clock typing)
-                     :initial-value telega-symbols-emojify)
-          telega-chat-prompt-insexp
+                     :initial-value telega-symbols-emojify))
+
+    (setq telega-chat-prompt-insexp
           '(telega-ins--with-face (unless (telega-chatbuf-match-p 'can-send-or-post)
                                     'telega-shadow)
              (telega-chatbuf-prompt-ins-default-sender-avatar)
@@ -130,8 +136,9 @@
                (telega-chatbuf-prompt-ins-chat-avatar))
              (telega-chatbuf-prompt-ins-topic 20 t)
              (telega-auto-translate--chatbuf-prompt-ins-translation)
-             (telega-ins "  "))
-          telega-symbol-alarm                 "󰯪 "
+             (telega-ins "  ")))
+
+    (setq telega-symbol-alarm                 "󰯪 "
           telega-symbol-attachment            "󰁦"
           telega-symbol-audio                 ""
           telega-symbol-author-hidden         " "
@@ -404,15 +411,18 @@ argument - MSG to insert additional information after header."
                 (telega-ins " " (telega-symbol 'flames)
                             (telega-duration-human-readable auto-delete-in 1))))
 
-            ;; Show language code if translation replaces message's content
-            (when-let ((translated (plist-get msg :telega-translated)))
-              (when (with-telega-chatbuf chat
-                      telega-translate-replace-content)
-                (telega-ins--with-face 'telega-shadow
-                  (telega-ins " ["
-                              (telega-symbol 'right-arrow)
-                              (plist-get translated :to_language_code)
-                              "]"))))
+            ;; AI summary
+            (when (plist-get msg :summary_language_code)
+              (telega-ins " ")
+              (telega-ins--text-button
+                  (if (plist-get msg :telega-summary)
+                      (telega-symbol 'summarize-out)
+                    (telega-symbol 'summarize-in))
+                'face 'telega-link
+                'help-echo (if (plist-get msg :telega-summary)
+                               "Disable AI summary"
+                             "Enable AI summary")
+                :action #'telega-msg-summarize))
 
             (when (numberp telega-debug)
               (telega-ins-fmt " (ID=%d)" (plist-get msg :id)))
