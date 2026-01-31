@@ -64,6 +64,7 @@
     "plugins.extras.util.langmapper",
     "plugins.extras.util.mason.disable",
     "plugins.extras.util.paperplanes",
+    "plugins.extras.util.project",
     "plugins.extras.util.scope",
     "plugins.extras.util.silicon"
   ],

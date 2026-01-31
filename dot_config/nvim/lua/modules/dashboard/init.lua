@@ -123,7 +123,6 @@ M.themes = {
 ---@type snacks.dashboard.Item[]
 M.keys = {
 	{ icon = "󰦛 ", key = "s", desc = "Restore", action = ":lua require('persistence').load { last = true }" },
-	{ icon = " ", key = "p", desc = "Projects", action = ":lua Snacks.picker.projects()" },
     { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
 	{ icon = " ", key = "r", desc = "Recent", action = ":lua Snacks.dashboard.pick('oldfiles')" },
 	{ icon = "󱐁 ", key = "z", desc = "Zoxide", action = ":lua Snacks.picker.zoxide()" },
