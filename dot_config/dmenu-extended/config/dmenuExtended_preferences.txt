@@ -31,6 +31,7 @@
     "menu": "fuzzel",
     "menu_arguments": [
         "-d",
+        "--minimal-lines",
         "--counter",
         "-l",
         "20",
@@ -64,6 +65,7 @@
         "gif",
         "avi",
         "mkv",
+        "m4v",
         "mp4"
     ],
     "watch_folders": [
