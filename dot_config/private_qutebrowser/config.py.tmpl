@@ -256,8 +256,10 @@ c.aliases.update(
         "qr": "spawn -u qr",
         "buku-dmenu": "spawn -u qute-buku dmenu",
         "translate": "spawn -u qute-translate-popup",
-        "gopass-login": f"{gopass} --username-target secret --username-pattern 'login: (.+)'",
-        "gopass-username": f"{gopass} --username-target secret --username-pattern 'login: (.+)' --username-only ",
+        "gopass-login-path": f"{gopass}",
+        "gopass-login-secret": f"{gopass} --username-target secret --username-pattern 'login: (.+)'",
+        "gopass-username-path": f"{gopass} --username-only ",
+        "gopass-username-secret": f"{gopass} --username-target secret --username-pattern 'login: (.+)' --username-only ",
         "gopass-password": f"{gopass} --password-only",
         "gopass-otp": f"{gopass} --otp-only",
     }
@@ -344,8 +346,10 @@ bind(";iD", "hint --rapid images download")
 bind("gF", "spawn -u openfeeds")
 
 # Password management
-bind("\\pl", "gopass-login")
-bind("\\pu", "gopass-username")
+bind("\\pl", "gopass-login-path")
+bind("\\pL", "gopass-login-secret")
+bind("\\pu", "gopass-username-path")
+bind("\\pU", "gopass-username-secret")
 bind("\\pp", "gopass-password")
 bind("\\po", "gopass-otp")
 
