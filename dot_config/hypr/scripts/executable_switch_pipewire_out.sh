@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#!/usr/bin/env sh
 
 # This script switches between whatever sinks exist.
 # Removing pulseaudio (but not libpulse) means removing pacmd, so this is an attempt at switching the default via pactl instead.
@@ -10,25 +10,25 @@
 # the same for mounting.
 
 get_all_sinks() {
-  pactl list short sinks | cut -f 2
+    pactl list short sinks | cut -f 2
 }
 
 get_default_sink() {
-  #pw-play --list-targets | grep \* | tail -n 1 | cut -d' ' -f 2 | cut -d : -f 1
-  pactl info | grep 'Default Sink' | cut -d':' -f 2
+    #pw-play --list-targets | grep \* | tail -n 1 | cut -d' ' -f 2 | cut -d : -f 1
+    pactl info | grep 'Default Sink' | cut -d':' -f 2
 }
 
 DEF_SINK=$(get_default_sink)
-for SINK in $(get_all_sinks) ; do
-  [ -z "$FIRST" ] && FIRST=$SINK # Save the first index in case the current default is the last in the list
-  # get_default_sink currently returns the index with a leading space
-  if [ " $SINK" = "$DEF_SINK" ]; then
-    NEXT=1;
-  # Subsequent pass, don't need continue above
-  elif [ -n "$NEXT"  ]; then
-    NEW_DEFAULT_SINK=$SINK
-    break
-  fi
+for SINK in $(get_all_sinks); do
+    [ -z "$FIRST" ] && FIRST=$SINK # Save the first index in case the current default is the last in the list
+    # get_default_sink currently returns the index with a leading space
+    if [ " $SINK" = "$DEF_SINK" ]; then
+        NEXT=1
+    # Subsequent pass, don't need continue above
+    elif [ -n "$NEXT" ]; then
+        NEW_DEFAULT_SINK=$SINK
+        break
+    fi
 done
 
 # Don't particularly like this method of making it circular, but...

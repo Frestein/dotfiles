@@ -15,7 +15,8 @@ window=$(jq -r '.[] | select(.monitor != -1 ) | "\(.address)\t\(.workspace.name)
     fuzzel -d \
         --minimal-lines \
         -p " " \
-        -w 120)
+        --placeholder "Choose window" \
+        -w 85)
 
 addr=$(awk '{print $1}' <<<"$window")
 ws=$(awk '{print $2}' <<<"$window")
