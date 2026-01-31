@@ -57,7 +57,7 @@ if ! command -v "$FUZZEL_CMD" >/dev/null; then
 fi
 
 fuzzel_default_args=(
-    --width 80
+    --width 85
     --index
     -d
     -p 'Downloads '
