@@ -1977,7 +1977,7 @@ is tomorrow.  With two prefixes, select the deadline."
     (setq fj-token-use-auth-source nil)
 
     (defun frestein/fj-set-token ()
-      (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/fj.el")))
+      (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/frestein@tuta.io/fj.el")))
 
     (if (daemonp)
         (add-hook! doom-first-input (frestein/fj-set-token))
