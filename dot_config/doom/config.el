@@ -194,6 +194,11 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
   (use-package! pinentry
     :hook (doom-after-init . pinentry-start)))
 
+(when (modulep! :config default)
+  (after! xdg
+    (setq auth-sources (list (concat (xdg-config-home) "/authinfo")
+                             (file-name-concat doom-profile-state-dir "authinfo.gpg")))))
+
 (when (modulep! :tools pass)
   (when (executable-find "gopass")
     (setq backup-directory-alist

@@ -1,8 +1,30 @@
+{{- $name := "Frestein" -}}
+{{- $email := "fresteinart@gmail.com" -}}
+{{- $email_gpg := "frestein@tuta.io" -}}
+{{- $gpg_keyid := "0xFD0E948816D7FF43" -}}
+
+
+{{- $personal_smtp_host := "smtp.gmail.com" -}}
+{{- $personal_smtp_port := 465 -}}
+{{- $personal_imap_host := "imap.gmail.com" -}}
+{{- $personal_imap_port := 993 -}}
+
 encryption = "gpg"
+
+[data]
+name = {{ $name | quote }}
+email = {{ $email | quote }}
+email_gpg = {{ $email_gpg | quote }}
+gpg_keyid = {{ $gpg_keyid | quote }}
+personal_smtp_host = {{ $personal_smtp_host | quote }}
+personal_smtp_port = {{ $personal_smtp_port }}
+personal_imap_host = {{ $personal_imap_host | quote }}
+personal_imap_port = {{ $personal_imap_port }}
+github_user = "Frestein"
 
 [gpg]
 args = "--quiet"
-recipient = "0xFD0E948816D7FF43"
+recipient = {{ $gpg_keyid | quote }}
 
 [diff]
 pager = "delta"

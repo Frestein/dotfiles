@@ -1,7 +1,9 @@
 [user]
-	name = Frestein
-	email = frestein@tuta.io
-	signingkey = frestein@tuta.io
+	name = {{ .name }}
+	email = {{ .email }}
+	signingkey = {{ .email_gpg }}
+[github]
+	user = {{ .github_user }}
 [commit]
 	gpgsign = true
 [tag]

@@ -377,6 +377,15 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
     :hook (doom-after-init . pinentry-start)))
 #+end_src
 
+Override default Doom's auth-sources.
+
+#+begin_src emacs-lisp :tangle yes
+(when (modulep! :config default)
+  (after! xdg
+    (setq auth-sources (list (concat (xdg-config-home) "/authinfo")
+                             (file-name-concat doom-profile-state-dir "authinfo.gpg")))))
+#+end_src
+
 *** Password Manager
 
 #+begin_src emacs-lisp :tangle yes

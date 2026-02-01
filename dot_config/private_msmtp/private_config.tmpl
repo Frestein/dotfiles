@@ -1,0 +1,15 @@
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.local/state/msmtp/log
+
+account        {{ .email }}
+host           {{ .personal_smtp_host }}
+port           {{ .personal_smtp_port }}
+tls_starttls   off
+from           {{ .email }}
+user           {{ .email }}
+passwordeval   gopass show -o email_services/isync/accounts.google.com/{{ .email }}
+
+account default: {{ .email }}
