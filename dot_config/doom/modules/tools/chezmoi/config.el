@@ -13,6 +13,28 @@
 
 (use-package! chezmoi
   :config
+  (defcustom chezmoi-pager-command "less"
+    "Pager to use for chezmoi commands."
+    :type '(string)
+    :group 'chezmoi)
+
+  (defun fr/chezmoi-diff (arg)
+    "View output of =chezmoi diff= in a diff-buffer.
+If ARG is non-nil, switch to the diff-buffer."
+    (interactive "i")
+    (let ((b (get-buffer-create "*chezmoi-diff*")))
+      (with-current-buffer b
+        (erase-buffer)
+        (chezmoi--locally (shell-command (concat chezmoi-command " diff --use-builtin-diff --pager " (shell-quote-argument chezmoi-pager-command)) b)))
+      (unless arg
+        (switch-to-buffer b)
+        (diff-mode)
+        (whitespace-mode 0))
+      b))
+
+  (advice-add #'chezmoi-diff
+              :override #'fr/chezmoi-diff)
+
   (when (modulep! :editor evil)
     (add-hook 'chezmoi-mode-hook #'+chezmoi--evil-h)))
 
