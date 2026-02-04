@@ -505,8 +505,9 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
   (setq magit-repository-directories `(("~/Projects" . 2)
                                        (,(xdg-user-dir "DOCUMENTS") . 1)
                                        ("~/.local/share/chezmoi" . 1)))
+  (setq magit-clone-default-directory "~/Projects/git/")
 
-  (defun my-magit-todos-ignore-tangled-files (filename)
+  (defun fr/magit-todos-ignore-tangled-files (filename)
     "Return nil if an `.org` file with the same basename exists in the same directory,
 ignoring all other files with the same basename."
     (let* ((basename (file-name-sans-extension (file-name-nondirectory filename)))
@@ -524,7 +525,7 @@ ignoring all other files with the same basename."
       :hook (magit-mode . magit-todos-mode)
       :custom
       (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP" "KLUDGE" "DONT" "OKAY" "PROG" "THEM" "NEXT" "DONE"))
-      (magit-todos-filename-filter #'my-magit-todos-ignore-tangled-files))))
+      (magit-todos-filename-filter #'fr/magit-todos-ignore-tangled-files))))
 
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
 
