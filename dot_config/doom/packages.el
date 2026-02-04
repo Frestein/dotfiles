@@ -13,7 +13,8 @@
   (package! corg
     :recipe (:host github :repo "isamert/corg.el"))
 
-  ;; TODO: Adjust when this is added to GNU ELPA
+  ;; TODO: Adjust when doomelpa will be synced
+  ;; https://github.com/orgs/doomemacs/discussions/68
   (when (modulep! :lang org +contacts2)
     (package! org-contacts
       :recipe (:host github :repo "emacsmirror/org-contacts")))

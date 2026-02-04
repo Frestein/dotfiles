@@ -7,22 +7,14 @@
   "Location of the chezmoi managed doom private directory")
 
 (use-package! chezmoi
-  :commands (chezmoi-mode
-             chezmoi-write
-             chezmoi-magit-status
-             chezmoi-diff
-             chezmoi-ediff
-             chezmoi-find
-             chezmoi-write-files
-             chezmoi-open-other
-             chezmoi-template-buffer-display)
   :config
   (when (modulep! :editor evil)
     (add-hook 'chezmoi-mode-hook #'+chezmoi--evil-h)))
 
+;; TODO: Does not work
+;; https://github.com/tuh8888/chezmoi.el/issues/29#issuecomment-1678028390
 (use-package! chezmoi-cape
   :when (modulep! :completion corfu)
-  :after-call chezmoi
   :config
   (add-to-list 'completion-at-point-functions #'chezmoi-capf))
 
