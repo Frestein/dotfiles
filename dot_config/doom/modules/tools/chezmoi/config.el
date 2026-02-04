@@ -1,10 +1,15 @@
 ;;; tools/chezmoi/config.el -*- lexical-binding: t; -*-
 
-(defvar chezmoi-dir "~/.local/share/chezmoi/"
-  "Location of the chezmoi directory")
+(defcustom chezmoi-dir (string-trim (shell-command-to-string "chezmoi source-path"))
+  "Location of the chezmoi directory"
+  :type '(string)
+  :group 'chezmoi)
 
-(defvar chezmoi-doom-private-dir (concat chezmoi-dir "dot_config/doom/")
-  "Location of the chezmoi managed doom private directory")
+(defcustom chezmoi-doom-private-dir (concat chezmoi-dir "/dot_config/doom/")
+  "Location of the chezmoi managed doom private directory"
+  :type '(string)
+  :group 'chezmoi
+  :set-after '(chezmoi-dir))
 
 (use-package! chezmoi
   :config
