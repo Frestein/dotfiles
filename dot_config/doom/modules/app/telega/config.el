@@ -16,8 +16,16 @@
   (setq telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega"))
   (setq telega-root-default-view-function 'telega-view-folders)
   (setq telega-translate-to-language-by-default "ru")
-  (setq telega-video-player-command (executable-find "mpv"))
-  (setq telega-video-play-incrementally nil)
+  (setq telega-video-player-command (cond ((executable-find "mpv")
+                                           '(concat "mpv"
+                                             (when telega-ffplay-media-timestamp
+                                               (format " --start=%f" telega-ffplay-media-timestamp))
+                                             (when telega-video-play-incrementally
+                                               " --cache=no")))
+                                          ((executable-find "ffplay")
+                                           '(concat "ffplay -autoexit"
+                                             (when telega-ffplay-media-timestamp
+                                               (format " -ss %f" telega-ffplay-media-timestamp))))))
   (setq telega-chat-show-deleted-messages-for '(not saved-messages))
   (setq telega-chat-input-markups '("org" "markdown2"))
   (setq telega-sticker-size '(8 . 26))
@@ -37,16 +45,16 @@
                                    (date-long      . "%d %B %Y")
                                    (date-break-bar . "%d %B %Y %a")))
 
-  (setq telega-currency-symbols-alist '(("EUR" . "€")    ;; Euro
-                                        ("USD" . "$")    ;; US Dollar
-                                        ("RUB" . "₽")    ;; Russian Ruble
-                                        ("GBP" . "£")    ;; British Pound
-                                        ("JPY" . "¥")    ;; Japanese Yen
-                                        ("CNY" . "¥")    ;; Chinese Yuan (same symbol as Yen)
-                                        ("INR" . "₹")    ;; Indian Rupee
-                                        ("KRW" . "₩")    ;; South Korean Won
-                                        ("TRY" . "₺")    ;; Turkish Lira
-                                        ("UAH" . "₴")    ;; Ukrainian Hryvnia
+  (setq telega-currency-symbols-alist '(("EUR" . "€") ;; Euro
+                                        ("USD" . "$") ;; US Dollar
+                                        ("RUB" . "₽") ;; Russian Ruble
+                                        ("GBP" . "£") ;; British Pound
+                                        ("JPY" . "¥") ;; Japanese Yen
+                                        ("CNY" . "¥") ;; Chinese Yuan (same symbol as Yen)
+                                        ("INR" . "₹") ;; Indian Rupee
+                                        ("KRW" . "₩") ;; South Korean Won
+                                        ("TRY" . "₺") ;; Turkish Lira
+                                        ("UAH" . "₴") ;; Ukrainian Hryvnia
                                         ("PLN" . "zł")   ;; Polish Zloty (zł)
                                         ("NGN" . "₦")    ;; Nigerian Naira
                                         ("KZT" . "₸")    ;; Kazakhstan Tenge
@@ -558,8 +566,16 @@ argument - MSG to insert additional information after header."
     (add-hook 'telega-msg-ignore-predicates
               (telega-match-gen-predicate 'msg '(sender is-blocked))))
 
+  (defun telega-video-play-incementally-mode ()
+    "Toggle telega video play incrementally mode."
+    (interactive)
+    (setq telega-video-play-incrementally (not telega-video-play-incrementally))
+    (if telega-video-play-incrementally
+        (message "Telega-Video-Play-Incrementally mode enabled")
+      (message "Telega-Video-Play-Incrementally mode disabled")))
+
   (defun telega-debug-mode ()
-    "Toggle telega debug mode"
+    "Toggle telega debug mode."
     (interactive)
     (setq telega-debug (not telega-debug))
     (if telega-debug
