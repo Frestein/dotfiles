@@ -139,32 +139,36 @@ the variable `message-log-max'."
 
 (when (modulep! :term eshell)
   (after! eshell
-    (map! :map eshell-mode-map
-          :localleader
-          (:when (executable-find "atuin")
-            "s" #'frestein/eshell-history)))
+    (setq eshell-banner-message "")))   ; Disable top banner message
 
-  (use-package! esh-autosuggest
-    :hook (eshell-mode . esh-autosuggest-mode)
-    :config
-    (map! :map eshell-mode-map
-          :i "C-\\" #'esh-autosuggest-complete-word))
+(use-package! esh-autosuggest
+  :when (modulep! :term eshell)
+  :hook (eshell-mode . esh-autosuggest-mode)
+  :config
+  (map! :map eshell-mode-map
+        :i "C-\\" #'esh-autosuggest-complete-word))
 
-  (use-package! eshell-atuin
-    :when (executable-find "atuin")
-    :hook (eshell-mode . eshell-atuin-mode)
-    :config
-    (defun frestein/eshell-history (&optional arg)
-      "Search eshell command history; by default use '+eshell/search-history'.
+(use-package! eshell-atuin
+  :when (and (modulep! :term eshell)
+             (executable-find "atuin"))
+  :hook (eshell-mode . eshell-atuin-mode)
+  :config
+  (when (modulep! :completion vertico)
+    (setq eshell-atuin-search-fields '(time duration command))
+    (setq eshell-atuin-history-format "%-160c %t + %d"))
+
+  (defun fr/eshell-history (&optional arg)
+    "Search eshell command history; by default use '+eshell/search-history'.
 If called with a prefix argument, use 'eshell-atuin-history' instead."
-      (interactive "P")
-      (if arg
-          (eshell-atuin-history)
-        (+eshell/search-history)))
+    (interactive "P")
+    (if arg
+        (eshell-atuin-history)
+      (+eshell/search-history)))
 
-    (when (modulep! :completion vertico)
-      (setq eshell-atuin-search-fields '(time duration command))
-      (setq eshell-atuin-history-format "%-160c %t + %d"))))
+  (map! :map eshell-mode-map
+        :localleader
+        (:when (executable-find "atuin")
+          "s" #'fr/eshell-history)))
 
 (when (modulep! :app everywhere)
   (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))

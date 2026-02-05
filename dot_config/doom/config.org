@@ -1,6 +1,7 @@
 #+title: Frestein's Doom Emacs
 #+author: Frestein (frestein@tuta.io)
 #+description: Frestein's Doom Emacs config with personal modules.
+#+property: header-args :results silent
 #+startup: content
 #+startup_ignore: toc_3
 
@@ -101,13 +102,13 @@
 
 * Lexical-Binding
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 #+end_src
 
 * Startup
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (and (not (modulep! :ui doom-dashboard))
            (modulep! :lang org))
   (setq-default inhibit-startup-screen t
@@ -133,7 +134,7 @@
 
 ** Theme
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq doom-theme 'doom-gruvbox)
 
 (custom-theme-set-faces! 'doom-gruvbox
@@ -142,7 +143,7 @@
 
 ** Fonts
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq doom-font                (font-spec :family "Maple Mono NF" :size 14))
 (setq doom-big-font            (font-spec :family "Maple Mono NF" :size 24))
 (setq doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
@@ -152,7 +153,7 @@
 
 *** Symbols
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq doom-symbol-font doom-font)
 (setq doom-symbol-fallback-font-families '("Twemoji"))
 
@@ -162,7 +163,7 @@
 
 *** Unicode
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (after! unicode-fonts
   (setq unicode-fonts-fallback-font-list doom-symbol-fallback-font-families)
 
@@ -177,7 +178,7 @@
 
 *** Ligatures
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (after! ligature
   ;; Enable all Maple Font ligatures
   ;; https://github.com/subframe7536/maple-font/blob/variable/source/features/README.md#ligatures
@@ -203,14 +204,14 @@
 
 *** Faces
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
 #+end_src
 
 ** Commands
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq doom-upgrade-command
       (format "%s upgrade -B --aot"
               ;; INFO: /usr/bin/env doesn't exist on Android
@@ -245,7 +246,7 @@
 
 ** Misc
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (with-eval-after-load "lib/docs"
   (remove-hook! 'doom-docs-mode-hook #'doom-docs--display-menu-h))
 #+end_src
@@ -254,7 +255,7 @@
 
 ** User
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
 #+end_src
@@ -263,7 +264,7 @@
 
 *[QoL]* Toggle Echo Area messages.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (defun toggle-echo-area-messages ()
   "Toggle the log of recent echo-area messages: the `*Messages*' buffer.
 The number of messages retained in that buffer is specified by
@@ -276,7 +277,7 @@ the variable `message-log-max'."
 
 ** Misc
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 ;; Increase how much is read from processes in a single chunk
 (setq read-process-output-max (* 2 1024 1024)) ; 1024kb
 
@@ -290,14 +291,14 @@ the variable `message-log-max'."
 
 ** XDG
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (use-package! xdg
   :demand t)
 #+end_src
 
 ** Shell
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq shell-file-name (executable-find "bash"))
 (when (executable-find "fish")
   (setq-default explicit-shell-file-name (executable-find "fish"))
@@ -308,40 +309,56 @@ the variable `message-log-max'."
 
 *** Eshell
 
-#+begin_src emacs-lisp :tangle yes
+**** Config
+
+#+begin_src elisp
 (when (modulep! :term eshell)
   (after! eshell
-    (map! :map eshell-mode-map
-          :localleader
-          (:when (executable-find "atuin")
-            "s" #'frestein/eshell-history)))
+    (setq eshell-banner-message "")))   ; Disable top banner message
+#+end_src
 
-  (use-package! esh-autosuggest
-    :hook (eshell-mode . esh-autosuggest-mode)
-    :config
-    (map! :map eshell-mode-map
-          :i "C-\\" #'esh-autosuggest-complete-word))
+**** Autosuggestions
 
-  (use-package! eshell-atuin
-    :when (executable-find "atuin")
-    :hook (eshell-mode . eshell-atuin-mode)
-    :config
-    (defun frestein/eshell-history (&optional arg)
-      "Search eshell command history; by default use '+eshell/search-history'.
+Fish-like autosuggestions.
+
+#+begin_src elisp
+(use-package! esh-autosuggest
+  :when (modulep! :term eshell)
+  :hook (eshell-mode . esh-autosuggest-mode)
+  :config
+  (map! :map eshell-mode-map
+        :i "C-\\" #'esh-autosuggest-complete-word))
+#+end_src
+
+**** Atuin
+
+#+begin_src elisp
+(use-package! eshell-atuin
+  :when (and (modulep! :term eshell)
+             (executable-find "atuin"))
+  :hook (eshell-mode . eshell-atuin-mode)
+  :config
+  (when (modulep! :completion vertico)
+    (setq eshell-atuin-search-fields '(time duration command))
+    (setq eshell-atuin-history-format "%-160c %t + %d"))
+
+  (defun fr/eshell-history (&optional arg)
+    "Search eshell command history; by default use '+eshell/search-history'.
 If called with a prefix argument, use 'eshell-atuin-history' instead."
-      (interactive "P")
-      (if arg
-          (eshell-atuin-history)
-        (+eshell/search-history)))
+    (interactive "P")
+    (if arg
+        (eshell-atuin-history)
+      (+eshell/search-history)))
 
-    (when (modulep! :completion vertico)
-      (setq eshell-atuin-search-fields '(time duration command))
-      (setq eshell-atuin-history-format "%-160c %t + %d"))))
+  (map! :map eshell-mode-map
+        :localleader
+        (:when (executable-find "atuin")
+          "s" #'fr/eshell-history)))
 #+end_src
 
 ** Everywhere
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :app everywhere)
   (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
   (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
@@ -369,7 +386,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 *** EasyPG
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq epg-gpg-home-directory (getenv "GNUPGHOME"))
 
 (when (modulep! :config default +gnupg)
@@ -379,7 +396,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 Override default Doom's auth-sources.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :config default)
   (after! xdg
     (setq auth-sources (list (concat (xdg-config-home) "/authinfo")
@@ -388,7 +405,7 @@ Override default Doom's auth-sources.
 
 *** Password Manager
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :tools pass)
   (when (executable-find "gopass")
     (setq backup-directory-alist
@@ -408,7 +425,7 @@ Override default Doom's auth-sources.
 
 *** Misc
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq gnutls-verify-error t) ; Prompts user if there are certificate issues
 (setq tls-checktrust t)      ; Ensure SSL/TLS connections undergo trust verification
 #+end_src
@@ -417,7 +434,7 @@ Override default Doom's auth-sources.
 
 ** Dired
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq delete-by-moving-to-trash t
       dired-mouse-drag-files t
       mouse-drag-and-drop-region-cross-program t)
@@ -428,7 +445,7 @@ Override default Doom's auth-sources.
 
 ** Dirvish
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :emacs dired +dirvish)
   (use-package! dirvish
     :config
@@ -483,7 +500,7 @@ Override default Doom's auth-sources.
 
 ** Settings
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq default-input-method "russian-computer")
 (setq calendar-week-start-day 1)
 (setq display-line-numbers-type 'relative)
@@ -495,7 +512,7 @@ Override default Doom's auth-sources.
 
 A buffer can get out of sync with respect to its visited file on disk if that file is changed by another program. To keep it up to date, you can enable Auto Revert mode by typing M-x ~auto-revert-mode~, or you can set it to be turned on globally with ~global-auto-revert-mode~. I have also turned on Global Auto Revert on non-file buffers, which is especially useful for ~dired~ buffers.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
 #+end_src
@@ -504,7 +521,7 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 
 *** Evil
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq evil-echo-state nil)
 #+end_src
 
@@ -512,7 +529,7 @@ A buffer can get out of sync with respect to its visited file on disk if that fi
 
 Override evil-collection binds.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :editor evil)
   (when (modulep! :app telega)
     (after! telega
@@ -539,7 +556,7 @@ Override evil-collection binds.
 
 Disable evil-snipe on specific modes.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :editor evil)
   (after! evil-snipe
     (when (modulep! :app telega)
@@ -553,14 +570,14 @@ Disable evil-snipe on specific modes.
 
 *** Which-Key
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq which-key-idle-delay 0.2)
 ;; (setq which-key-show-operator-state-maps t) ; BUG: https://github.com/justbur/emacs-which-key/issues/345
 #+end_src
 
 *** map!
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (map! :n "C-a" #'evil-numbers/inc-at-pt
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
       :v "C-S-a" #'evil-numbers/inc-at-pt
@@ -678,7 +695,7 @@ Disable evil-snipe on specific modes.
 
 *** Corfu
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :completion corfu)
   (after! corfu
     (setq corfu-auto nil)))
@@ -686,7 +703,7 @@ Disable evil-snipe on specific modes.
 
 *** Vertico
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 ;; thx Sarg https://github.com/doomemacs/doomemacs/pull/8634/changes
 (when (modulep! :completion vertico)
   (with-eval-after-load "lib/help"
@@ -720,7 +737,7 @@ Disable evil-snipe on specific modes.
 
 Disable ws-butler in Org Mode.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 ;; BUG: ws-butler removes last line in Org files despite require-final-newline
 ;; https://github.com/lewang/ws-butler/issues/26
 (when (modulep! :editor whitespace +trim)
@@ -731,7 +748,7 @@ Disable ws-butler in Org Mode.
 
 ** Smooth Scroll
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :ui smooth-scroll)
   ;; Disable ultra-scroll
   (remove-hook 'doom-first-input-hook #'ultra-scroll-mode)
@@ -740,7 +757,7 @@ Disable ws-butler in Org Mode.
 
 ** Zen Mode
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :ui zen)
   (setq +zen-text-scale 0)
   (setq +zen-mixed-pitch-modes nil)
@@ -749,7 +766,7 @@ Disable ws-butler in Org Mode.
 
 ** Highlight Todo
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :ui hl-todo)
   (after! hl-todo
     (let ((fr/hl-todo-keyword-faces
@@ -778,7 +795,7 @@ Disable ws-butler in Org Mode.
 
 *** Magit
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :tools magit)
   (setq magit-repository-directories `(("~/Projects" . 2)
                                        (,(xdg-user-dir "DOCUMENTS") . 1)
@@ -793,7 +810,7 @@ Disable ws-butler in Org Mode.
 
 **** Magit-Todos
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :tools magit)
   (defun fr/magit-todos-ignore-tangled-files (filename)
     "Return nil if an `.org` file with the same basename exists in the same directory,
@@ -821,7 +838,7 @@ ignoring all other files with the same basename."
 
 ** Projectile
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
 #+end_src
 
@@ -829,7 +846,7 @@ ignoring all other files with the same basename."
 
 ** PDF
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :tools pdf)
   (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
@@ -840,7 +857,7 @@ ignoring all other files with the same basename."
 
 ** Printer
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (after! lpr
   (setq lpr-lp-system t
         lpr-command "lp"
@@ -876,7 +893,7 @@ ignoring all other files with the same basename."
 
 ** Org
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org"))
 (setq org-agenda-files (list (concat org-directory "/agenda")))
 
@@ -1601,7 +1618,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
 ** Markdown
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (custom-theme-set-faces! 'doom-gruvbox
   '(markdown-header-face-1 :inherit outline-1)
   '(markdown-header-face-2 :inherit outline-2)
@@ -1613,7 +1630,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
 ** QML
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (and (modulep! :lang qt)
            (not (executable-find "qmlls"))
            (executable-find "qmlls6"))
@@ -1625,7 +1642,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
 * WWW
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (setq-default browse-url-text-browser (executable-find "cha"))
 
 (when (modulep! :term vterm)
@@ -1666,7 +1683,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 Requirements:
 - [[https://github.com/eafer/rdrview][rdrview: Firefox Reader View as a command line tool]]
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (defvar eww-urls
   '("www.opennet.ru" "lwn.net")
   "List of domains to open using eww browser.")
@@ -1737,7 +1754,7 @@ It should be the title of the web page as returned by `rdrview'."
 
 ** Elfeed
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :app rss)
   (defun frestein/elfeed-open-and-update ()
     "Wrapper to load the elfeed db from disk before opening, force update search and feeds"
@@ -1773,7 +1790,7 @@ current users."
 
 ** mu4e
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :email mu4e)
   (after! mu4e
     (setq mu4e-root-maildir (expand-file-name "~/Documents/mail")
@@ -1918,7 +1935,7 @@ is tomorrow.  With two prefixes, select the deadline."
 
 *** telega
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :app telega)
   (defun telega-server-process-running-p ()
     "Check if telega-server process is running."
@@ -1938,7 +1955,7 @@ is tomorrow.  With two prefixes, select the deadline."
 
 *** compile-angel
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src elisp :tangle no
 (when (modulep! :config compile-angel)
   ;; Compile automatically when an Elisp file is saved
   (add-hook emacs-lisp-mode-hook #'compile-angel-on-save-local-mode))
@@ -1964,7 +1981,7 @@ is tomorrow.  With two prefixes, select the deadline."
 
 *** biome
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :tools biome)
   (after! biome
     (setq biome-query-coords
@@ -1974,7 +1991,7 @@ is tomorrow.  With two prefixes, select the deadline."
 
 *** blamer
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src elisp :tangle no
 (when (modulep! :tools blamer)
   (add-hook 'doom-after-init-hook #'global-blamer-mode))
 #+end_src
@@ -1991,7 +2008,7 @@ is tomorrow.  With two prefixes, select the deadline."
 
 *** fj
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
 (when (modulep! :tools fj)
   (setq fj-host "https://codeberg.org"
         fj-user "Frestein")
