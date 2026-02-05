@@ -482,14 +482,14 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 (when (modulep! :ui hl-todo)
   (after! hl-todo
-    (let ((frestein/hl-todo-keyword-faces
+    (let ((fr/hl-todo-keyword-faces
            '(("TODO" (font-lock-variable-name-face bold) nil)
              ("FIX"  (error bold) nil)
              ("WARN"  (warning bold) ("WARNING" "XXX"))
              ("PERF"  (font-lock-variable-name-face bold) ("OPTIM" "PERFORMANCE" "OPTIMIZE"))
              ("NOTE"  (success bold) ("INFO"))
              ("TEST"  (font-lock-variable-name-face bold) ("TESTING" "PASSED" "FAILED")))))
-      (dolist (e frestein/hl-todo-keyword-faces)
+      (dolist (e fr/hl-todo-keyword-faces)
         (let ((kw (car e)) (faces (cadr e)) (alts (caddr e)))
           (if (assoc kw hl-todo-keyword-faces)
               (when faces
@@ -507,6 +507,12 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
                                        ("~/.local/share/chezmoi" . 1)))
   (setq magit-clone-default-directory "~/Projects/git/")
 
+  (after! magit
+    ;; HACK: Override magit-log defaults
+    (put 'magit-log-mode 'magit-log-default-arguments
+         '("--graph" "-n256" "--decorate" "--color" "--show-signature"))))
+
+(when (modulep! :tools magit)
   (defun fr/magit-todos-ignore-tangled-files (filename)
     "Return nil if an `.org` file with the same basename exists in the same directory,
 ignoring all other files with the same basename."
@@ -524,7 +530,9 @@ ignoring all other files with the same basename."
       :after magit
       :hook (magit-mode . magit-todos-mode)
       :custom
-      (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP" "KLUDGE" "DONT" "OKAY" "PROG" "THEM" "NEXT" "DONE"))
+      (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP"
+                                      "KLUDGE" "DONT" "OKAY" "PROG" "THEM"
+                                      "NEXT" "DONE"))
       (magit-todos-filename-filter #'fr/magit-todos-ignore-tangled-files))))
 
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
