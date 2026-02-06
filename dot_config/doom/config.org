@@ -279,7 +279,7 @@ the variable `message-log-max'."
 
 #+begin_src elisp
 ;; Increase how much is read from processes in a single chunk
-(setq read-process-output-max (* 2 1024 1024)) ; 1024kb
+(setq read-process-output-max (* 4 1024 1024))
 
 (setq process-adaptive-read-buffering nil)
 
@@ -1476,6 +1476,8 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     `(lambda (&rest _rest)
        (funcall ,fnc)))
 
+  (advice-add 'org-priority-up :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add 'org-priority-down :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-deadline :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-schedule :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))

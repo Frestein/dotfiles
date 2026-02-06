@@ -1152,6 +1152,8 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     `(lambda (&rest _rest)
        (funcall ,fnc)))
 
+  (advice-add 'org-priority-up :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add 'org-priority-down :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-deadline :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-schedule :after (ignore-args #'org-save-all-org-buffers))
   (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
