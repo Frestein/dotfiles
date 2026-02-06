@@ -120,7 +120,7 @@ the variable `message-log-max'."
     (view-echo-area-messages)))
 
 ;; Increase how much is read from processes in a single chunk
-(setq read-process-output-max (* 2 1024 1024)) ; 1024kb
+(setq read-process-output-max (* 4 1024 1024))
 
 (setq process-adaptive-read-buffering nil)
 
