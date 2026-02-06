@@ -141,11 +141,30 @@ the variable `message-log-max'."
   (after! eshell
     (setq eshell-history-size 10000)
     (setq eshell-buffer-maximum-lines 10000)
-    (setq eshell-banner-message "")     ; Disable top banner message
+    (setq eshell-banner-message ""))    ; Disable top banner message
 
+  (after! esh-mode
     (map! :map eshell-mode-map
-          :n  [return] #'eshell-send-input
-          :n  [S-return] #'+eshell/goto-end-of-prompt)))
+          :n [return] #'eshell-send-input
+          :n [S-return] #'+eshell/goto-end-of-prompt))
+
+  (after! em-term
+    (pushnew! eshell-visual-commands "btm" "btop" "cha" "yt-x" "yazi" "journalctl" "fzf" "tv")))
+
+(when (modulep! :editor evil)
+  (defun fr/evil-collection-eshell-override-keys ()
+    "Override `evil-collection' bindings for `eshell'."
+    (evil-collection-define-key 'normal 'eshell-mode-map
+      (kbd "C-k") 'eshell-previous-matching-input-from-input
+      (kbd "C-j") 'eshell-next-matching-input-from-input
+      (kbd "C-p") 'eshell-previous-prompt
+      (kbd "C-n") 'eshell-next-prompt)
+
+    (evil-collection-define-key 'visual 'eshell-mode-map
+      (kbd "C-p") 'eshell-previous-prompt
+      (kbd "C-n") 'eshell-next-prompt))
+
+  (add-hook! 'eshell-first-time-mode-hook #'fr/evil-collection-eshell-override-keys))
 
 (when (modulep! :term eshell)
   (after! em-alias
@@ -297,9 +316,10 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
       (+eshell/search-history)))
 
   (map! :map eshell-mode-map
-        :localleader
-        (:when (executable-find "atuin")
-          "s" #'fr/eshell-history)))
+        :ni "C-r" #'fr/eshell-history
+        (:localleader
+         (:when (executable-find "atuin")
+           "s" #'fr/eshell-history))))
 
 (when (modulep! :app everywhere)
   (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
