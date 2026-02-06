@@ -139,7 +139,134 @@ the variable `message-log-max'."
 
 (when (modulep! :term eshell)
   (after! eshell
+    (setq eshell-history-size 10000)
+    (setq eshell-buffer-maximum-lines 10000)
     (setq eshell-banner-message "")))   ; Disable top banner message
+
+(when (modulep! :term eshell)
+  (after! em-alias
+    (setq +eshell-aliases nil)
+
+    (setq eshell-command-aliases-list
+          '(("tb" "nc termbin.com 9999")
+            ("q" "exit")
+            ("e" "find-file $1")
+            ("ee" "find-file-other-window $1")
+            ("d" "dired $1")
+            ("bd" "eshell-up $1")
+            ("gg" "magit-status")
+            ("cdp" "cd-to-project")
+            ("c" "clear-scrollback")
+            ("clear" "clear-scrollback")))
+
+    (defun fr/eshell--append-aliases (alist)
+      (setq eshell-command-aliases-list
+            (append eshell-command-aliases-list alist)))
+
+    (when (executable-find "eza")
+      (defcustom fr/eshell--eza-defaults "--group --group-directories-first"
+        "Default flags for eza used by eshell aliases."
+        :type 'string
+        :group 'eshell)
+
+      (fr/eshell--append-aliases
+       `(("lD"  ,(concat "eza -lD " fr/eshell--eza-defaults " $*"))
+         ("lS"  ,(concat "eza -lS " fr/eshell--eza-defaults " $*"))
+         ("lT"  ,(concat "eza -lT " fr/eshell--eza-defaults " $*"))
+         ("laD" ,(concat "eza -laD " fr/eshell--eza-defaults " $*"))
+         ("ldot",(concat "eza -ld -a " fr/eshell--eza-defaults " $*"))
+         ("l"   ,(concat "eza -l " fr/eshell--eza-defaults " $*"))
+         ("ll"  ,(concat "eza -la " fr/eshell--eza-defaults " $*"))
+         ("lr"  ,(concat "eza -R " fr/eshell--eza-defaults " $*"))
+         ("ls"  ,(concat "eza " fr/eshell--eza-defaults " $*"))
+         ("lsd" ,(concat "eza -d " fr/eshell--eza-defaults " $*"))
+         ("lsdl",(concat "eza -dl " fr/eshell--eza-defaults " $*")))))
+
+    (when (executable-find "bc")
+      (fr/eshell--append-aliases '(("bc" "bc -q $*"))))
+
+    (when (executable-find "btm")
+      (fr/eshell--append-aliases '(("btm" "btm -b --hide_avg_cpu $*"))))
+
+    (when (executable-find "trans")
+      (fr/eshell--append-aliases
+       '(("t" "trans :ru $*")
+         ("tt" "trans :en $*")
+         ("tl" "trans :ru --shell --brief $*")
+         ("ttl" "trans :en --shell --brief $*"))))
+
+    (when (executable-find "fastfetch")
+      (fr/eshell--append-aliases
+       `(("f" "fastfetch $*")
+         ("ff" ,(concat "fastfetch -c " (xdg-config-home) "/fastfetch/config-full.jsonc $*")))))
+
+    (when (executable-find "rg")
+      (fr/eshell--append-aliases '(("rg" "rg --color=always $*"))))
+
+    (when (executable-find "git")
+      (fr/eshell--append-aliases '(("git" "git --no-pager $*"))))
+
+    (when (executable-find "chezmoi")
+      (after! chezmoi
+        (fr/eshell--append-aliases '(("cz-magit" "chezmoi-magit-status"))))
+
+      (fr/eshell--append-aliases '(("cz" "chezmoi $*")
+                                   ("czx" "CZ_EXT=1 chezmoi $*"))))
+
+    (when (executable-find "systemctl")
+      (fr/eshell--append-aliases '(("sc" "systemctl $*")
+                                   ("scu" "systemctl --user $*")
+                                   ("jctl" "journalctl -p 3 -xb $*"))))
+
+    (when (executable-find "speedtest-go")
+      (fr/eshell--append-aliases '(("speedtest" "speedtest-go $*"))))
+
+    (when (executable-find "pacman")
+      (fr/eshell--append-aliases
+       `(("pacrip" "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -$1 | nl")
+         ("pacupg" "doas pacman -Syu $*")
+         ("pacin"  "doas pacman -S $*")
+         ("paclean" "doas pacman -Sc $*")
+         ("pacins" "doas pacman -U $*")
+         ("paclr"  "doas pacman -Scc $*")
+         ("pacre"  "doas pacman -R $*")
+         ("pacrem" "doas pacman -Rns $*")
+         ("pacrep" "pacman -Si $*")
+         ("pacreps" "pacman -Ss $*")
+         ("pacloc" "pacman -Qi $*")
+         ("paclocs" "pacman -Qs $*")
+         ("paclst" "pacman -Qe $*")
+         ("pacinsd" "doas pacman -S --asdeps $*")
+         ("pacmir"  "doas pacman -Syy $*")
+         ("paclsorphans" "doas pacman -Qdt $*")
+         ("pacrmorphans" "doas pacman -Rs $(pacman -Qtdq)")
+         ("pacfileupg" "doas pacman -Fy $*")
+         ("pacfiles" "pacman -F $*")
+         ("pacls"   "pacman -Ql $*")
+         ("pacown"  "pacman -Qo $*")
+         ("pacupd"  "doas pacman -Sy $*")
+         ("pacmanallkeys" "doas pacman-key --refresh-keys $*"))))
+
+    (when (executable-find "yay")
+      (fr/eshell--append-aliases
+       `(("yaconf" "yay -Pg $*")
+         ("yaclean" "yay -Sc $*")
+         ("yaclr"  "yay -Scc $*")
+         ("yaupg"  "yay -Syu $*")
+         ("yasu"   "yay -Syu --noconfirm $*")
+         ("yain"   "yay -S $*")
+         ("yains"  "yay -U $*")
+         ("yare"   "yay -R $*")
+         ("yarem"  "yay -Rns $*")
+         ("yarep"  "yay -Si $*")
+         ("yareps" "yay -Ss $*")
+         ("yaloc"  "yay -Qi $*")
+         ("yalocs" "yay -Qs $*")
+         ("yalst"  "yay -Qe $*")
+         ("yaorph" "yay -Qtd $*")
+         ("yainsd" "yay -S --asdeps $*")
+         ("yamir"  "yay -Syy $*")
+         ("yaupd"  "yay -Sy $*"))))))
 
 (use-package! esh-autosuggest
   :when (modulep! :term eshell)

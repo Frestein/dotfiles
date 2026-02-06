@@ -2,6 +2,9 @@ if not status is-interactive && test "$CI" != true
     exit
 end
 
+abbr -a -- q exit
+abbr -a -- c clear
+
 # better defaults
 abbr -a -- bc bc -q
 abbr -a -- btm btm -b --hide_avg_cpu
