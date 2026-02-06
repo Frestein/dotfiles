@@ -141,7 +141,11 @@ the variable `message-log-max'."
   (after! eshell
     (setq eshell-history-size 10000)
     (setq eshell-buffer-maximum-lines 10000)
-    (setq eshell-banner-message "")))   ; Disable top banner message
+    (setq eshell-banner-message "")     ; Disable top banner message
+
+    (map! :map eshell-mode-map
+          :n  [return] #'eshell-send-input
+          :n  [S-return] #'+eshell/goto-end-of-prompt)))
 
 (when (modulep! :term eshell)
   (after! em-alias
