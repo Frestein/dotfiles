@@ -146,25 +146,14 @@ the variable `message-log-max'."
   (after! esh-mode
     (map! :map eshell-mode-map
           :n [return] #'eshell-send-input
-          :n [S-return] #'+eshell/goto-end-of-prompt))
+          :n [S-return] #'+eshell/goto-end-of-prompt
+          :i "C-p" #'eshell-previous-matching-input-from-input
+          :i "C-n" #'eshell-next-matching-input-from-input
+          :i "C-k" #'eshell-previous-prompt
+          :i "C-j" #'eshell-next-prompt))
 
   (after! em-term
     (pushnew! eshell-visual-commands "btm" "btop" "cha" "yt-x" "yazi" "journalctl" "fzf" "tv")))
-
-(when (modulep! :editor evil)
-  (defun fr/evil-collection-eshell-override-keys ()
-    "Override `evil-collection' bindings for `eshell'."
-    (evil-collection-define-key 'normal 'eshell-mode-map
-      (kbd "C-k") 'eshell-previous-matching-input-from-input
-      (kbd "C-j") 'eshell-next-matching-input-from-input
-      (kbd "C-p") 'eshell-previous-prompt
-      (kbd "C-n") 'eshell-next-prompt)
-
-    (evil-collection-define-key 'visual 'eshell-mode-map
-      (kbd "C-p") 'eshell-previous-prompt
-      (kbd "C-n") 'eshell-next-prompt))
-
-  (add-hook! 'eshell-first-time-mode-hook #'fr/evil-collection-eshell-override-keys))
 
 (when (modulep! :term eshell)
   (after! em-alias
@@ -589,6 +578,54 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 (when (modulep! :completion corfu)
   (after! corfu
     (setq corfu-auto nil)))
+
+(when (modulep! :completion corfu)
+  (after! (:and corfu eshell)
+    (defun fr/corfu-dabbrev-or-last (&optional arg)
+      (interactive "p")
+      (if (and (eq major-mode 'eshell-mode)
+               (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
+          ;; Thanks
+          ;; https://github.com/emacs-straight/capf-autosuggest/blob/2ba57bf7fcc6183a73f3803edcf6bbcdbc2f5a19/capf-autosuggest.el#L354
+          (let ((n (or arg 1)))
+            (and (not (memq last-command '(eshell-previous-matching-input-from-input
+                                           eshell-next-matching-input-from-input)))
+                 (> n 1)
+                 (setq n (1+ n)))
+            (eshell-previous-matching-input-from-input n)
+            (setq this-command 'eshell-previous-matching-input-from-input))
+        (if corfu--candidates
+            (corfu-previous arg)
+          (require 'cape)
+          (let ((cape-dabbrev-check-other-buffers
+                 (bound-and-true-p evil-complete-all-buffers)))
+            (cape-dabbrev t)
+            (when (> corfu--total 0)
+              (corfu--goto (- corfu--total (or arg 1))))))))
+
+    (advice-add '+corfu/dabbrev-or-last :override #'fr/corfu-dabbrev-or-last)
+
+    (defun fr/corfu-dabbrev-or-next (&optional arg)
+      (interactive "p")
+      (if (and (eq major-mode 'eshell-mode)
+               (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
+          (let ((n (or arg 1)))
+            (and (not (memq last-command '(eshell-next-matching-input-from-input
+                                           eshell-previous-matching-input-from-input)))
+                 (> n 1)
+                 (setq n (1+ n)))
+            (eshell-next-matching-input-from-input n)
+            (setq this-command 'eshell-next-matching-input-from-input))
+        (if corfu--candidates
+            (corfu-next arg)
+          (require 'cape)
+          (let ((cape-dabbrev-check-other-buffers
+                 (bound-and-true-p evil-complete-all-buffers)))
+            (cape-dabbrev t)
+            (when (> corfu--total 0)
+              (corfu--goto (or arg 0)))))))
+
+    (advice-add '+corfu/dabbrev-or-next :override #'fr/corfu-dabbrev-or-next)))
 
 ;; thx Sarg https://github.com/doomemacs/doomemacs/pull/8634/changes
 (when (modulep! :completion vertico)
