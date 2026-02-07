@@ -25,6 +25,7 @@
   - [[#xdg][XDG]]
   - [[#shell][Shell]]
     - [[#eshell][Eshell]]
+    - [[#vterm][Vterm]]
   - [[#everywhere][Everywhere]]
   - [[#security][Security]]
     - [[#easypg][EasyPG]]
@@ -498,6 +499,14 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
         (:localleader
          (:when (executable-find "atuin")
            "s" #'fr/eshell-history))))
+#+end_src
+
+*** Vterm
+
+#+begin_src elisp
+(when (modulep! :term vterm)
+  (after! vterm
+    (setq vterm-max-scrollback 10000)))
 #+end_src
 
 ** Everywhere

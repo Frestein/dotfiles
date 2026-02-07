@@ -310,6 +310,10 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
          (:when (executable-find "atuin")
            "s" #'fr/eshell-history))))
 
+(when (modulep! :term vterm)
+  (after! vterm
+    (setq vterm-max-scrollback 10000)))
+
 (when (modulep! :app everywhere)
   (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
   (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
