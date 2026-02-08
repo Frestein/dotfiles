@@ -312,7 +312,19 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 (when (modulep! :term vterm)
   (after! vterm
-    (setq vterm-max-scrollback 10000)))
+    (setq vterm-always-compile-module t)
+    (setq vterm-max-scrollback 10000)
+
+    ;; https://github.com/akermu/emacs-libvterm/issues/313#issuecomment-1183650463
+    (advice-add #'vterm--redraw :around (lambda (fun &rest args) (let ((cursor-type cursor-type)) (apply fun args))))
+
+    (when (modulep! :tools chezmoi)
+      (pushnew! vterm-eval-cmds
+                '("chezmoi-magit-status" chezmoi-magit-status)))
+
+    (map! :map vterm-mode-map
+          :ni "C-k" #'vterm-previous-prompt
+          :ni "C-j" #'vterm-next-prompt)))
 
 (when (modulep! :app everywhere)
   (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
