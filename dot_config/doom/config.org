@@ -509,12 +509,36 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
     (setq vterm-always-compile-module t)
     (setq vterm-max-scrollback 10000)
 
-    ;; https://github.com/akermu/emacs-libvterm/issues/313#issuecomment-1183650463
+    ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/313#issuecomment-1183650463
     (advice-add #'vterm--redraw :around (lambda (fun &rest args) (let ((cursor-type cursor-type)) (apply fun args))))
 
     (when (modulep! :tools chezmoi)
       (pushnew! vterm-eval-cmds
                 '("chezmoi-magit-status" chezmoi-magit-status)))
+
+    ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/749
+    (defun fr/vterm-better-kill (orig-fun &rest args)
+      "Override kill-buffer for vterm: kill without confirmation when vterm is idle."
+      (if (eq major-mode 'vterm-mode)
+          (let ((process (get-buffer-process (current-buffer))))
+            (when process
+              (if (vterm--at-prompt-p)
+                  (set-process-query-on-exit-flag process nil)
+                (set-process-query-on-exit-flag process t)))))
+      (apply orig-fun args))
+
+    (advice-add 'kill-buffer :around #'fr/vterm-better-kill)
+
+    (defun fr/switch-to-buffer-kill (&optional arg)
+      (interactive "P")
+      (let ((embark-default-action-overrides '((buffer . kill-buffer)))
+            ;; Force kill buffer is not in pre-action-hooks, and don't worry if embark-preaction-hooks exist.
+            (embark-pre-action-hooks nil)
+            embark-quit-after-action)
+        (embark-dwim arg)))
+
+    (map! :map minibuffer-local-map
+          :ni "M-k" #'fr/switch-to-buffer-kill)
 
     (map! :map vterm-mode-map
           :ni "C-k" #'vterm-previous-prompt
