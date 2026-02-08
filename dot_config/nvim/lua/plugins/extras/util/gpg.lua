@@ -1,7 +1,8 @@
 vim.filetype.add {
 	extension = {
+		asc = "asc",
 		gpg = "gpg",
-		asc = "gpg",
+		pgp = "pgp",
 	},
 }
 
