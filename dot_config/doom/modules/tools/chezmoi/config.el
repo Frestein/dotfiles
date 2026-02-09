@@ -1,15 +1,20 @@
 ;;; tools/chezmoi/config.el -*- lexical-binding: t; -*-
 
-(defcustom chezmoi-dir (string-trim (shell-command-to-string "chezmoi source-path"))
-  "Location of the chezmoi directory"
+(defcustom chezmoi-dir (file-name-as-directory (string-trim-right (shell-command-to-string "chezmoi source-path")))
+  "Location of the chezmoi directory."
   :type '(string)
   :group 'chezmoi)
 
 (defcustom chezmoi-doom-private-dir (concat chezmoi-dir "/dot_config/doom/")
-  "Location of the chezmoi managed doom private directory"
+  "Location of the chezmoi managed doom private directory."
   :type '(string)
   :group 'chezmoi
   :set-after '(chezmoi-dir))
+
+(setq chezmoi-dir
+      (if-let* ((dir (getenv "CHEZMOIROOT")))
+          (file-name-as-directory dir)
+        (file-name-as-directory (string-trim-right (shell-command-to-string "chezmoi source-path")))))
 
 (use-package! chezmoi
   :config
@@ -18,8 +23,10 @@
     :type '(string)
     :group 'chezmoi)
 
-  (defun chezmoi-status (arg)
-    "View output of =chezmoi status= in a status-buffer."
+  ;;;###autoload
+  (defun +chezmoi-status (arg)
+    "View output of `chezmoi status' in a status-buffer.
+If ARG is non-nil, switch to the status-buffer. "
     (interactive "i")
     (let ((b (get-buffer-create "*chezmoi-status*")))
       (with-current-buffer b
@@ -28,9 +35,8 @@
           (chezmoi--locally
            (shell-command (concat chezmoi-command " status --use-builtin-diff ") b))))
       (unless arg
-        (let ((window (display-buffer b
-                                      '((display-buffer-at-bottom)
-                                        (window-height . 0.25)))))
+        (let ((window (display-buffer b '((display-buffer-at-bottom)
+                                          (window-height . 0.25)))))
           (select-window window)
           (with-current-buffer b
             (diff-mode)
@@ -38,8 +44,9 @@
             (whitespace-mode 0))))
       b))
 
+  ;;;###autoload
   (defun chezmoi-diff (arg)
-    "View output of =chezmoi diff= in a diff-buffer.
+    "View output of `chezmoi diff' in a diff-buffer.
 If ARG is non-nil, switch to the diff-buffer."
     (interactive "i")
     (let ((b (get-buffer-create "*chezmoi-diff*")))
@@ -48,7 +55,8 @@ If ARG is non-nil, switch to the diff-buffer."
           (erase-buffer)
           (chezmoi--locally
            (shell-command (concat chezmoi-command " diff --use-builtin-diff "
-                                  "--pager " (shell-quote-argument chezmoi-pager-command)) b))))
+                                  "--pager " (shell-quote-argument chezmoi-pager-command))
+                          b))))
       (unless arg
         (let ((window (display-buffer b
                                       '((display-buffer-pop-up-window)
@@ -60,8 +68,28 @@ If ARG is non-nil, switch to the diff-buffer."
             (whitespace-mode 0))))
       b))
 
+  ;;;###autoload
+  (defun chezmoi-dired-add-marked-files (arg)
+    "Add files marked in Dired to source state.
+With universal argument ARG, adds `--encrypt' flag."
+    (interactive "P")
+    (dolist (file (dired-get-marked-files))
+      (shell-command (concat chezmoi-command " add "
+                             (if arg "--encrypt " "")
+                             (shell-quote-argument file)))))
+
+  ;;;###autoload
+  (defun +chezmoi-dired-re-add-marked-files (arg)
+    "Re-add files marked in Dired to source state.
+With universal argument ARG, adds `--encrypt' flag."
+    (interactive "P")
+    (dolist (file (dired-get-marked-files))
+      (shell-command (concat chezmoi-command " re-add "
+                             (if arg "--encrypt " "")
+                             (shell-quote-argument file)))))
+
   (when (modulep! :editor evil)
-    (add-hook 'chezmoi-mode-hook #'+chezmoi--evil-h)))
+    (add-hook! chezmoi-mode #'+chezmoi--evil-h)))
 
 ;; TODO: Does not work
 ;; https://github.com/tuh8888/chezmoi.el/issues/29#issuecomment-1678028390
@@ -76,4 +104,4 @@ If ARG is non-nil, switch to the diff-buffer."
   (advice-add #'+file-templates-get-short-path
               :override #'+chezmoi--file-templates-get-short-path-a))
 
-(add-hook 'doom-after-modules-config-hook #'+chezmoi--init-h)
+(add-hook! doom-after-modules-config #'+chezmoi--init-h)
