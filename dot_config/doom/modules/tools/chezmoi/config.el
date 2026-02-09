@@ -18,6 +18,8 @@
 
 (use-package! chezmoi
   :config
+  (setq chezmoi-mode-overwrite-destination t)
+
   (defcustom chezmoi-pager-command "less"
     "Pager to use for chezmoi commands."
     :type '(string)
