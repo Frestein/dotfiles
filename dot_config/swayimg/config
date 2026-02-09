@@ -88,26 +88,30 @@ antialiasing = mks13
 [gallery]
 # Height and width of each thumbnail (pixels)
 size = 200
+# Scale of the selected tile (float)
+selected_scale = 1.15
+# Thumbnail aspect ratio (fit/fill/keep)
+aspect = fill
+# Padding between thumbnails (pixels)
+padding = 5
+# Background color of the selected tile (RGBA)
+select = #3c3836ff
+# Background color of non-selected tiles (RGBA)
+background = #32302fff
+# Border color of the selected tile (RGBA)
+border_color = #928374ff
+# Border width of the selected tile (pixels)
+border_width = 4
+# Background color of the window (RGBA)
+window = #282828ff
 # Max number of invisible thumbnails stored in memory cache
 cache = 100
 # Load not only visible but also adjacent thumbnails
 preload = yes
 # Enable/disable storing thumbnails in persistent storage (yes/no)
 pstore = no
-# Fill the entire tile with thumbnail (yes/no)
-fill = yes
 # Anti-aliasing mode for thumbnails (none/box/bilinear/bicubic/mks13)
 antialiasing = mks13
-# Background color of the window (RGBA)
-window = #282828ff
-# Background color of non-selected tiles (RGBA)
-background = #202020ff
-# Background color of the selected tile (RGBA)
-select = #404040ff
-# Border color of the selected tile (RGBA)
-border = #000000ff
-# Shadow color of the selected tile (RGBA)
-shadow = #000000ff
 
 ################################################################################
 # Image list configuration
@@ -133,9 +137,9 @@ name = monospace
 # Font size (pt)
 size = 12
 # Font color (RGBA)
-color = #EBDBB2FF
+color = #ebdbb2ff
 # Shadow color (RGBA)
-shadow = #000000D0
+shadow = #000000d0
 # Background color (RGBA)
 background = #00000000
 
@@ -179,7 +183,6 @@ bottom_right = name,status
 [keys.viewer]
 F1 = help
 Shift+question = help
-
 Home = first_file
 End = last_file
 g = first_file
@@ -190,6 +193,7 @@ h = prev_file
 j = next_file
 k = prev_file
 l = next_file
+Shift+Space = prev_file
 Space = next_file
 Shift+r = rand_file
 Shift+d = prev_dir
@@ -312,8 +316,8 @@ Shift+Delete = exec rm -f '%' && notify-send "File removed: %" && echo "File rem
 Escape = exit
 q = exit
 # Mouse related
-ScrollLeft = step_right
-ScrollRight = step_left
+ScrollLeft = step_left
+ScrollRight = step_right
 ScrollUp = step_up
 ScrollDown = step_down
 Ctrl+ScrollUp = thumb +20
