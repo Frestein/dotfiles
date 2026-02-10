@@ -698,6 +698,9 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
     (add-to-list 'marginalia-prompt-categories '("\\<Describe module\\>" . doom-module))
     (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
 
+(when (modulep! :tools eval)
+  (set-popup-rule! "^\\*eros inspect" :side 'right :size 0.5 :height 0.5 :ttl 0 :slot 1 :modeline t))
+
 ;; BUG: ws-butler removes last line in Org files despite require-final-newline
 ;; https://github.com/lewang/ws-butler/issues/26
 (when (modulep! :editor whitespace +trim)
@@ -808,6 +811,30 @@ ignoring all other files with the same basename."
                  (cons (concat "-P " pages) pdf-misc-print-program-args)
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
+
+(after! elisp-mode
+  (map! :map emacs-lisp-mode-map
+        :localleader
+        (:prefix "e"
+         :desc "Evaluate buffer" "b" #'eval-buffer
+         :desc "Evaluate region" "r" #'eval-region
+         :desc "Load library" "l" #'load-library
+         (:when (modulep! :tools eval)
+           :desc "Evaluate last" "e" #'eros-eval-last-sexp
+           :desc "Inspect last" "i" #'eros-inspect-last-result
+           :desc "Evaluate defun" "d" #'eros-eval-defun))))
+
+(when (modulep! :lang common-lisp)
+  (pushnew! +lisp-quicklisp-paths (concat (xdg-data-home) "/quicklisp"))
+
+  (after! sly
+    (map! :map lisp-mode-map
+          :localleader
+          (:prefix "e"
+                   (:when (modulep! :tools eval)
+                     :desc "Evaluate last" "e" #'eros-eval-last-sexp
+                     :desc "Inspect last" "i" #'eros-inspect-last-result
+                     :desc "Evaluate defun (async)" "f" #'eros-eval-defun)))))
 
 (setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org"))
 (setq org-agenda-files (list (concat org-directory "/agenda")))

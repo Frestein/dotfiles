@@ -44,6 +44,7 @@
   - [[#completion][Completion]]
     - [[#corfu][Corfu]]
     - [[#vertico][Vertico]]
+  - [[#evaluation][Evaluation]]
   - [[#whitespace][Whitespace]]
   - [[#smooth-scroll][Smooth Scroll]]
   - [[#zen-mode][Zen Mode]]
@@ -56,6 +57,8 @@
   - [[#pdf][PDF]]
   - [[#printer][Printer]]
 - [[#languages][Languages]]
+  - [[#emacs-lisp][Emacs Lisp]]
+  - [[#common-lisp][Common Lisp]]
   - [[#org][Org]]
   - [[#markdown][Markdown]]
   - [[#qml][QML]]
@@ -977,6 +980,13 @@ Overrides ~+corfu/dabbrev-or-last~ and ~+corfu/dabbrev-or-next~ adding proper es
     (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
 #+end_src
 
+** Evaluation
+
+#+begin_src elisp
+(when (modulep! :tools eval)
+  (set-popup-rule! "^\\*eros inspect" :side 'right :size 0.5 :height 0.5 :ttl 0 :slot 1 :modeline t))
+#+end_src
+
 ** Whitespace
 
 Disable ws-butler in Org Mode.
@@ -1134,6 +1144,38 @@ ignoring all other files with the same basename."
 #+end_src
 
 * Languages
+
+** Emacs Lisp
+
+#+begin_src elisp
+(after! elisp-mode
+  (map! :map emacs-lisp-mode-map
+        :localleader
+        (:prefix "e"
+         :desc "Evaluate buffer" "b" #'eval-buffer
+         :desc "Evaluate region" "r" #'eval-region
+         :desc "Load library" "l" #'load-library
+         (:when (modulep! :tools eval)
+           :desc "Evaluate last" "e" #'eros-eval-last-sexp
+           :desc "Inspect last" "i" #'eros-inspect-last-result
+           :desc "Evaluate defun" "d" #'eros-eval-defun))))
+#+end_src
+
+** Common Lisp
+
+#+begin_src elisp
+(when (modulep! :lang common-lisp)
+  (pushnew! +lisp-quicklisp-paths (concat (xdg-data-home) "/quicklisp"))
+
+  (after! sly
+    (map! :map lisp-mode-map
+          :localleader
+          (:prefix "e"
+                   (:when (modulep! :tools eval)
+                     :desc "Evaluate last" "e" #'eros-eval-last-sexp
+                     :desc "Inspect last" "i" #'eros-inspect-last-result
+                     :desc "Evaluate defun (async)" "f" #'eros-eval-defun)))))
+#+end_src
 
 ** Org
 
