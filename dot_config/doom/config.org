@@ -510,6 +510,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
     (setq vterm-max-scrollback 10000)
 
     (set-popup-rule! "^\\*vterm" :ignore t)
+    (set-popup-rule! "^ \\*Install vterm" :height 0.25 :ttl 0)
 
     ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/313#issuecomment-1183650463
     (advice-add #'vterm--redraw :around (lambda (fun &rest args) (let ((cursor-type cursor-type)) (apply fun args))))
