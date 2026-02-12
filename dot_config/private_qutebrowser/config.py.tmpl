@@ -41,13 +41,14 @@ DMENU = os.environ.get("DMENU")
 
 config.load_autoconfig(True)
 
-c.editor.command = [
-    "xdg-terminal-exec",
-    "nvim",
-    "{file}",
-    "-c",
-    "normal {line}G{column0}l",
-]
+c.editor.command = ["emacsclient", "-nc", "+{line}:{column}", "{file}"]
+# c.editor.command = [
+#     "xdg-terminal-exec",
+#     "nvim",
+#     "{file}",
+#     "-c",
+#     "normal {line}G{column0}l",
+# ]
 c.spellcheck.languages = ["en-US", "ru-RU"]
 
 c.tabs.last_close = "close"
