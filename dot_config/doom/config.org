@@ -507,6 +507,15 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
            "s" #'fr/eshell-history))))
 #+end_src
 
+**** Vterm
+
+#+begin_src elisp
+(use-package! eshell-vterm
+  :when (and (modulep! :term eshell)
+             (modulep! :term vterm))
+  :hook (eshell-load . eshell-vterm-mode))
+#+end_src
+
 *** Vterm
 
 #+begin_src elisp

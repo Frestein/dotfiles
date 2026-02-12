@@ -310,6 +310,11 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
          (:when (executable-find "atuin")
            "s" #'fr/eshell-history))))
 
+(use-package! eshell-vterm
+  :when (and (modulep! :term eshell)
+             (modulep! :term vterm))
+  :hook (eshell-load . eshell-vterm-mode))
+
 (when (modulep! :term vterm)
   (after! vterm
     (setq vterm-always-compile-module t)
