@@ -1,19 +1,24 @@
 return {
 	recommended = function()
 		return LazyVim.extras.wants {
-			ft = { "sh", "bash", "dash", "zsh" },
+			ft = "fish",
 		}
 	end,
+
+	{
+		"neovim/nvim-lspconfig",
+		optional = true,
+		opts = function()
+			vim.lsp.enable "fish_lsp"
+		end,
+	},
 
 	{
 		"mfussenegger/nvim-lint",
 		optional = true,
 		opts = {
 			linters_by_ft = {
-				bash = { "shellcheck", "bash" },
-				dash = { "shellcheck", "dash" },
-				sh = { "shellcheck", "bash" },
-				zsh = { "zsh" },
+				fish = { "fish" },
 			},
 		},
 	},
@@ -26,10 +31,7 @@ return {
 		---@type conform.setupOpts
 		opts = {
 			formatters_by_ft = {
-				bash = { "shellharden", "shellcheck", "shfmt" },
-				dash = { "shfmt" },
-				sh = { "shellharden", "shellcheck", "shfmt" },
-				zsh = { "shfmt" },
+				fish = { "fish_indent" },
 			},
 		},
 	},

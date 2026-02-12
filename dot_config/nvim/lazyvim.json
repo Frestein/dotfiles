@@ -39,6 +39,7 @@
     "plugins.extras.keys.lsp.workspace",
     "plugins.extras.keys.snacks_picker.smart",
     "plugins.extras.lang.css",
+    "plugins.extras.lang.fish",
     "plugins.extras.lang.html",
     "plugins.extras.lang.hyprlang",
     "plugins.extras.lang.jsonc",
