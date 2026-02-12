@@ -64,8 +64,12 @@
   - [[#qml][QML]]
 - [[#www][WWW]]
   - [[#eww][EWW]]
-  - [[#elfeed][Elfeed]]
     - [[#config][Config]]
+    - [[#shr][Shr]]
+    - [[#browse-url][Browse-Url]]
+    - [[#rdrview][Rdrview]]
+  - [[#elfeed][Elfeed]]
+    - [[#config-1][Config]]
     - [[#elfeed-goodies][Elfeed Goodies]]
     - [[#elfeed-org][Elfeed Org]]
   - [[#mu4e][mu4e]]
@@ -78,7 +82,7 @@
     - [[#telega][telega]]
   - [[#checkers][Checkers]]
     - [[#jinx][jinx]]
-  - [[#config-1][Config]]
+  - [[#config-2][Config]]
     - [[#compile-angel][compile-angel]]
   - [[#editor-1][Editor]]
     - [[#drag-stuff][drag-stuff]]
@@ -556,6 +560,37 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
             embark-quit-after-action)
         (embark-dwim arg)))
 
+    (defun fr/vterm--close-buffer-on-exit (_buffer _event)
+      "Close `vterm' buffer and its window upon process exit."
+      (let ((buf (current-buffer))
+            (win (get-buffer-window (current-buffer))))
+        (when (buffer-live-p buf)
+          (when (and win (not (one-window-p)))
+            (delete-window win))
+          (kill-buffer buf))))
+
+    (defun fr/browse-url-text-vterm (url &optional new-buffer)
+      "Ask a text browser to load URL inside `vterm'."
+      (interactive (browse-url-interactive-arg "Text browser URL: "))
+      (let* ((bufname "*vterm text browser*")
+             (buf (if new-buffer
+                      (generate-new-buffer-name bufname)
+                    bufname))
+             (proc (when (get-buffer buf) (get-buffer-process buf)))
+             (encoded-url (format "\"%s\"" (url-encode-url url)))
+             (browser-cmd (format "exec %s %s" browse-url-text-browser encoded-url)))
+        (if (or new-buffer (not (get-buffer buf)) (not proc) (not (memq (process-status proc) '(run stop))))
+            (progn
+              (vterm buf)
+              (add-hook 'vterm-exit-functions #'fr/vterm--close-buffer-on-exit nil t)
+              (vterm-send-string browser-cmd)
+              (vterm-send-return)
+              (switch-to-buffer buf)
+              (delete-other-windows))
+          (switch-to-buffer buf)
+          (vterm-send-string (concat "g \C-u" encoded-url "\r"))
+          (delete-other-windows))))
+
     (map! :map minibuffer-local-map
           :ni "M-k" #'fr/switch-to-buffer-kill)
 
@@ -846,7 +881,7 @@ Disable evil-snipe on specific modes.
        (:when (modulep! :tools daemons)
          :desc "Daemons" "D" #'daemons)
        (:when (modulep! :term vterm)
-         :desc "Open URL using text browser" "W" #'browse-url-text-vterm)
+         :desc "Open URL using text browser" "W" #'fr/browse-url-text-vterm)
        (:prefix ("a" . "org agenda")
         :desc "Daily Agenda" "d" (lambda () (interactive) (org-agenda nil "d"))
         :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))))
@@ -1947,112 +1982,101 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
 #+begin_src elisp
 (setq-default browse-url-text-browser (executable-find "cha"))
-
-(when (modulep! :term vterm)
-  (defun close-vterm-buffer-on-exit (_buffer _event)
-    "Close vterm buffer and its window upon process exit."
-    (let ((buf (current-buffer))
-          (win (get-buffer-window (current-buffer))))
-      (when (buffer-live-p buf)
-        (when (and win (not (one-window-p)))
-          (delete-window win))
-        (kill-buffer buf))))
-
-  (defun browse-url-text-vterm (url &optional new-buffer)
-    "Ask a text browser to load URL inside vterm."
-    (interactive (browse-url-interactive-arg "Text browser URL: "))
-    (let* ((bufname "*vterm text browser*")
-           (buf (if new-buffer
-                    (generate-new-buffer-name bufname)
-                  bufname))
-           (proc (when (get-buffer buf) (get-buffer-process buf)))
-           (encoded-url (format "\"%s\"" (url-encode-url url)))
-           (browser-cmd (format "exec %s %s" browse-url-text-browser encoded-url)))
-      (if (or new-buffer (not (get-buffer buf)) (not proc) (not (memq (process-status proc) '(run stop))))
-          (progn
-            (vterm buf)
-            (add-hook 'vterm-exit-functions #'close-vterm-buffer-on-exit nil t)
-            (vterm-send-string browser-cmd)
-            (vterm-send-return)
-            (switch-to-buffer buf)
-            (delete-other-windows))
-        (switch-to-buffer buf)
-        (vterm-send-string (concat "g \C-u" encoded-url "\r"))
-        (delete-other-windows)))))
 #+end_src
 
 ** EWW
+
+*** Config
 
 Requirements:
 - [[https://github.com/eafer/rdrview][rdrview: Firefox Reader View as a command line tool]]
 
 #+begin_src elisp
-(defvar eww-urls
-  '("www.opennet.ru" "lwn.net")
-  "List of domains to open using eww browser.")
+(use-package! eww
+  :hook (eww-after-render . eww-auto-rdrview)
+  :config
+  (setq eww-readable-urls '("lwn\\.net")))
+#+end_src
 
-(defun frestein-browse-url-function (url &rest args)
-  "Open URL with eww if the host matches a domain in `eww-urls`,
+*** Shr
+
+#+begin_src elisp
+(setq shr-color-visible-luminance-min 50)
+#+end_src
+
+*** Browse-Url
+
+Override browse url browser function.
+
+#+begin_src elisp
+(defcustom eww-urls '("www.opennet.ru" "lwn.net" "www.phoronix.com")
+  "List of domains to open using EWW browser."
+  :type '(repeat string)
+  :group 'eww)
+
+(defun fr/browse-url-function (url &rest args)
+  "Open URL with EWW if the host matches a domain in `eww-urls',
 otherwise open it with the default browser."
   (let ((host (url-host (url-generic-parse-url url))))
     (if (member host eww-urls)
         (eww-browse-url url)
       (apply #'browse-url-default-browser url args))))
 
-(setq browse-url-browser-function #'frestein-browse-url-function)
+(setq browse-url-browser-function #'fr/browse-url-function)
+#+end_src
 
-(setq shr-color-visible-luminance-min 50)
+*** Rdrview
 
-(use-package! eww
-  :hook (eww-after-render . eww-auto-rdrview)
-  :config
-  (setq eww-readable-urls '("lwn\\.net"))
+#+begin_src elisp
+(when (executable-find "rdrview")
+  (after! eww
+    (defcustom eww-rdrview-urls (regexp-opt '("www.opennet.ru" "www.phoronix.com"))
+      "List of URLs to automatically enable `eww-rdrview-mode'."
+      :type 'regexp
+      :group 'eww)
 
-  (define-minor-mode eww-rdrview-mode
-    "Toggle whether to use `rdrview' to make eww buffers more readable."
-    :lighter " rdrview"
-    (if eww-rdrview-mode
+    (define-minor-mode eww-rdrview-mode
+      "Toggle whether to use `rdrview' to make EWW buffers more readable."
+      :lighter " rdrview"
+      (if eww-rdrview-mode
+          (progn
+            (setq eww-retrieve-command (list (executable-find "rdrview") "-T" "title,sitename,body" "-H"))
+            (add-hook 'eww-after-render-hook #'eww-rdrview-update-title))
         (progn
-          (setq eww-retrieve-command (list (executable-find "rdrview") "-T" "title,sitename,body" "-H"))
-          (add-hook 'eww-after-render-hook #'eww-rdrview-update-title))
-      (progn
-        (setq eww-retrieve-command nil)
-        (remove-hook 'eww-after-render-hook #'eww-rdrview-update-title))))
+          (setq eww-retrieve-command nil)
+          (remove-hook 'eww-after-render-hook #'eww-rdrview-update-title))))
 
-  (defun eww-rdrview-update-title ()
-    "Change title key in `eww-data' with first line of buffer.
+    (defun eww-rdrview-update-title ()
+      "Change title key in `eww-data' with first line of buffer.
 It should be the title of the web page as returned by `rdrview'."
-    (save-excursion
-      (goto-char (point-min))
-      (plist-put eww-data :title (string-trim (thing-at-point 'line t))))
-    (eww--after-page-change))
+      (save-excursion
+        (goto-char (point-min))
+        (plist-put eww-data :title (string-trim (thing-at-point 'line t))))
+      (eww--after-page-change))
 
-  (defun eww-rdrview-toggle-and-reload ()
-    "Toggle `eww-rdrview-mode' and reload page in current eww buffer."
-    (interactive)
-    (if eww-rdrview-mode (eww-rdrview-mode -1)
-      (eww-rdrview-mode 1))
-    (eww-reload))
+    (defun eww-rdrview-toggle-and-reload ()
+      "Toggle `eww-rdrview-mode' and reload page in current EWW buffer."
+      (interactive)
+      (if eww-rdrview-mode (eww-rdrview-mode -1)
+        (eww-rdrview-mode 1))
+      (eww-reload))
 
-  (defvar eww-rdrview-urls
-    (regexp-opt '("www.opennet.ru"))
-    "List of URLs to automatically enable eww-rdrview-mode.")
+    (defun eww-auto-rdrview ()
+      "Enable `eww-rdrview-mode' only once for matching URLs."
+      (let ((url (or (eww-current-url) "")))
+        (when (and (string-match-p eww-rdrview-urls url)
+                   (not eww-rdrview-mode))
+          (eww-rdrview-toggle-and-reload))))
 
-  (defun eww-auto-rdrview ()
-    "Enable eww-rdrview-mode only once for matching URLs."
-    (let ((url (or (eww-current-url) "")))
-      (when (and (string-match-p eww-rdrview-urls url)
-                 (not eww-rdrview-mode))
-        (eww-rdrview-toggle-and-reload))))
+    (defun fr/eww-readable (rdrview)
+      "Toggle display of only the main \"readable\" parts of the current web page."
+      (interactive "P" eww-mode)
+      (if rdrview
+          (eww-rdrview-toggle-and-reload)
+        (eww-readable)))
 
-  (defun frestein-eww-readable (rdrview)
-    (interactive "P" eww-mode)
-    (if rdrview
-        (eww-rdrview-toggle-and-reload)
-      (eww-readable)))
-
-  (map! :map eww-mode-map
-        :n "R" #'frestein-eww-readable))
+    (map! :map eww-mode-map
+          :n "R" #'fr/eww-readable)))
 #+end_src
 
 ** Elfeed
