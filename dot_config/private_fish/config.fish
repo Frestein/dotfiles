@@ -19,15 +19,4 @@ if status is-interactive
 
     bind ctrl-s sysz
     bind -M insert ctrl-s sysz
-
-    # ------------------------Plugins Options---------------------- #
-    # patrickf1/fzf.fish
-    set fzf_directory_opts --prompt='  ' --bind "ctrl-o:execute($EDITOR {} &> /dev/tty)" --border-label='Directory' --border-label-pos=-4 --header='Open <C-o>'
-    set fzf_git_log_opts --prompt='  ' --border-label='Git Log' --border-label-pos=-4
-    set fzf_git_status_opts --prompt='  ' --border-label='Git Status' --border-label-pos=-4
-    set fzf_history_opts --prompt='  ' --border-label='Command History' --border-label-pos=-4
-    set fzf_processes_opts --prompt='  ' --border-label='Processes' --border-label-pos=-4
-    set fzf_variables_opts --prompt='  ' --border-label='Variables' --border-label-pos=-4
-
-    set fzf_preview_dir_cmd eza --all --oneline --color=always --icons=always
 end
