@@ -77,7 +77,7 @@ if type -q docker
     abbr -a -- d docker
 end
 
-if type -q systemd
+if type -q systemctl
     abbr -a -- sc systemctl
     abbr -a -- scu systemctl --user
     abbr -a -- jctl journalctl -p 3 -xb # Get the error messages from journalctl
