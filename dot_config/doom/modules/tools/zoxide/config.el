@@ -26,11 +26,12 @@
       (advice-add 'eshell-add-to-dir-ring :after #'zoxide-add)
 
       (defun eshell/zi (&optional target)
-        "`cd' with interactive selection."
+        "`eshell/cd' with interactive selection."
         (if target (zoxide-find-file target) (zoxide-find-file)))
 
       (defun eshell/z (&optional target)
-        "Change eshell directory using `zoxide'; if TARGET nil/empty, `cd' to `$HOME'."
+        "Change eshell directory using zoxide.
+If TARGET nil/empty, `eshell/cd' to $HOME."
         (let ((home (or (getenv "HOME") "~")))
           (if (and target (not (string-empty-p target)))
               (let ((candidate (car (zoxide-query target))))
@@ -48,10 +49,10 @@
   (makunbound  'zoxide-travel-callback-function)
 
   (defadvice! fixed-zoxide-run (async &rest args)
-    :override #'zoxide-run
     "Run zoxide command with args.
 The first argument ASYNC specifies whether calling asynchronously or not.
-The second argument ARGS is passed to zoxide directly, like query -l"
+The second argument ARGS is passed to zoxide directly, like `query -l'."
+    :override #'zoxide-run
     (if async
         (apply #'start-process "zoxide" "*zoxide*" zoxide-executable args)
       (with-temp-buffer
@@ -83,8 +84,8 @@ This is a help function to define interactive commands like
         (funcall callback default-directory))))
 
   (defadvice! fixed-zoxide-find-file (&optional query)
-    :override #'zoxide-find-file
     "Open file in path from zoxide. If QUERY is given, use it."
+    :override #'zoxide-find-file
     (interactive)
     (if query
         (zoxide--open-with query zoxide-find-file-function)

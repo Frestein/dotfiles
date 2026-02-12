@@ -317,6 +317,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
     (set-popup-rule! "^\\*vterm" :ignore t)
     (set-popup-rule! "^ \\*Install vterm" :height 0.25 :ttl 0)
+    (+popup-cleanup-rules-h)
 
     ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/313#issuecomment-1183650463
     (advice-add #'vterm--redraw :around (lambda (fun &rest args) (let ((cursor-type cursor-type)) (apply fun args))))
@@ -1679,36 +1680,49 @@ It should be the title of the web page as returned by `rdrview'."
         :n "R" #'frestein-eww-readable))
 
 (when (modulep! :app rss)
-  (defun frestein/elfeed-open-and-update ()
-    "Wrapper to load the elfeed db from disk before opening, force update search and feeds"
+  ;;;###autoload
+  (defun fr/elfeed-open-and-update ()
+    "Wrapper to load the `elfeed' db from disk before opening, force update search and feeds."
     (interactive)
     (elfeed)
     (elfeed-search-update--force)
     (elfeed-update))
 
   (after! elfeed
-    (setq elfeed-search-filter "@2-week-ago +unread -reddit"
-          elfeed-goodies/feed-source-column-width 36
-          elfeed-goodies/tag-column-width 28)
+    (setq elfeed-search-filter "@2-week-ago +unread -reddit")
 
-    (when (modulep! :app rss +org)
-      ;; INFO: https://github.com/remyhonig/elfeed-org/issues/99
-      (defun rmh-elfeed-org-import-trees (tree-id)
-        "Get trees with \":ID:\" property or tag of value TREE-ID.
-Return trees with TREE-ID as the value of the id property or
-with a tag of the same value.  Setting an \":ID:\" property is not
-recommended but I support it for backward compatibility of
-current users."
-        (org-element-map
-            (org-element-parse-buffer)
-            'headline
-          (lambda (h)
-            (when (or (member tree-id (org-get-tags h))
-                      (equal tree-id (org-element-property :ID h))) h)))))
+    (map! :map elfeed-show-mode-map
+          :n [escape] #'elfeed-kill-buffer
+          :n [return] #'elfeed-show-visit)
 
     (map! :map elfeed-search-mode-map
-          :localleader
-          :desc "Update feeds" "u" #'elfeed-update)))
+          :n "R" #'elfeed-update
+          :n [tab] #'elfeed-search-show-entry
+          (:localleader
+           :desc "Update feeds" "u" #'elfeed-update))))
+
+(when (modulep! :app rss)
+  (after! elfeed-goodies
+    (setq elfeed-goodies/feed-source-column-width 36)
+    (setq elfeed-goodies/tag-column-width 28)
+    (setq elfeed-goodies/entry-pane-size 0.72)))
+
+(when (modulep! :app rss +org)
+  (after! elfeed-org
+    ;; INFO: https://github.com/remyhonig/elfeed-org/issues/99
+    (defadvice! fixed-rmh-elfeed-org-import-trees (tree-id)
+      "Get trees with `:ID:' property or tag of value TREE-ID.
+Return trees with TREE-ID as the value of the id property or
+with a tag of the same value. Setting an `:ID:' property is not
+recommended but I support it for backward compatibility of
+current users."
+      :override #'rmh-elfeed-org-import-trees
+      (org-element-map
+          (org-element-parse-buffer)
+          'headline
+        (lambda (h)
+          (when (or (member tree-id (org-get-tags h))
+                    (equal tree-id (org-element-property :ID h))) h))))))
 
 (when (modulep! :email mu4e)
   (after! mu4e
