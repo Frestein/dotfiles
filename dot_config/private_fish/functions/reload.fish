@@ -1,3 +1,3 @@
-function reload --description 'Reload the current shell'
+function reload -d 'Reload the current shell'
     exec "$SHELL" -l $argv
 end

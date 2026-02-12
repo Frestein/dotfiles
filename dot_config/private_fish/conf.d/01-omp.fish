@@ -2,6 +2,10 @@ if not status is-interactive && test "$CI" != true
     exit
 end
 
+if not type -q oh-my-posh
+    exit
+end
+
 oh-my-posh init fish --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline-fish.omp.toml" | source
 
 function rerender_on_bind_mode_change --on-variable fish_bind_mode -d "Trigger oh-my-posh repaint on vi mode change"
@@ -12,5 +16,5 @@ function rerender_on_bind_mode_change --on-variable fish_bind_mode -d "Trigger o
 end
 
 # INFO: This function is masked and does nothing
-function fish_default_mode_prompt --description "Display vi prompt mode"
+function fish_default_mode_prompt -d "Display vi prompt mode"
 end

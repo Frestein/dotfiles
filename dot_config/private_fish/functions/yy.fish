@@ -1,4 +1,8 @@
-function yy --description 'Open yazi and change cwd when exiting'
+if not type -q yazi
+    exit
+end
+
+function yy -w yazi -d 'Open yazi and change cwd when exiting'
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
     yazi $argv --cwd-file="$tmp"
     if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]

@@ -43,9 +43,6 @@ set -o vi
 
 # ----------------------------Binds---------------------------- #
 
-bind '"\C-s": "sysz\n"'
-bind -m vi-command '"\C-s": "i sysz\n"'
-
 # ---------------------------Imports--------------------------- #
 [ -f "$XDG_CONFIG_HOME/bash/functions.sh" ] && . "$XDG_CONFIG_HOME/bash/functions.sh"
 [ -f "$XDG_CONFIG_HOME/bash/aliases.sh" ] && . "$XDG_CONFIG_HOME/bash/aliases.sh"

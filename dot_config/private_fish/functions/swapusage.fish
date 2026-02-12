@@ -1,12 +1,12 @@
-function swapusage --description 'Show swap usage of processes'
+function swapusage -d 'Show swap usage of processes'
     for arg in $argv
         if test $arg = --help
-            echo "swapusage - shows swap usage of processes."
-            echo ""
-            echo "Usage:"
-            echo "  swapusage           # output in MB"
-            echo "  swapusage --raw     # output in KB"
-            echo "  swapusage --help    # show this help"
+            echo "\
+Usage: swapusage [options]
+
+Options:
+  --raw   Show output in KB
+  --help  Show this help"
             return 0
         end
     end

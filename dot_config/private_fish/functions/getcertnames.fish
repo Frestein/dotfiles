@@ -1,4 +1,4 @@
-function getcertnames --description 'Show all the names (CNs and SANs) listed in the SSL certificate for a given domain'
+function getcertnames -d 'Show all the names (CNs and SANs) listed in the SSL certificate for a given domain'
     if test (count $argv) -eq 0
         echo "Usage: getcertnames <domain>"
         return 1

@@ -2,6 +2,10 @@ if not status is-interactive && test "$CI" != true
     exit
 end
 
+if not type -q fzf
+    exit
+end
+
 function fzf_bind_multiply
     set multiplier $argv[1]
     set prefix $argv[2]

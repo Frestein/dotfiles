@@ -1,7 +1,10 @@
 if status is-interactive
     set -gx SHELL /usr/bin/fish
 
-    set -gx LS_COLORS "$(vivid generate gruvbox-dark)"
+    # Generate LS_COLORS
+    if type -q vivid
+        set -gx LS_COLORS (vivid generate gruvbox-dark)
+    end
 
     set -g fish_key_bindings fish_vi_key_bindings
     set fish_cursor_insert line blink
@@ -16,7 +19,4 @@ if status is-interactive
     end
 
     fish_config theme choose gruvbox-dark
-
-    bind ctrl-s sysz
-    bind -M insert ctrl-s sysz
 end
