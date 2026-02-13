@@ -1,7 +1,6 @@
 ;;; tools/consult-gh/config.el -*- lexical-binding: t; -*-
 
 (use-package! consult-gh
-  :when (modulep! :completion vertico)
   :after consult
   :custom
   (consult-gh-default-clone-directory "~/Projects/git")
@@ -30,7 +29,7 @@
   (consult-gh-forge-mode t))
 
 (use-package! consult-gh-nerd-icons
-  :when (modulep! +nerd)
+  :when (modulep! +icons)
   :after consult-gh
   :config
   (consult-gh-nerd-icons-mode t))

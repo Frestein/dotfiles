@@ -96,7 +96,7 @@
        disk-usage
        ;; docker
        chezmoi
-       (consult-gh +nerd)   ; interactive interface for "Github CLI"
+       (consult-gh +icons)   ; interactive interface for "Github CLI"
        fj                   ; client for forgejo instances
        screenshot
        0x0
