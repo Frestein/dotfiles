@@ -190,7 +190,7 @@
        ;; solidity          ; do you need a blockchain? No.
        ;; swift             ; who asked for emoji variables?
        ;; terra             ; Earth and Moon in alignment for performance.
-       (typst +lsp +preview)
+       (typst +lsp +tree-sitter +preview)
        ;; web               ; the tubes
        (yaml +lsp +tree-sitter)  ; JSON, but readable
        ;; zig               ; C, but simpler

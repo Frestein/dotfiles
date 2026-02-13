@@ -1,12 +1,13 @@
 ;;; lang/typst/config.el -*- lexical-binding: t; -*-
 
 (use-package! typst-ts-mode
+  :when (and (modulep! +tree-sitter) (treesit-available-p))
   :custom
   (typst-ts-enable-raw-blocks-highlight t)
   :config
-  (setq typst-ts-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory)
-        typst-ts-watch-options '("--open")
-        typst-ts-indent-offset 2)
+  (setq typst-ts-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
+  (setq typst-ts-watch-options '("--open"))
+  (setq typst-ts-indent-offset 2)
 
   (after! dtrt-indent
     (add-to-list 'dtrt-indent-hook-mapping-list '(typst-ts-mode default typst-ts-indent-offset)))
@@ -46,10 +47,8 @@
             nil)))))
 
   (when (modulep! +lsp)
-    (when (modulep! :tools lsp +eglot)
-      (set-eglot-client! 'typst-ts-mode '("tinymist")))
-
-    (add-hook 'typst-ts-mode-local-vars-hook #'lsp!))
+    (set-eglot-client! 'typst-ts-mode '("tinymist"))
+    (add-hook 'typst-ts-mode-local-vars-hook #'lsp! 'append))
 
   (map! :map typst-ts-mode-map
         :localleader
@@ -58,13 +57,15 @@
                  "P" #'typst-ts-compile-and-preview)))
 
 (use-package! typst-preview
+  :when (and (modulep! +preview)
+             (executable-find "tinymist"))
   :init
   (setq typst-preview-autostart t)
   (setq typst-preview-open-browser-automatically t)
   :config
-  (setq typst-preview-browser "default"
-        typst-preview-invert-colors "never"
-        typst-preview-partial-rendering t)
+  (setq typst-preview-browser "default")
+  (setq typst-preview-invert-colors "never")
+  (setq typst-preview-partial-rendering t)
 
   (map! :map typst-ts-mode-map
         :localleader
