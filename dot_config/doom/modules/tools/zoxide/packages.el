@@ -1,4 +1,5 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; tools/zoxide/packages.el
 
-(package! zoxide)
+(when (executable-find "zoxide")
+  (package! zoxide))

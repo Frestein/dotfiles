@@ -1,6 +1,7 @@
 ;;; tools/zoxide/config.el -*- lexical-binding: t; -*-
 
 (use-package! zoxide
+  :when (executable-find "zoxide")
   :init
   (add-hook! find-file #'zoxide-add)
 
