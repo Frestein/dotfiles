@@ -1,9 +1,9 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; tools/chezmoi/packages.el
 
+;; TODO: Adjust when PR will be merged.
+;; https://github.com/tuh8888/chezmoi.el/pull/38
 (package! chezmoi
-  ;; TODO: Adjust when PR will be merged
-  ;; https://github.com/tuh8888/chezmoi.el/pull/38
   :recipe (:host github
            :repo "Lillenne/chezmoi.el"))
 
@@ -11,7 +11,7 @@
   (package! chezmoi-age
     :recipe (:host github
              :repo "Lillenne/chezmoi.el"
-             :files ("extensions/chezmoi-dired.el"))))
+             :files ("extensions/chezmoi-age.el"))))
 
 (when (modulep! :completion corfu)
   (package! chezmoi-cape

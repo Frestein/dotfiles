@@ -2,13 +2,13 @@
 
 ;;;###autoload
 (defun +chezmoi--evil-insert-state-enter ()
-  "Run after evil-insert-state-entry."
+  "Run after `evil-insert-state-entry-hook'."
   (chezmoi-template-buffer-display nil (point))
   (remove-hook 'after-change-functions #'chezmoi-template--after-change 1))
 
 ;;;###autoload
 (defun +chezmoi--evil-insert-state-exit ()
-  "Run after evil-insert-state-exit."
+  "Run after `evil-insert-state-exit-hook'."
   (chezmoi-template-buffer-display nil)
   (chezmoi-template-buffer-display t)
   (add-hook 'after-change-functions #'chezmoi-template--after-change nil 1))

@@ -106,4 +106,4 @@ With universal argument ARG, adds `--encrypt' flag."
   (advice-add #'+file-templates-get-short-path
               :override #'+chezmoi--file-templates-get-short-path-a))
 
-(add-hook! doom-after-modules-config #'+chezmoi--init-h)
+(add-hook! doom-after-modules-config #'+chezmoi--init-map-h)

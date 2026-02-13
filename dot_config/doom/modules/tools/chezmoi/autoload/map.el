@@ -1,8 +1,8 @@
 ;;; tools/chezmoi/autoload/map.el -*- lexical-binding: t; -*-
 
 ;;;###autoload
-(defun +chezmoi--init-h ()
-  "Initialize chezmoi."
+(defun +chezmoi--init-map-h ()
+  "Initialize chezmoi's mappings."
   (after! dired
     (map! :map dired-mode-map
           :localleader
