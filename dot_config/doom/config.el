@@ -599,7 +599,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
          :desc "Third Time" "," #'pomm-third-time
          :desc "Pomodoro" "." #'pomm)
        (:when (modulep! :app srs)
-         :desc "SRS review" "s" #'org-srs-review-start-org-directory)
+         :desc "SRS review" "s" #'+org-srs-review-start-org-directory)
        (:when (modulep! :tools daemons)
          :desc "Daemons" "D" #'daemons)
        (:when (modulep! :term vterm)

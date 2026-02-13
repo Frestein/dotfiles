@@ -1,13 +1,8 @@
 ;;; app/srs/config.el -*- lexical-binding: t; -*-
 
-(use-package org-srs
+(use-package! org-srs
   :after org
   :config
-  (defun org-srs-review-start-org-directory ()
-    "Start a review session for items located in the org-directory."
-    (interactive)
-    (org-srs-review-start org-directory))
-
   (map! :map org-mode-map
         :localleader
         (:prefix ("S" . "srs")
@@ -35,10 +30,10 @@
                           "p" #'org-srs-review-postpone
                           "q" #'org-srs-review-quit))))
 
-(use-package org-srs
+(use-package! org-srs
   :after org
   :when (eq system-type 'android)
   :custom
   (org-srs-item-confirm #'org-srs-item-confirm-command)
   :config
-  (org-srs-mouse-mode t))
+  (org-srs-ui-mode t))
