@@ -3,5 +3,6 @@
 
 (package! daemons)
 
-(when (modulep! +systemd)
+(when (and (modulep! +systemd)
+           (executable-find "systemctl"))
   (package! systemd))
