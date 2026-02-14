@@ -7,5 +7,5 @@
              (executable-find "systemctl"))
   :config
   (when (modulep! +lsp)
-    (set-eglot-client! 'systemd-mode "systemd-lsp")
+    (set-eglot-client! 'systemd-mode '("systemd-lsp"))
     (add-hook 'systemd-mode-hook #'lsp! 'append)))
