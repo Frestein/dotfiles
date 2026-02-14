@@ -19,7 +19,7 @@
              :repo "armindarvish/consult-gh"
              :files ("consult-gh-forge.el"))))
 
-(when (modulep! +nerd)
+(when (modulep! +icons)
   (package! consult-gh-nerd-icons
     :recipe (:host github
              :repo "armindarvish/consult-gh"
