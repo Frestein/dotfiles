@@ -16,6 +16,12 @@
   (setq telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega"))
   (setq telega-root-default-view-function 'telega-view-folders)
   (setq telega-translate-to-language-by-default "ru")
+  (setq telega-chat-show-deleted-messages-for '(not saved-messages))
+  (setq telega-chat-input-markups '("org" "markdown2"))
+  (setq telega-sticker-size '(8 . 26))
+  (setq telega-use-images t)
+  (setq telega-animation-play-inline 60)
+
   (setq telega-video-player-command (cond ((executable-find "mpv")
                                            '(concat "mpv"
                                              (when telega-ffplay-media-timestamp
@@ -26,15 +32,17 @@
                                            '(concat "ffplay -autoexit"
                                              (when telega-ffplay-media-timestamp
                                                (format " -ss %f" telega-ffplay-media-timestamp))))))
-  (setq telega-chat-show-deleted-messages-for '(not saved-messages))
-  (setq telega-chat-input-markups '("org" "markdown2"))
-  (setq telega-sticker-size '(8 . 26))
-  (setq telega-use-images t)
-  (setq telega-animation-play-inline 60)
+
   (when (executable-find "tgs2png")
     (setq telega-sticker-animated-play t))
+
   (setq telega-known-inline-bots (append telega-known-inline-bots
                                          '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare")))
+
+  (setq telega-filter-button-width '(0.10 10 20))
+
+  (setq telega-filters-custom '(("Main" . main)
+                                ("lng_filters_type_no_archived" . archive)))
 
   (setq telega-date-format-alist '((today          . "%I:%M %p ")
                                    (this-week      . "%I:%M %p ")
