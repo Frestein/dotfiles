@@ -274,8 +274,9 @@
               (concat " " (telega-symbol 'mode) "Mnz")))))
 
   ;; INFO: Redesign, make topic icon optional
-  (defun frestein/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
+  (defadvice! fr/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
     "Inserter for the current topic in the chatbuf's input prompt."
+    :override 'telega-chatbuf-prompt-ins-topic
     (telega-chatbuf--dirtiness-init "topic")
 
     (when (telega-topic-match-p telega-chatbuf--topic
@@ -287,11 +288,10 @@
           :with-icon-p with-topic-icon-p
           :with-maybe-pin-p t))))
 
-  (advice-add 'telega-chatbuf-prompt-ins-topic :override #'frestein/telega-chatbuf-prompt-ins-topic)
-
   ;; INFO: Redesign, make topic icon optional
-  (defun frestein/telega-chatbuf-header-topic (&optional max-width with-topic-icon-p)
+  (defadvice! fr/telega-chatbuf-header-topic (&optional max-width with-topic-icon-p)
     "Formatter for the chatbuf's topic or messages thread."
+    :override 'telega-chatbuf-header-topic
     (telega-chatbuf--dirtiness-init "topic")
 
     (when telega-chatbuf--topic
@@ -307,16 +307,15 @@
              :with-icon-p with-topic-icon-p
              :with-maybe-pin-p t))))))
 
-  (advice-add 'telega-chatbuf-header-topic :override #'frestein/telega-chatbuf-header-topic)
-
   ;; INFO: Redesign topic
-  (defun frestein/telega-ins--message-header (msg &optional msg-chat msg-sender
-                                                  addon-inserter)
+  (defadvice! fr/telega-ins--message-header (msg &optional msg-chat msg-sender
+                                                 addon-inserter)
     "Insert message's MSG header, everything except for message content.
 MSG-CHAT - Chat for which to insert message header.
 MSG-SENDER - Sender of the message.
 If ADDON-INSERTER function is specified, it is called with one
 argument - MSG to insert additional information after header."
+    :override 'telega-ins--message-header
     (let* ((date-and-status
             (when (eq telega-msg-heading-trail 'date-and-status)
               (telega-ins--as-string
@@ -472,10 +471,10 @@ argument - MSG to insert additional information after header."
 
           (telega-ins "\n")))))
 
-  (advice-add 'telega-ins--message-header :override #'frestein/telega-ins--message-header)
-
-  ;; INFO: Disable TODO debug message.
-  (defun telega--on-updateSuggestedActions (event)
+  ;; TODO: Adjust when debug message will be deleted.
+  ;; INFO: Disable debug message.
+  (defadvice! fixed-telega--on-updateSuggestedActions (event)
+    :override 'telega--on-updateSuggestedActions
     (let ((added-actions (append (plist-get event :added_actions) nil))
           (removed-actions (append (plist-get event :removed_actions) nil)))
       (setq telega--suggested-actions
@@ -484,8 +483,8 @@ argument - MSG to insert additional information after header."
                     added-actions))))
 
   ;; INFO: Add space after vertical bar in folder prefix
-  (defun telega-folders-insert-default (&optional fmt-spec)
-    "Default inserter for the folders prefixing chat's title."
+  (defun fr/telega-folders-insert-personalized (&optional fmt-spec)
+    "Frestein's inserter for the folders prefixing chat's title."
     (let ((fmt-spec (or fmt-spec (eval-when-compile
                                    (propertize "%F" 'face 'bold)))))
       (if telega-tdlib--chat-folder-tags-p
@@ -497,22 +496,25 @@ argument - MSG to insert additional information after header."
                                   fmt-spec (car telega-chat-folders)))))
           (telega-ins (concat (telega-symbol 'vertical-bar) " "))))))
 
-  (defun telega--chat-observable-p (msg)
+  (setq telega-chat-folders-insexp 'fr/telega-folders-insert-personalized)
+
+  ;; INFO: Override default notification logic
+  ;; Many thanks - tychoish!
+  ;; https://github.com/tychoish/.emacs.d/blob/bc32c80e53f0bc4ad7655871ee4672ff31693b77/lisp/tychoish-core.el#L1267
+  (defun fr/telega--chat-observable-p (msg)
+    "Return non-nil if CHAT is observable."
     (let ((chat (telega-msg-chat msg)))
       (with-telega-chatbuf chat
         (and (telega-chatbuf--msg-observable-p msg)
              (not (telega-chatbuf--history-state-get :newer-freezed))))))
 
-  ;; INFO: Override default notification logic
-  ;; Many thanks - tychoish!
-  ;; https://github.com/tychoish/.emacs.d/blob/bc32c80e53f0bc4ad7655871ee4672ff31693b77/lisp/tychoish-core.el#L1267
-  (defun telega-notifications-msg-notify-p (msg)
+  (defun fr/telega-notifications-msg-notify-p (msg)
     "Return non-nil if message MSG should pop-up notification."
     (let* ((chat (telega-msg-chat msg))
            (title (plist-get chat :title)))
       (cond
        ;; Chat window is open and viable: skip
-       ((telega--chat-observable-p msg)
+       ((fr/telega--chat-observable-p msg)
         (progn (telega-debug "NOTIFY-CHECK: observed chat [%s], skip notify" title) nil))
 
        ;; If it's muted: skip
@@ -544,14 +546,17 @@ argument - MSG to insert additional information after header."
        (t
         (progn (message (format "TELEGA-NOTIFY: unexpected message [%s], notifying anyway" title)) t)))))
 
+  (setq telega-notifications-msg-temex 'fr/telega-notifications-msg-notify-p)
+
   ;; WARN: TOS violation. Block sponsored messages.
   ;; sponsored - Fetch messages but don't draw them.
   ;; sponsored2 - Don't fetch messages.
   (when (or (modulep! +sponsored) (modulep! +sponsored2))
     (setq telega-inserter-for-sponsored-msg-button nil)
 
-    (defun telega-chatbuf--sponsored-messages-fetch ()
-      "Asynchronously fetch sponsored messages for the chatbuf."
+    (defadvice! fr/telega-chatbuf--sponsored-messages-fetch-without-display ()
+      "Asynchronously fetch sponsored messages for the chatbuf without displaying them."
+      :override 'telega-chatbuf--sponsored-messages-fetch
       (when (modulep! +sponsored)
         (let* ((chat telega-chatbuf--chat)
                (tsm-orig (plist-get chat :telega-sponsored-messages)))
@@ -566,7 +571,7 @@ argument - MSG to insert additional information after header."
     (add-hook 'telega-msg-ignore-predicates
               (telega-match-gen-predicate 'msg '(sender is-blocked))))
 
-  (defun telega-video-play-incementally-mode ()
+  (defun fr/telega-video-play-incementally-mode ()
     "Toggle telega video play incrementally mode."
     (interactive)
     (setq telega-video-play-incrementally (not telega-video-play-incrementally))
@@ -574,7 +579,7 @@ argument - MSG to insert additional information after header."
         (message "Telega-Video-Play-Incrementally mode enabled")
       (message "Telega-Video-Play-Incrementally mode disabled")))
 
-  (defun telega-debug-mode ()
+  (defun fr/telega-debug-mode ()
     "Toggle telega debug mode."
     (interactive)
     (setq telega-debug (not telega-debug))
@@ -582,7 +587,7 @@ argument - MSG to insert additional information after header."
         (message "Telega-Debug mode enabled")
       (message "Telega-Debug mode disabled")))
 
-  (defun frestein/telega-chatbuf-inline-bot-choose ()
+  (defun fr/telega-chatbuf-inline-bot-choose ()
     "Select an inline bot from telega-known-inline-bots and insert it."
     (interactive)
     (let ((bot (completing-read "Choose inline bot: " telega-known-inline-bots nil t)))
@@ -610,13 +615,13 @@ argument - MSG to insert additional information after header."
          :n "Zs" #'telega-chatbuf-attach-sticker
          :n "Zz" #'telega-chatbuf-attach
          (:localleader
-          "@" #'frestein/telega-chatbuf-inline-bot-choose
+          "@" #'fr/telega-chatbuf-inline-bot-choose
           (:prefix ("t" . "translate")
                    "r" #'telega-translate-region
                    "R" #'telega-translate-region-inplace
                    "a" #'telega-auto-translate-mode)
           (:prefix ("i" . "input")
-                   "b" #'frestein/telega-chatbuf-inline-bot-choose
+                   "b" #'fr/telega-chatbuf-inline-bot-choose
                    "f" #'telega-chatbuf-input-formatting-set)
           (:prefix ("d" . "describe")
                    "w" #'telega-describe-connected-websites
