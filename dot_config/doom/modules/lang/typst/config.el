@@ -1,5 +1,10 @@
 ;;; lang/typst/config.el -*- lexical-binding: t; -*-
 
+(defun +typst-common-config (mode)
+  (when (modulep! +lsp)
+    (set-eglot-client! mode '("tinymist"))
+    (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
+
 (use-package! typst-ts-mode
   :when (and (modulep! +tree-sitter) (treesit-available-p))
   :custom
@@ -46,9 +51,7 @@
               (setq node (treesit-node-parent node)))
             nil)))))
 
-  (when (modulep! +lsp)
-    (set-eglot-client! 'typst-ts-mode '("tinymist"))
-    (add-hook 'typst-ts-mode-local-vars-hook #'lsp! 'append))
+  (+typst-common-config 'typst-ts-mode)
 
   (map! :map typst-ts-mode-map
         :localleader

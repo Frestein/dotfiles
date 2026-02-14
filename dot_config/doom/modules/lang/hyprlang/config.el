@@ -1,9 +1,12 @@
 ;;; lang/hyprlang/config.el -*- lexical-binding: t; -*-
 
+(defun +hyprlang-common-config (mode)
+  (when (modulep! +lsp)
+    (set-eglot-client! mode '("hyprls"))
+    (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
+
 (use-package! hyprlang-ts-mode
   :when (and (modulep! +tree-sitter) (treesit-available-p))
-  ;; :hook (hyprlang-ts-mode . eglot-ensure)
-  :mode ("/hypr/.*\\.conf\\'" . hyprlang-ts-mode)
   :init
   (after! treesit
     (add-to-list 'treesit-language-source-alist
@@ -20,6 +23,4 @@
       (add-to-list 'apheleia-formatters '(whitespace . whitespace-cleanup))
       (add-to-list 'apheleia-mode-alist '(hyprlang-ts . whitespace))))
 
-  (when (modulep! +lsp)
-    (set-eglot-client! 'hyprlang-ts-mode '("hyprls"))
-    (add-hook 'typst-ts-mode-local-vars-hook #'lsp! 'append)))
+  (+hyprlang-common-config 'hyprlang-ts-mode))
