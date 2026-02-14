@@ -642,29 +642,14 @@ argument - MSG to insert additional information after header."
           (:when (modulep! :lang org)
             "c" #'org-cliplink)))))
 
-(use-package! telega-mnz
-  :when (modulep! +mnz)
-  :after-call telega
-  :hook (telega-load  . global-telega-mnz-mode)
-  :config
-  (setq telega-mnz-use-language-detection 32))
+(when (modulep! +mnz)
+  (use-package! telega-mnz
+    :after-call telega
+    :hook (telega-load  . global-telega-mnz-mode)
+    :config
+    (setq telega-mnz-use-language-detection 32))
 
-(use-package! language-detection
-  :when (modulep! +mnz))
-
-(use-package! telega-emacs-stories
-  :when (modulep! +stories)
-  :after-call telega
-  :hook (telega-load  . telega-emacs-stories-mode)
-  :bind (:map telega-root-mode-map
-              ("gVe" . telega-view-emacs-stories)))
-
-(use-package! telega-url-shorten-nerd
-  :when (modulep! +icons)
-  :after-call telega
-  :hook (telega-load  . global-telega-url-shorten-nerd-mode)
-  :config
-  (setq telega-url-shorten-nerd-use-images nil))
+  (use-package! language-detection))
 
 (use-package! telega-adblock
   :when (modulep! +adblock)
@@ -678,3 +663,10 @@ argument - MSG to insert additional information after header."
 (use-package! ol-telega
   :when (modulep! :lang org)
   :after-call telega)
+
+(use-package! telega-url-shorten-nerd
+  :when (modulep! +icons)
+  :after-call telega
+  :hook (telega-load  . global-telega-url-shorten-nerd-mode)
+  :config
+  (setq telega-url-shorten-nerd-use-images nil))
