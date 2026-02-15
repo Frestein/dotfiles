@@ -21,8 +21,8 @@ eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubble
 
 eval "$(zoxide init bash)"
 eval "$(atuin init bash)"
-# eval "$(fzf --bash)"
-eval "$(tv init bash)"
+eval "$(fzf --bash)"
+# eval "$(tv init bash)"
 eval "$(direnv hook bash)"
 
 # ---------------------------Options--------------------------- #

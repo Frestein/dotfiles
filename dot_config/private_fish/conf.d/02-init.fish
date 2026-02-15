@@ -10,9 +10,13 @@ if type -q atuin
     atuin init fish | source
 end
 
-if type -q tv
-    tv init fish | source
+if type -q fzf
+    fzf --fish | source
 end
+
+# if type -q tv
+#     tv init fish | source
+# end
 
 if type -q batpipe
     batpipe | source
