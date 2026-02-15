@@ -1,0 +1,55 @@
+[metadata]
+name = "systemd-user-units"
+description = "List and manage user systemd services"
+requirements = ["systemctl"]
+
+[source]
+command = [
+  "systemctl --user list-units --type=service --no-pager --no-legend --plain",
+  "systemctl --user list-units --type=service --all --no-pager --no-legend --plain",
+]
+display = "{split: :0}"
+
+[preview]
+command = "systemctl --user status '{split: :0}' --no-pager"
+
+[ui]
+layout = "portrait"
+
+[keybindings]
+ctrl-s = "actions:start"
+ctrl-f = "actions:stop"
+ctrl-r = "actions:restart"
+ctrl-t = "actions:reload"
+ctrl-e = "actions:enable"
+ctrl-d = "actions:disable"
+
+[actions.start]
+description = "Start the selected service"
+command = "systemctl --user start '{split: :0}'"
+mode = "fork"
+
+[actions.stop]
+description = "Stop the selected service"
+command = "systemctl --user stop '{split: :0}'"
+mode = "fork"
+
+[actions.restart]
+description = "Restart the selected service"
+command = "systemctl --user restart '{split: :0}'"
+mode = "fork"
+
+[actions.reload]
+description = "Reload the selected service"
+command = "systemctl --user reload '{split: :0}'"
+mode = "fork"
+
+[actions.enable]
+description = "Enable the selected service"
+command = "systemctl --user enable '{split: :0}'"
+mode = "fork"
+
+[actions.disable]
+description = "Disable the selected service"
+command = "systemctl --user disable '{split: :0}'"
+mode = "fork"
