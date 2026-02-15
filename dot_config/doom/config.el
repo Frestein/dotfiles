@@ -107,6 +107,11 @@
 (with-eval-after-load "lib/docs"
   (remove-hook! 'doom-docs-mode-hook #'doom-docs--display-menu-h))
 
+;; TODO: Adjust when issue will be closed.
+;; https://github.com/doomemacs/doomemacs/issues/8568
+(when (fboundp 'straight-use-recipes)
+  (setq straight-package--warning-displayed t))
+
 (setq user-full-name "Frestein"
       user-mail-address "frestein@tuta.io")
 
