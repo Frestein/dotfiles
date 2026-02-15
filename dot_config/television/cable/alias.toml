@@ -1,8 +1,0 @@
-[metadata]
-name = "alias"
-description = "A channel to select from shell aliases"
-requirements = ["bash"]
-
-[source]
-command = "bash -i -c 'alias'"
-output = "{split:=:0}"

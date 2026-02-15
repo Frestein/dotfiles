@@ -1,8 +1,0 @@
-[metadata]
-name = "abbr"
-description = "A channel to select from shell abbrs"
-requirements = ["fish"]
-
-[source]
-command = "fish -i -c 'abbr'"
-output = "{split:=:0}"

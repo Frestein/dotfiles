@@ -14,10 +14,6 @@ if type -q fzf
     fzf --fish | source
 end
 
-# if type -q tv
-#     tv init fish | source
-# end
-
 if type -q batpipe
     batpipe | source
 end
