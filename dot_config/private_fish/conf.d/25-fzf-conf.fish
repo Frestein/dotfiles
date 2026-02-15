@@ -73,17 +73,19 @@ set -gx FZF_CTRL_T_OPTS "
     --border-label='Files'
     --border-label-pos=-4
     --header 'Preview <M-p>'
+    --color header:italic
     --walker-skip $walker_skip
     --preview 'fzf-preview.sh {}'
 "
-# set -gx FZF_CTRL_R_OPTS "
-#     --bind 'alt-y:execute-silent(echo -n {2..} | fish_clipboard_copy)+abort'
-#     --list-border='sharp'
-#     --border-label='Command History'
-#     --border-label-pos=-4
-#     --color header:italic
-#     --header 'Copy <M-y>'
-# "
+set -gx FZF_CTRL_R_OPTS "
+    --bind 'alt-y:execute-silent(echo -n {2..} | fish_clipboard_copy)+abort'
+    --list-border='sharp'
+    --border-label='Command History'
+    --border-label-pos=-4
+    --header 'Copy <M-y>'
+    --color header:italic
+    --layout=reverse
+"
 set -gx FZF_ALT_C_OPTS "
     --bind 'alt-p:toggle-preview'
     --bind 'alt-m:change-multi'
@@ -91,6 +93,7 @@ set -gx FZF_ALT_C_OPTS "
 	--border-label='Directories'
     --border-label-pos=-4
     --header 'Preview <M-p>  Multi <M-m>'
+    --color header:italic
 	--walker-skip $walker_skip
     --preview 'eza -T --color=always --icons {}'
 "
@@ -106,7 +109,7 @@ set -gx FZF_DEFAULT_OPTS "
     --bind 'ctrl-y:accept'
     --bind 'ctrl-f:$preview_down'
     --bind 'ctrl-b:$preview_up'
-    --height 50%
+    --height 100%
 	--border='sharp'
     --border-label=''
     --preview-window='border-sharp'
