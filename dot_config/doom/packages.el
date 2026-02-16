@@ -1,6 +1,9 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
+(package! once
+  :recipe (:host github :repo "meedstrom/once"))
+
 (when (modulep! :term eshell)
   (package! esh-autosuggest)
 

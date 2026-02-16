@@ -793,6 +793,99 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
          '("--graph" "-n256" "--decorate" "--color" "--show-signature"))))
 
 (when (modulep! :tools magit)
+  (after! magit
+    (require 'once)
+
+    (defun fr/magit--get-project-unique-identifier ()
+      "Generate a unique identifier for the current project."
+      (let* ((project-path (magit-toplevel))
+             (canonical-path (file-truename project-path)))
+        (md5 canonical-path)))
+
+    ;; Many thanks
+    ;; - https://j-e-s-s-e.com/blog/add-conventional-commits-with-scopes-to-your-magit-commit-messages
+    ;; - https://github.com/jesse-c/dotfiles/blob/8b9326ea7d37687d365efa9e86cb30056665beec/home/dot_config/emacs/init.el#L551
+    (defun fr/magit--find-conventional-commit-scopes ()
+      "Find all scopes used in conventional commits in the current Git project."
+      (let* ((project-id (fr/magit--get-project-unique-identifier))
+             (cache-dir (expand-file-name
+                         (format "magit/conventional-commits/%s" project-id)
+                         doom-cache-dir))
+             (cache-file (expand-file-name "commit-scopes.txt" cache-dir))
+             (default-directory (magit-toplevel))
+             (temp-buffer (generate-new-buffer " *commit-scopes-temp*")))
+
+        ;; Create cache directory if it doesn't exist
+        (unless (file-exists-p cache-dir)
+          (make-directory cache-dir t))
+
+        ;; Use Emacs Lisp to extract scopes directly
+        (with-current-buffer temp-buffer
+          (call-process "git" nil t nil "log" "--pretty=format:%s")
+          (goto-char (point-min))
+
+          ;; Extract scopes using a regular expression
+          (let ((scopes '()))
+            (while (re-search-forward "\\(feat\\|fix\\|docs\\|style\\|refactor\\|perf\\|test\\|build\\|ci\\|chore\\|revert\\)(\\([^)]+\\))" nil t)
+              (let ((scope-text (match-string 2)))
+                ;; Split by comma and add each scope
+                (dolist (scope (split-string scope-text "," t "[ \t]+"))
+                  (push (string-trim scope) scopes))))
+
+            ;; Write unique scopes to the cache file
+            (with-temp-file cache-file
+              (insert (mapconcat #'identity (delete-dups scopes) "\n")))))
+
+        (kill-buffer temp-buffer)
+
+        ;; Return the cache file path
+        cache-file))
+
+    (defun fr/magit--get-commit-scopes ()
+      "Get commit scopes from cache or generate them if needed."
+      (let* ((project-id (fr/magit--get-project-unique-identifier))
+             (cache-dir (expand-file-name
+                         (format "magit/conventional-commits/%s" project-id)
+                         doom-cache-dir))
+             (cache-file (expand-file-name "commit-scopes.txt" cache-dir))
+             (default-directory (magit-toplevel)))
+        (unless (and (file-exists-p cache-file)
+                     (> (time-to-seconds (time-since (file-attribute-modification-time (file-attributes cache-file))))
+                        (* 60 60 24)))  ; Cache for 24 hours
+          (fr/magit--find-conventional-commit-scopes))
+
+        (when (file-exists-p cache-file)
+          (with-temp-buffer
+            (insert-file-contents cache-file)
+            (split-string (buffer-string) "\n" t)))))
+
+    (defun fr/magit-conventional-commit-prompt ()
+      "Prompt for conventional commit type with scope completion."
+      (let ((commit-types '("feat" "fix" "docs" "style" "refactor" "perf" "test" "build" "ci" "cd" "chore" "revert")))
+        (condition-case nil
+            (if (y-or-n-p "Use conventional commit format? ")
+                (let* ((type (completing-read "Commit type: " commit-types nil t))
+                       (scopes (fr/magit--get-commit-scopes))
+                       (scope-input (completing-read "Scope (optional, comma-separated for multiple): " scopes nil nil)))
+                  (insert type
+                          (if (string-empty-p scope-input)
+                              ""
+                            (concat "(" scope-input ")"))
+                          ": ")
+                  (save-excursion
+                    (newline))
+                  (evil-insert-state))
+              (evil-insert-state))
+          (quit
+           (evil-insert-state)))))
+
+    (defun fr/magit-commit-with-conventional-prompt (&rest args)
+      "Advice for `magit-commit-create': adds conventional commit prompt only for this command."
+      (once-hook 'git-commit-setup-hook #'fr/magit-conventional-commit-prompt))
+
+    (advice-add 'magit-commit-create :before #'fr/magit-commit-with-conventional-prompt)))
+
+(when (modulep! :tools magit)
   (defun fr/magit-todos-ignore-tangled-files (filename)
     "Return nil if an `.org` file with the same basename exists in the same directory,
 ignoring all other files with the same basename."
