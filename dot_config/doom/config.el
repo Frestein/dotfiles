@@ -800,7 +800,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
       "Generate a unique identifier for the current project."
       (let* ((project-path (magit-toplevel))
              (canonical-path (file-truename project-path)))
-        (md5 canonical-path)))
+        (secure-hash 'md5 canonical-path)))
 
     ;; Many thanks
     ;; - https://j-e-s-s-e.com/blog/add-conventional-commits-with-scopes-to-your-magit-commit-messages
