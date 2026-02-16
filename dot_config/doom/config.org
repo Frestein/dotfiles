@@ -9,6 +9,7 @@
 - [[#lexical-binding][Lexical-Binding]]
 - [[#startup][Startup]]
 - [[#doom][Doom]]
+  - [[#modeline][Modeline]]
   - [[#theme][Theme]]
   - [[#fonts][Fonts]]
     - [[#symbols][Symbols]]
@@ -142,6 +143,18 @@
 #+end_src
 
 * Doom
+
+** Modeline
+
+[WIP] Use mode-line as the header-line.
+
+#+begin_src elisp :tangle no :eval no
+(setq header-line-format '("%e"
+                           (:eval
+                            (doom-modeline-format--main))))
+
+(setq mode-line-format nil)
+#+end_src
 
 ** Theme
 
