@@ -34,6 +34,10 @@
       (package! org-mem))))
 
 (when (modulep! :tools magit)
+  (when (and (modulep! :tools magit +delta)
+             (executable-find "delta"))
+    (package! magit-delta))
+
   (when (modulep! :ui hl-todo)
     (package! magit-todos)))
 

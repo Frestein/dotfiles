@@ -781,6 +781,9 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
                   (when faces (setcdr existing faces))
                 (push (cons a faces) hl-todo-keyword-faces)))))))))
 
+(add-to-list 'auto-mode-alist
+             '("/\\.?config/git/.*\\'" . gitconfig-mode))
+
 (when (modulep! :tools magit)
   (setq magit-repository-directories `(("~/Projects" . 2)
                                        (,(xdg-user-dir "DOCUMENTS") . 1)
@@ -885,9 +888,18 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
     (advice-add 'magit-commit-create :before #'fr/magit-commit-with-conventional-prompt)))
 
+(use-package! magit-delta
+  :when (and (modulep! :tools magit +delta)
+             (executable-find "delta"))
+  :hook (magit-mode . magit-delta-mode)
+  :config
+  (setq magit-delta-default-dark-theme "gruvbox-dark")
+  (setq magit-delta-default-light-theme "gruvbox-light")
+  (setq magit-delta-hide-plus-minus-markers nil))
+
 (when (modulep! :tools magit)
   (defun fr/magit-todos-ignore-tangled-files (filename)
-    "Return nil if an `.org` file with the same basename exists in the same directory,
+    "Return nil if an `.org' file with the same basename exists in the same directory,
 ignoring all other files with the same basename."
     (let* ((basename (file-name-sans-extension (file-name-nondirectory filename)))
            (org-file (concat basename ".org"))
@@ -898,15 +910,14 @@ ignoring all other files with the same basename."
           nil
         filename)))
 
-  (when (modulep! :ui hl-todo)
-    (use-package! magit-todos
-      :after magit
-      :hook (magit-mode . magit-todos-mode)
-      :custom
-      (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP"
-                                      "KLUDGE" "DONT" "OKAY" "PROG" "THEM"
-                                      "NEXT" "DONE"))
-      (magit-todos-filename-filter #'fr/magit-todos-ignore-tangled-files))))
+  (use-package! magit-todos
+    :when (modulep! :ui hl-todo)
+    :hook (magit-mode . magit-todos-mode)
+    :custom
+    (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP"
+                                    "KLUDGE" "DONT" "OKAY" "PROG" "THEM"
+                                    "NEXT" "DONE"))
+    (magit-todos-filename-filter #'fr/magit-todos-ignore-tangled-files)))
 
 (setq projectile-project-search-path '(("~/Projects/" . 2)))
 
