@@ -1,3 +1,7 @@
+{{ if lookPath "delta" -}}
+[include]
+    path = delta
+{{- end }}
 [user]
 	name = {{ .name }}
 	email = {{ .email_gpg }}

@@ -1,0 +1,5 @@
+[delta]
+	line-numbers = true
+	syntax-theme = gruvbox-dark
+[core]
+	pager = delta
