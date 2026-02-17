@@ -1940,6 +1940,10 @@ If a region is active, emphasize it, else emphasize the word at point."
 
   (when (modulep! :lang org +roam)
     (after! org-roam
+      (setq org-roam-directory (expand-file-name "roam" org-directory))
+      (setq org-roam-dailies-directory "journal")
+      (pushnew! org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory))
+
       (pushnew! org-default-properties "ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE")
 
       (setq org-roam-capture-templates
@@ -1948,10 +1952,6 @@ If a region is active, emphasize it, else emphasize the word at point."
                :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                   "#+title: ${title}\n")
                :unnarrowed t)))
-
-      (setq org-roam-dailies-directory "journal/")
-
-      (pushnew! org-agenda-files (concat org-roam-directory org-roam-dailies-directory))
 
       (setq org-roam-dailies-capture-templates
             '(("n" "Note" entry
