@@ -668,11 +668,12 @@ argument - MSG to insert additional information after header."
   :hook (telega-load  . telega-adblock-mode))
 
 (use-package! telega-dired-dwim
-  :when (modulep! :emacs dired))
+  :when (modulep! :emacs dired)
+  :after (dired telega))
 
 (use-package! ol-telega
   :when (modulep! :lang org)
-  :after telega
+  :after (org telega)
   :config
   (pushnew! org-modules 'ol-telega))
 
