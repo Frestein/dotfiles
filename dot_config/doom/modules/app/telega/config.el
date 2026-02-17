@@ -657,7 +657,6 @@ argument - MSG to insert additional information after header."
 
 (when (modulep! +mnz)
   (use-package! telega-mnz
-    :after-call telega
     :hook (telega-load  . global-telega-mnz-mode)
     :config
     (setq telega-mnz-use-language-detection 32))
@@ -666,20 +665,19 @@ argument - MSG to insert additional information after header."
 
 (use-package! telega-adblock
   :when (modulep! +adblock)
-  :after-call telega
   :hook (telega-load  . telega-adblock-mode))
 
 (use-package! telega-dired-dwim
-  :when (modulep! :emacs dired)
-  :after-call telega)
+  :when (modulep! :emacs dired))
 
 (use-package! ol-telega
   :when (modulep! :lang org)
-  :after-call telega)
+  :after telega
+  :config
+  (pushnew! org-modules 'ol-telega))
 
 (use-package! telega-url-shorten-nerd
   :when (modulep! +icons)
-  :after-call telega
   :hook (telega-load  . global-telega-url-shorten-nerd-mode)
   :config
   (setq telega-url-shorten-nerd-use-images nil))

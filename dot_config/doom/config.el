@@ -1555,8 +1555,6 @@ If a region is active, emphasize it, else emphasize the word at point."
     :hook (org-agenda-mode . org-super-agenda-mode))
 
   (when (modulep! :lang org +roam)
-    (after! org
-      (pushnew! org-agenda-files (concat org-roam-directory org-roam-dailies-directory)))
     (after! org-roam
       (pushnew! org-default-properties "ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE")
 
@@ -1568,6 +1566,9 @@ If a region is active, emphasize it, else emphasize the word at point."
                :unnarrowed t)))
 
       (setq org-roam-dailies-directory "journal/")
+
+      (pushnew! org-agenda-files (concat org-roam-directory org-roam-dailies-directory))
+
       (setq org-roam-dailies-capture-templates
             '(("n" "Note" entry
                "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
