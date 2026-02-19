@@ -1719,6 +1719,16 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
       (set-eglot-client! mode '("qmlls6"))
       (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
 
+(when (modulep! :lang sh +fish)
+  (defun +fish-common-config (mode)
+    (when (modulep! :lang sh +fish +lsp)
+      (set-eglot-client! mode '("fish-lsp" "start"))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
+
+  (use-package! fish-mode
+    :config
+    (+fish-common-config 'fish-mode)))
+
 (setq-default browse-url-text-browser (executable-find "cha"))
 
 (use-package! eww
