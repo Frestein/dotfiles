@@ -1714,12 +1714,14 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   '(markdown-header-face-5 :inherit outline-5)
   '(markdown-header-face-6 :inherit outline-6))
 
-(when (and (modulep! :lang qt)
-           (not (executable-find "qmlls"))
-           (executable-find "qmlls6"))
+(when (modulep! :lang qt)
+
   (defun +qt-common-config (mode)
     (when (modulep! :lang qt +lsp)
-      (set-eglot-client! mode '("qmlls6"))
+      (if (and (not (executable-find "qmlls"))
+               (executable-find "qmlls6"))
+          (set-eglot-client! mode '("qmlls6"))
+        (set-eglot-client! mode '("qmlls")))
       (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
 
 (when (modulep! :lang sh +fish)
