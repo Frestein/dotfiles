@@ -64,17 +64,25 @@
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#common-lisp][Common Lisp]]
   - [[#org][Org]]
+    - [[#config][Config]]
+    - [[#override-module-defaults][Override Module Defaults]]
+    - [[#org-agenda][Org Agenda]]
+    - [[#modules][Modules]]
+    - [[#org-roam][Org Roam]]
+    - [[#org-super-agenda][Org Super Agenda]]
+    - [[#org-contacts][Org Contacts]]
+    - [[#qol][QoL]]
   - [[#markdown][Markdown]]
   - [[#qml][QML]]
   - [[#fish][Fish]]
 - [[#www][WWW]]
   - [[#eww][EWW]]
-    - [[#config][Config]]
+    - [[#config-1][Config]]
     - [[#shr][Shr]]
     - [[#browse-url][Browse Url]]
     - [[#rdrview][Rdrview]]
   - [[#elfeed][Elfeed]]
-    - [[#config-1][Config]]
+    - [[#config-2][Config]]
     - [[#elfeed-goodies][Elfeed Goodies]]
     - [[#elfeed-org][Elfeed Org]]
   - [[#mu4e][mu4e]]
@@ -87,7 +95,7 @@
     - [[#telega][telega]]
   - [[#checkers][Checkers]]
     - [[#jinx][jinx]]
-  - [[#config-2][Config]]
+  - [[#config-3][Config]]
     - [[#compile-angel][compile-angel]]
   - [[#editor-1][Editor]]
     - [[#drag-stuff][drag-stuff]]
@@ -1377,32 +1385,129 @@ ignoring all other files with the same basename."
 
 ** Org
 
+*** Config
+
 #+begin_src elisp
-(setq org-directory (expand-file-name "org" (xdg-user-dir "DOCUMENTS")))
-(setq org-agenda-files (list (expand-file-name "agenda" org-directory)))
+(when (modulep! :lang org)
+  (setq org-directory (expand-file-name "org" (xdg-user-dir "DOCUMENTS")))
 
-(setq org-log-into-drawer t)
-(setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-log-done 'time)
 
-(setq org-hide-emphasis-markers t)
-(setq org-edit-src-persistent-message nil)
+  (setq org-hide-emphasis-markers t)
+  (setq org-edit-src-persistent-message nil)
 
-(setq org-agenda-timegrid-use-ampm t)
-(setq org-agenda-restore-windows-after-quit t)
+  ;; BUG: The second format is displayed incorrectly.
+  ;; For example:
+  ;; SCHEDULED: <2025-09-26 Fri 02:00 PM-16:00>
+  ;; The end time is shown in 24-hour format instead of using %I:%M %p.
+  ;; (setq org-display-custom-times t)
+  ;; (setq org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p"))
 
-;; BUG: The second format is displayed incorrectly.
-;; For example:
-;; SCHEDULED: <2025-09-26 Fri 02:00 PM-16:00>
-;; The end time is shown in 24-hour format instead of using %I:%M %p.
-;; (setq org-display-custom-times t)
-;; (setq org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p"))
+  (defun fr/org-fold-respect-startup-ignore-tag ()
+    "Fold according to `#+STARTUP:' and ignore folding for tags from `#+STARTUP_IGNORE:'."
+    (when (eq major-mode 'org-mode)
+      (save-excursion
+        (goto-char (point-min))
+        (let* ((case-fold-search t)
+               (ignore-line (when (re-search-forward
+                                   "^#\\+STARTUP_IGNORE:[ \t]*\\(.*\\)" nil t)
+                              (match-string 1)))
+               (ignore-tags (when ignore-line
+                              (mapcar #'downcase
+                                      (split-string ignore-line "[ \t]+" t)))))
+          (org-cycle-set-startup-visibility)
+          (when ignore-tags
+            (goto-char (point-min))
+            (cl-loop while (re-search-forward org-outline-regexp nil t)
+                     for tags = (mapcar #'downcase (org-get-tags))
+                     when (cl-intersection ignore-tags tags :test #'string=)
+                     do (progn
+                          (org-show-entry)
+                          (org-show-subtree))))))))
 
-(after! org
-  (setq org-archive-tag "archive")
-  (setq org-element-archive-tag "archive"))
+  (add-hook 'org-mode-hook #'fr/org-fold-respect-startup-ignore-tag)
 
+  ;; QoL
+  (defun fr/org-emphasize-dwim (char)
+    "Toggle org emphasis CHAR on word or selected region.
+If a region is active, emphasize it, else emphasize the word at point."
+    (interactive "cEmphasis char: ")
+    (if (use-region-p)
+        (org-emphasize char)
+      (save-excursion
+        (let ((bounds (bounds-of-thing-at-point 'symbol)))
+          (when bounds
+            (goto-char (car bounds))
+            (set-mark (cdr bounds))
+            (org-emphasize char)
+            (deactivate-mark))))))
+
+  ;; QoL
+  (defun fr/org-insert-link-dwim (&optional arg)
+    "If region is active use it, otherwise mark the symbol at point (if any), then call `org-insert-link'."
+    (interactive "P")
+    (cond
+     ((use-region-p)
+      (org-insert-link))
+     ((let ((bounds (bounds-of-thing-at-point 'symbol)))
+        (when bounds
+          (goto-char (car bounds))
+          (set-mark (cdr bounds))
+          (if arg
+              (call-interactively #'org-insert-link)
+            (org-insert-link))
+          (deactivate-mark)
+          t)))
+     (t
+      (call-interactively #'org-insert-link))))
+
+  (map! :map org-mode-map
+        :after org
+        :localleader
+        "v" #'org-insert-structure-template
+        "B" #'org-babel-tangle
+        "D" #'org-insert-drawer
+        "E" #'org-export-dispatch
+        (:prefix ("l" . "links")
+                 "l" #'fr/org-insert-link-dwim)
+        (:prefix ("e" . "emphasize")
+         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
+         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
+         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
+         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
+         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
+         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
+
+  (map! :map telega-chat-mode-map
+        :when (modulep! :app telega)
+        :localleader
+        (:prefix ("l" . "links")
+                 "c" #'org-cliplink
+                 "l" #'fr/org-insert-link-dwim)
+        (:prefix ("e" . "emphasize")
+         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
+         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
+         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
+         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
+         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
+         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
+
+  (map! :map org-agenda-mode-map
+        "<mouse-8>" #'org-agenda-earlier
+        "<mouse-9>" #'org-agenda-later
+        (:localleader
+         "s" #'org-save-all-org-buffers
+         "l" #'org-agenda-open-link)))
+#+end_src
+
+*** Override Module Defaults 
+
+#+begin_src elisp
 (when (modulep! :lang org)
   (after! org
+    (setq org-archive-tag "archive")
+    (setq org-element-archive-tag "archive")
     (pushnew! org-default-properties "CREATED")
 
     (set-popup-rule! "^\\*Org Src"
@@ -1472,12 +1577,6 @@ ignoring all other files with the same basename."
              :kill-buffer t)))
 
     (setq org-refile-targets '((org-agenda-files :maxlevel . 6)))
-
-    (add-to-list 'org-modules 'org-habit)
-
-    (setq org-habit-show-habits-only-for-today nil
-          +org-habit-graph-padding 1
-          +org-habit-graph-window-ratio 0.25)
 
     ;; INFO: Removed hardcoded "TOC"/"ARCHIVE" checks.
     ;; Now uses toc-org-toc-org-regexp and org-archive-tag.
@@ -1629,46 +1728,53 @@ If on a:
                  (call-interactively #'org-open-at-point)
                (+org--toggle-inline-images-in-subtree
                 (org-element-property :begin context)
-                (org-element-property :end context)))))))))
+                (org-element-property :end context))))))))))
+#+end_src
 
-  (setq org-tag-alist
-        '((:startgroup . "Place")
-          ("@home" . ?H)
-          ("@gym" . ?G)
-          ("@garage" . ?B)
-          ("@street" . ?S)
-          ("@shop" . ?M)
-          ("@hospital" . ?L)
-          (:endgroup)
+*** Org Agenda
 
-          (:startgrouptag)
-          ("Devices")
-          (:grouptags)
-          ("@computer" . ?C)
-          ("@phone" . ?P)
-          (:endgrouptag)
+#+begin_src elisp
+(when (modulep! :lang org)
+  (setq org-agenda-files (list (expand-file-name "agenda" org-directory)))
+  (setq org-agenda-timegrid-use-ampm t)
+  (setq org-agenda-restore-windows-after-quit t)
+  (setq org-tag-alist '((:startgroup . "Place")
+                        ("@home" . ?H)
+                        ("@gym" . ?G)
+                        ("@garage" . ?B)
+                        ("@street" . ?S)
+                        ("@shop" . ?M)
+                        ("@hospital" . ?L)
+                        (:endgroup)
 
-          (:startgroup . "Difficulty")
-          ("@easy" . ?E)
-          (:endgroup)
+                        (:startgrouptag)
+                        ("Devices")
+                        (:grouptags)
+                        ("@computer" . ?C)
+                        ("@phone" . ?P)
+                        (:endgrouptag)
 
-          (:startgroup . "Type")
-          ("@tech" . ?T)
-          ("@art" . ?A)
-          ("@sport" . ?s)
-          ("@growth" . ?g)
-          (:endgroup)
+                        (:startgroup . "Difficulty")
+                        ("@easy" . ?E)
+                        (:endgroup)
 
-          (:startgroup . "Activities")
-          ("@research" . ?r)
-          ("@management" . ?m)
-          ("@drawing" . ?d)
-          ("@workout" . ?w)
-          ("@writing" . ?t)
-          ("@programming" . ?p)
-          ("@system" . ?a)
-          ("@errands" . ?e)
-          (:endgroup)))
+                        (:startgroup . "Type")
+                        ("@tech" . ?T)
+                        ("@art" . ?A)
+                        ("@sport" . ?s)
+                        ("@growth" . ?g)
+                        (:endgroup)
+
+                        (:startgroup . "Activities")
+                        ("@research" . ?r)
+                        ("@management" . ?m)
+                        ("@drawing" . ?d)
+                        ("@workout" . ?w)
+                        ("@writing" . ?t)
+                        ("@programming" . ?p)
+                        ("@system" . ?a)
+                        ("@errands" . ?e)
+                        (:endgroup)))
 
   (defun fr/org-skip-subtree-if-priority (priority)
     "Skip an agenda subtree if it has a priority of PRIORITY.
@@ -1813,121 +1919,198 @@ if there are fewer than 2 non-empty lines in the block
           (delete-region (point) (1+ (point-at-eol))))))
     (setq buffer-read-only t))
 
-  (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks)
+  (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks))
+#+end_src
 
-  (defun fr/org-fold-respect-startup-ignore-tag ()
-    "Fold according to `#+STARTUP:' and ignore folding for tags from `#+STARTUP_IGNORE:'."
-    (when (eq major-mode 'org-mode)
-      (save-excursion
-        (goto-char (point-min))
-        (let* ((case-fold-search t)
-               (ignore-line (when (re-search-forward
-                                   "^#\\+STARTUP_IGNORE:[ \t]*\\(.*\\)" nil t)
-                              (match-string 1)))
-               (ignore-tags (when ignore-line
-                              (mapcar #'downcase
-                                      (split-string ignore-line "[ \t]+" t)))))
-          (org-cycle-set-startup-visibility)
-          (when ignore-tags
-            (goto-char (point-min))
-            (cl-loop while (re-search-forward org-outline-regexp nil t)
-                     for tags = (mapcar #'downcase (org-get-tags))
-                     when (cl-intersection ignore-tags tags :test #'string=)
-                     do (progn
-                          (org-show-entry)
-                          (org-show-subtree))))))))
+*** Modules
 
-  (add-hook 'org-mode-hook #'fr/org-fold-respect-startup-ignore-tag)
+**** Org Habit
 
-  ;; QoL
-  (defun fr/org-emphasize-dwim (char)
-    "Toggle org emphasis CHAR on word or selected region.
-If a region is active, emphasize it, else emphasize the word at point."
-    (interactive "cEmphasis char: ")
-    (if (use-region-p)
-        (org-emphasize char)
-      (save-excursion
-        (let ((bounds (bounds-of-thing-at-point 'symbol)))
-          (when bounds
-            (goto-char (car bounds))
-            (set-mark (cdr bounds))
-            (org-emphasize char)
-            (deactivate-mark))))))
+#+begin_src elisp
+(when (modulep! :lang org)
+  (after! org
+    (add-to-list 'org-modules 'org-habit)
 
-  ;; QoL
-  (defun fr/org-insert-link-dwim (&optional arg)
-    "If region is active use it, otherwise mark the symbol at point (if any), then call `org-insert-link'."
-    (interactive "P")
-    (cond
-     ((use-region-p)
-      (org-insert-link))
-     ((let ((bounds (bounds-of-thing-at-point 'symbol)))
-        (when bounds
-          (goto-char (car bounds))
-          (set-mark (cdr bounds))
-          (if arg
-              (call-interactively #'org-insert-link)
-            (org-insert-link))
-          (deactivate-mark)
-          t)))
-     (t
-      (call-interactively #'org-insert-link))))
+    (setq org-habit-show-habits-only-for-today nil)
+    (setq +org-habit-graph-padding 1)
+    (setq +org-habit-graph-window-ratio 0.25)))
+#+end_src
 
-  (map! :map org-mode-map
-        :after org
-        :localleader
-        "v" #'org-insert-structure-template
-        "B" #'org-babel-tangle
-        "D" #'org-insert-drawer
-        "E" #'org-export-dispatch
-        (:prefix ("l" . "links")
-                 "l" #'fr/org-insert-link-dwim)
-        (:prefix ("e" . "emphasize")
-         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
-         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
-         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
-         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
-         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
-         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
+*** Org Roam
 
-  (map! :map telega-chat-mode-map
-        :when (modulep! :app telega)
-        :localleader
-        (:prefix ("l" . "links")
-                 "c" #'org-cliplink
-                 "l" #'fr/org-insert-link-dwim)
-        (:prefix ("e" . "emphasize")
-         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
-         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
-         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
-         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
-         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
-         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
+**** Config
 
-  (map! :map org-agenda-mode-map
-        "<mouse-8>" #'org-agenda-earlier
-        "<mouse-9>" #'org-agenda-later
-        (:localleader
-         "s" #'org-save-all-org-buffers
-         "l" #'org-agenda-open-link))
+#+begin_src elisp
+(when (modulep! :lang org +roam)
+  (after! org-roam
+    (setq org-roam-directory (expand-file-name "roam" org-directory))
+    (setq org-roam-dailies-directory "journal")
+    (pushnew! org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory))
 
-  (use-package! org-expose-emphasis-markers
-    :hook (org-mode . org-expose-emphasis-markers-mode))
+    (pushnew! org-default-properties "ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE")
 
-  (use-package! corg
-    :hook (org-mode . corg-setup))
+    (setq org-roam-capture-templates
+          '(("d" "default" plain
+             "%?"
+             :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                "#+title: ${title}\n")
+             :unnarrowed t)))
 
-  (use-package! org-contacts
-    :when (modulep! :lang org +contacts2)
-    :after org
-    :custom
-    (org-contacts-files (list (file-name-concat org-directory "contacts.org")))
-    :config
-    (setq org-capture-templates
-          (append org-capture-templates
-                  `(("c" "Contacts" entry
-                     (file ,(car org-contacts-files))
-                     "* %(org-contacts-template-name)
+    (setq org-roam-dailies-capture-templates
+          '(("n" "Note" entry
+             "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
+             :target (file+head "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n\n")
+             :empty-lines 1)
+            ("s" "Scheduled Task" entry
+             "* NEXT [#B] %?\nSCHEDULED: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
+             :target (file+head "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n\n")
+             :empty-lines 1)
+            ("d" "Deadline Task" entry
+             "* NEXT [#B] %?\nDEADLINE: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
+             :target (file+head "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n\n")
+             :empty-lines 1)))
+
+    ;; INFO: Filter org-tags-alist keywords.
+    ;; https://github.com/org-roam/org-roam/issues/2477
+    ;; TODO: Adjust when PR will be merged.
+    ;; https://github.com/org-roam/org-roam/pull/2564
+    (defadvice! fixed-org-roam-tag-completions ()
+      "Return list of tags for completions within Org-roam."
+      :override #'org-roam-tag-completions
+      (let ((roam-tags (mapcar #'car (org-roam-db-query [:select :distinct [tag] :from tags])))
+            (org-tags (seq-filter #'stringp (mapcar #'car org-tag-alist))))
+        (seq-uniq (append roam-tags org-tags))))
+
+    ;; INFO: Can go to dailies directly
+    ;; https://github.com/org-roam/org-roam/issues/2134
+    ;; https://github.com/org-roam/org-roam/pull/2141#issuecomment-3021291947 - Thanks!
+    (defadvice! fr/org-roam-dailies--capture-goto-quick (fn time &optional goto keys)
+      "Skip prompt for capture template with dailies goto functions."
+      :around #'org-roam-dailies--capture
+      (apply fn time goto
+             (if goto
+                 (list (car (car org-roam-dailies-capture-templates)))
+               (list keys))))
+
+    ;; INFO: QoL dwim for words
+    ;; https://github.com/org-roam/org-roam/pull/2588
+    (cl-defun fr/org-roam-node-insert (&optional filter-fn &key templates info)
+      "Find an Org-roam node and insert (where the point is) an \"id:\" link to it.
+If a region is active the link is put around the region text.
+If a word is at point the link is put around that word.
+Otherwise the link is inserted with the node's formatted title as description.
+FILTER-FN is a function to filter out nodes: it takes an `org-roam-node',
+and when nil is returned the node will be filtered out.
+The TEMPLATES, if provided, override the list of capture templates (see
+`org-roam-capture-'.)
+The INFO, if provided, is passed to the underlying `org-roam-capture-'."
+      (interactive)
+      (unwind-protect
+          ;; Group functions together to avoid inconsistent state on quit
+          (atomic-change-group
+            (let* (beg
+                   end
+                   (region-text
+                    (cond
+                     ((region-active-p)
+                      (setq beg (set-marker (make-marker) (region-beginning)))
+                      (setq end (set-marker (make-marker) (region-end)))
+                      (org-link-display-format (buffer-substring-no-properties beg end)))
+                     ((thing-at-point 'symbol)
+                      (let ((bounds (bounds-of-thing-at-point 'symbol)))
+                        (setq beg (set-marker (make-marker) (car bounds)))
+                        (setq end (set-marker (make-marker) (cdr bounds)))
+                        (org-link-display-format (buffer-substring-no-properties beg end))))))
+                   (node (org-roam-node-read region-text filter-fn))
+                   (description (or region-text
+                                    (org-roam-node-formatted node))))
+              (if (org-roam-node-id node)
+                  (progn
+                    (when region-text
+                      (delete-region beg end)
+                      (set-marker beg nil)
+                      (set-marker end nil))
+                    (let ((id (org-roam-node-id node)))
+                      (insert (org-link-make-string
+                               (concat "id:" id)
+                               description))
+                      (run-hook-with-args 'org-roam-post-node-insert-hook
+                                          id
+                                          description)))
+                (org-roam-capture-
+                 :node node
+                 :info info
+                 :templates templates
+                 :props (append
+                         (when (and beg end)
+                           (list :region (cons beg end)))
+                         (list :link-description description
+                               :finalize 'insert-link))))))
+        (deactivate-mark)))
+
+    (advice-add #'org-roam-node-insert :override #'fr/org-roam-node-insert)))
+#+end_src
+
+**** Org Mem
+
+#+begin_src elisp
+(use-package! org-mem
+  :when (modulep! :lang org +mem)
+  :after org
+  :config
+  (setq org-mem-watch-dirs (list org-roam-directory))
+  (setq org-roam-db-update-on-save nil)
+  (setq org-mem-roamy-do-overwrite-real-db t)
+  (org-mem-roamy-db-mode)
+
+  ;; Disable Doom's additional syncs from `+org-init-roam-h'
+  (after! org-roam
+    (org-roam-db-autosync-disable)
+
+    (undefadvice! +org-roam-try-init-db-a (&rest _)
+      :before #'org-roam-db-query)))
+#+end_src
+
+**** Org Roam UI
+
+#+begin_src elisp
+(use-package! websocket
+  :after org-roam)
+
+(use-package! org-roam-ui
+  :after org-roam
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+#+end_src
+
+*** Org Super Agenda
+
+#+begin_src elisp
+(use-package! org-super-agenda
+  :when (modulep! :lang org +super)
+  :hook (org-agenda-mode . org-super-agenda-mode))
+#+end_src
+
+*** Org Contacts
+
+#+begin_src elisp
+(use-package! org-contacts
+  :when (modulep! :lang org +contacts2)
+  :after org
+  :custom
+  (org-contacts-files (list (file-name-concat org-directory "contacts.org")))
+  :config
+  (setq org-capture-templates
+        (append org-capture-templates
+                `(("c" "Contacts" entry
+                   (file ,(car org-contacts-files))
+                   "* %(org-contacts-template-name)
 :PROPERTIES:
 :EMAIL: %(org-contacts-template-email)
 :PHONE: %^{Phone}
@@ -1940,169 +2123,29 @@ If a region is active, emphasize it, else emphasize the word at point."
 :BIRTHDAY: %^{Birthday (dd-mm-yyyy)}
 :END:"))))
 
-    (when (modulep! :email mu4e)
-      (after! mu4e
-        (setq mu4e-org-contacts-file (car org-contacts-files))
-        (add-to-list 'mu4e-headers-actions
-                     '("org-contact-add" . mu4e-action-add-org-contact) t)
-        (add-to-list 'mu4e-view-actions
-                     '("org-contact-add" . mu4e-action-add-org-contact) t))))
+  (when (modulep! :email mu4e)
+    (after! mu4e
+      (setq mu4e-org-contacts-file (car org-contacts-files))
+      (add-to-list 'mu4e-headers-actions
+                   '("org-contact-add" . mu4e-action-add-org-contact) t)
+      (add-to-list 'mu4e-view-actions
+                   '("org-contact-add" . mu4e-action-add-org-contact) t))))
+#+end_src
 
-  (use-package! org-super-agenda
-    :when (modulep! :lang org +super)
-    :hook (org-agenda-mode . org-super-agenda-mode))
+*** QoL
 
-  (when (modulep! :lang org +roam)
-    (after! org-roam
-      (setq org-roam-directory (expand-file-name "roam" org-directory))
-      (setq org-roam-dailies-directory "journal")
-      (pushnew! org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory))
+**** Org Expose Emphasis Markers
 
-      (pushnew! org-default-properties "ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE")
+#+begin_src elisp
+(use-package! org-expose-emphasis-markers
+  :hook (org-mode . org-expose-emphasis-markers-mode))
+#+end_src
 
-      (setq org-roam-capture-templates
-            '(("d" "default" plain
-               "%?"
-               :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                  "#+title: ${title}\n")
-               :unnarrowed t)))
+**** Corg
 
-      (setq org-roam-dailies-capture-templates
-            '(("n" "Note" entry
-               "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
-               :target (file+head "%<%Y-%m-%d>.org"
-                                  "#+title: %<%Y-%m-%d>\n\n")
-               :empty-lines 1)
-              ("s" "Scheduled Task" entry
-               "* NEXT [#B] %?\nSCHEDULED: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
-               :target (file+head "%<%Y-%m-%d>.org"
-                                  "#+title: %<%Y-%m-%d>\n\n")
-               :empty-lines 1)
-              ("d" "Deadline Task" entry
-               "* NEXT [#B] %?\nDEADLINE: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
-               :target (file+head "%<%Y-%m-%d>.org"
-                                  "#+title: %<%Y-%m-%d>\n\n")
-               :empty-lines 1)))
-
-      ;; INFO: filter org-tags-alist keywords
-      ;; https://github.com/org-roam/org-roam/issues/2477
-      (defun org-roam-tag-completions ()
-        "Return list of tags for completions within Org-roam."
-        (let ((roam-tags (mapcar #'car (org-roam-db-query [:select :distinct [tag] :from tags])))
-              (org-tags (cl-loop for tagg in org-tag-alist
-                                 nconc (pcase tagg
-                                         ('(:newline)
-                                          nil)
-                                         ('(:grouptags)
-                                          nil)
-                                         ('(:startgrouptag)
-                                          nil)
-                                         ('(:endgrouptag)
-                                          nil)
-                                         (`(:startgroup . ,_)
-                                          nil)
-                                         (`(:endgroup . ,_)
-                                          nil)
-                                         (`(,tag . ,_)
-                                          (list tag))
-                                         (_ nil)))))
-          (seq-uniq (append roam-tags org-tags))))
-
-      ;; INFO: Can go to dailies directly
-      ;; https://github.com/org-roam/org-roam/issues/2134
-      ;; https://github.com/org-roam/org-roam/pull/2141#issuecomment-3021291947 - Thanks!
-      (defadvice! fr/org-roam-dailies--capture-goto-quick (fn time &optional goto keys)
-        "Skip prompt for capture template with dailies goto functions."
-        :around #'org-roam-dailies--capture
-        (apply fn time goto
-               (if goto
-                   (list (car (car org-roam-dailies-capture-templates)))
-                 (list keys))))
-
-      ;; INFO: QoL dwim for words
-      ;; https://github.com/org-roam/org-roam/pull/2588
-      (cl-defun fr/org-roam-node-insert (&optional filter-fn &key templates info)
-        "Find an Org-roam node and insert (where the point is) an \"id:\" link to it.
-If a region is active the link is put around the region text.
-If a word is at point the link is put around that word.
-Otherwise the link is inserted with the node's formatted title as description.
-FILTER-FN is a function to filter out nodes: it takes an `org-roam-node',
-and when nil is returned the node will be filtered out.
-The TEMPLATES, if provided, override the list of capture templates (see
-`org-roam-capture-'.)
-The INFO, if provided, is passed to the underlying `org-roam-capture-'."
-        (interactive)
-        (unwind-protect
-            ;; Group functions together to avoid inconsistent state on quit
-            (atomic-change-group
-              (let* (beg
-                     end
-                     (region-text
-                      (cond
-                       ((region-active-p)
-                        (setq beg (set-marker (make-marker) (region-beginning)))
-                        (setq end (set-marker (make-marker) (region-end)))
-                        (org-link-display-format (buffer-substring-no-properties beg end)))
-                       ((thing-at-point 'symbol)
-                        (let ((bounds (bounds-of-thing-at-point 'symbol)))
-                          (setq beg (set-marker (make-marker) (car bounds)))
-                          (setq end (set-marker (make-marker) (cdr bounds)))
-                          (org-link-display-format (buffer-substring-no-properties beg end))))))
-                     (node (org-roam-node-read region-text filter-fn))
-                     (description (or region-text
-                                      (org-roam-node-formatted node))))
-                (if (org-roam-node-id node)
-                    (progn
-                      (when region-text
-                        (delete-region beg end)
-                        (set-marker beg nil)
-                        (set-marker end nil))
-                      (let ((id (org-roam-node-id node)))
-                        (insert (org-link-make-string
-                                 (concat "id:" id)
-                                 description))
-                        (run-hook-with-args 'org-roam-post-node-insert-hook
-                                            id
-                                            description)))
-                  (org-roam-capture-
-                   :node node
-                   :info info
-                   :templates templates
-                   :props (append
-                           (when (and beg end)
-                             (list :region (cons beg end)))
-                           (list :link-description description
-                                 :finalize 'insert-link))))))
-          (deactivate-mark)))
-
-      (advice-add #'org-roam-node-insert :override #'fr/org-roam-node-insert))
-
-    (use-package! org-mem
-      :when (modulep! :lang org +mem)
-      :after org
-      :config
-      (setq org-mem-watch-dirs (list org-roam-directory))
-      (setq org-roam-db-update-on-save nil)
-      (setq org-mem-roamy-do-overwrite-real-db t)
-      (org-mem-roamy-db-mode)
-
-      ;; Disable Doom's additional syncs from `+org-init-roam-h'
-      (after! org-roam
-        (org-roam-db-autosync-disable)
-
-        (undefadvice! +org-roam-try-init-db-a (&rest _)
-          :before #'org-roam-db-query)))
-
-    (use-package! websocket
-      :after org-roam)
-
-    (use-package! org-roam-ui
-      :after org-roam
-      :config
-      (setq org-roam-ui-sync-theme t
-            org-roam-ui-follow t
-            org-roam-ui-update-on-save t
-            org-roam-ui-open-on-start t))))
+#+begin_src elisp
+(use-package! corg
+  :hook (org-mode . corg-setup))
 #+end_src
 
 ** Markdown
