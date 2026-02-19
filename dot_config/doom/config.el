@@ -87,7 +87,7 @@
                   "sh %s"
                 "%s")))
 
-(defun frestein/current-emacs-is-systemd-service-p ()
+(defun fr/current-emacs-is-systemd-service-p ()
   "Check if current Emacs process is started by a systemd user service."
   (let* ((ppid (string-to-number
                 (shell-command-to-string
@@ -99,7 +99,7 @@
 (defun doom/restart ()
   "Restart Emacs (use systemd if current process is from a service)."
   (interactive)
-  (if (frestein/current-emacs-is-systemd-service-p)
+  (if (fr/current-emacs-is-systemd-service-p)
       (start-process "systemd-restart" nil "systemctl" "--user" "restart" "emacs")
     (require 'restart-emacs)
     (restart-emacs)))
@@ -332,8 +332,9 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
                 '("chezmoi-magit-status" chezmoi-magit-status)))
 
     ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/749
-    (defun fr/vterm-better-kill (orig-fun &rest args)
+    (defadvice! fr/vterm-better-kill (orig-fun &rest args)
       "Override kill-buffer for vterm: kill without confirmation when vterm is idle."
+      :around #'kill-buffer
       (if (eq major-mode 'vterm-mode)
           (let ((process (get-buffer-process (current-buffer))))
             (when process
@@ -341,8 +342,6 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
                   (set-process-query-on-exit-flag process nil)
                 (set-process-query-on-exit-flag process t)))))
       (apply orig-fun args))
-
-    (advice-add 'kill-buffer :around #'fr/vterm-better-kill)
 
     (defun fr/switch-to-buffer-kill (&optional arg)
       (interactive "P")
@@ -512,7 +511,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 (when (modulep! :editor evil)
   (when (modulep! :app telega)
     (after! telega
-      (defun frestein/telega-chatbuf-cancel-both ()
+      (defun fr/telega-chatbuf-cancel-both ()
         (interactive)
         (telega-chatbuf-filter-cancel)
         (telega-chatbuf-thread-cancel))
@@ -521,7 +520,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
         "gVD" #'telega-view-default)
 
       (evil-collection-define-key 'normal 'telega-chat-mode-map
-        "_" #'frestein/telega-chatbuf-cancel-both
+        "_" #'fr/telega-chatbuf-cancel-both
 
         "Za" #'telega-chatbuf-attach-animation
         "Zf" #'telega-chatbuf-attach-file
@@ -661,7 +660,11 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 (when (modulep! :completion corfu)
   (after! (:and corfu eshell)
-    (defun fr/corfu-dabbrev-or-last (&optional arg)
+    (defadvice! fr/corfu-dabbrev-or-last (&optional arg)
+      "Trigger corfu popup and select the first candidate.
+
+Intended to mimic `evil-complete-previous', unless the popup is already open."
+      :override #'+corfu/dabbrev-or-last
       (interactive "p")
       (if (and (eq major-mode 'eshell-mode)
                (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
@@ -683,9 +686,11 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
             (when (> corfu--total 0)
               (corfu--goto (- corfu--total (or arg 1))))))))
 
-    (advice-add '+corfu/dabbrev-or-last :override #'fr/corfu-dabbrev-or-last)
+    (defadvice! fr/corfu-dabbrev-or-next (&optional arg)
+      "Trigger corfu popup and select the first candidate.
 
-    (defun fr/corfu-dabbrev-or-next (&optional arg)
+Intended to mimic `evil-complete-next', unless the popup is already open."
+      :override #'+corfu/dabbrev-or-next
       (interactive "p")
       (if (and (eq major-mode 'eshell-mode)
                (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
@@ -703,14 +708,12 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
                  (bound-and-true-p evil-complete-all-buffers)))
             (cape-dabbrev t)
             (when (> corfu--total 0)
-              (corfu--goto (or arg 0)))))))
-
-    (advice-add '+corfu/dabbrev-or-next :override #'fr/corfu-dabbrev-or-next)))
+              (corfu--goto (or arg 0)))))))))
 
 ;; thx Sarg https://github.com/doomemacs/doomemacs/pull/8634/changes
 (when (modulep! :completion vertico)
   (with-eval-after-load "lib/help"
-    (defvar frestein/doom-module-descriptions
+    (defvar fr/doom-module-descriptions
       (with-temp-buffer
         (seq-filter
          'identity
@@ -730,7 +733,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
   (after! marginalia
     (defun marginalia-annotate-doom-module (cand)
       (marginalia--fields
-       ((cdr (assoc-string cand frestein/doom-module-descriptions)))))
+       ((cdr (assoc-string cand fr/doom-module-descriptions)))))
 
     (add-to-list 'marginalia-prompt-categories '("\\<Describe module\\>" . doom-module))
     (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
@@ -877,11 +880,10 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
           (quit
            (evil-insert-state)))))
 
-    (defun fr/magit-commit-with-conventional-prompt (&rest args)
+    (defadvice! fr/magit-commit-with-conventional-prompt (&rest args)
       "Advice for `magit-commit-create': adds conventional commit prompt only for this command."
-      (once-hook 'git-commit-setup-hook #'fr/magit-conventional-commit-prompt))
-
-    (advice-add 'magit-commit-create :before #'fr/magit-commit-with-conventional-prompt)))
+      :before #'magit-commit-create
+      (once-hook 'git-commit-setup-hook #'fr/magit-conventional-commit-prompt))))
 
 (use-package! magit-delta
   :when (and (modulep! :tools magit +delta)
@@ -924,11 +926,11 @@ ignoring all other files with the same basename."
         :n "gp" #'pdf-view-goto-page))
 
 (after! lpr
-  (setq lpr-lp-system t
-        lpr-command "lp"
-        lpr-add-switches nil
-        lpr-printer-switch "-d "
-        printer-name "Samsung_SCX-3200_Series"))
+  (setq lpr-lp-system t)
+  (setq lpr-command "lp")
+  (setq lpr-add-switches nil)
+  (setq lpr-printer-switch "-d ")
+  (setq printer-name "Samsung_SCX-3200_Series"))
 
 (after! ps-print
   (setq ps-printer-name "Samsung_SCX-3200_Series"))
@@ -937,16 +939,17 @@ ignoring all other files with the same basename."
   (use-package! pdf-misc
     :after pdf-view
     :bind (:map pdf-view-mode-map
-                ([remap pdf-misc-print-document] . 'frestein/pdf-misc-print-pages))
+                ([remap pdf-misc-print-document] . 'fr/pdf-misc-print-pages))
     :config
     (setq pdf-misc-print-program-executable (executable-find "lp"))
 
-    (defun frestein/pdf-misc-print-pages(filename pages &optional interactive-p)
-      "Wrapper for `pdf-misc-print-document` to add page selection support"
+    (defun fr/pdf-misc-print-pages (filename pages &optional interactive-p)
+      "Wrapper for `pdf-misc-print-document' to add page selection support"
       (interactive (list (pdf-view-buffer-file-name)
                          (read-string "Page range (empty for all pages): "
                                       (number-to-string (pdf-view-current-page)))
-                         t) pdf-view-mode)
+                         t)
+                   pdf-view-mode)
       (let ((pdf-misc-print-program-args
              (if (not (string-blank-p pages))
                  (cons (concat "-P " pages) pdf-misc-print-program-args)
@@ -977,8 +980,8 @@ ignoring all other files with the same basename."
                      :desc "Inspect last" "i" #'eros-inspect-last-result
                      :desc "Evaluate defun (async)" "f" #'eros-eval-defun)))))
 
-(setq org-directory (concat (xdg-user-dir "DOCUMENTS") "/org"))
-(setq org-agenda-files (list (concat org-directory "/agenda")))
+(setq org-directory (expand-file-name "org" (xdg-user-dir "DOCUMENTS")))
+(setq org-agenda-files (list (expand-file-name "agenda" org-directory)))
 
 (setq org-log-into-drawer t)
 (setq org-log-done 'time)
@@ -990,17 +993,15 @@ ignoring all other files with the same basename."
 (setq org-agenda-restore-windows-after-quit t)
 
 ;; BUG: The second format is displayed incorrectly.
-;;
 ;; For example:
 ;; SCHEDULED: <2025-09-26 Fri 02:00 PM-16:00>
 ;; The end time is shown in 24-hour format instead of using %I:%M %p.
-;;
 ;; (setq org-display-custom-times t)
 ;; (setq org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p"))
 
 (after! org
-  (setq org-archive-tag "archive"
-        org-element-archive-tag "archive"))
+  (setq org-archive-tag "archive")
+  (setq org-element-archive-tag "archive"))
 
 (when (modulep! :lang org)
   (after! org
@@ -1082,7 +1083,7 @@ ignoring all other files with the same basename."
 
     ;; INFO: Removed hardcoded "TOC"/"ARCHIVE" checks.
     ;; Now uses toc-org-toc-org-regexp and org-archive-tag.
-    (defun +frestein-org/dwim-at-point (&optional arg)
+    (defadvice! fr/org-dwim-at-point (&optional arg)
       "Do-what-I-mean at point.
 
 If on a:
@@ -1103,6 +1104,7 @@ If on a:
 - latex fragment: toggle it.
 - link: follow it
 - otherwise, refresh all inline images in current tree."
+      :override #'+org/dwim-at-point
       (interactive "P")
       (if (button-at (point))
           (call-interactively #'push-button)
@@ -1229,49 +1231,48 @@ If on a:
                  (call-interactively #'org-open-at-point)
                (+org--toggle-inline-images-in-subtree
                 (org-element-property :begin context)
-                (org-element-property :end context))))))))
+                (org-element-property :end context)))))))))
 
-    (advice-add '+org/dwim-at-point :override #'+frestein-org/dwim-at-point))
+  (setq org-tag-alist
+        '((:startgroup . "Place")
+          ("@home" . ?H)
+          ("@gym" . ?G)
+          ("@garage" . ?B)
+          ("@street" . ?S)
+          ("@shop" . ?M)
+          ("@hospital" . ?L)
+          (:endgroup)
 
-  (setq org-tag-alist '((:startgroup . "Place")
-                        ("@home" . ?H)
-                        ("@gym" . ?G)
-                        ("@garage" . ?B)
-                        ("@street" . ?S)
-                        ("@shop" . ?M)
-                        ("@hospital" . ?L)
-                        (:endgroup)
+          (:startgrouptag)
+          ("Devices")
+          (:grouptags)
+          ("@computer" . ?C)
+          ("@phone" . ?P)
+          (:endgrouptag)
 
-                        (:startgrouptag)
-                        ("Devices")
-                        (:grouptags)
-                        ("@computer" . ?C)
-                        ("@phone" . ?P)
-                        (:endgrouptag)
+          (:startgroup . "Difficulty")
+          ("@easy" . ?E)
+          (:endgroup)
 
-                        (:startgroup . "Difficulty")
-                        ("@easy" . ?E)
-                        (:endgroup)
+          (:startgroup . "Type")
+          ("@tech" . ?T)
+          ("@art" . ?A)
+          ("@sport" . ?s)
+          ("@growth" . ?g)
+          (:endgroup)
 
-                        (:startgroup . "Type")
-                        ("@tech" . ?T)
-                        ("@art" . ?A)
-                        ("@sport" . ?s)
-                        ("@growth" . ?g)
-                        (:endgroup)
+          (:startgroup . "Activities")
+          ("@research" . ?r)
+          ("@management" . ?m)
+          ("@drawing" . ?d)
+          ("@workout" . ?w)
+          ("@writing" . ?t)
+          ("@programming" . ?p)
+          ("@system" . ?a)
+          ("@errands" . ?e)
+          (:endgroup)))
 
-                        (:startgroup . "Activities")
-                        ("@research" . ?r)
-                        ("@management" . ?m)
-                        ("@drawing" . ?d)
-                        ("@workout" . ?w)
-                        ("@writing" . ?t)
-                        ("@programming" . ?p)
-                        ("@system" . ?a)
-                        ("@errands" . ?e)
-                        (:endgroup)))
-
-  (defun frestein/org-skip-subtree-if-priority (priority)
+  (defun fr/org-skip-subtree-if-priority (priority)
     "Skip an agenda subtree if it has a priority of PRIORITY.
 
 PRIORITY may be one of the characters ?A, ?B, or ?C."
@@ -1282,98 +1283,99 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
           subtree-end
         nil)))
 
-  (defun frestein/org-skip-subtree-if-habit ()
+  (defun fr/org-skip-subtree-if-habit ()
     "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
     (let ((subtree-end (save-excursion (org-end-of-subtree t))))
       (if (string= (org-entry-get nil "STYLE") "habit")
           subtree-end
         nil)))
 
-  (setq org-agenda-custom-commands '(("d" "Daily Agenda"
-                                      ((agenda ""
-                                               ((org-agenda-span 'day)
-                                                (org-agenda-start-day "+0d")
-                                                (org-deadline-warning-days 7)))
-                                       (tags-todo "+@easy"
-                                                  ((org-agenda-overriding-header "Easy Tasks")
-                                                   (org-agenda-skip-function '(or (frestein/org-skip-subtree-if-habit)
-                                                                                  (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
-                                       (tags-todo "+PRIORITY=\"A\""
-                                                  ((org-agenda-overriding-header "High Priority Next Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"B\""
-                                                  ((org-agenda-overriding-header "Medium Priority Next Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"C\""
-                                                  ((org-agenda-overriding-header "Low Priority Next Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"A\""
-                                                  ((org-agenda-overriding-header "High Priority Waiting For Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"B\""
-                                                  ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"C\""
-                                                  ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"A\""
-                                                  ((org-agenda-overriding-header "High Priority Someday/Maybe Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"B\""
-                                                  ((org-agenda-overriding-header "Medium Priority Someday/Maybe Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-                                       (tags-todo "+PRIORITY=\"C\""
-                                                  ((org-agenda-overriding-header "Low Priority Someday/Maybe Tasks")
-                                                   (org-agenda-skip-function
-                                                    '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                                                         (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-                                       (tags-todo ".*"
-                                                  ((org-agenda-files '("~/Documents/org/inbox.org"))
-                                                   (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
-                                       (tags-todo "-{.*}"
-                                                  ((org-agenda-overriding-header "Untagged Tasks")))))
-                                     ("r" "Weekly Review"
-                                      ((agenda ""
-                                               ((org-agenda-overriding-header "Completed Tasks")
-                                                (org-agenda-start-with-log-mode t)
-                                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
-                                                (org-agenda-span 'week)))
-                                       (agenda ""
-                                               ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
-                                                (org-agenda-start-with-log-mode t)
-                                                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                                                (org-agenda-span 'week)))))))
+  (setq org-agenda-custom-commands
+        '(("d" "Daily Agenda"
+           ((agenda ""
+                    ((org-agenda-span 'day)
+                     (org-agenda-start-day "+0d")
+                     (org-deadline-warning-days 7)))
+            (tags-todo "+@easy"
+                       ((org-agenda-overriding-header "Easy Tasks")
+                        (org-agenda-skip-function '(or (fr/org-skip-subtree-if-habit)
+                                                       (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
+            (tags-todo "+PRIORITY=\"A\""
+                       ((org-agenda-overriding-header "High Priority Next Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"B\""
+                       ((org-agenda-overriding-header "Medium Priority Next Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"C\""
+                       ((org-agenda-overriding-header "Low Priority Next Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"A\""
+                       ((org-agenda-overriding-header "High Priority Waiting For Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"B\""
+                       ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"C\""
+                       ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"A\""
+                       ((org-agenda-overriding-header "High Priority Someday/Maybe Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"B\""
+                       ((org-agenda-overriding-header "Medium Priority Someday/Maybe Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
+            (tags-todo "+PRIORITY=\"C\""
+                       ((org-agenda-overriding-header "Low Priority Someday/Maybe Tasks")
+                        (org-agenda-skip-function
+                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                              (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
+            (tags-todo ".*"
+                       ((org-agenda-files (list (expand-file-name "inbox.org" org-directory)))
+                        (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
+            (tags-todo "-{.*}"
+                       ((org-agenda-overriding-header "Untagged Tasks")))))
+          ("r" "Weekly Review"
+           ((agenda ""
+                    ((org-agenda-overriding-header "Completed Tasks")
+                     (org-agenda-start-with-log-mode t)
+                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                     (org-agenda-span 'week)))
+            (agenda ""
+                    ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
+                     (org-agenda-start-with-log-mode t)
+                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                     (org-agenda-span 'week)))))))
 
   (defmacro ignore-args (fnc)
     "Returns function that ignores its arguments and invokes FNC."
     `(lambda (&rest _rest)
        (funcall ,fnc)))
 
-  (advice-add 'org-priority-up :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add 'org-priority-down :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add 'org-deadline :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add 'org-schedule :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add 'org-todo :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add 'org-refile :after 'org-save-all-org-buffers)
-  (advice-add 'org-capture-finalize :after (ignore-args #'org-agenda-redo-all))
-  (advice-add 'org-agenda-redo :around #'doom-shut-up-a)
+  (advice-add #'org-priority-up :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-priority-down :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-deadline :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-schedule :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-todo :after (ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-refile :after 'org-save-all-org-buffers)
+  (advice-add #'org-capture-finalize :after (ignore-args #'org-agenda-redo-all))
+  (advice-add #'org-agenda-redo :around #'doom-shut-up-a)
 
   (dolist (hook '(org-after-tags-change-hook
                   org-after-refile-insert-hook
@@ -1381,7 +1383,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                   org-capture-after-finalize-hook))
     (add-hook hook #'org-save-all-org-buffers))
 
-  (defun frestein/org-agenda-delete-empty-blocks ()
+  (defun fr/org-agenda-delete-empty-blocks ()
     "Remove empty agenda blocks. A block is identified as empty
 if there are fewer than 2 non-empty lines in the block
 (excluding the line with `org-agenda-block-separator' characters)."
@@ -1413,10 +1415,10 @@ if there are fewer than 2 non-empty lines in the block
           (delete-region (point) (1+ (point-at-eol))))))
     (setq buffer-read-only t))
 
-  (add-hook 'org-agenda-finalize-hook #'frestein/org-agenda-delete-empty-blocks)
+  (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks)
 
-  (defun frestein/org-fold-respect-startup-ignore-tag ()
-    "Fold according to #+STARTUP: and ignore folding for tags from #+STARTUP_IGNORE:."
+  (defun fr/org-fold-respect-startup-ignore-tag ()
+    "Fold according to `#+STARTUP:' and ignore folding for tags from `#+STARTUP_IGNORE:'."
     (when (eq major-mode 'org-mode)
       (save-excursion
         (goto-char (point-min))
@@ -1437,10 +1439,10 @@ if there are fewer than 2 non-empty lines in the block
                           (org-show-entry)
                           (org-show-subtree))))))))
 
-  (add-hook 'org-mode-hook #'frestein/org-fold-respect-startup-ignore-tag)
+  (add-hook 'org-mode-hook #'fr/org-fold-respect-startup-ignore-tag)
 
   ;; QoL
-  (defun frestein/org-emphasize-dwim (char)
+  (defun fr/org-emphasize-dwim (char)
     "Toggle org emphasis CHAR on word or selected region.
 If a region is active, emphasize it, else emphasize the word at point."
     (interactive "cEmphasis char: ")
@@ -1455,7 +1457,7 @@ If a region is active, emphasize it, else emphasize the word at point."
             (deactivate-mark))))))
 
   ;; QoL
-  (defun frestein/org-insert-link-dwim (&optional arg)
+  (defun fr/org-insert-link-dwim (&optional arg)
     "If region is active use it, otherwise mark the symbol at point (if any), then call `org-insert-link'."
     (interactive "P")
     (cond
@@ -1481,25 +1483,28 @@ If a region is active, emphasize it, else emphasize the word at point."
         "D" #'org-insert-drawer
         "E" #'org-export-dispatch
         (:prefix ("l" . "links")
-                 "l" #'frestein/org-insert-link-dwim)
+                 "l" #'fr/org-insert-link-dwim)
         (:prefix ("e" . "emphasize")
-         :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
-         :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
-         :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
-         :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
-         :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
-         :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~))))
+         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
+         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
+         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
+         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
+         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
+         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
 
   (map! :map telega-chat-mode-map
         :when (modulep! :app telega)
         :localleader
+        (:prefix ("l" . "links")
+                 "c" #'org-cliplink
+                 "l" #'fr/org-insert-link-dwim)
         (:prefix ("e" . "emphasize")
-         :desc "Bold" "b" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?*))
-         :desc "Italic" "i" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\/))
-         :desc "Underline" "u" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?_))
-         :desc "Strike-through" "s" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?\+))
-         :desc "Verbatim" "v" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?=))
-         :desc "Code" "c" #'(lambda () (interactive) (frestein/org-emphasize-dwim ?~))))
+         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
+         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
+         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
+         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
+         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
+         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
 
   (map! :map org-agenda-mode-map
         "<mouse-8>" #'org-agenda-earlier
@@ -1608,18 +1613,17 @@ If a region is active, emphasize it, else emphasize the word at point."
       ;; INFO: Can go to dailies directly
       ;; https://github.com/org-roam/org-roam/issues/2134
       ;; https://github.com/org-roam/org-roam/pull/2141#issuecomment-3021291947 - Thanks!
-      (defun frestein/org-roam-dailies--capture-goto-quick (fn time &optional goto keys)
+      (defadvice! fr/org-roam-dailies--capture-goto-quick (fn time &optional goto keys)
         "Skip prompt for capture template with dailies goto functions."
+        :around #'org-roam-dailies--capture
         (apply fn time goto
                (if goto
                    (list (car (car org-roam-dailies-capture-templates)))
                  (list keys))))
 
-      (advice-add #'org-roam-dailies--capture :around #'frestein/org-roam-dailies--capture-goto-quick)
-
       ;; INFO: QoL dwim for words
       ;; https://github.com/org-roam/org-roam/pull/2588
-      (cl-defun frestein/org-roam-node-insert (&optional filter-fn &key templates info)
+      (cl-defun fr/org-roam-node-insert (&optional filter-fn &key templates info)
         "Find an Org-roam node and insert (where the point is) an \"id:\" link to it.
 If a region is active the link is put around the region text.
 If a word is at point the link is put around that word.
@@ -1673,8 +1677,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
                                  :finalize 'insert-link))))))
           (deactivate-mark)))
 
-
-      (advice-add 'org-roam-node-insert :override #'frestein/org-roam-node-insert))
+      (advice-add #'org-roam-node-insert :override #'fr/org-roam-node-insert))
 
     (use-package! org-mem
       :when (modulep! :lang org +mem)
@@ -2000,9 +2003,9 @@ is tomorrow.  With two prefixes, select the deadline."
   (when (modulep! :tools pass +auth)
     (setq fj-token-use-auth-source nil)
 
-    (defun frestein/fj-set-token ()
+    (defun fr/fj-set-token ()
       (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/frestein@tuta.io/fj.el")))
 
     (if (daemonp)
-        (add-hook! doom-first-input (frestein/fj-set-token))
-      (add-hook! doom-init-ui (frestein/fj-set-token)))))
+        (add-hook! doom-first-input (fr/fj-set-token))
+      (add-hook! doom-init-ui (fr/fj-set-token)))))

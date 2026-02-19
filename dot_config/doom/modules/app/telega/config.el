@@ -284,7 +284,7 @@
   ;; INFO: Redesign, make topic icon optional
   (defadvice! fr/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
     "Inserter for the current topic in the chatbuf's input prompt."
-    :override 'telega-chatbuf-prompt-ins-topic
+    :override #'telega-chatbuf-prompt-ins-topic
     (telega-chatbuf--dirtiness-init "topic")
 
     (when (telega-topic-match-p telega-chatbuf--topic
@@ -299,7 +299,7 @@
   ;; INFO: Redesign, make topic icon optional
   (defadvice! fr/telega-chatbuf-header-topic (&optional max-width with-topic-icon-p)
     "Formatter for the chatbuf's topic or messages thread."
-    :override 'telega-chatbuf-header-topic
+    :override #'telega-chatbuf-header-topic
     (telega-chatbuf--dirtiness-init "topic")
 
     (when telega-chatbuf--topic
@@ -323,7 +323,7 @@ MSG-CHAT - Chat for which to insert message header.
 MSG-SENDER - Sender of the message.
 If ADDON-INSERTER function is specified, it is called with one
 argument - MSG to insert additional information after header."
-    :override 'telega-ins--message-header
+    :override #'telega-ins--message-header
     (let* ((date-and-status
             (when (eq telega-msg-heading-trail 'date-and-status)
               (telega-ins--as-string
@@ -482,7 +482,7 @@ argument - MSG to insert additional information after header."
   ;; TODO: Adjust when debug message will be deleted.
   ;; INFO: Disable debug message.
   (defadvice! fixed-telega--on-updateSuggestedActions (event)
-    :override 'telega--on-updateSuggestedActions
+    :override #'telega--on-updateSuggestedActions
     (let ((added-actions (append (plist-get event :added_actions) nil))
           (removed-actions (append (plist-get event :removed_actions) nil)))
       (setq telega--suggested-actions
@@ -564,7 +564,7 @@ argument - MSG to insert additional information after header."
 
     (defadvice! fr/telega-chatbuf--sponsored-messages-fetch-without-display ()
       "Asynchronously fetch sponsored messages for the chatbuf without displaying them."
-      :override 'telega-chatbuf--sponsored-messages-fetch
+      :override #'telega-chatbuf--sponsored-messages-fetch
       (when (modulep! +sponsored)
         (let* ((chat telega-chatbuf--chat)
                (tsm-orig (plist-get chat :telega-sponsored-messages)))
@@ -651,9 +651,7 @@ argument - MSG to insert additional information after header."
                    "f" #'telega-sticker-choose-favorite-or-recent
                    "c" #'telega-stickerset-choose
                    "t" #'telega-stickerset-trends
-                   "s" #'telega-stickerset-search)
-          (:when (modulep! :lang org)
-            "c" #'org-cliplink)))))
+                   "s" #'telega-stickerset-search)))))
 
 (when (modulep! +mnz)
   (use-package! telega-mnz
