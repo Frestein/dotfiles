@@ -2,21 +2,21 @@
 
 (when (and (not (modulep! :ui doom-dashboard))
            (modulep! :lang org))
-  (setq-default inhibit-startup-screen t
-                inhibit-startup-message t
-                inhibit-startup-echo-area-message t
-                initial-scratch-message ""
-                initial-buffer-choice
-                (lambda ()
-                  (if (get-buffer "*Org Agenda*")
-                      (if (get-buffer-window "*Org Agenda*" 'visible)
-                          (eshell "γνῶθι σεαυτόν")
-                        (get-buffer "*Org Agenda*"))
-                    (progn
-                      (org-agenda nil "d")
-                      (delete-other-windows)
-                      (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
-                      (get-buffer "*Org Agenda*")))))
+  (setopt inhibit-startup-screen t)
+  (setopt inhibit-startup-message t)
+  (setopt inhibit-startup-echo-area-message (user-login-name))
+  (setopt initial-scratch-message "")
+  (setopt initial-buffer-choice
+          (lambda ()
+            (if (get-buffer "*Org Agenda*")
+                (if (get-buffer-window "*Org Agenda*" 'visible)
+                    (eshell "γνῶθι σεαυτόν")
+                  (get-buffer "*Org Agenda*"))
+              (progn
+                (org-agenda nil "d")
+                (delete-other-windows)
+                (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
+                (get-buffer "*Org Agenda*")))))
 
   (add-hook 'doom-first-input-hook #'org-agenda-redo))
 
@@ -130,12 +130,12 @@ the variable `message-log-max'."
 (use-package! xdg
   :demand t)
 
-(setq shell-file-name (executable-find "bash"))
-(when (executable-find "fish")
-  (setq-default explicit-shell-file-name (executable-find "fish"))
+(setopt shell-file-name (executable-find "bash"))
 
+(when (executable-find "fish")
+  (setopt explicit-shell-file-name (executable-find "fish"))
   (after! vterm
-    (setq-default vterm-shell (executable-find "fish"))))
+    (setopt vterm-shell (executable-find "fish"))))
 
 (when (modulep! :term eshell)
   (after! eshell
@@ -1715,7 +1715,6 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   '(markdown-header-face-6 :inherit outline-6))
 
 (when (modulep! :lang qt)
-
   (defun +qt-common-config (mode)
     (when (modulep! :lang qt +lsp)
       (if (and (not (executable-find "qmlls"))
@@ -1734,7 +1733,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
     :config
     (+fish-common-config 'fish-mode)))
 
-(setq-default browse-url-text-browser (executable-find "cha"))
+(setopt browse-url-text-browser (executable-find "cha"))
 
 (use-package! eww
   :hook (eww-after-render . eww-auto-rdrview)
