@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-actions=('add' 'open' 'edit' 'del' 'dmenu')
+actions=('add' 'open' 'edit' 'del' 'random' 'dmenu')
 
 buku_cmd="buku --nostdin --tacit --np --nc"
 # buku_cmd="buku --nostdin --tacit --np --nc --db $XDG_DATA_HOME/gosuki/gosuki.db"
@@ -12,24 +12,48 @@ declare -A flags=(
     ["open"]="--open"
     ["edit"]="--update"
     ["del"]="--delete"
+    ["random"]="--random -p -f 3"
+    ["dmenu"]="-p -f 3"
 )
+
+debug=false
+args_without_debug=()
+for arg in "$@"; do
+    if [[ "$arg" == "--debug" ]]; then
+        debug=true
+    else
+        args_without_debug+=("$arg")
+    fi
+done
+set -- "${args_without_debug[@]}"
 
 log() {
     local level="$1"
     local msg="$2"
-    echo "message-$level '$msg'" >>"$QUTE_FIFO"
+    if [[ "$debug" == true ]]; then
+        if [[ -n "$QUTE_FIFO" ]]; then
+            echo "message-$level '$msg'" >>"$QUTE_FIFO"
+        else
+            echo "message-$level '$msg'" >&2
+        fi
+    fi
     if [[ "$level" == "error" ]]; then
         exit 1
     fi
 }
 
 run_buku() {
-    if $buku_cmd "${flags["$1"]}" "${@:2}"; then
+    local action="$1"
+    shift
+    local -a flags_array=(${flags[$action]})
+    $buku_cmd "${flags_array[@]}" "$@"
+    local ret=$?
+    if [[ $ret -eq 0 ]]; then
         log info "Success"
     else
         log error "Something wrong happened"
     fi
-    exit
+    return $ret
 }
 
 search() {
@@ -51,7 +75,12 @@ parse_query() {
     echo "${query%" "}"
 }
 
+open_selected_ids() {
+    cut -d ' ' -f 1 | xargs --no-run-if-empty buku -o
+}
+
 action="add"
+
 for a in "${actions[@]}"; do
     if [[ "$a" == "$1" ]]; then
         action="$1"
@@ -60,11 +89,11 @@ for a in "${actions[@]}"; do
     fi
 done
 
-while : ; do
+while :; do
     case "$1" in
     -n*)
         if [[ "$1" =~ -n[[:digit:]]+ ]]; then
-            limit=$( echo "$1" | grep -Eo '[[:digit:]]+' )
+            limit=$(echo "$1" | grep -Eo '[[:digit:]]+')
             shift
         elif [[ "$1" == "-n" ]] && [[ "$2" =~ [[:digit:]]+ ]]; then
             limit="$2"
@@ -95,9 +124,10 @@ case $action in
 add)
     if echo "$1" | grep -qP "$url_regexp"; then
         run_buku add "$@"
+    else
+        run_buku add "$QUTE_URL" "$@"
     fi
-
-    run_buku add "$QUTE_URL" "$@"
+    exit $?
     ;;
 open)
     if [[ -z "$1" ]] && [[ ! $search ]]; then
@@ -123,6 +153,7 @@ open)
 
     result=$(search "${limit:-1}" "$search_type" "$search_query")
     run_buku open "${result[@]}"
+    exit $?
     ;;
 edit)
     if [[ -z "$1" ]]; then
@@ -130,6 +161,7 @@ edit)
     fi
 
     run_buku edit "$@"
+    exit $?
     ;;
 del)
     if [[ -z "$1" ]]; then
@@ -137,22 +169,27 @@ del)
     fi
 
     run_buku del "$@"
+    exit $?
+    ;;
+random)
+    run_buku random | open_selected_ids
+    exit $?
     ;;
 dmenu)
     if ! command -v fuzzel &>/dev/null; then
         log error "Fuzzel not found!"
     fi
-
-    eval "$buku_cmd" -p -f 3 |
+    run_buku dmenu |
         fuzzel \
             -d \
             -p ' ' \
-            -w 117 \
-            -l 25 \
+            -w 100 \
+            -l 15 \
+            --minimal-lines \
             --counter \
-            --anchor center \
+            --match-mode fuzzy \
             --with-nth 2 |
-        cut -d ' ' -f 1 |
-        xargs --no-run-if-empty buku -o
+        open_selected_ids
+    exit $?
     ;;
 esac
