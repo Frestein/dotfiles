@@ -20,55 +20,58 @@
 
   (add-hook 'doom-first-input-hook #'org-agenda-redo))
 
-(setq doom-theme 'doom-gruvbox)
+(setopt doom-theme 'doom-gruvbox)
 
 (custom-theme-set-faces! 'doom-gruvbox
   `(mode-line :background ,(doom-color 'base3) :foreground ,(doom-color 'modeline-fg)))
 
-(setq doom-font                (font-spec :family "Maple Mono NF" :size 14))
-(setq doom-big-font            (font-spec :family "Maple Mono NF" :size 24))
-(setq doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
-(setq doom-serif-font          (font-spec :family "Noto Serif" :size 14))
-(setq doom-emoji-font          (font-spec :family "Twemoji" :size 14))
+(setopt doom-font                (font-spec :family "Maple Mono NF" :size 14))
+(setq   doom-big-font              (font-spec :family "Maple Mono NF" :size 24))
+(setopt doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
+(setopt doom-serif-font          (font-spec :family "Noto Serif" :size 14))
+(setopt doom-emoji-font          (font-spec :family "Twemoji" :size 14))
 
-(setq doom-symbol-font doom-font)
+(setopt doom-symbol-font doom-font)
 (setq doom-symbol-fallback-font-families '("Twemoji"))
 
-(after! telega
-  (setq telega-emoji-font-family "Twemoji"))
+(when (modulep! :app telega)
+  (after! telega
+    (setopt telega-emoji-font-family "Twemoji")))
 
-(after! unicode-fonts
-  (setq unicode-fonts-fallback-font-list doom-symbol-fallback-font-families)
+(when (modulep! :ui unicode)
+  (after! unicode-fonts
+    (setopt unicode-fonts-fallback-font-list doom-symbol-fallback-font-families)
 
-  (dolist (block '("Dingbats"
-                   "Emoticons"
-                   "Transport and Map Symbols"
-                   "Miscellaneous Symbols and Pictographs"
-                   "Enclosed Alphanumeric Supplement"
-                   "Supplemental Symbols and Pictographs"))
-    (push "Twemoji" (cadr (assoc block unicode-fonts-block-font-mapping)))))
+    (dolist (block '("Dingbats"
+                     "Emoticons"
+                     "Transport and Map Symbols"
+                     "Miscellaneous Symbols and Pictographs"
+                     "Enclosed Alphanumeric Supplement"
+                     "Supplemental Symbols and Pictographs"))
+      (push "Twemoji" (cadr (assoc block unicode-fonts-block-font-mapping))))))
 
-(after! ligature
-  ;; Enable all Maple Font ligatures
-  ;; https://github.com/subframe7536/maple-font/blob/variable/source/features/README.md#ligatures
-  (ligature-set-ligatures
-   'prog-mode '("::" ":::" "?:" ":?" ":?>" "<:" ":>" ":<" "<:<" ">:>" "__" "#{"
-	        "#[" "#(" "#?" "#!" "#:" "#=" "#_" "#__" "#_(" "]#" "#######"
-	        "<<" "<<<" ">>" ">>>" "{{" "}}" "{|" "|}" "{{--" "{{!--" "--}}"
-	        "[|" "|]" "!!" "||" "??" "???" "&&" "&&&" "//" "///" "/*" "/**"
-	        "*/" "++" "+++" ";;" ";;;" ".." "..." ".?" "?." "..<" ".=" "<~"
-	        "~>" "~~" "<~>" "<~~" "~~>" "-~" "~-" "~@" "~~~~~~~"
-	        "0xA12 0x56 1920x1080" "<>" "</" "/>" "</>" "<+" "+>" "<+>" "<*"
-	        "*>" "<*>" ">=" "<=" "<=<" ">=>" "==" "===" "!=" "!==" "=/="
-	        "=!=" "|=" "<=>" "<==>" "<==" "==>" "=>" "<=|" "|=>" "=<=" "=>="
-	        "=======" ">=<" ":=" "=:" ":=:" "=:=" "\\ \' \." "--" "---"
-	        "<!--" "<#--" "<!---->" "<->" "<-->" "->" "<-" "-->" "<--" ">->"
-	        "<-<" "|->" "<-|" "-------" ">--" "--<" "<|||" "|||>" "<||"
-	        "||>" "<|" "|>" "<|>" "_|_" "[TRACE]" "[DEBUG]" "[INFO]"
-	        "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "[FIXME]" "[NOTE]"
-	        "[HACK]" "[MARK]" "[EROR]" "[WARNING]" "todo))" "fixme))" "Cl"
-	        "al" "cl" "el" "il" "tl" "ul" "xl" "ff" "tt" "all" "ell" "ill"
-	        "ull" "ll")))
+(when (modulep! :ui ligatures)
+  (after! ligature
+    ;; Enable all Maple Font ligatures
+    ;; https://github.com/subframe7536/maple-font/blob/variable/source/features/README.md#ligatures
+    (ligature-set-ligatures
+     'prog-mode '("::" ":::" "?:" ":?" ":?>" "<:" ":>" ":<" "<:<" ">:>" "__" "#{"
+	          "#[" "#(" "#?" "#!" "#:" "#=" "#_" "#__" "#_(" "]#" "#######"
+	          "<<" "<<<" ">>" ">>>" "{{" "}}" "{|" "|}" "{{--" "{{!--" "--}}"
+	          "[|" "|]" "!!" "||" "??" "???" "&&" "&&&" "//" "///" "/*" "/**"
+	          "*/" "++" "+++" ";;" ";;;" ".." "..." ".?" "?." "..<" ".=" "<~"
+	          "~>" "~~" "<~>" "<~~" "~~>" "-~" "~-" "~@" "~~~~~~~"
+	          "0xA12 0x56 1920x1080" "<>" "</" "/>" "</>" "<+" "+>" "<+>" "<*"
+	          "*>" "<*>" ">=" "<=" "<=<" ">=>" "==" "===" "!=" "!==" "=/="
+	          "=!=" "|=" "<=>" "<==>" "<==" "==>" "=>" "<=|" "|=>" "=<=" "=>="
+	          "=======" ">=<" ":=" "=:" ":=:" "=:=" "\\ \' \." "--" "---"
+	          "<!--" "<#--" "<!---->" "<->" "<-->" "->" "<-" "-->" "<--" ">->"
+	          "<-<" "|->" "<-|" "-------" ">--" "--<" "<|||" "|||>" "<||"
+	          "||>" "<|" "|>" "<|>" "_|_" "[TRACE]" "[DEBUG]" "[INFO]"
+	          "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "[FIXME]" "[NOTE]"
+	          "[HACK]" "[MARK]" "[EROR]" "[WARNING]" "todo))" "fixme))" "Cl"
+	          "al" "cl" "el" "il" "tl" "ul" "xl" "ff" "tt" "all" "ell" "ill"
+	          "ull" "ll"))))
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
@@ -107,8 +110,8 @@
 (with-eval-after-load "lib/docs"
   (remove-hook! 'doom-docs-mode-hook #'doom-docs--display-menu-h))
 
-(setq user-full-name "Frestein"
-      user-mail-address "frestein@tuta.io")
+(setopt user-full-name "Frestein"
+        user-mail-address "frestein@tuta.io")
 
 (defun toggle-echo-area-messages ()
   "Toggle the log of recent echo-area messages: the `*Messages*' buffer.
@@ -125,7 +128,7 @@ the variable `message-log-max'."
 (setq process-adaptive-read-buffering nil)
 
 ;; Don't ping things that look like domain names.
-(setq ffap-machine-p-known 'reject)
+(setopt ffap-machine-p-known 'reject)
 
 (use-package! xdg
   :demand t)
@@ -139,9 +142,9 @@ the variable `message-log-max'."
 
 (when (modulep! :term eshell)
   (after! eshell
-    (setq eshell-history-size 10000)
-    (setq eshell-buffer-maximum-lines 10000)
-    (setq eshell-banner-message ""))    ; Disable top banner message
+    (setopt eshell-history-size 10000)
+    (setopt eshell-buffer-maximum-lines 10000)
+    (setopt eshell-banner-message ""))    ; Disable top banner message
 
   (after! esh-mode
     (map! :map eshell-mode-map
@@ -171,7 +174,7 @@ the variable `message-log-max'."
             ("c" "clear-scrollback")
             ("clear" "clear-scrollback")))
 
-    (defun fr/eshell--append-aliases (alist)
+    (defun fr/eshell-append-aliases (alist)
       (setq eshell-command-aliases-list
             (append eshell-command-aliases-list alist)))
 
@@ -181,7 +184,7 @@ the variable `message-log-max'."
         :type 'string
         :group 'eshell)
 
-      (fr/eshell--append-aliases
+      (fr/eshell-append-aliases
        `(("lD"  ,(concat "eza -lD " fr/eshell--eza-defaults " $*"))
          ("lS"  ,(concat "eza -lS " fr/eshell--eza-defaults " $*"))
          ("lT"  ,(concat "eza -lT " fr/eshell--eza-defaults " $*"))
@@ -195,46 +198,46 @@ the variable `message-log-max'."
          ("lsdl",(concat "eza -dl " fr/eshell--eza-defaults " $*")))))
 
     (when (executable-find "bc")
-      (fr/eshell--append-aliases '(("bc" "bc -q $*"))))
+      (fr/eshell-append-aliases '(("bc" "bc -q $*"))))
 
     (when (executable-find "btm")
-      (fr/eshell--append-aliases '(("btm" "btm -b --hide_avg_cpu $*"))))
+      (fr/eshell-append-aliases '(("btm" "btm -b --hide_avg_cpu $*"))))
 
     (when (executable-find "trans")
-      (fr/eshell--append-aliases
+      (fr/eshell-append-aliases
        '(("t" "trans :ru $*")
          ("tt" "trans :en $*")
          ("tl" "trans :ru --shell --brief $*")
          ("ttl" "trans :en --shell --brief $*"))))
 
     (when (executable-find "fastfetch")
-      (fr/eshell--append-aliases
+      (fr/eshell-append-aliases
        `(("f" "fastfetch $*")
          ("ff" ,(concat "fastfetch -c " (xdg-config-home) "/fastfetch/config-full.jsonc $*")))))
 
     (when (executable-find "rg")
-      (fr/eshell--append-aliases '(("rg" "rg --color=always $*"))))
+      (fr/eshell-append-aliases '(("rg" "rg --color=always $*"))))
 
     (when (executable-find "git")
-      (fr/eshell--append-aliases '(("git" "git --no-pager $*"))))
+      (fr/eshell-append-aliases '(("git" "git --no-pager $*"))))
 
     (when (executable-find "chezmoi")
       (after! chezmoi
-        (fr/eshell--append-aliases '(("cz-magit" "chezmoi-magit-status"))))
+        (fr/eshell-append-aliases '(("cz-magit" "chezmoi-magit-status"))))
 
-      (fr/eshell--append-aliases '(("cz" "chezmoi $*")
+      (fr/eshell-append-aliases '(("cz" "chezmoi $*")
                                    ("czx" "CZ_EXT=1 chezmoi $*"))))
 
     (when (executable-find "systemctl")
-      (fr/eshell--append-aliases '(("sc" "systemctl $*")
+      (fr/eshell-append-aliases '(("sc" "systemctl $*")
                                    ("scu" "systemctl --user $*")
                                    ("jctl" "journalctl -p 3 -xb $*"))))
 
     (when (executable-find "speedtest-go")
-      (fr/eshell--append-aliases '(("speedtest" "speedtest-go $*"))))
+      (fr/eshell-append-aliases '(("speedtest" "speedtest-go $*"))))
 
     (when (executable-find "pacman")
-      (fr/eshell--append-aliases
+      (fr/eshell-append-aliases
        `(("pacrip" "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -$1 | nl")
          ("pacupg" "doas pacman -Syu $*")
          ("pacin"  "doas pacman -S $*")
@@ -260,7 +263,7 @@ the variable `message-log-max'."
          ("pacmanallkeys" "doas pacman-key --refresh-keys $*"))))
 
     (when (executable-find "yay")
-      (fr/eshell--append-aliases
+      (fr/eshell-append-aliases
        `(("yaconf" "yay -Pg $*")
          ("yaclean" "yay -Sc $*")
          ("yaclr"  "yay -Scc $*")
@@ -293,12 +296,12 @@ the variable `message-log-max'."
   :hook (eshell-mode . eshell-atuin-mode)
   :config
   (when (modulep! :completion vertico)
-    (setq eshell-atuin-search-fields '(time duration command))
-    (setq eshell-atuin-history-format "%-160c %t + %d"))
+    (setopt eshell-atuin-search-fields '(time duration command))
+    (setopt eshell-atuin-history-format "%-160c %t + %d"))
 
   (defun fr/eshell-history (&optional arg)
-    "Search eshell command history; by default use '+eshell/search-history'.
-If called with a prefix argument, use 'eshell-atuin-history' instead."
+    "Search eshell command history; by default use `+eshell/search-history'.
+If called with a prefix argument, use `eshell-atuin-history' instead."
     (interactive "P")
     (if arg
         (eshell-atuin-history)
@@ -307,8 +310,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
   (map! :map eshell-mode-map
         :ni "C-r" #'fr/eshell-history
         (:localleader
-         (:when (executable-find "atuin")
-           "s" #'fr/eshell-history))))
+         "s" #'fr/eshell-history)))
 
 (use-package! eshell-vterm
   :when (and (modulep! :term eshell)
@@ -317,8 +319,8 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 (when (modulep! :term vterm)
   (after! vterm
-    (setq vterm-always-compile-module t)
-    (setq vterm-max-scrollback 10000)
+    (setopt vterm-always-compile-module t)
+    (setopt vterm-max-scrollback 10000)
 
     (set-popup-rule! "^\\*vterm" :ignore t)
     (set-popup-rule! "^ \\*Install vterm" :height 0.25 :ttl 0)
@@ -390,8 +392,8 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
           :ni "C-j" #'vterm-next-prompt)))
 
 (when (modulep! :app everywhere)
-  (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
-  (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
+  (setopt emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
+  (setopt emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
 
   (require 'json)
   (defun emacs-everywhere--app-info-linux-hyprland ()
@@ -411,7 +413,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
        :title window-title
        :geometry window-geometry))))
 
-(setq epg-gpg-home-directory (getenv "GNUPGHOME"))
+(setopt epg-gpg-home-directory (getenv "GNUPGHOME"))
 
 (when (modulep! :config default +gnupg)
   (use-package! pinentry
@@ -419,15 +421,17 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 (when (modulep! :config default)
   (after! xdg
-    (setq auth-sources (list (concat (xdg-config-home) "/authinfo")
-                             (file-name-concat doom-profile-state-dir "authinfo.gpg")))))
+    (setopt auth-sources (list (concat (xdg-config-home) "/authinfo")
+                               (file-name-concat doom-profile-state-dir "authinfo.gpg")))))
 
 (when (modulep! :tools pass)
+  ;; INFO: Do not backup gopass files.
   (when (executable-find "gopass")
-    (setq backup-directory-alist
-          (append
-           '(("/dev/shm/gopass.*" . nil))
-           backup-directory-alist)))
+    (setopt backup-enable-predicate
+            (lambda (name)
+              (if (string-match-p "/dev/shm/gopass" name)
+                  nil
+                (normal-backup-enable-predicate name)))))
 
   (use-package! password-store
     :config
@@ -436,41 +440,42 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
   (use-package! pass
     :config
-    (setq pass-show-keybindings nil)))
+    (setopt pass-show-keybindings nil)))
 
-(setq gnutls-verify-error t) ; Prompts user if there are certificate issues
-(setq tls-checktrust t)      ; Ensure SSL/TLS connections undergo trust verification
+(setopt gnutls-verify-error t) ; Prompts user if there are certificate issues
+(setopt tls-checktrust t)      ; Ensure SSL/TLS connections undergo trust verification
 
-(setq delete-by-moving-to-trash t
-      dired-mouse-drag-files t
-      mouse-drag-and-drop-region-cross-program t)
+(when (modulep! :emacs dired)
+  (setopt delete-by-moving-to-trash t)
+  (setopt dired-mouse-drag-files t)
+  (setopt mouse-drag-and-drop-region-cross-program t)
 
-(map! :map dired-mode-map
-      :v "u" #'dired-unmark)
+  (map! :map dired-mode-map
+        :v "u" #'dired-unmark))
 
 (when (modulep! :emacs dired +dirvish)
   (use-package! dirvish
     :config
     (dirvish-peek-mode t)
 
-    (setq dirvish-quick-access-entries
-          `(("h" "~/"                                 "Home")
-            ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
-            ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
-            ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
-            ("m" ,(xdg-user-dir "MUSIC")              "Music")
-            ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
-            ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
-            ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
-            ("P" "~/Projects/"                        "Projects")
-            ("M" "/mnt/"                              "Drives")
-            ("t" "~/.local/share/Trash/files/"        "TrashCan")))
+    (setopt dirvish-quick-access-entries
+            `(("h" "~/"                                 "Home")
+              ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
+              ("D" ,(xdg-user-dir "DOCUMENTS")          "Documents")
+              ("v" ,(xdg-user-dir "VIDEOS")             "Videos")
+              ("m" ,(xdg-user-dir "MUSIC")              "Music")
+              ("c" ,(getenv "XDG_CONFIG_HOME")          "Config")
+              ("C" "~/.local/share/chezmoi/dot_config/" "Dotfiles")
+              ("p" ,(xdg-user-dir "PICTURES")           "Pictures")
+              ("P" "~/Projects/"                        "Projects")
+              ("M" "/mnt/"                              "Drives")
+              ("t" "~/.local/share/Trash/files/"        "TrashCan")))
 
-    (setq dirvish-attributes '(collapse git-msg file-modes file-time)
-          dirvish-side-attributes '(collapse))
+    (setopt dirvish-attributes '(collapse git-msg file-modes file-time)
+            dirvish-side-attributes '(collapse))
 
     (when (modulep! :emacs dired +icons)
-      (setq dirvish-subtree-always-show-state t)
+      (setopt dirvish-subtree-always-show-state t)
       (cl-callf append dirvish-attributes '(nerd-icons))
       (cl-callf append dirvish-side-attributes '(nerd-icons)))
 
@@ -489,7 +494,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
     (push 'eza dirvish-preview-dispatchers)
 
-    (setq mouse-1-click-follows-link nil)
+    (setopt mouse-1-click-follows-link nil)
 
     (map! :map dirvish-mode-map
           "<mouse-1>" #'dirvish-subtree-toggle-or-open
@@ -497,16 +502,16 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
           "<mouse-3>" #'dired-mouse-find-file
           :n "gd" #'dirvish-quick-access)))
 
-(setq default-input-method "russian-computer")
-(setq calendar-week-start-day 1)
-(setq display-line-numbers-type 'relative)
-(setq confirm-kill-emacs nil)
-(setq recentf-max-saved-items 500)
+(setopt default-input-method "russian-computer")
+(setopt calendar-week-start-day 1)
+(setopt display-line-numbers-type 'relative)
+(setopt confirm-kill-emacs nil)
+(setopt recentf-max-saved-items 500)
 
 (global-auto-revert-mode t)
-(setq global-auto-revert-non-file-buffers t)
+(setopt global-auto-revert-non-file-buffers t)
 
-(setq evil-echo-state nil)
+(setopt evil-echo-state nil)
 
 (when (modulep! :editor evil)
   (when (modulep! :app telega)
@@ -539,8 +544,8 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
       (unless (memq 'ebuku-mode evil-snipe-disabled-modes)
         (push 'ebuku-mode evil-snipe-disabled-modes)))))
 
-(setq which-key-idle-delay 0.2)
-;; (setq which-key-show-operator-state-maps t) ; BUG: https://github.com/justbur/emacs-which-key/issues/345
+(setopt which-key-idle-delay 0.2)
+;; (setopt which-key-show-operator-state-maps t) ; BUG: https://github.com/justbur/emacs-which-key/issues/345
 
 (map! :n "C-a" #'evil-numbers/inc-at-pt
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
@@ -656,7 +661,7 @@ If called with a prefix argument, use 'eshell-atuin-history' instead."
 
 (when (modulep! :completion corfu)
   (after! corfu
-    (setq corfu-auto nil)))
+    (setopt corfu-auto nil)))
 
 (when (modulep! :completion corfu)
   (after! (:and corfu eshell)
@@ -756,7 +761,7 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
 (when (modulep! :ui zen)
   (setq +zen-text-scale 0)
   (setq +zen-mixed-pitch-modes nil)
-  (setq writeroom-width 100))
+  (setopt writeroom-width 100))
 
 (when (modulep! :ui hl-todo)
   (after! hl-todo
@@ -783,10 +788,10 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
              '("/\\.?config/git/.*\\'" . gitconfig-mode))
 
 (when (modulep! :tools magit)
-  (setq magit-repository-directories `(("~/Projects" . 2)
-                                       (,(xdg-user-dir "DOCUMENTS") . 1)
-                                       ("~/.local/share/chezmoi" . 1)))
-  (setq magit-clone-default-directory "~/Projects/git/")
+  (setopt magit-repository-directories `(("~/Projects" . 2)
+                                         (,(xdg-user-dir "DOCUMENTS") . 1)
+                                         ("~/.local/share/chezmoi" . 1)))
+  (setopt magit-clone-default-directory "~/Projects/git/")
 
   (after! magit
     ;; HACK: Override magit-log defaults
@@ -890,9 +895,9 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
              (executable-find "delta"))
   :hook (magit-mode . magit-delta-mode)
   :config
-  (setq magit-delta-default-dark-theme "gruvbox-dark")
-  (setq magit-delta-default-light-theme "gruvbox-light")
-  (setq magit-delta-hide-plus-minus-markers nil))
+  (setopt magit-delta-default-dark-theme "gruvbox-dark")
+  (setopt magit-delta-default-light-theme "gruvbox-light")
+  (setopt magit-delta-hide-plus-minus-markers nil))
 
 (when (modulep! :tools magit)
   (defun fr/magit-todos-ignore-tangled-files (filename)
@@ -916,7 +921,7 @@ ignoring all other files with the same basename."
                                     "NEXT" "DONE"))
     (magit-todos-filename-filter #'fr/magit-todos-ignore-tangled-files)))
 
-(setq projectile-project-search-path '(("~/Projects/" . 2)))
+(setopt projectile-project-search-path '(("~/Projects/" . 2)))
 
 (when (modulep! :tools pdf)
   (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
@@ -927,10 +932,10 @@ ignoring all other files with the same basename."
 
 (after! lpr
   (setq lpr-lp-system t)
-  (setq lpr-command "lp")
-  (setq lpr-add-switches nil)
-  (setq lpr-printer-switch "-d ")
-  (setq printer-name "Samsung_SCX-3200_Series"))
+  (setopt lpr-command "lp")
+  (setopt lpr-add-switches nil)
+  (setopt lpr-printer-switch "-d ")
+  (setopt printer-name "Samsung_SCX-3200_Series"))
 
 (after! ps-print
   (setq ps-printer-name "Samsung_SCX-3200_Series"))
@@ -941,7 +946,7 @@ ignoring all other files with the same basename."
     :bind (:map pdf-view-mode-map
                 ([remap pdf-misc-print-document] . 'fr/pdf-misc-print-pages))
     :config
-    (setq pdf-misc-print-program-executable (executable-find "lp"))
+    (setopt pdf-misc-print-program-executable (executable-find "lp"))
 
     (defun fr/pdf-misc-print-pages (filename pages &optional interactive-p)
       "Wrapper for `pdf-misc-print-document' to add page selection support"
@@ -981,20 +986,20 @@ ignoring all other files with the same basename."
                      :desc "Evaluate defun (async)" "f" #'eros-eval-defun)))))
 
 (when (modulep! :lang org)
-  (setq org-directory (expand-file-name "org" (xdg-user-dir "DOCUMENTS")))
+  (setopt org-directory (expand-file-name "org" (xdg-user-dir "DOCUMENTS")))
 
-  (setq org-log-into-drawer t)
-  (setq org-log-done 'time)
+  (setopt org-log-into-drawer t)
+  (setopt org-log-done 'time)
 
-  (setq org-hide-emphasis-markers t)
-  (setq org-edit-src-persistent-message nil)
+  (setopt org-hide-emphasis-markers t)
+  (setopt org-edit-src-persistent-message nil)
 
   ;; BUG: The second format is displayed incorrectly.
   ;; For example:
   ;; SCHEDULED: <2025-09-26 Fri 02:00 PM-16:00>
   ;; The end time is shown in 24-hour format instead of using %I:%M %p.
-  ;; (setq org-display-custom-times t)
-  ;; (setq org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p"))
+  ;; (setopt org-display-custom-times t)
+  ;; (setopt org-timestamp-custom-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %I:%M %p"))
 
   (defun fr/org-fold-respect-startup-ignore-tag ()
     "Fold according to `#+STARTUP:' and ignore folding for tags from `#+STARTUP_IGNORE:'."
@@ -1105,40 +1110,40 @@ If a region is active, emphasize it, else emphasize the word at point."
       (custom-declare-face '+org-todo-next
                            '((t (:inherit (bold font-lock-variable-name-face org-todo)))) ""))
 
-    (setq org-todo-keywords
-          '((sequence
-             "NEXT(n)"                  ; Next Action
-             "TODO(t)"                  ; Someday/Maybe
-             "PROJ(p)"                  ; Project
-             "WAIT(w)"                  ; Waiting for
-             "LOOP(l)"                  ; Recurring
-             "STRT(s)"                  ; Active/In Progress
-             "HOLD(h)"                  ; On Hold
-             "|"
-             "DONE(d)"                  ; Completed
-             )
-            (sequence
-             "[ ](T)"                   ; Action
-             "[-](S)"                   ; Active/In Progress
-             "[?](W)"                   ; On Hold
-             "|"
-             "[X](D)")                  ; Completed
-            (sequence
-             "|"
-             "OKAY(O)"
-             "YES(Y)"
-             "NO(N)"))
-          org-todo-keyword-faces
-          '(("NEXT" . +org-todo-next)
-            ("PROJ" . +org-todo-project)
-            ("WAIT" . +org-todo-onhold)
-            ("STRT" . +org-todo-active)
-            ("HOLD" . +org-todo-onhold)
-            ("[-]"  . +org-todo-active)
-            ("[?]"  . +org-todo-onhold)
-            ("NO"   . +org-todo-cancel)))
+    (setopt org-todo-keywords
+            '((sequence
+               "NEXT(n)"                  ; Next Action
+               "TODO(t)"                  ; Someday/Maybe
+               "PROJ(p)"                  ; Project
+               "WAIT(w)"                  ; Waiting for
+               "LOOP(l)"                  ; Recurring
+               "STRT(s)"                  ; Active/In Progress
+               "HOLD(h)"                  ; On Hold
+               "|"
+               "DONE(d)"                  ; Completed
+               )
+              (sequence
+               "[ ](T)"                   ; Action
+               "[-](S)"                   ; Active/In Progress
+               "[?](W)"                   ; On Hold
+               "|"
+               "[X](D)")                  ; Completed
+              (sequence
+               "|"
+               "OKAY(O)"
+               "YES(Y)"
+               "NO(N)"))
+            org-todo-keyword-faces
+            '(("NEXT" . +org-todo-next)
+              ("PROJ" . +org-todo-project)
+              ("WAIT" . +org-todo-onhold)
+              ("STRT" . +org-todo-active)
+              ("HOLD" . +org-todo-onhold)
+              ("[-]"  . +org-todo-active)
+              ("[?]"  . +org-todo-onhold)
+              ("NO"   . +org-todo-cancel)))
 
-    (setq org-todo-repeat-to-state "LOOP")
+    (setopt org-todo-repeat-to-state "LOOP")
 
     (defvar +org-capture-inbox-file "inbox.org"
       "Default target for all entries.")
@@ -1151,20 +1156,20 @@ If a region is active, emphasize it, else emphasize the word at point."
             (expand-file-name "next.org"
                               (car (last org-agenda-files)))))
 
-    (setq org-capture-templates
-          `(("t" "Task" entry
-             (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Tasks")
-             "* TODO [#B] %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
-             :prepend t
-             :empty-lines 1)
-            ("m" "Metrics")
-            ("mw" "Weight" table-line
-             (file+headline ,(expand-file-name +org-capture-metrics-file org-directory) "Weight")
-             "| %U | %^{Weight} kg | %^{Note} |"
-             :prepend t
-             :kill-buffer t)))
+    (setopt org-capture-templates
+            `(("t" "Task" entry
+               (file+headline ,(expand-file-name +org-capture-inbox-file org-directory) "Tasks")
+               "* TODO [#B] %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :prepend t
+               :empty-lines 1)
+              ("m" "Metrics")
+              ("mw" "Weight" table-line
+               (file+headline ,(expand-file-name +org-capture-metrics-file org-directory) "Weight")
+               "| %U | %^{Weight} kg | %^{Note} |"
+               :prepend t
+               :kill-buffer t)))
 
-    (setq org-refile-targets '((org-agenda-files :maxlevel . 6)))
+    (setopt org-refile-targets '((org-agenda-files :maxlevel . 6)))
 
     ;; INFO: Removed hardcoded "TOC"/"ARCHIVE" checks.
     ;; Now uses toc-org-toc-org-regexp and org-archive-tag.
@@ -1319,46 +1324,52 @@ If on a:
                 (org-element-property :end context))))))))))
 
 (when (modulep! :lang org)
-  (setq org-agenda-files (list (expand-file-name "agenda" org-directory)))
-  (setq org-agenda-timegrid-use-ampm t)
-  (setq org-agenda-restore-windows-after-quit t)
-  (setq org-tag-alist '((:startgroup . "Place")
-                        ("@home" . ?H)
-                        ("@gym" . ?G)
-                        ("@garage" . ?B)
-                        ("@street" . ?S)
-                        ("@shop" . ?M)
-                        ("@hospital" . ?L)
-                        (:endgroup)
+  (setopt org-agenda-files (list (expand-file-name "agenda" org-directory)))
+  (setopt org-agenda-timegrid-use-ampm t)
+  (setopt org-agenda-restore-windows-after-quit t)
+  (setopt org-tag-alist
+          '((:startgrouptag)
+            ("🏡 Place")
+            (:grouptags)
+            ("@home" . ?H)
+            ("@gym" . ?G)
+            ("@garage" . ?B)
+            ("@street" . ?S)
+            ("@shop" . ?M)
+            ("@hospital" . ?L)
+            (:endgrouptag)
 
-                        (:startgrouptag)
-                        ("Devices")
-                        (:grouptags)
-                        ("@computer" . ?C)
-                        ("@phone" . ?P)
-                        (:endgrouptag)
+            (:startgrouptag)
+            ("💻 Device")
+            (:grouptags)
+            ("@computer" . ?C)
+            ("@phone" . ?P)
+            (:endgrouptag)
 
-                        (:startgroup . "Difficulty")
-                        ("@easy" . ?E)
-                        (:endgroup)
+            (:startgroup)
+            ("🕐 Difficulty")
+            ("@easy" . ?E)
+            (:endgroup)
 
-                        (:startgroup . "Type")
-                        ("@tech" . ?T)
-                        ("@art" . ?A)
-                        ("@sport" . ?s)
-                        ("@growth" . ?g)
-                        (:endgroup)
+            (:startgroup)
+            ("🏷️ Type")
+            ("@tech" . ?T)
+            ("@art" . ?A)
+            ("@sport" . ?s)
+            ("@growth" . ?g)
+            (:endgroup)
 
-                        (:startgroup . "Activities")
-                        ("@research" . ?r)
-                        ("@management" . ?m)
-                        ("@drawing" . ?d)
-                        ("@workout" . ?w)
-                        ("@writing" . ?t)
-                        ("@programming" . ?p)
-                        ("@system" . ?a)
-                        ("@errands" . ?e)
-                        (:endgroup)))
+            (:startgroup)
+            ("🏃 Activity")
+            ("@research" . ?r)
+            ("@management" . ?m)
+            ("@drawing" . ?d)
+            ("@workout" . ?w)
+            ("@writing" . ?t)
+            ("@programming" . ?p)
+            ("@system" . ?a)
+            ("@errands" . ?e)
+            (:endgroup)))
 
   (defun fr/org-skip-subtree-if-priority (priority)
     "Skip an agenda subtree if it has a priority of PRIORITY.
@@ -1378,77 +1389,77 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
           subtree-end
         nil)))
 
-  (setq org-agenda-custom-commands
-        '(("d" "Daily Agenda"
-           ((agenda ""
-                    ((org-agenda-span 'day)
-                     (org-agenda-start-day "+0d")
-                     (org-deadline-warning-days 7)))
-            (tags-todo "+@easy"
-                       ((org-agenda-overriding-header "Easy Tasks")
-                        (org-agenda-skip-function '(or (fr/org-skip-subtree-if-habit)
-                                                       (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
-            (tags-todo "+PRIORITY=\"A\""
-                       ((org-agenda-overriding-header "High Priority Next Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"B\""
-                       ((org-agenda-overriding-header "Medium Priority Next Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"C\""
-                       ((org-agenda-overriding-header "Low Priority Next Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"A\""
-                       ((org-agenda-overriding-header "High Priority Waiting For Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"B\""
-                       ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"C\""
-                       ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"A\""
-                       ((org-agenda-overriding-header "High Priority Someday/Maybe Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"B\""
-                       ((org-agenda-overriding-header "Medium Priority Someday/Maybe Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-            (tags-todo "+PRIORITY=\"C\""
-                       ((org-agenda-overriding-header "Low Priority Someday/Maybe Tasks")
-                        (org-agenda-skip-function
-                         '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
-                              (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-            (tags-todo ".*"
-                       ((org-agenda-files (list (expand-file-name "inbox.org" org-directory)))
-                        (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
-            (tags-todo "-{.*}"
-                       ((org-agenda-overriding-header "Untagged Tasks")))))
-          ("r" "Weekly Review"
-           ((agenda ""
-                    ((org-agenda-overriding-header "Completed Tasks")
-                     (org-agenda-start-with-log-mode t)
-                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
-                     (org-agenda-span 'week)))
-            (agenda ""
-                    ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
-                     (org-agenda-start-with-log-mode t)
-                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                     (org-agenda-span 'week)))))))
+  (setopt org-agenda-custom-commands
+          '(("d" "Daily Agenda"
+             ((agenda ""
+                      ((org-agenda-span 'day)
+                       (org-agenda-start-day "+0d")
+                       (org-deadline-warning-days 7)))
+              (tags-todo "+@easy"
+                         ((org-agenda-overriding-header "Easy Tasks")
+                          (org-agenda-skip-function '(or (fr/org-skip-subtree-if-habit)
+                                                         (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
+              (tags-todo "+PRIORITY=\"A\""
+                         ((org-agenda-overriding-header "High Priority Next Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"B\""
+                         ((org-agenda-overriding-header "Medium Priority Next Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"C\""
+                         ((org-agenda-overriding-header "Low Priority Next Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"A\""
+                         ((org-agenda-overriding-header "High Priority Waiting For Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"B\""
+                         ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"C\""
+                         ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"A\""
+                         ((org-agenda-overriding-header "High Priority Someday/Maybe Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"B\""
+                         ((org-agenda-overriding-header "Medium Priority Someday/Maybe Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"C\""
+                         ((org-agenda-overriding-header "Low Priority Someday/Maybe Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo ".*"
+                         ((org-agenda-files (list (expand-file-name "inbox.org" org-directory)))
+                          (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
+              (tags-todo "-{.*}"
+                         ((org-agenda-overriding-header "Untagged Tasks")))))
+            ("r" "Weekly Review"
+             ((agenda ""
+                      ((org-agenda-overriding-header "Completed Tasks")
+                       (org-agenda-start-with-log-mode t)
+                       (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                       (org-agenda-span 'week)))
+              (agenda ""
+                      ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
+                       (org-agenda-start-with-log-mode t)
+                       (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                       (org-agenda-span 'week)))))))
 
   (defmacro ignore-args (fnc)
     "Returns function that ignores its arguments and invokes FNC."
@@ -1509,41 +1520,41 @@ if there are fewer than 2 non-empty lines in the block
   (after! org
     (add-to-list 'org-modules 'org-habit)
 
-    (setq org-habit-show-habits-only-for-today nil)
+    (setopt org-habit-show-habits-only-for-today nil)
     (setq +org-habit-graph-padding 1)
     (setq +org-habit-graph-window-ratio 0.25)))
 
 (when (modulep! :lang org +roam)
   (after! org-roam
-    (setq org-roam-directory (expand-file-name "roam" org-directory))
-    (setq org-roam-dailies-directory "journal")
+    (setopt org-roam-directory (expand-file-name "roam" org-directory))
+    (setopt org-roam-dailies-directory "journal")
     (pushnew! org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory))
 
     (pushnew! org-default-properties "ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE")
 
-    (setq org-roam-capture-templates
-          '(("d" "default" plain
-             "%?"
-             :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                "#+title: ${title}\n")
-             :unnarrowed t)))
+    (setopt org-roam-capture-templates
+            '(("d" "default" plain
+               "%?"
+               :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                  "#+title: ${title}\n")
+               :unnarrowed t)))
 
-    (setq org-roam-dailies-capture-templates
-          '(("n" "Note" entry
-             "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
-             :target (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n\n")
-             :empty-lines 1)
-            ("s" "Scheduled Task" entry
-             "* NEXT [#B] %?\nSCHEDULED: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
-             :target (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n\n")
-             :empty-lines 1)
-            ("d" "Deadline Task" entry
-             "* NEXT [#B] %?\nDEADLINE: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
-             :target (file+head "%<%Y-%m-%d>.org"
-                                "#+title: %<%Y-%m-%d>\n\n")
-             :empty-lines 1)))
+    (setopt org-roam-dailies-capture-templates
+            '(("n" "Note" entry
+               "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :target (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n\n")
+               :empty-lines 1)
+              ("s" "Scheduled Task" entry
+               "* NEXT [#B] %?\nSCHEDULED: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :target (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n\n")
+               :empty-lines 1)
+              ("d" "Deadline Task" entry
+               "* NEXT [#B] %?\nDEADLINE: %t\n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :target (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n\n")
+               :empty-lines 1)))
 
     ;; INFO: Filter org-tags-alist keywords.
     ;; https://github.com/org-roam/org-roam/issues/2477
@@ -1629,9 +1640,9 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   :when (modulep! :lang org +mem)
   :after org
   :config
-  (setq org-mem-watch-dirs (list org-roam-directory))
-  (setq org-roam-db-update-on-save nil)
-  (setq org-mem-roamy-do-overwrite-real-db t)
+  (setopt org-mem-watch-dirs (list org-roam-directory))
+  (setopt org-roam-db-update-on-save nil)
+  (setopt org-mem-roamy-do-overwrite-real-db t)
   (org-mem-roamy-db-mode)
 
   ;; Disable Doom's additional syncs from `+org-init-roam-h'
@@ -1647,10 +1658,10 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (use-package! org-roam-ui
   :after org-roam
   :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+  (setopt org-roam-ui-sync-theme t)
+  (setopt org-roam-ui-follow t)
+  (setopt org-roam-ui-update-on-save t)
+  (setopt org-roam-ui-open-on-start t))
 
 (use-package! org-super-agenda
   :when (modulep! :lang org +super)
@@ -1662,11 +1673,11 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   :custom
   (org-contacts-files (list (file-name-concat org-directory "contacts.org")))
   :config
-  (setq org-capture-templates
-        (append org-capture-templates
-                `(("c" "Contacts" entry
-                   (file ,(car org-contacts-files))
-                   "* %(org-contacts-template-name)
+  (setopt org-capture-templates
+          (append org-capture-templates
+                  `(("c" "Contacts" entry
+                     (file ,(car org-contacts-files))
+                     "* %(org-contacts-template-name)
 :PROPERTIES:
 :EMAIL: %(org-contacts-template-email)
 :PHONE: %^{Phone}
@@ -1725,9 +1736,9 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (use-package! eww
   :hook (eww-after-render . eww-auto-rdrview)
   :config
-  (setq eww-readable-urls '("lwn\\.net")))
+  (setopt eww-readable-urls '("lwn\\.net")))
 
-(setq shr-color-visible-luminance-min 50)
+(setopt shr-color-visible-luminance-min 50)
 
 (defcustom eww-urls '("www.opennet.ru" "lwn.net" "www.phoronix.com")
   "List of domains to open using EWW browser."
@@ -1742,7 +1753,7 @@ otherwise open it with the default browser."
         (eww-browse-url url)
       (apply #'browse-url-default-browser url args))))
 
-(setq browse-url-browser-function #'fr/browse-url-function)
+(setopt browse-url-browser-function #'fr/browse-url-function)
 
 (when (executable-find "rdrview")
   (after! eww
@@ -1804,7 +1815,7 @@ It should be the title of the web page as returned by `rdrview'."
     (elfeed-update))
 
   (after! elfeed
-    (setq elfeed-search-filter "@2-week-ago +unread -reddit")
+    (setopt elfeed-search-filter "@2-week-ago +unread -reddit")
 
     (map! :map elfeed-show-mode-map
           :n [escape] #'elfeed-kill-buffer
@@ -1818,9 +1829,9 @@ It should be the title of the web page as returned by `rdrview'."
 
 (when (modulep! :app rss)
   (after! elfeed-goodies
-    (setq elfeed-goodies/feed-source-column-width 36)
-    (setq elfeed-goodies/tag-column-width 28)
-    (setq elfeed-goodies/entry-pane-size 0.72)))
+    (setopt elfeed-goodies/feed-source-column-width 36)
+    (setopt elfeed-goodies/tag-column-width 28)
+    (setopt elfeed-goodies/entry-pane-size 0.72)))
 
 (when (modulep! :app rss +org)
   (after! elfeed-org
@@ -1841,34 +1852,33 @@ current users."
 
 (when (modulep! :email mu4e)
   (after! mu4e
-    (setq mu4e-root-maildir (expand-file-name "~/Documents/mail")
-          mu4e-attachment-dir "~/Downloads/mu4e"
-          mu4e-update-interval 300
-          mu4e-notification-support nil
-          sendmail-program (executable-find "msmtp")
-          message-send-mail-function #'message-send-mail-with-sendmail
-          message-sendmail-f-is-evil t
-          send-mail-function #'sendmail-send-it
-          doom-modeline-mu4e t)
+    (setopt mu4e-attachment-dir "~/Downloads/mu4e")
+    (setopt mu4e-update-interval 300)
+    (setopt mu4e-notification-support nil)
+    (setopt sendmail-program (executable-find "msmtp"))
+    (setopt message-send-mail-function #'message-send-mail-with-sendmail)
+    (setopt message-sendmail-f-is-evil t)
+    (setopt send-mail-function #'sendmail-send-it)
+    (setopt doom-modeline-mu4e t)
 
     (when (modulep! :email mu4e +gmail)
       ;; don't need to run cleanup after indexing for gmail
-      (setq mu4e-index-cleanup nil
-            ;; because gmail uses labels as folders we can use lazy check since
-            ;; messages don't really "move"
-            mu4e-index-lazy-check t))
+      (setopt mu4e-index-cleanup nil)
+      ;; because gmail uses labels as folders we can use lazy check since
+      ;; messages don't really "move"
+      (setopt mu4e-index-lazy-check t))
 
     (when (modulep! :email mu4e +org)
       (setq +mu4e-compose-org-msg-toggle-next nil))
 
-    ;; INFO: override
-    ;; Adding emails to the agenda
+    ;; Adding emails to the agenda.
     ;; Perfect for when you see an email you want to reply to
-    ;; later, but don't want to forget about
-    (defun +mu4e/capture-msg-to-agenda (arg)
+    ;; later, but don't want to forget about.
+    (defadvice! fr/mu4e-capture-msg-to-agenda (arg)
       "Refile a message and add a entry in `+org-capture-emails-file' with a
 deadline.  Default deadline is today.  With one prefix, deadline
 is tomorrow.  With two prefixes, select the deadline."
+      :override #'+mu4e/capture-msg-to-agenda
       (interactive "p")
       (let ((sec "^* Email")
             (msg (mu4e-message-at-point)))
@@ -1980,16 +1990,15 @@ is tomorrow.  With two prefixes, select the deadline."
 
 (when (modulep! :tools biome)
   (after! biome
-    (setq biome-query-coords
-          '(("Saint-Petersburg, Russia" 59.938732 30.316229)
-            ("Mednogorsk, Russia" 51.404944 57.580314)))))
+    (setopt biome-query-coords
+            '(("Saint-Petersburg, Russia" 59.938732 30.316229)
+              ("Mednogorsk, Russia" 51.404944 57.580314)))))
 
 (when (modulep! :tools fj)
-  (setq fj-host "https://codeberg.org"
-        fj-user "Frestein")
+  (setq fj-user "Frestein")
 
   (when (modulep! :tools pass +auth)
-    (setq fj-token-use-auth-source nil)
+    (setopt fj-token-use-auth-source nil)
 
     (defun fr/fj-set-token ()
       (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/frestein@tuta.io/fj.el")))

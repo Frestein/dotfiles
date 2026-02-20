@@ -10,9 +10,9 @@
   :custom
   (typst-ts-enable-raw-blocks-highlight t)
   :config
-  (setq typst-ts-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
-  (setq typst-ts-watch-options '("--open"))
-  (setq typst-ts-indent-offset 2)
+  (setopt typst-ts-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
+  (setopt typst-ts-watch-options '("--open"))
+  (setopt typst-ts-indent-offset 2)
 
   (after! dtrt-indent
     (add-to-list 'dtrt-indent-hook-mapping-list '(typst-ts-mode default typst-ts-indent-offset)))
@@ -63,12 +63,12 @@
   :when (and (modulep! +preview)
              (executable-find "tinymist"))
   :init
-  (setq typst-preview-autostart t)
-  (setq typst-preview-open-browser-automatically t)
+  (setopt typst-preview-autostart t)
+  (setopt typst-preview-open-browser-automatically t)
   :config
-  (setq typst-preview-browser "default")
-  (setq typst-preview-invert-colors "never")
-  (setq typst-preview-partial-rendering t)
+  (setopt typst-preview-browser "default")
+  (setopt typst-preview-invert-colors "never")
+  (setopt typst-preview-partial-rendering t)
 
   (map! :map typst-ts-mode-map
         :localleader

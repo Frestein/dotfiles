@@ -2,6 +2,6 @@
 
 (use-package! ement
   :config
-  (setq ement-sessions-file (expand-file-name "ement.el" doom-cache-dir))
-  (setq ement-save-sessions t)
-  (setq ement-room-send-message-filter #'ement-room-send-org-filter))
+  (setopt ement-sessions-file (expand-file-name "ement.el" doom-cache-dir))
+  (setopt ement-save-sessions t)
+  (setopt ement-room-send-message-filter #'ement-room-send-org-filter))

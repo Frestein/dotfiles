@@ -2,4 +2,4 @@
 
 (use-package! osm
   :config
-  (setq osm-copyright nil))
+  (setopt osm-copyright nil))

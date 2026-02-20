@@ -5,13 +5,13 @@
   :bind (("C-M-$" . jinx-languages)
          ([remap ispell-word] . #'jinx-correct))
   :config
-  (setq jinx-languages "ru_RU en_US"
-        jinx-delay 0.2
-        global-jinx-modes
-        (append
-         global-jinx-modes
-         '(org-mode)
-         (when (modulep! :app telega) '(telega-chat-mode))))
+  (setopt jinx-languages "ru_RU en_US")
+  (setopt jinx-delay 0.2)
+  (setopt global-jinx-modes
+          (append
+           global-jinx-modes
+           '(org-mode)
+           (when (modulep! :app telega) '(telega-chat-mode))))
 
   (after! vertico-multiform
     (add-to-list 'vertico-multiform-categories

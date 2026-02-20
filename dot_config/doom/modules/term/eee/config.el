@@ -3,4 +3,4 @@
 (use-package! eee
   :demand t
   :config
-  (setq ee-terminal-command "footclient"))
+  (setopt ee-terminal-command "footclient"))

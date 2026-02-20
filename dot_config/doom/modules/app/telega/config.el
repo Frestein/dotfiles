@@ -7,21 +7,23 @@
          (telega-chat-mode . turn-off-smartparens-mode)
          (telega-chat-mode . doom-disable-show-paren-mode-h))
   :init
-  (setq telega-directory    (concat (getenv "XDG_DATA_HOME")  "/telega")
-        telega-database-dir (concat (getenv "XDG_DATA_HOME")  "/telega/db")
-        telega-cache-dir    (concat (getenv "XDG_CACHE_HOME") "/telega/cache")
-        telega-temp-dir     (concat (getenv "XDG_CACHE_HOME") "/telega/temp"))
+  (setopt telega-directory    (concat (getenv "XDG_DATA_HOME")  "/telega")
+          telega-database-dir (concat (getenv "XDG_DATA_HOME")  "/telega/db")
+          telega-cache-dir    (concat (getenv "XDG_CACHE_HOME") "/telega/cache")
+          telega-temp-dir     (concat (getenv "XDG_CACHE_HOME") "/telega/temp"))
   :config
-  (setq telega-server-libs-prefix "/usr")
-  (setq telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega"))
-  (setq telega-root-default-view-function 'telega-view-folders)
-  (setq telega-translate-to-language-by-default "ru")
-  (setq telega-chat-show-deleted-messages-for '(not saved-messages))
-  (setq telega-chat-input-markups '("org" "markdown2"))
-  (setq telega-sticker-size '(8 . 26))
-  (setq telega-use-images t)
-  (setq telega-animation-play-inline 60)
+  (setopt telega-server-libs-prefix "/usr")
+  (setopt telega-msg-save-dir (concat (xdg-user-dir "DOWNLOAD") "/telega"))
+  (setopt telega-root-default-view-function 'telega-view-folders)
+  (setopt telega-translate-to-language-by-default "ru")
+  (setopt telega-chat-show-deleted-messages-for '(not saved-messages))
+  (setopt telega-chat-input-markups '("org" "markdown2"))
+  (setopt telega-sticker-size '(8 . 26))
+  (setopt telega-use-images t)
+  (setopt telega-animation-play-inline 60)
 
+  ;; TODO: Use 'setopt' after issue will be closed.
+  ;; https://github.com/zevlg/telega.el/issues/545
   (setq telega-video-player-command (cond ((executable-find "mpv")
                                            '(concat "mpv"
                                              (when telega-ffplay-media-timestamp
@@ -34,45 +36,30 @@
                                                (format " -ss %f" telega-ffplay-media-timestamp))))))
 
   (when (executable-find "tgs2png")
-    (setq telega-sticker-animated-play t))
+    (setopt telega-sticker-animated-play t))
 
-  (setq telega-known-inline-bots (append telega-known-inline-bots
-                                         '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare")))
+  (setopt telega-known-inline-bots (append telega-known-inline-bots
+                                           '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare")))
 
+
+  ;; TODO: Use 'setopt' after issue will be closed.
+  ;; https://github.com/zevlg/telega.el/issues/546
   (setq telega-filter-button-width '(0.10 10 20))
 
-  (setq telega-filters-custom '(("Main" . main)
-                                ("lng_filters_type_no_archived" . archive)))
+  (setopt telega-filters-custom '(("Main" . main)
+                                  ("lng_filters_type_no_archived" . archive)))
 
-  (setq telega-date-format-alist '((today          . "%I:%M %p ")
-                                   (this-week      . "%I:%M %p ")
-                                   (old            . "%d.%m.%y ")
-                                   (date           . "%d.%m.%y")
-                                   (time           . "%I:%M %p")
-                                   (date-time      . "%d.%m.%y %a %I:%M %p")
-                                   (date-long      . "%d %B %Y")
-                                   (date-break-bar . "%d %B %Y %a")))
+  (setopt telega-date-format-alist '((today          . "%I:%M %p ")
+                                     (this-week      . "%I:%M %p ")
+                                     (old            . "%d.%m.%y ")
+                                     (date           . "%d.%m.%y")
+                                     (time           . "%I:%M %p")
+                                     (date-time      . "%d.%m.%y %a %I:%M %p")
+                                     (date-long      . "%d %B %Y")
+                                     (date-break-bar . "%d %B %Y %a")))
 
-  (setq telega-currency-symbols-alist '(("EUR" . "€") ;; Euro
-                                        ("USD" . "$") ;; US Dollar
-                                        ("RUB" . "₽") ;; Russian Ruble
-                                        ("GBP" . "£") ;; British Pound
-                                        ("JPY" . "¥") ;; Japanese Yen
-                                        ("CNY" . "¥") ;; Chinese Yuan (same symbol as Yen)
-                                        ("INR" . "₹") ;; Indian Rupee
-                                        ("KRW" . "₩") ;; South Korean Won
-                                        ("TRY" . "₺") ;; Turkish Lira
-                                        ("UAH" . "₴") ;; Ukrainian Hryvnia
-                                        ("PLN" . "zł")   ;; Polish Zloty (zł)
-                                        ("NGN" . "₦")    ;; Nigerian Naira
-                                        ("KZT" . "₸")    ;; Kazakhstan Tenge
-                                        ("THB" . "฿")    ;; Thai Baht
-                                        ("CHF" . "Fr")   ;; Swiss Franc (Fr)
-                                        ("AUD" . "A$")   ;; Australian Dollar
-                                        ("CAD" . "C$")   ;; Canadian Dollar
-                                        ("MXN" . "MX$")  ;; Mexican Peso
-                                        ("BRL" . "R$"))) ;; Brazilian Real
-
+  ;; TODO: Use 'setopt' after issue will be closed.
+  ;; https://github.com/zevlg/telega.el/issues/547
   (setq telega-builtin-palettes-alist
         `((light
            ((:outline "#cc241d") (:foreground "#bb3e06")     (:background ,(doom-color 'bg)))
@@ -95,172 +82,172 @@
     `(telega-msg-heading :background ,(doom-color 'base3) :extend t)
     '(telega-entity-type-code :inherit font-lock-number-face))
 
-  (setq telega-chat-header-line-format
-        '((:eval (telega-chatbuf-header-concat
-                  " " (telega-chatbuf-header-msg-filter)))
-          (:eval (telega-chatbuf-header-concat
-                  " " (telega-chatbuf-header-preview-mode)))
-          (:eval (telega-chatbuf-header-concat
-                  " " (telega-chatbuf-header-highlight-text)))
-          (:eval (telega-mode-line-align
-                  'center
-                  (telega-chatbuf-header-concat
-                   " " (telega-chatbuf-header-messages-count))
-                  telega-chat-fill-column))
-          (:eval (telega-mode-line-align
-                  'right
-                  (telega-chatbuf-header-concat
-                   " " (telega-chatbuf-header-topic 30))
-                  telega-chat-fill-column))))
+  (setopt telega-chat-header-line-format
+          '((:eval (telega-chatbuf-header-concat
+                    " " (telega-chatbuf-header-msg-filter)))
+            (:eval (telega-chatbuf-header-concat
+                    " " (telega-chatbuf-header-preview-mode)))
+            (:eval (telega-chatbuf-header-concat
+                    " " (telega-chatbuf-header-highlight-text)))
+            (:eval (telega-mode-line-align
+                    'center
+                    (telega-chatbuf-header-concat
+                     " " (telega-chatbuf-header-messages-count))
+                    telega-chat-fill-column))
+            (:eval (telega-mode-line-align
+                    'right
+                    (telega-chatbuf-header-concat
+                     " " (telega-chatbuf-header-topic 30))
+                    telega-chat-fill-column))))
 
   (when (modulep! +icons)
-    (setq telega-emoji-use-images nil)
+    (setopt telega-emoji-use-images nil)
 
-    (setq telega-symbols-emojify
-          (cl-reduce (lambda (emojify key)
-                       (assq-delete-all key emojify))
-                     '(checkmark heavy-checkmark
-                       reply reply-quote forward
-                       button-close forum verified
-                       radiobox-off radiobox-on
-                       checkbox-off checkbox-on
-                       outline-close outline-open
-                       button-left button-right
-                       chat-list checklist
-                       folder multiple-folders
-                       reaction reaction-mark
-                       rewind-backward rewind-forward
-                       story story-reply
-                       video video-chat-active video-chat-passive
-                       ;; vbar-left vertical-bar horizontal-bar underline-bar
-                       alarm attachment audio author-hidden bell boost bulp
-                       contact distance eye failed favorite flames
-                       game invoice leave-comment lightning lock location
-                       member menu my-notes
-                       pause pending phone photo pin poll play premium
-                       right-arrow saved-messages-tag-end
-                       telegram-star timer-clock typing)
-                     :initial-value telega-symbols-emojify))
+    (setopt telega-symbols-emojify
+            (cl-reduce (lambda (emojify key)
+                         (assq-delete-all key emojify))
+                       '(checkmark heavy-checkmark
+                         reply reply-quote forward
+                         button-close forum verified
+                         radiobox-off radiobox-on
+                         checkbox-off checkbox-on
+                         outline-close outline-open
+                         button-left button-right
+                         chat-list checklist
+                         folder multiple-folders
+                         reaction reaction-mark
+                         rewind-backward rewind-forward
+                         story story-reply
+                         video video-chat-active video-chat-passive
+                         ;; vbar-left vertical-bar horizontal-bar underline-bar
+                         alarm attachment audio author-hidden bell boost bulp
+                         contact distance eye failed favorite flames
+                         game invoice leave-comment lightning lock location
+                         member menu my-notes
+                         pause pending phone photo pin poll play premium
+                         right-arrow saved-messages-tag-end
+                         telegram-star timer-clock typing)
+                       :initial-value telega-symbols-emojify))
 
-    (setq telega-chat-prompt-insexp
-          '(telega-ins--with-face (unless (telega-chatbuf-match-p 'can-send-or-post)
-                                    'telega-shadow)
-             (telega-chatbuf-prompt-ins-default-sender-avatar)
-             (telega-chatbuf-prompt-ins-body)
-             (when (or (telega-chatbuf-match-p 'has-default-sender)
-                       (telega-chatbuf-match-p 'can-send-or-post))
-               (telega-chatbuf-prompt-ins-chat-avatar))
-             (telega-chatbuf-prompt-ins-topic 20 t)
-             (telega-auto-translate--chatbuf-prompt-ins-translation)
-             (telega-ins "  ")))
+    (setopt telega-chat-prompt-insexp
+            '(telega-ins--with-face (unless (telega-chatbuf-match-p 'can-send-or-post)
+                                      'telega-shadow)
+               (telega-chatbuf-prompt-ins-default-sender-avatar)
+               (telega-chatbuf-prompt-ins-body)
+               (when (or (telega-chatbuf-match-p 'has-default-sender)
+                         (telega-chatbuf-match-p 'can-send-or-post))
+                 (telega-chatbuf-prompt-ins-chat-avatar))
+               (telega-chatbuf-prompt-ins-topic 20 t)
+               (telega-auto-translate--chatbuf-prompt-ins-translation)
+               (telega-ins "  ")))
 
-    (setq telega-symbol-alarm                 "󰯪 "
-          telega-symbol-attachment            "󰁦"
-          telega-symbol-audio                 ""
-          telega-symbol-author-hidden         " "
-          telega-symbol-bell                  " "
-          telega-symbol-blocked               (propertize "󰂭" 'face 'error)
-          telega-symbol-boost                 " "
-          telega-symbol-bulp                  " "
-          telega-symbol-button-close          "󰅘"
-          telega-symbol-chat-list             " "
-          telega-symbol-checklist             " "
-          telega-symbol-circle                ""
-          telega-symbol-codeblock             ""
-          telega-symbol-contact               " "
-          telega-symbol-copyright             ""
-          telega-symbol-credit-card           ""
-          telega-symbol-direct-messages       "󰍥"
-          telega-symbol-distance              " "
-          telega-symbol-eye                   " "
-          telega-symbol-failed                (propertize "" 'face 'error)
-          telega-symbol-favorite              ""
-          telega-symbol-flames                ""
-          telega-symbol-forum                 "󰠢"
-          telega-symbol-forward               ""
-          telega-symbol-game                  " "
-          telega-symbol-invoice               "󰗋 "
-          telega-symbol-keyboard              " "
-          telega-symbol-leave-comment         " "
-          telega-symbol-lightning             " "
-          telega-symbol-location              " "
-          telega-symbol-lock                  " "
-          telega-symbol-member                " "
-          telega-symbol-mode                  ""
-          telega-symbol-my-notes              ""
-          telega-symbol-menu                  "󰍜"
-          telega-symbol-online-status         ""
-          telega-symbol-outline-close         "󰍟"
-          telega-symbol-outline-open          "󰍝"
-          telega-symbol-pause                 ""
-          telega-symbol-pending               "󰔟"
-          telega-symbol-phone                 " "
-          telega-symbol-photo                 ""
-          telega-symbol-pin                   (propertize "" 'face 'telega-shadow)
-          telega-symbol-play                  ""
-          telega-symbol-poll                  ""
-          telega-symbol-premium               (propertize " 󰦥" 'face 'telega-blue)
-          telega-symbol-reaction              ""
-          telega-symbol-reaction-mark         ""
-          telega-symbol-reply                 ""
-          telega-symbol-reply-quote           ""
-          telega-symbol-right-arrow           "  "
-          telega-symbol-star                  (propertize "󰓎" 'face 'error)
-          telega-symbol-story                 ""
-          telega-symbol-story-reply           ""
-          telega-symbol-telegram              (propertize " " 'face '(italic telega-blue))
-          telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
-          telega-symbol-timer-clock           "󰔛 "
-          telega-symbol-topic                 " #"
-          telega-symbol-typing                ""
-          telega-symbol-verified              (propertize " " 'face 'telega-blue)
-          telega-symbol-video                 ""
-          telega-symbol-video-chat            "󰯜"
-          telega-symbol-video-chat-active     (propertize "󰯜" 'face 'success)
-          telega-symbol-video-chat-passive    (propertize "󰯛" 'face 'telega-shadow)
-          telega-symbol-horizontal-bar        "─"
-          telega-symbol-vertical-bar          "│"
-          telega-symbol-folder                "󰉖 "
-          telega-symbol-multiple-folders      "󰉕 "
-          telega-symbol-checkmark             "󰄬"
-          telega-symbol-heavy-checkmark       "󰄭"
-          telega-symbol-checkbox-on           ""
-          telega-symbol-checkbox-off          ""
-          telega-symbol-radiobox-on           "󰝥"
-          telega-symbol-radiobox-off          "󰝦"
-          telega-symbol-poll-options          (list "󰝦" "󰝥")
-          telega-symbol-poll-multiple-options (list "󰄱" "󰱒")
-          telega-symbol-dice-list             (list "󱅊" "󰇊" "󰇋" "󰇌" "󰇍" "󰇎" "󰇏")
-          telega-folder-icons-alist '(("Airplane" . " ")
-                                      ("All"      . "󰻞 ")
-                                      ("Book"     . " ")
-                                      ("Bots"     . " ")
-                                      ("Cat"      . "󰄛 ")
-                                      ("Channels" . " ")
-                                      ("Crown"    . "󱇐 ")
-                                      ("Custom"   . "󰉖 ")
-                                      ("Favorite" . " ")
-                                      ("Flower"   . "󰉊 ")
-                                      ("Game"     . " ")
-                                      ("Groups"   . "󰭘 ")
-                                      ("Home"     . " ")
-                                      ("Light"    . " ")
-                                      ("Like"     . " ")
-                                      ("Love"     . " ")
-                                      ("Mask"     . "󰴂 ")
-                                      ("Money"    . " ")
-                                      ("Note"     . "󰺿 ")
-                                      ("Palette"  . "󰸌 ")
-                                      ("Party"    . " ")
-                                      ("Private"  . " ")
-                                      ("Setup"    . "󰨸 ")
-                                      ("Sport"    . "󱅝 ")
-                                      ("Study"    . " ")
-                                      ("Trade"    . "󰄨 ")
-                                      ("Travel"   . " ")
-                                      ("Unmuted"  . " ")
-                                      ("Unread"   . " ")
-                                      ("Work"     . " ")))
+    (setopt telega-symbol-alarm                 "󰯪 "
+            telega-symbol-attachment            "󰁦"
+            telega-symbol-audio                 ""
+            telega-symbol-author-hidden         " "
+            telega-symbol-bell                  " "
+            telega-symbol-blocked               (propertize "󰂭" 'face 'error)
+            telega-symbol-boost                 " "
+            telega-symbol-bulp                  " "
+            telega-symbol-button-close          "󰅘"
+            telega-symbol-chat-list             " "
+            telega-symbol-checklist             " "
+            telega-symbol-circle                ""
+            telega-symbol-codeblock             ""
+            telega-symbol-contact               " "
+            telega-symbol-copyright             ""
+            telega-symbol-credit-card           ""
+            telega-symbol-direct-messages       "󰍥"
+            telega-symbol-distance              " "
+            telega-symbol-eye                   " "
+            telega-symbol-failed                (propertize "" 'face 'error)
+            telega-symbol-favorite              ""
+            telega-symbol-flames                ""
+            telega-symbol-forum                 "󰠢"
+            telega-symbol-forward               ""
+            telega-symbol-game                  " "
+            telega-symbol-invoice               "󰗋 "
+            telega-symbol-keyboard              " "
+            telega-symbol-leave-comment         " "
+            telega-symbol-lightning             " "
+            telega-symbol-location              " "
+            telega-symbol-lock                  " "
+            telega-symbol-member                " "
+            telega-symbol-mode                  ""
+            telega-symbol-my-notes              ""
+            telega-symbol-menu                  "󰍜"
+            telega-symbol-online-status         ""
+            telega-symbol-outline-close         "󰍟"
+            telega-symbol-outline-open          "󰍝"
+            telega-symbol-pause                 ""
+            telega-symbol-pending               "󰔟"
+            telega-symbol-phone                 " "
+            telega-symbol-photo                 ""
+            telega-symbol-pin                   (propertize "" 'face 'telega-shadow)
+            telega-symbol-play                  ""
+            telega-symbol-poll                  ""
+            telega-symbol-premium               (propertize " 󰦥" 'face 'telega-blue)
+            telega-symbol-reaction              ""
+            telega-symbol-reaction-mark         ""
+            telega-symbol-reply                 ""
+            telega-symbol-reply-quote           ""
+            telega-symbol-right-arrow           "  "
+            telega-symbol-star                  (propertize "󰓎" 'face 'error)
+            telega-symbol-story                 ""
+            telega-symbol-story-reply           ""
+            telega-symbol-telegram              (propertize " " 'face '(italic telega-blue))
+            telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
+            telega-symbol-timer-clock           "󰔛 "
+            telega-symbol-topic                 " #"
+            telega-symbol-typing                ""
+            telega-symbol-verified              (propertize " " 'face 'telega-blue)
+            telega-symbol-video                 ""
+            telega-symbol-video-chat            "󰯜"
+            telega-symbol-video-chat-active     (propertize "󰯜" 'face 'success)
+            telega-symbol-video-chat-passive    (propertize "󰯛" 'face 'telega-shadow)
+            telega-symbol-horizontal-bar        "─"
+            telega-symbol-vertical-bar          "│"
+            telega-symbol-folder                "󰉖 "
+            telega-symbol-multiple-folders      "󰉕 "
+            telega-symbol-checkmark             "󰄬"
+            telega-symbol-heavy-checkmark       "󰄭"
+            telega-symbol-checkbox-on           ""
+            telega-symbol-checkbox-off          ""
+            telega-symbol-radiobox-on           "󰝥"
+            telega-symbol-radiobox-off          "󰝦"
+            telega-symbol-poll-options          (list "󰝦" "󰝥")
+            telega-symbol-poll-multiple-options (list "󰄱" "󰱒")
+            telega-symbol-dice-list             (list "󱅊" "󰇊" "󰇋" "󰇌" "󰇍" "󰇎" "󰇏")
+            telega-folder-icons-alist '(("Airplane" . " ")
+                                        ("All"      . "󰻞 ")
+                                        ("Book"     . " ")
+                                        ("Bots"     . " ")
+                                        ("Cat"      . "󰄛 ")
+                                        ("Channels" . " ")
+                                        ("Crown"    . "󱇐 ")
+                                        ("Custom"   . "󰉖 ")
+                                        ("Favorite" . " ")
+                                        ("Flower"   . "󰉊 ")
+                                        ("Game"     . " ")
+                                        ("Groups"   . "󰭘 ")
+                                        ("Home"     . " ")
+                                        ("Light"    . " ")
+                                        ("Like"     . " ")
+                                        ("Love"     . " ")
+                                        ("Mask"     . "󰴂 ")
+                                        ("Money"    . " ")
+                                        ("Note"     . "󰺿 ")
+                                        ("Palette"  . "󰸌 ")
+                                        ("Party"    . " ")
+                                        ("Private"  . " ")
+                                        ("Setup"    . "󰨸 ")
+                                        ("Sport"    . "󱅝 ")
+                                        ("Study"    . " ")
+                                        ("Trade"    . "󰄨 ")
+                                        ("Travel"   . " ")
+                                        ("Unmuted"  . " ")
+                                        ("Unread"   . " ")
+                                        ("Work"     . " ")))
 
     (setq telega-chat-preview-mode-lighter
           (concat " " (telega-symbol 'mode) "Preview"))
@@ -281,7 +268,7 @@
         (setq telega-mnz-mode-lighter
               (concat " " (telega-symbol 'mode) "Mnz")))))
 
-  ;; INFO: Redesign, make topic icon optional
+  ;; INFO: Redesign, make topic icon optional.
   (defadvice! fr/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
     "Inserter for the current topic in the chatbuf's input prompt."
     :override #'telega-chatbuf-prompt-ins-topic
@@ -296,7 +283,7 @@
           :with-icon-p with-topic-icon-p
           :with-maybe-pin-p t))))
 
-  ;; INFO: Redesign, make topic icon optional
+  ;; INFO: Redesign, make topic icon optional.
   (defadvice! fr/telega-chatbuf-header-topic (&optional max-width with-topic-icon-p)
     "Formatter for the chatbuf's topic or messages thread."
     :override #'telega-chatbuf-header-topic
@@ -315,7 +302,7 @@
              :with-icon-p with-topic-icon-p
              :with-maybe-pin-p t))))))
 
-  ;; INFO: Redesign topic
+  ;; INFO: Redesign topic.
   (defadvice! fr/telega-ins--message-header (msg &optional msg-chat msg-sender
                                                  addon-inserter)
     "Insert message's MSG header, everything except for message content.
@@ -490,7 +477,7 @@ argument - MSG to insert additional information after header."
                                     #'equal)
                     added-actions))))
 
-  ;; INFO: Add space after vertical bar in folder prefix
+  ;; INFO: Add space after vertical bar in folder prefix.
   (defun fr/telega-folders-insert-personalized (&optional fmt-spec)
     "Frestein's inserter for the folders prefixing chat's title."
     (let ((fmt-spec (or fmt-spec (eval-when-compile
@@ -504,9 +491,9 @@ argument - MSG to insert additional information after header."
                                   fmt-spec (car telega-chat-folders)))))
           (telega-ins (concat (telega-symbol 'vertical-bar) " "))))))
 
-  (setq telega-chat-folders-insexp 'fr/telega-folders-insert-personalized)
+  (setopt telega-chat-folders-insexp 'fr/telega-folders-insert-personalized)
 
-  ;; INFO: Override default notification logic
+  ;; INFO: Override default notification logic.
   ;; Many thanks - tychoish!
   ;; https://github.com/tychoish/.emacs.d/blob/bc32c80e53f0bc4ad7655871ee4672ff31693b77/lisp/tychoish-core.el#L1267
   (defun fr/telega--chat-observable-p (msg)
@@ -554,13 +541,13 @@ argument - MSG to insert additional information after header."
        (t
         (progn (message (format "TELEGA-NOTIFY: unexpected message [%s], notifying anyway" title)) t)))))
 
-  (setq telega-notifications-msg-temex 'fr/telega-notifications-msg-notify-p)
+  (setopt telega-notifications-msg-temex 'fr/telega-notifications-msg-notify-p)
 
   ;; WARN: TOS violation. Block sponsored messages.
   ;; sponsored - Fetch messages but don't draw them.
   ;; sponsored2 - Don't fetch messages.
   (when (or (modulep! +sponsored) (modulep! +sponsored2))
-    (setq telega-inserter-for-sponsored-msg-button nil)
+    (setopt telega-inserter-for-sponsored-msg-button #'ignore)
 
     (defadvice! fr/telega-chatbuf--sponsored-messages-fetch-without-display ()
       "Asynchronously fetch sponsored messages for the chatbuf without displaying them."
@@ -582,7 +569,7 @@ argument - MSG to insert additional information after header."
   (defun fr/telega-video-play-incementally-mode ()
     "Toggle telega video play incrementally mode."
     (interactive)
-    (setq telega-video-play-incrementally (not telega-video-play-incrementally))
+    (setopt telega-video-play-incrementally (not telega-video-play-incrementally))
     (if telega-video-play-incrementally
         (message "Telega-Video-Play-Incrementally mode enabled")
       (message "Telega-Video-Play-Incrementally mode disabled")))
@@ -590,7 +577,7 @@ argument - MSG to insert additional information after header."
   (defun fr/telega-debug-mode ()
     "Toggle telega debug mode."
     (interactive)
-    (setq telega-debug (not telega-debug))
+    (setopt telega-debug (not telega-debug))
     (if telega-debug
         (message "Telega-Debug mode enabled")
       (message "Telega-Debug mode disabled")))
@@ -653,11 +640,12 @@ argument - MSG to insert additional information after header."
                    "t" #'telega-stickerset-trends
                    "s" #'telega-stickerset-search)))))
 
+
 (when (modulep! +mnz)
   (use-package! telega-mnz
     :hook (telega-load  . global-telega-mnz-mode)
     :config
-    (setq telega-mnz-use-language-detection 32))
+    (setopt telega-mnz-use-language-detection 32))
 
   (use-package! language-detection))
 
@@ -679,4 +667,4 @@ argument - MSG to insert additional information after header."
   :when (modulep! +icons)
   :hook (telega-load  . global-telega-url-shorten-nerd-mode)
   :config
-  (setq telega-url-shorten-nerd-use-images nil))
+  (setopt telega-url-shorten-nerd-use-images nil))

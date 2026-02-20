@@ -4,8 +4,8 @@
   :config
   (when (modulep! :completion vertico)
     (after! marginalia
-      (setq marginalia-censor-variables
-            (list
-             (concat
-              (car marginalia-censor-variables)
-              "\\|^fj-token$"))))))
+      (setopt marginalia-censor-variables
+              (list
+               (concat
+                (car marginalia-censor-variables)
+                "\\|^fj-token$"))))))

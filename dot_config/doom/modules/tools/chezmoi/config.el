@@ -1,6 +1,7 @@
 ;;; tools/chezmoi/config.el -*- lexical-binding: t; -*-
 
-(defcustom chezmoi-dir (file-name-as-directory (string-trim-right (shell-command-to-string "chezmoi source-path")))
+(defcustom chezmoi-dir (file-name-as-directory
+                        (string-trim-right (shell-command-to-string "chezmoi source-path")))
   "Location of the chezmoi directory."
   :type '(string)
   :group 'chezmoi)
@@ -11,14 +12,15 @@
   :group 'chezmoi
   :set-after '(chezmoi-dir))
 
-(setq chezmoi-dir
-      (if-let* ((dir (getenv "CHEZMOIROOT")))
-          (file-name-as-directory dir)
-        (file-name-as-directory (string-trim-right (shell-command-to-string "chezmoi source-path")))))
+(setopt chezmoi-dir
+        (if-let* ((dir (getenv "CHEZMOIROOT")))
+            (file-name-as-directory dir)
+          (file-name-as-directory
+           (string-trim-right (shell-command-to-string "chezmoi source-path")))))
 
 (use-package! chezmoi
   :config
-  (setq chezmoi-mode-overwrite-destination t)
+  (setopt chezmoi-mode-overwrite-destination t)
 
   (defcustom chezmoi-pager-command "less"
     "Pager to use for chezmoi commands."

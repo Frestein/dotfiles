@@ -4,12 +4,12 @@
   :when (or (executable-find "buku")
             (executable-find "suki"))
   :config
-  (setq ebuku-database-path
-        (cond
-         ((getenv "XDG_DATA_HOME")
-          (substitute-in-file-name "$XDG_DATA_HOME/gosuki/gosuki.db"))
-         ((getenv "HOME")
-          (substitute-in-file-name "$HOME/.local/share/gosuki/gosuki.db"))
-         ((eq system-type 'windows-nt)
-          (substitute-in-file-name "%APPDATA%\\gosuki\\gosuki.db"))
-         (t "./gosuki.db"))))
+  (setopt ebuku-database-path
+          (cond
+           ((getenv "XDG_DATA_HOME")
+            (substitute-in-file-name "$XDG_DATA_HOME/gosuki/gosuki.db"))
+           ((getenv "HOME")
+            (substitute-in-file-name "$HOME/.local/share/gosuki/gosuki.db"))
+           ((eq system-type 'windows-nt)
+            (substitute-in-file-name "%APPDATA%\\gosuki\\gosuki.db"))
+           (t "./gosuki.db"))))

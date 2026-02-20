@@ -3,7 +3,7 @@
 (use-package volatile-highlights
   :hook (doom-after-init . volatile-highlights-mode)
   :config
-  (setq vhl/animation-style 'pulse)
+  (setopt vhl/animation-style 'pulse)
 
   (when (modulep! :editor evil)
     (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
