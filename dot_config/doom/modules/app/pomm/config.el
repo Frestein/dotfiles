@@ -3,9 +3,9 @@
 (use-package pomm
   :hook (doom-after-init . pomm-mode-line-mode)
   :config
-(after! alert
-  (setq alert-default-style
-        (if (executable-find "notify-send") 'libnotify 'notifications)))
+  (after! alert
+    (setq alert-default-style
+          (if (executable-find "notify-send") 'libnotify 'notifications)))
 
   (setopt pomm-audio-player-executable (executable-find "mpv"))
 

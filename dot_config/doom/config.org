@@ -12,6 +12,7 @@
   - [[#modeline][Modeline]]
   - [[#theme][Theme]]
   - [[#fonts][Fonts]]
+    - [[#config][Config]]
     - [[#symbols][Symbols]]
     - [[#unicode][Unicode]]
     - [[#ligatures][Ligatures]]
@@ -26,7 +27,7 @@
   - [[#xdg][XDG]]
   - [[#shell][Shell]]
     - [[#eshell][Eshell]]
-      - [[#config][Config]]
+      - [[#config-1][Config]]
       - [[#aliases][Aliases]]
       - [[#autosuggestions][Autosuggestions]]
       - [[#atuin][Atuin]]
@@ -39,7 +40,7 @@
     - [[#misc-2][Misc]]
 - [[#file-manager][File Manager]]
   - [[#dired][Dired]]
-    - [[#config-1][Config]]
+    - [[#config-2][Config]]
     - [[#dirvish][Dirvish]]
 - [[#editor][Editor]]
   - [[#settings][Settings]]
@@ -61,7 +62,7 @@
 - [[#project-management][Project Management]]
   - [[#version-control][Version Control]]
     - [[#magit][Magit]]
-      - [[#config-2][Config]]
+      - [[#config-3][Config]]
       - [[#conventional-commits][Conventional Commits]]
       - [[#magit-delta][Magit-Delta]]
       - [[#magit-todos][Magit-Todos]]
@@ -76,13 +77,13 @@
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#common-lisp][Common Lisp]]
   - [[#org][Org]]
-    - [[#config-3][Config]]
+    - [[#config-4][Config]]
     - [[#override-module-defaults][Override Module Defaults]]
     - [[#org-agenda][Org Agenda]]
     - [[#modules][Modules]]
       - [[#org-habit][Org Habit]]
     - [[#org-roam][Org Roam]]
-      - [[#config-4][Config]]
+      - [[#config-5][Config]]
       - [[#org-mem][Org Mem]]
       - [[#org-roam-ui][Org Roam UI]]
     - [[#org-super-agenda][Org Super Agenda]]
@@ -95,12 +96,12 @@
   - [[#fish][Fish]]
 - [[#www][WWW]]
   - [[#eww][EWW]]
-    - [[#config-5][Config]]
+    - [[#config-6][Config]]
     - [[#shr][Shr]]
     - [[#browse-url][Browse Url]]
     - [[#rdrview][Rdrview]]
   - [[#elfeed][Elfeed]]
-    - [[#config-6][Config]]
+    - [[#config-7][Config]]
     - [[#elfeed-goodies][Elfeed Goodies]]
     - [[#elfeed-org][Elfeed Org]]
   - [[#mu4e][mu4e]]
@@ -113,7 +114,7 @@
     - [[#telega][telega]]
   - [[#checkers][Checkers]]
     - [[#jinx][jinx]]
-  - [[#config-7][Config]]
+  - [[#config-8][Config]]
     - [[#compile-angel][compile-angel]]
   - [[#editor-1][Editor]]
     - [[#drag-stuff][drag-stuff]]
@@ -197,9 +198,11 @@
 
 ** Fonts
 
+*** Config
+
 #+begin_src elisp
 (setopt doom-font                (font-spec :family "Maple Mono NF" :size 14))
-(setq   doom-big-font              (font-spec :family "Maple Mono NF" :size 24))
+(setq   doom-big-font            (font-spec :family "Maple Mono NF" :size 24))
 (setopt doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
 (setopt doom-serif-font          (font-spec :family "Noto Serif" :size 14))
 (setopt doom-emoji-font          (font-spec :family "Twemoji" :size 14))
@@ -459,12 +462,12 @@ the variable `message-log-max'."
         (fr/eshell-append-aliases '(("cz-magit" "chezmoi-magit-status"))))
 
       (fr/eshell-append-aliases '(("cz" "chezmoi $*")
-                                   ("czx" "CZ_EXT=1 chezmoi $*"))))
+                                  ("czx" "CZ_EXT=1 chezmoi $*"))))
 
     (when (executable-find "systemctl")
       (fr/eshell-append-aliases '(("sc" "systemctl $*")
-                                   ("scu" "systemctl --user $*")
-                                   ("jctl" "journalctl -p 3 -xb $*"))))
+                                  ("scu" "systemctl --user $*")
+                                  ("jctl" "journalctl -p 3 -xb $*"))))
 
     (when (executable-find "speedtest-go")
       (fr/eshell-append-aliases '(("speedtest" "speedtest-go $*"))))

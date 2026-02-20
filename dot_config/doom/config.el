@@ -26,7 +26,7 @@
   `(mode-line :background ,(doom-color 'base3) :foreground ,(doom-color 'modeline-fg)))
 
 (setopt doom-font                (font-spec :family "Maple Mono NF" :size 14))
-(setq   doom-big-font              (font-spec :family "Maple Mono NF" :size 24))
+(setq   doom-big-font            (font-spec :family "Maple Mono NF" :size 24))
 (setopt doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
 (setopt doom-serif-font          (font-spec :family "Noto Serif" :size 14))
 (setopt doom-emoji-font          (font-spec :family "Twemoji" :size 14))
@@ -226,12 +226,12 @@ the variable `message-log-max'."
         (fr/eshell-append-aliases '(("cz-magit" "chezmoi-magit-status"))))
 
       (fr/eshell-append-aliases '(("cz" "chezmoi $*")
-                                   ("czx" "CZ_EXT=1 chezmoi $*"))))
+                                  ("czx" "CZ_EXT=1 chezmoi $*"))))
 
     (when (executable-find "systemctl")
       (fr/eshell-append-aliases '(("sc" "systemctl $*")
-                                   ("scu" "systemctl --user $*")
-                                   ("jctl" "journalctl -p 3 -xb $*"))))
+                                  ("scu" "systemctl --user $*")
+                                  ("jctl" "journalctl -p 3 -xb $*"))))
 
     (when (executable-find "speedtest-go")
       (fr/eshell-append-aliases '(("speedtest" "speedtest-go $*"))))
