@@ -6,7 +6,7 @@
   (search-default-mode #'char-fold-to-regexp))
 
 (use-package! reverse-im
-  :after-call char-fold
+  :after char-fold
   :bind ("M-W" . reverse-im-translate-word)
   :hook (doom-after-init . reverse-im-mode)
   :custom

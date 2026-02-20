@@ -455,9 +455,8 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
 
 (when (modulep! :emacs dired +dirvish)
   (use-package! dirvish
+    :hook (doom-after-init . dirvish-peek-mode)
     :config
-    (dirvish-peek-mode t)
-
     (setopt dirvish-quick-access-entries
             `(("h" "~/"                                 "Home")
               ("d" ,(xdg-user-dir "DOWNLOAD")           "Downloads")
@@ -899,27 +898,14 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
   (setopt magit-delta-default-light-theme "gruvbox-light")
   (setopt magit-delta-hide-plus-minus-markers nil))
 
-(when (modulep! :tools magit)
-  (defun fr/magit-todos-ignore-tangled-files (filename)
-    "Return nil if an `.org' file with the same basename exists in the same directory,
-ignoring all other files with the same basename."
-    (let* ((basename (file-name-sans-extension (file-name-nondirectory filename)))
-           (org-file (concat basename ".org"))
-           (dir (file-name-directory filename))
-           (org-path (when dir (expand-file-name org-file dir))))
-      (if (and org-path (file-exists-p org-path)
-               (not (string-suffix-p ".org" filename)))
-          nil
-        filename)))
-
-  (use-package! magit-todos
-    :when (modulep! :ui hl-todo)
-    :hook (magit-mode . magit-todos-mode)
-    :custom
-    (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP"
-                                    "KLUDGE" "DONT" "OKAY" "PROG" "THEM"
-                                    "NEXT" "DONE"))
-    (magit-todos-filename-filter #'fr/magit-todos-ignore-tangled-files)))
+(use-package! magit-todos
+  :when (and (modulep! :tools magit)
+             (modulep! :ui hl-todo))
+  :hook (magit-mode . magit-todos-mode)
+  :custom
+  (magit-todos-ignored-keywords '("NOTE" "INFO" "MAYBE" "HACK" "TEMP"
+                                  "KLUDGE" "DONT" "OKAY" "PROG" "THEM"
+                                  "NEXT" "DONE")))
 
 (setopt projectile-project-search-path '(("~/Projects/" . 2)))
 
@@ -1640,13 +1626,13 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   :when (modulep! :lang org +mem)
   :after org
   :config
-  (setopt org-mem-watch-dirs (list org-roam-directory))
   (setopt org-roam-db-update-on-save nil)
   (setopt org-mem-roamy-do-overwrite-real-db t)
-  (org-mem-roamy-db-mode)
+  (org-mem-roamy-db-mode t)
 
   ;; Disable Doom's additional syncs from `+org-init-roam-h'
   (after! org-roam
+    (setopt org-mem-watch-dirs (list org-roam-directory))
     (org-roam-db-autosync-disable)
 
     (undefadvice! +org-roam-try-init-db-a (&rest _)
