@@ -7,6 +7,7 @@
 .config/czkawka/
 .config/dconf/
 .config/doom/custom.el
+.config/doom/README.org
 .config/doom.d/
 .config/discord/
 .config/Electron/
@@ -78,7 +79,7 @@
 .config/syncthingtray.ini
 
 **/__pycache__/
-**/README.org
+**/.elc
 **/README.md
 **/LICENSE
 
