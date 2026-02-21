@@ -76,13 +76,6 @@
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
 
-(setq doom-upgrade-command
-      (format "%s upgrade -B --aot"
-              ;; INFO: /usr/bin/env doesn't exist on Android
-              (if (featurep :system 'android)
-                  "sh %s"
-                "%s")))
-
 (setq doom-reload-command
       (format "%s sync -B -e --aot"
               ;; INFO: /usr/bin/env doesn't exist on Android
@@ -99,12 +92,14 @@
                     (format "ps -o args= -p %d" ppid))))
     (string-match-p "systemd --user" ppid-cmd)))
 
-(defun doom/restart ()
+(defadvice! doom/restart-systemd ()
   "Restart Emacs (use systemd if current process is from a service)."
+  :override #'doom/restart
   (interactive)
   (if (fr/current-emacs-is-systemd-service-p)
       (start-process "systemd-restart" nil "systemctl" "--user" "restart" "emacs")
-    (require 'restart-emacs)
+    (unless (fboundp 'restart-emacs)
+      (user-error "Cannot restart Emacs 28 or older"))
     (restart-emacs)))
 
 (with-eval-after-load "lib/docs"
@@ -567,9 +562,6 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
         :n "gZ" #'zoxide-find-file))
 
 (map! :leader
-      (:prefix ("q" . "quit/session")
-       :desc "Restart Emacs" "r" #'doom/restart
-       :desc "Restart & restore Emacs" "R" #'doom/restart-and-restore)
       (:prefix ("s" . "search")
                (:when (modulep! :completion vertico)
                  :desc "Ripgrep" "g" #'consult-ripgrep)
