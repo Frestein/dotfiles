@@ -107,41 +107,13 @@
   - [[#mu4e][mu4e]]
 - [[#personal-modules][Personal Modules]]
   - [[#app][App]]
-    - [[#ement][ement]]
-    - [[#osm][osm]]
-    - [[#pomm][pomm]]
-    - [[#srs][srs]]
-    - [[#telega][telega]]
-  - [[#checkers][Checkers]]
-    - [[#jinx][jinx]]
+    - [[#telega][Telega]]
   - [[#config-8][Config]]
-    - [[#compile-angel][compile-angel]]
-  - [[#editor-1][Editor]]
-    - [[#drag-stuff][drag-stuff]]
-    - [[#ialign][ialign]]
-  - [[#input][Input]]
-    - [[#reverse-im][reverse-im]]
-  - [[#term][Term]]
-    - [[#eat][eat]]
+    - [[#compile-angel][Compile Angel]]
   - [[#tools][Tools]]
-    - [[#0x0][0x0]]
-    - [[#biome][biome]]
-    - [[#blamer][blamer]]
-    - [[#chezmoi][chezmoi]]
-    - [[#consult-gh][consult-gh]]
-    - [[#daemons][daemons]]
-    - [[#disk-usage][disk-usage]]
-    - [[#ebuku][ebuku]]
-    - [[#fj][fj]]
-    - [[#git-auto-commit][git-auto-commit]]
-    - [[#reader][reader]]
-    - [[#screenshot][screenshot]]
-    - [[#trashed][trashed]]
-  - [[#ui][UI]]
-    - [[#colorful][colorful]]
-    - [[#frames-only][frames-only]]
-    - [[#smart-cursor][smart-cursor]]
-    - [[#volatile-highlights][volatile-highlights]]
+    - [[#biome][Biome]]
+    - [[#blamer][Blamer]]
+    - [[#fj][Fj]]
 
 * Lexical-Binding
 
@@ -388,7 +360,7 @@ the variable `message-log-max'."
 
 **** Aliases
 
-#+begin_src elisp :tangle yes
+#+begin_src elisp
 (when (modulep! :term eshell)
   (after! em-alias
     (setq +eshell-aliases nil)
@@ -2495,15 +2467,7 @@ is tomorrow.  With two prefixes, select the deadline."
 
 ** App
 
-*** ement
-
-*** osm
-
-*** pomm
-
-*** srs
-
-*** telega
+*** Telega
 
 #+begin_src elisp
 (when (modulep! :app telega)
@@ -2517,39 +2481,19 @@ is tomorrow.  With two prefixes, select the deadline."
       (add-hook! doom-after-init (telega 'no-popup)))))
 #+end_src
 
-** Checkers
-
-*** jinx
-
 ** Config
 
-*** compile-angel
+*** Compile Angel
 
-#+begin_src elisp :tangle no
+#+begin_src elisp :tangle no :eval no
 (when (modulep! :config compile-angel)
   ;; Compile automatically when an Elisp file is saved
-  (add-hook emacs-lisp-mode-hook #'compile-angel-on-save-local-mode))
+  (add-hook 'emacs-lisp-mode-hook #'compile-angel-on-save-local-mode))
 #+end_src
-
-** Editor
-
-*** drag-stuff
-
-*** ialign
-
-** Input
-
-*** reverse-im
-
-** Term
-
-*** eat
 
 ** Tools
 
-*** 0x0
-
-*** biome
+*** Biome
 
 #+begin_src elisp
 (when (modulep! :tools biome)
@@ -2559,24 +2503,14 @@ is tomorrow.  With two prefixes, select the deadline."
               ("Mednogorsk, Russia" 51.404944 57.580314)))))
 #+end_src
 
-*** blamer
+*** Blamer
 
-#+begin_src elisp :tangle no
+#+begin_src elisp :tangle no :eval no
 (when (modulep! :tools blamer)
   (add-hook 'doom-after-init-hook #'global-blamer-mode))
 #+end_src
 
-*** chezmoi
-
-*** consult-gh
-
-*** daemons
-
-*** disk-usage
-
-*** ebuku
-
-*** fj
+*** Fj
 
 #+begin_src elisp
 (when (modulep! :tools fj)
@@ -2592,22 +2526,3 @@ is tomorrow.  With two prefixes, select the deadline."
         (add-hook! doom-first-input (fr/fj-set-token))
       (add-hook! doom-init-ui (fr/fj-set-token)))))
 #+end_src
-
-*** git-auto-commit
-
-*** reader
-
-*** screenshot
-
-*** trashed
-
-** UI
-
-*** colorful
-
-*** frames-only
-
-*** smart-cursor
-
-*** volatile-highlights
-
