@@ -1973,14 +1973,15 @@ is tomorrow.  With two prefixes, select the deadline."
               ("Mednogorsk, Russia" 51.404944 57.580314)))))
 
 (when (modulep! :tools fj)
-  (setq fj-user "Frestein")
+  (after! fj
+    (setq fj-user "Frestein")
 
-  (when (modulep! :tools pass +auth)
-    (setopt fj-token-use-auth-source nil)
+    (when (modulep! :tools pass +auth)
+      (setopt fj-token-use-auth-source nil)
 
-    (defun fr/fj-set-token ()
-      (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/frestein@tuta.io/fj.el")))
+      (defun fr/fj-set-token ()
+        (setq fj-token (auth-source-pass-get 'secret "work/git/codeberg.org/api/frestein@tuta.io/fj.el")))
 
-    (if (daemonp)
-        (add-hook! doom-first-input (fr/fj-set-token))
-      (add-hook! doom-init-ui (fr/fj-set-token)))))
+      (if (daemonp)
+          (add-hook! doom-first-input (fr/fj-set-token))
+        (add-hook! doom-init-ui (fr/fj-set-token))))))

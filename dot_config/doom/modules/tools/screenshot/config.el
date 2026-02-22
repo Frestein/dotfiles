@@ -1,7 +1,7 @@
 ;;; tools/screenshot/config.el -*- lexical-binding: t; -*-
 
 (use-package! screenshot
-  :hook (screenshot-buffer-creation-hook . g-screenshot-on-buffer-creation)
+  :hook (screenshot-buffer-creation . g-screenshot-on-buffer-creation)
   :config
   (setq screenshot-line-numbers-p t)
   (setq screenshot-min-width 80)
