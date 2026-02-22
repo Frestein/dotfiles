@@ -1389,6 +1389,8 @@ About Conventional Commits:
   (setopt org-hide-emphasis-markers t)
   (setopt org-edit-src-persistent-message nil)
 
+  (setopt org-startup-with-link-previews t)
+
   ;; BUG: The second format is displayed incorrectly.
   ;; For example:
   ;; SCHEDULED: <2025-09-26 Fri 02:00 PM-16:00>
