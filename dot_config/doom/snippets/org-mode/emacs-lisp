@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil  -*-
+# name: #+begin_src emacs-lisp
+# key: emacs-lisp
+# uuid: emacs-lisp
+# condition: t
+# expand-env: ((yas-after-exit-snippet-hook #'fr/org-edit-src-code-and-insert))
+# --
+#+begin_src emacs-lisp
+$0
+#+end_src

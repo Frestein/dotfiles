@@ -51,6 +51,7 @@
       - [[#evil-snipe][Evil Snipe]]
     - [[#which-key][Which-Key]]
     - [[#map][map!]]
+  - [[#snippets][Snippets]]
   - [[#completion][Completion]]
     - [[#corfu][Corfu]]
     - [[#vertico][Vertico]]
@@ -947,6 +948,19 @@ Disable evil-snipe on specific modes.
                  (:prefix ("r" . "roam")
                           (:when (modulep! :lang org +mem)
                             "s" nil)))))
+#+end_src
+
+** Snippets
+
+#+begin_src elisp
+(defun fr/org-edit-src-code-and-insert ()
+  (when (fboundp 'evil-normal-state)
+    (evil-normal-state))
+  (org-edit-src-code)
+  (run-with-timer 0.01 nil
+                  (lambda ()
+                    (when (fboundp 'evil-insert-state)
+                      (evil-insert-state)))))
 #+end_src
 
 ** Completion 

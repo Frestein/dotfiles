@@ -650,6 +650,15 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
                           (:when (modulep! :lang org +mem)
                             "s" nil)))))
 
+(defun fr/org-edit-src-code-and-insert ()
+  (when (fboundp 'evil-normal-state)
+    (evil-normal-state))
+  (org-edit-src-code)
+  (run-with-timer 0.01 nil
+                  (lambda ()
+                    (when (fboundp 'evil-insert-state)
+                      (evil-insert-state)))))
+
 (when (modulep! :completion corfu)
   (after! corfu
     (setopt corfu-auto nil)))

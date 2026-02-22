@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil  -*-
+# name: #+begin_src elisp
+# key: elisp
+# uuid: elisp
+# condition: t
+# expand-env: ((yas-after-exit-snippet-hook #'fr/org-edit-src-code-and-insert))
+# --
+#+begin_src elisp
+$0
+#+end_src
