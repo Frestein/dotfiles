@@ -576,6 +576,8 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
                   :desc "Password" "p" #'+pass/consult)))
       (:prefix ("i" . "insert")
        :desc "Nerd" "n" #'nerd-icons-insert)
+      (:prefix ("p" . "project")
+       :desc "Cleanup know projects" "K" #'projectile-cleanup-known-projects)
       (:when (modulep! :app pomm)
         (:prefix ("P" . "pomm")
                  (:prefix ("t" . "Third Time")
