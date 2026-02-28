@@ -1,5 +1,5 @@
 [Unit]
-Description=Set a random wallpaper every minute
+Description=Set a random wallpaper with waypaper
 
 [Timer]
 Persistent=true
