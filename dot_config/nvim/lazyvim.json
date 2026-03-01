@@ -42,7 +42,6 @@
     "plugins.extras.lang.fish",
     "plugins.extras.lang.html",
     "plugins.extras.lang.hyprlang",
-    "plugins.extras.lang.jsonc",
     "plugins.extras.lang.lua",
     "plugins.extras.lang.markdown",
     "plugins.extras.lang.python",
