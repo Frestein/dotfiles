@@ -20,7 +20,7 @@
           :items ,#'zoxide-query)
         "Zoxide directory source for `consult-dir'.")
 
-      (pushnew! consult-dir-sources 'consult-dir--source-zoxide)))
+      (add-to-list 'consult-dir-sources 'consult-dir--source-zoxide)))
 
   (when (modulep! :term eshell)
     (after! eshell

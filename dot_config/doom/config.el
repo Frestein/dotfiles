@@ -151,7 +151,8 @@ the variable `message-log-max'."
           :i "C-j" #'eshell-next-prompt))
 
   (after! em-term
-    (pushnew! eshell-visual-commands "btm" "btop" "cha" "yt-x" "yazi" "journalctl" "fzf" "tv")))
+    (dolist (cmd '("btm" "btop" "cha" "yt-x" "yazi" "journalctl" "fzf" "tv" "hx" "helix"))
+      (add-to-list 'eshell-visual-commands cmd))))
 
 (when (modulep! :term eshell)
   (after! em-alias
@@ -325,8 +326,7 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
     (advice-add #'vterm--redraw :around (lambda (fun &rest args) (let ((cursor-type cursor-type)) (apply fun args))))
 
     (when (modulep! :tools chezmoi)
-      (pushnew! vterm-eval-cmds
-                '("chezmoi-magit-status" chezmoi-magit-status)))
+      (add-to-list 'vterm-eval-cmds '("chezmoi-magit-status" chezmoi-magit-status)))
 
     ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/749
     (defadvice! fr/vterm-better-kill (orig-fun &rest args)
@@ -752,8 +752,7 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
 ;; https://github.com/lewang/ws-butler/issues/26
 (when (modulep! :editor whitespace +trim)
   (after! ws-butler
-    (pushnew! ws-butler-global-exempt-modes
-              'org-mode)))
+    (add-to-list 'ws-butler-global-exempt-modes 'org-mode)))
 
 (when (modulep! :ui smooth-scroll)
   ;; Disable ultra-scroll
@@ -963,7 +962,7 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
            :desc "Evaluate defun" "d" #'eros-eval-defun))))
 
 (when (modulep! :lang common-lisp)
-  (pushnew! +lisp-quicklisp-paths (concat (xdg-data-home) "/quicklisp"))
+  (add-to-list '+lisp-quicklisp-paths (expand-file-name "quicklisp" (xdg-data-home)))
 
   (after! sly
     (map! :map lisp-mode-map
@@ -1092,7 +1091,7 @@ If a region is active, emphasize it, else emphasize the word at point."
   (after! org
     (setq org-archive-tag "archive")
     (setq org-element-archive-tag "archive")
-    (pushnew! org-default-properties "CREATED")
+    (add-to-list 'org-default-properties "CREATED")
 
     (set-popup-rule! "^\\*Org Src"
       :side 'right :size 0.5 :ttl 0 :quit nil :select t :modeline t)
@@ -1519,9 +1518,10 @@ if there are fewer than 2 non-empty lines in the block
   (after! org-roam
     (setopt org-roam-directory (expand-file-name "roam" org-directory))
     (setopt org-roam-dailies-directory "journal")
-    (pushnew! org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory))
+    (add-to-list 'org-agenda-files (expand-file-name org-roam-dailies-directory org-roam-directory))
 
-    (pushnew! org-default-properties "ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE")
+    (dolist (prop '("ROAM_ALIASES" "ROAM_REFS" "ROAM_EXCLUDE"))
+      (add-to-list 'org-default-properties prop))
 
     (setopt org-roam-capture-templates
             '(("d" "default" plain

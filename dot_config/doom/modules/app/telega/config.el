@@ -661,7 +661,7 @@ argument - MSG to insert additional information after header."
   :when (modulep! :lang org)
   :after (org telega)
   :config
-  (pushnew! org-modules 'ol-telega))
+  (add-to-list 'org-modules 'ol-telega))
 
 (use-package! telega-url-shorten-nerd
   :when (modulep! +icons)
