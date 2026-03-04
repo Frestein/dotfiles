@@ -1,4 +1,4 @@
-#!/usr/bin/env dash
+#!/usr/bin/env sh
 
 LOCK_FILE="/tmp/killactive.lock"
 TIMEOUT=300
