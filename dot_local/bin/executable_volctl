@@ -1,0 +1,96 @@
+#!/usr/bin/env sh
+
+: "${WOBSOCK:=/run/user/$(id -u)/wob.sock}"
+
+usage() {
+    cat <<EOF
+Usage: ${0##*/} [OPTION] [ARGUMENT]
+
+Options:
+  --get                Get current volume
+  --inc [STEP]         Increase volume by STEP% (default 5). STEP must be a non-negative integer.
+  --dec [STEP]         Decrease volume by STEP% (default 5). STEP must be a non-negative integer.
+  --toggle             Toggle mute/unmute
+EOF
+}
+
+error() {
+    echo "Error: $1" >&2
+    exit 1
+}
+
+get_vol() {
+    wpctl get-volume @DEFAULT_SINK@ | awk '{
+        gsub(/[^0-9.]/, "", $2)
+        printf "%d\n", int($2 * 100)
+    }'
+}
+
+send_cur_vol_socket() {
+    vol=$(get_vol)
+    printf "%s\n" "$vol" >"$WOBSOCK"
+}
+
+is_muted() {
+    wpctl get-volume @DEFAULT_SINK@ | grep -q MUTED
+}
+
+unmute_if_needed() {
+    if is_muted; then
+        wpctl set-mute @DEFAULT_SINK@ 0
+    fi
+}
+
+adjust_vol() {
+    direction="$1"
+    step="${2:-5}"
+
+    case "$step" in
+    '' | *[!0-9]*)
+        error "STEP must be a non-negative integer, got '$step'"
+        ;;
+    esac
+
+    unmute_if_needed
+    wpctl set-volume @DEFAULT_SINK@ "${step}%${direction}" -l 1.0 && send_cur_vol_socket
+}
+
+inc_vol() {
+    adjust_vol "+" "$1"
+}
+
+dec_vol() {
+    adjust_vol "-" "$1"
+}
+
+toggle_mute() {
+    wpctl set-mute @DEFAULT_SINK@ toggle
+    if is_muted; then
+        printf "0\n" >"$WOBSOCK"
+    else
+        send_cur_vol_socket
+    fi
+}
+
+main() {
+    case "$1" in
+    --get) get_vol ;;
+    --inc)
+        if [ $# -gt 2 ]; then
+            error "--inc takes at most one argument (STEP)"
+        fi
+        inc_vol "$2"
+        ;;
+    --dec)
+        if [ $# -gt 2 ]; then
+            error "--dec takes at most one argument (STEP)"
+        fi
+        dec_vol "$2"
+        ;;
+    --toggle) toggle_mute ;;
+    "") usage ;;
+    *) error "Unknown option: $1" ;;
+    esac
+}
+
+main "$@"

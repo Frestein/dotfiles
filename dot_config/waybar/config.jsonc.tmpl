@@ -72,7 +72,7 @@
     "format": "{icon} {volume}%",
     "format-muted": "󰝟",
     "format-icons": ["󰕿", "󰖀", "󰕾"],
-    "on-click": "{{ .chezmoi.destDir }}/.config/hypr/scripts/volume.sh --toggle",
+    "on-click": "volctl --toggle",
     "menu": "on-click-right",
     "menu-file": "{{ .chezmoi.destDir }}/.config/waybar/modules/audio.xml",
     "menu-actions": {
