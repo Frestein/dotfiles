@@ -1,6 +1,17 @@
 #!/usr/bin/env sh
 
-run_command() {
+options=" Foot\n Neovim\n󰇥 Yazi\n󰑩 Zapret\n󰒒 DNSCrypt\n Etckeeper"
+
+selected_option=$(
+    printf "%b" "$options" | fuzzel -d \
+        --minimal-lines \
+        -p " " \
+        --placeholder "Root "
+)
+
+command=$(printf "%s\n" "$selected_option" | grep -o -E "[a-zA-Z]+")
+
+main() {
     case "$1" in
     "Foot") set -- foot ;;
     "Neovim") set -- foot nvim ;;
@@ -14,13 +25,4 @@ run_command() {
     asroot "$@"
 }
 
-options=" Foot\n Neovim\n󰇥 Yazi\n󰑩 Zapret\n󰒒 DNSCrypt\n Etckeeper"
-
-selected_option=$(printf "%b" "$options" | fuzzel -d \
-    --minimal-lines \
-    -p " " \
-    --placeholder "Root ")
-
-command=$(printf "%s\n" "$selected_option" | grep -o -E "[a-zA-Z]+")
-
-run_command "$command"
+main "$command"

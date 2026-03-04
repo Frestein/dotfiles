@@ -1,34 +1,50 @@
-#!/usr/bin/env dash
+#!/usr/bin/env sh
 
-run_command() {
+options="󰗽 Logout\n Lock\n󰯈 Kill mode\n Reload\n Reboot\n Shutdown"
+
+selected_option=$(
+    printf "%b" "$options" | fuzzel -d \
+        --minimal-lines \
+        -p " " \
+        --placeholder "Session "
+)
+
+command=$(printf "%s\n" "$selected_option" | grep -o -E "[a-zA-Z]+")
+
+main() {
     case "$1" in
     "Logout")
-        uwsm stop
+        if uwsm check is-active; then
+            uwsm stop
+        elif [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+            if command -v hyprshutdown >/dev/null 2>&1; then
+                hyprshutdown
+            else
+                hyprctl dispatch exit
+            fi
+        fi
         ;;
     "Lock")
-        hyprlock
+        if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+            hyprlock
+        fi
         ;;
     "Kill")
-        hyprctl kill
+        if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+            hyprctl kill
+        fi
         ;;
     "Reload")
-        hyprctl reload
+        if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+            hyprctl reload
+        fi
         pkill -SIGUSR2 waybar
         notify-send -u low -h string:x-dunst-stack-tag:screenshot "Config reloaded"
         ;;
-    "Reboot")
-        systemctl reboot
-        ;;
-    "Shutdown")
-        systemctl poweroff
-        ;;
+    "Reboot") systemctl reboot ;;
+    "Shutdown") systemctl poweroff ;;
+    *) return ;;
     esac
 }
 
-options="󰗽 Logout\n Lock\n󰯈 Kill window\n Reload\n Reboot\n Shutdown"
-selected_option=$(echo "$options" | fuzzel -d \
-    --minimal-lines \
-    -p " ")
-command=$(echo "$selected_option" | grep -o -E "[a-zA-Z]+")
-
-run_command "$command"
+main "$command"
