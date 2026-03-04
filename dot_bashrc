@@ -22,7 +22,7 @@ eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubble
 eval "$(zoxide init bash)"
 eval "$(atuin init bash)"
 eval "$(fzf --bash)"
-eval "$(batpipe)"
+eval "$(SHELL=/usr/bin/bash batpipe)"
 eval "$(direnv hook bash)"
 
 # ---------------------------Options--------------------------- #
