@@ -198,17 +198,17 @@
   "custom/brightness": {
     "format": " {}%",
     "tooltip-format": "Brightness: {}%",
-    "exec": "ddcutil getvcp 10 | awk '{print $9}' | sed 's/,//'",
+    "exec": "brightnessctl --get",
     "exec-if": "exit 0",
     "on-click": "pkill -SIGRTMIN+9 waybar",
-    "on-scroll-up": "ddcutil setvcp 10 + 25",
-    "on-scroll-down": "ddcutil setvcp 10 - 25",
+    "on-scroll-up": "brightnessctl --inc",
+    "on-scroll-down": "brightnessctl --dec",
     "menu": "on-click-right",
     "menu-file": "{{ .chezmoi.destDir }}/.config/waybar/modules/brightness.xml",
     "menu-actions": {
-      "increase": "{{ .chezmoi.destDir }}/.config/hypr/scripts/brightness.sh --inc",
-      "decrease": "{{ .chezmoi.destDir }}/.config/hypr/scripts/brightness.sh --dec",
-      "custom": "{{ .chezmoi.destDir }}/.config/hypr/scripts/fuzzel/brightness.sh"
+      "increase": "brightnessctl --inc",
+      "decrease": "brightnessctl --dec",
+      "custom": "brightnessctl --dmenu"
     },
     "signal": 9
   },

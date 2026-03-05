@@ -1,0 +1,148 @@
+#!/usr/bin/env sh
+
+# Default socket path
+: "${WOBSOCK:=/run/user/$(id -u)/wob.sock}"
+
+# Error handling: if stderr is a terminal, print to stderr; otherwise try notification
+error() {
+    msg="$1"
+    if [ -t 2 ]; then
+        echo "Error: $msg" >&2
+    else
+        notify-send -h string:x-dunst-stack-tag:brightnessctl -u critical "Brightness" "Error: $msg" 2>/dev/null || echo "Error: $msg" >&2
+    fi
+    exit 1
+}
+
+# Validate that value is a non-negative integer and optionally within 0-100
+# Usage: validate_number "VALUE" "variable_name" [max]
+validate_number() {
+    val="$1"
+    name="$2"
+    max="${3:-}"
+    case "$val" in
+    '' | *[!0-9]*)
+        error "$name must be a non-negative integer, got '$val'"
+        ;;
+    *)
+        if [ -n "$max" ] && [ "$val" -gt "$max" ] 2>/dev/null; then
+            error "$name must be between 0 and $max, got '$val'"
+        fi
+        ;;
+    esac
+}
+
+if ! command -v ddcutil >/dev/null 2>&1; then
+    error "ddcutil not found"
+fi
+
+usage() {
+    cat <<EOF
+Usage: ${0##*/} [OPTION] [ARGUMENT]
+
+Options:
+  --get                Print current brightness percentage
+  --set <VALUE>        Set brightness to VALUE (0-100). VALUE must be a non‑negative integer.
+  --inc [STEP]         Increase brightness by STEP% (default 25). STEP must be a non‑negative integer.
+  --dec [STEP]         Decrease brightness by STEP% (default 25). STEP must be a non‑negative integer.
+  --dmenu              Show fuzzel prompt to set absolute brightness (0‑100)
+  --help, -h           Show this help
+EOF
+}
+
+get_brightness() {
+    ddcutil getvcp 10 | awk '/current/ {gsub(/,/, "", $9); print $9}'
+}
+
+update_brightness() {
+    brightness=$(get_brightness)
+    printf "%s\n" "$brightness" >"$WOBSOCK"
+    if command -v waybar >/dev/null 2>&1; then
+        pkill -SIGRTMIN+9 waybar
+    fi
+}
+
+set_brightness() {
+    ddcutil setvcp 10 "$1" >/dev/null && update_brightness
+}
+
+adjust_brightness() {
+    direction="$1" # "+" or "-"
+    step="${2:-25}"
+
+    validate_number "$step" "STEP"
+
+    ddcutil setvcp 10 "$direction" "$step" >/dev/null && update_brightness
+}
+
+inc_brightness() {
+    adjust_brightness "+" "$1"
+}
+
+dec_brightness() {
+    adjust_brightness "-" "$1"
+}
+
+dmenu_picker() {
+    if ! command -v fuzzel >/dev/null 2>&1; then
+        error "fuzzel not found (required for --dmenu)"
+    fi
+
+    new_brightness=$(fuzzel -dw 12 \
+        --prompt-only " " \
+        --anchor top \
+        --placeholder 'Brightness')
+
+    # User cancelled → exit silently
+    if [ -z "$new_brightness" ]; then
+        return 0
+    fi
+
+    validate_number "$new_brightness" "Brightness" 100
+
+    set_brightness "$new_brightness"
+}
+
+main() {
+    case "${1:-}" in
+    --get)
+        get_brightness
+        ;;
+    --set)
+        if [ $# -ne 2 ]; then
+            error "--set requires exactly one argument (VALUE)"
+        fi
+        validate_number "$2" "VALUE" 100
+        set_brightness "$2"
+        ;;
+    --inc)
+        if [ $# -gt 2 ]; then
+            error "--inc takes at most one argument (STEP)"
+        fi
+        inc_brightness "$2"
+        ;;
+    --dec)
+        if [ $# -gt 2 ]; then
+            error "--dec takes at most one argument (STEP)"
+        fi
+        dec_brightness "$2"
+        ;;
+    --dmenu)
+        dmenu_picker
+        ;;
+    --help | -h)
+        usage
+        exit 0
+        ;;
+    "")
+        usage
+        exit 1
+        ;;
+    *)
+        error "Unknown option '$1'"
+        ;;
+    esac
+}
+
+main "$@"
+exit $?

@@ -3,17 +3,17 @@
   <object class="GtkMenu" id="menu">
     <child>
       <object class="GtkMenuItem" id="increase">
-        <property name="label">Increase Brightness</property>
+        <property name="label">Increase</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="decrease">
-        <property name="label">Decrease Brightness</property>
+        <property name="label">Decrease</property>
       </object>
     </child>
     <child>
       <object class="GtkMenuItem" id="custom">
-        <property name="label">Custom Brightness</property>
+        <property name="label">Custom</property>
       </object>
     </child>
   </object>
