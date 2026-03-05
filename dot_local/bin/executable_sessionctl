@@ -1,0 +1,125 @@
+#!/usr/bin/env sh
+
+usage() {
+    cat <<EOF
+Usage: ${0##*/} [OPTION]
+
+Options:
+  --dmenu              Show interactive menu (default if no options)
+  --logout             Log out from the session
+  --lock               Lock the screen
+  --kill               Kill the active window (Hyprland)
+  --reload             Reload Hyprland config and waybar
+  --reboot             Reboot the system
+  --shutdown           Power off the system
+  --help, -h           Show this help
+EOF
+}
+
+# Error handling: if stderr is a terminal, print to stderr; otherwise try notification
+error() {
+    msg="$1"
+    if [ -t 2 ]; then
+        echo "Error: $msg" >&2
+    else
+        notify-send -h string:x-dunst-stack-tag:session -u critical "Brightness" "Error: $msg" 2>/dev/null || echo "Error: $msg" >&2
+    fi
+    exit 1
+}
+
+do_logout() {
+    if uwsm check is-active; then
+        uwsm stop
+    elif [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+        if command -v hyprshutdown >/dev/null 2>&1; then
+            hyprshutdown
+        else
+            hyprctl dispatch exit
+        fi
+    fi
+}
+
+do_lock() {
+    loginctl lock-session
+}
+
+do_kill() {
+    if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+        hyprctl kill >/dev/null &
+    fi
+}
+
+do_reload() {
+    if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+        hyprctl reload
+    fi
+    if command -v waybar >/dev/null 2>&1; then
+        systemctl --user reload waybar
+    fi
+    if command -v mako >/dev/null 2>&1; then
+        systemctl --user reload mako
+    fi
+    notify-send -u low -h string:x-dunst-stack-tag:session "Session" "Config reloaded"
+}
+
+do_suspend() {
+    systemctl suspend
+}
+
+do_hibernate() {
+    systemctl hibernate
+}
+
+do_reboot() {
+    systemctl reboot
+}
+
+do_shutdown() {
+    systemctl poweroff
+}
+
+show_menu() {
+    options="󰗽 Logout\n Lock\n󰯈 Kill mode\n Reload\n Reboot\n Shutdown"
+
+    selected_option=$(
+        printf "%b" "$options" | fuzzel -d \
+            --minimal-lines \
+            -p " " \
+            --placeholder "Session "
+    )
+
+    command=$(printf "%s\n" "$selected_option" | grep -o -E "[a-zA-Z]+")
+
+    case "$command" in
+    "Logout") do_logout ;;
+    "Lock") do_lock ;;
+    "Kill") do_kill ;;
+    "Reload") do_reload ;;
+    "Reboot") do_reboot ;;
+    "Shutdown") do_shutdown ;;
+    *) exit 0 ;;
+    esac
+}
+
+main() {
+    case "${1:-}" in
+    --dmenu) show_menu ;;
+    --logout) do_logout ;;
+    --lock) do_lock ;;
+    --kill) do_kill ;;
+    --reload) do_reload ;;
+    --reboot) do_reboot ;;
+    --shutdown) do_shutdown ;;
+    --help | -h)
+        usage
+        exit 0
+        ;;
+    "")
+        usage
+        exit 1
+        ;;
+    *) error "Unknown option '$1'" ;;
+    esac
+}
+
+main "$@"

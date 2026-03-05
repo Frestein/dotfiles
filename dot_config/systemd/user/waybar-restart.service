@@ -4,4 +4,4 @@ Description=Restart waybar
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/systemctl --user restart waybar
-ExecStart=/usr/bin/notify-send "Waybar: Config changed. Restarting..."
+ExecStart=/usr/bin/notify-send "Waybar" "Config changed. Restarting..."

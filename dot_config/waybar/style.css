@@ -124,7 +124,7 @@ tooltip {
   color: @bright7;
 }
 
-#custom-power,
+#custom-session,
 #custom-dismiss_notifications,
 #custom-autohide_lock {
   padding: 0 5px 0 0;

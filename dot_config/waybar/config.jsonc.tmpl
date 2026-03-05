@@ -8,7 +8,7 @@
   "start_hidden": false,
   "reload_style_on_change": true,
   "modules-left": [
-    "custom/power",
+    "custom/session",
     "custom/dismiss_notifications",
     "custom/autohide_lock",
     "hyprland/submap",
@@ -176,23 +176,22 @@
       "nm-connection-editor": "nm-connection-editor"
     }
   },
-  "custom/power": {
+  "custom/session": {
     "format": "⏻ ",
     "exec": "uptime --pretty | sed 's/up //'",
     "interval": 60,
     "exec-if": "exit 0",
     "tooltip-format": "Uptime: {}",
     "menu": "on-click-right",
-    "menu-file": "{{ .chezmoi.destDir }}/.config/waybar/modules/power.xml",
+    "menu-file": "{{ .chezmoi.destDir }}/.config/waybar/modules/session.xml",
     "menu-actions": {
-      "logout": "uwsm stop",
-      "lock": "hyprlock",
-      "kill": "hyprctl kill",
-      "reload": "hyprctl reload && pkill -SIGUSR2 waybar",
-      "reboot": "systemctl reboot",
-      //"suspend": "systemctl suspend",
-      //"hibernate": "systemctl hibernate",
-      "shutdown": "systemctl poweroff"
+      "logout": "sessionctl --logout",
+      "lock": "sessionctl --lock",
+      "kill": "sessionctl --kill",
+      "reload": "sessionctl --reload",
+      "reboot": "sessionctl --reboot",
+      "shutdown": "sessionctl --shutdown"
+
     }
   },
   "custom/brightness": {
