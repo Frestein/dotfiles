@@ -1,0 +1,127 @@
+#!/usr/bin/env sh
+
+send_notify() {
+    notify-send -u "$1" -h string:x-dunst-stack-tag:jamesdsp "JamesDSP" "$2"
+}
+
+if ! command -v jamesdsp >/dev/null 2>&1; then
+    send_notify critical "jamesdsp not found"
+    exit 1
+fi
+
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/jamesdsp"
+STATE_FILE="${STATE_DIR}/preset"
+
+dmenu_base_cmd="${DMENU:-fuzzel -d --minimal-lines --only-match}"
+prog="${dmenu_base_cmd%% *}"
+
+if [ "$prog" = "fuzzel" ] || [ "$prog" = "/usr/bin/fuzzel" ]; then
+    case "$dmenu_base_cmd" in
+    *--only-match*) ;;
+    *) dmenu_base_cmd="$dmenu_base_cmd --only-match" ;;
+    esac
+fi
+
+DMENU_CMD="$dmenu_base_cmd"
+
+usage() {
+    cat <<EOF
+Usage: ${0##*/} [OPTION]...
+
+Options:
+  --toggle              Toggle bypass state
+  --state               Show current preset and bypass state
+  --choose-preset       Show and choose preset
+  --help                Show this help
+
+Note: --toggle cannot be used together with --choose-preset.
+
+Multiple options can be combined, except the above restriction.
+EOF
+}
+
+toggle_bypass() {
+    if [ "$(jamesdsp --get master_enable)" = "true" ]; then
+        jamesdsp --set master_enable=false
+        send_notify low "Bypass enabled"
+    else
+        jamesdsp --set master_enable=true
+        send_notify low "Bypass disabled"
+    fi
+}
+
+show_current_state() {
+    preset=""
+    if [ -f "$STATE_FILE" ]; then
+        preset=$(cat "$STATE_FILE")
+    fi
+    [ -z "$preset" ] && preset="(none)"
+
+    bypass_state=$(jamesdsp --get master_enable)
+    if [ "$bypass_state" = "false" ]; then
+        bypass_state="enabled"
+    else
+        bypass_state="disabled"
+    fi
+
+    send_notify low "Bypass: $bypass_state\nPreset: $preset"
+}
+
+choose_and_load_preset() {
+    mkdir -p "$STATE_DIR"
+
+    presets=$(jamesdsp --list-presets)
+
+    chosen=$(printf '%s\n' "$presets" | eval "$DMENU_CMD") || return 1
+
+    if ! printf '%s\n' "$presets" | grep -Fx "$chosen" >/dev/null 2>&1; then
+        send_notify critical "Invalid preset selected: $chosen"
+        return 1
+    fi
+
+    jamesdsp --load-preset "$chosen"
+    echo "$chosen" >"$STATE_FILE"
+    send_notify low "Loaded preset: $chosen"
+}
+
+main() {
+    if [ $# -eq 0 ]; then
+        usage
+        exit 0
+    fi
+
+    show_state_flag=false
+    choose_preset_flag=false
+    toggle_flag=false
+
+    for arg in "$@"; do
+        case "$arg" in
+        --toggle) toggle_flag=true ;;
+        --state) show_state_flag=true ;;
+        --choose-preset) choose_preset_flag=true ;;
+        --help | -h)
+            usage
+            exit 0
+            ;;
+        *)
+            send_notify critical "Invalid option: $arg"
+            echo "Invalid option: $arg" >&2
+            usage >&2
+            exit 1
+            ;;
+        esac
+    done
+
+    if $toggle_flag && $choose_preset_flag; then
+        send_notify critical "Error: --toggle cannot be used with --choose-preset"
+        echo "Error: --toggle cannot be used with --choose-preset" >&2
+        exit 1
+    fi
+
+    $toggle_flag && toggle_bypass
+    $show_state_flag && show_current_state
+    $choose_preset_flag && choose_and_load_preset
+}
+
+main "$@"
+exit $?
