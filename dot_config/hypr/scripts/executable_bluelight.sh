@@ -1,17 +1,20 @@
-#!/usr/bin/env dash
+#!/usr/bin/env sh
 
-notify_cmd='notify-send -u low -h string:x-dunst-stack-tag:bluelight'
-
-notify_user() {
-    eval "$notify_cmd 'Bluelight: $1'"
+send_notify() {
+    notify-send -u "$1" -h string:x-dunst-stack-tag:bluelight "Bluelight" "$2"
 }
+
+if ! command -v hyprsunset >/dev/null 2>&1; then
+    send_notify critical "hyprsunset not found"
+    exit 1
+fi
 
 pid=$(pgrep -x hyprsunset)
 
-if [ "$pid" = "" ]; then
+if [ -z "$pid" ]; then
     hyprsunset &
-    notify_user "Started"
+    send_notify low "Started"
 else
     kill "$pid"
-    notify_user "Stopped"
+    send_notify low "Stopped"
 fi
