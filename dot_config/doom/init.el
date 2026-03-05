@@ -176,6 +176,7 @@
        ;; graphviz          ; diagrams for confusing yourself even more
        ;; purescript        ; javascript, but functional
        (python +lsp +pyright +tree-sitter)  ; beautiful is better than ugly
+       (pkgbuild +lsp)      ; Arch Linux's PKGBUILD
        (qt +lsp +tree-sitter)  ; the 'cutest' gui framework ever
        ;; racket            ; a DSL for DSLs
        ;; raku              ; the artist formerly known as perl6
