@@ -1,0 +1,13 @@
+[Unit]
+Description=Load GPG passphrase into gpg-agent
+After=graphical-session.target gnome-keyring-daemon.service
+Requires=gnome-keyring-daemon.service
+PartOf=gpg-agent.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/sh -c 'KEYGRIP=$(gpg --list-secret-keys --with-keygrip | awk "/^ssb/ {f=1} f && /Keygrip/ {print \$3; exit}"); if [ -n "$KEYGRIP" ]; then secret-tool lookup xdg:schema org.gnupg.Passphrase keygrip "$KEYGRIP" | /usr/lib/gnupg/gpg-preset-passphrase --preset "$KEYGRIP"; fi'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical-session.target
