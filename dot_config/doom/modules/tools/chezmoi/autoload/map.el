@@ -15,10 +15,10 @@
         (:prefix ("C" . "chezmoi")
          :desc "Find file in dotfiles" "f" #'chezmoi-find
          :desc "Browse dotfiles" "F" #'+chezmoi--browse-dotfiles
-         :desc "Sync file" "s" #'chezmoi-write
-         :desc "Sync files" "S" #'chezmoi-sync-files
-         :desc "Show status" "d" #'+chezmoi-status
-         :desc "Show diff" "D" #'chezmoi-diff
+         :desc "Sync file" "w" #'chezmoi-write
+         :desc "Sync files" "W" #'chezmoi-sync-files
+         :desc "Show status" "s" #'+chezmoi-status
+         :desc "Show diff" "d" #'chezmoi-diff
          :desc "Ediff file" "e" #'chezmoi-ediff
          :desc "Ediff merge file" "E" #'chezmoi-ediff-merge
          :desc "Merge file" "m" #'chezmoi-merge
