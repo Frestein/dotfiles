@@ -1,41 +1,45 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 set -e
-set -o pipefail
 
-state=$(hyprctl -j clients)
-active_window=$(hyprctl -j activewindow)
+STATE=$(hyprctl -j clients)
+WINDOW_CURRENT=$(hyprctl -j activewindow)
 
-current_addr=$(jq -r '.address' <<<"$active_window")
+ADDRESS_CURRENT=$(echo "$WINDOW_CURRENT" | jq -r '.address')
 
-window=$(jq -r '.[] | select(.monitor != -1 ) | "\(.address)\t\(.workspace.name)\t\(.title)@icon@\(.class)"' <<<"$state" |
-    column -t -s $'\t' |
-    sed -e "s|$current_addr|focused ->|" -e 's|@icon@|\x0icon\x1f|' |
-    sort -r |
+SELECT_WINDOW=$(echo "$STATE" | jq -r --arg current "$ADDRESS_CURRENT" '
+    [ .[] | select(.monitor != -1) |
+        ( .class | split(".") | last | gsub("_"; "-") | if . == "footclient" then "foot" else . end ) as $icon |
+        ( if .address == $current then .workspace.name + " [focused]" else .workspace.name end ) as $display_ws |
+        ( if .workspace.name | startswith("special") then 1 else 0 end ) as $group |
+        {
+            sort_key: "\($group)_\(.workspace.name)",
+            address: .address,
+            workspace: .workspace.name,
+            display_ws: $display_ws,
+            title: .title,
+            icon: $icon
+        }
+    ] | sort_by(.sort_key) | .[] |
+    "\(.address)\t\(.workspace)\t\(.display_ws)\t\(.title)@icon@\(.icon)"
+' | sed -e 's|@icon@|\x0icon\x1f|' |
     fuzzel -d \
         --minimal-lines \
         -p " " \
         --placeholder "Choose window" \
-        -w 85)
+        -w 85 \
+        --match-nth=2 \
+        --with-nth="{3} {4}")
 
-addr=$(awk '{print $1}' <<<"$window")
-ws=$(awk '{print $2}' <<<"$window")
+ADDRESS_FOCUSED=$(echo "$SELECT_WINDOW" | awk '{print $1}')
+WORKSPACE_FOCUSED=$(echo "$SELECT_WINDOW" | awk '{print $2}')
 
-if [[ "$addr" =~ focused* ]]; then
-    echo 'already focused, exiting'
-    exit 0
-fi
+IS_FULLSCREEN=$(echo "$STATE" | jq -r ".[] | select(.fullscreen > 0)  | select(.workspace.name == \"$WORKSPACE_FOCUSED\") | .address")
 
-fullscreen_on_same_ws=$(jq -r ".[] | select(.fullscreen > 0)  | select(.workspace.name == \"$ws\") | .address" <<<"$state")
-
-if [[ "$window" != "" ]]; then
-    if [[ "$fullscreen_on_same_ws" == "" ]]; then
-        hyprctl dispatch focuswindow address:"$addr"
+if [ -n "$SELECT_WINDOW" ]; then
+    if [ -z "$IS_FULLSCREEN" ]; then
+        hyprctl dispatch focuswindow address:"$ADDRESS_FOCUSED"
     else
-        # If we want to focus app_A and app_B is fullscreen on the same workspace,
-        # app_A will get focus, but app_B will remain on top.
-        # This monstrosity is to make sure app_A will end up on top instead.
-        # XXX: doesn't handle fullscreen 0, but I don't care.
-        hyprctl --batch "dispatch focuswindow address:${fullscreen_on_same_ws}; dispatch fullscreen 1; dispatch focuswindow address:${addr}; dispatch fullscreen 1"
+        hyprctl --batch "dispatch focuswindow address:${IS_FULLSCREEN}; dispatch fullscreen 1; dispatch focuswindow address:${ADDRESS_FOCUSED}; dispatch fullscreen 1"
     fi
 fi
