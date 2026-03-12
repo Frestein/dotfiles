@@ -8,18 +8,18 @@ fi
 if ! command -v magick >/dev/null 2>&1; then
     hyprpicker -a -n
 else
-    color=$(hyprpicker -a)
+    COLOR=$(hyprpicker -a)
 
-    if [ "$color" ]; then
-        image=$(mktemp -t colorpicker-XXXXXX.png)
+    if [ "$COLOR" ]; then
+        IMAGE=$(mktemp -t colorpicker-XXXXXX.png)
 
         # Generate preview
-        magick -size 48x48 xc:"$color" "$image"
+        magick -size 48x48 xc:"$COLOR" "$IMAGE"
 
         # Send notification with color
-        notify-send -u low -h string:x-dunst-stack-tag:colorpicker -i "$image" "$color, copied to clipboard."
+        notify-send -u low -h string:x-dunst-stack-tag:colorpicker -i "$IMAGE" "$COLOR, copied to clipboard."
 
         # Remove temporary preview
-        (sleep 1 && rm -f "$image") &
+        (sleep 1 && rm -f "$IMAGE") &
     fi
 fi

@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-active=$(hyprctl activewindow -j | jq -r '.workspace.name | split(":") | if length > 1 then .[1] else "" end')
+WORKSPACE_CURRENT=$(hyprctl activewindow -j | jq -r '.workspace.name | split(":") | if length > 1 then .[1] else "" end')
 
-if [[ ${#active} -gt 0 ]]; then
-    hyprctl dispatch togglespecialworkspace "$active"
+if [ ${#WORKSPACE_CURRENT} -gt 0 ]; then
+    hyprctl dispatch togglespecialworkspace "$WORKSPACE_CURRENT"
     exit 0
 fi
 

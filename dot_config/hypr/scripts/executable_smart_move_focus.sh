@@ -1,26 +1,28 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-direction="$1"
+DIRECTION="$1"
 
-if [[ ! "$direction" =~ ^[lrud]$ ]]; then
+case "$DIRECTION" in l | r | u | d) ;;
+*)
     echo "Usage: $0 {l|r|u|d}" >&2
     exit 1
-fi
+    ;;
+esac
 
-current_layout=$(hyprctl activeworkspace | grep 'tiledLayout:' | awk '{print $2}')
+LAYOUT_CURRENT=$(hyprctl activeworkspace | grep 'tiledLayout:' | awk '{print $2}')
 
-if [ "$current_layout" = "monocle" ]; then
-    case "$direction" in
+if [ "$LAYOUT_CURRENT" = "monocle" ]; then
+    case "$DIRECTION" in
     r | d) hyprctl dispatch layoutmsg cyclenext ;;
     l | u) hyprctl dispatch layoutmsg cycleprev ;;
     esac
 else
     if hyprctl activewindow | grep -q "fullscreen: 2"; then
-        case "$direction" in
+        case "$DIRECTION" in
         r | d) hyprctl dispatch cyclenext ;;
         l | u) hyprctl dispatch cyclenext prev ;;
         esac
     else
-        hyprctl dispatch movefocus "$direction"
+        hyprctl dispatch movefocus "$DIRECTION"
     fi
 fi

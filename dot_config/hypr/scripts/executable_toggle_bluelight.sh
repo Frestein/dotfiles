@@ -9,12 +9,12 @@ if ! command -v hyprsunset >/dev/null 2>&1; then
     exit 1
 fi
 
-pid=$(pgrep -x hyprsunset)
+PID=$(pgrep -x hyprsunset)
 
-if [ -z "$pid" ]; then
+if [ -z "$PID" ]; then
     hyprsunset &
     send_notify low "Started"
 else
-    kill "$pid"
+    kill "$PID"
     send_notify low "Stopped"
 fi
