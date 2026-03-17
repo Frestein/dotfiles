@@ -1725,7 +1725,6 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (setopt browse-url-text-browser (executable-find "cha"))
 
 (use-package! eww
-  :hook (eww-after-render . eww-auto-rdrview)
   :config
   (setopt eww-readable-urls '("lwn\\.net")))
 
@@ -1785,6 +1784,8 @@ It should be the title of the web page as returned by `rdrview'."
         (when (and (string-match-p eww-rdrview-urls url)
                    (not eww-rdrview-mode))
           (eww-rdrview-toggle-and-reload))))
+
+    (add-hook 'eww-after-render-hook #'eww-auto-rdrview)
 
     (defun fr/eww-readable (rdrview)
       "Toggle display of only the main \"readable\" parts of the current web page."

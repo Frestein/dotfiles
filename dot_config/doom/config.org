@@ -2197,14 +2197,13 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
 ** EWW
 
-*** Config
-
 Requirements:
 - [[https://github.com/eafer/rdrview][rdrview: Firefox Reader View as a command line tool]]
 
+*** Config
+
 #+begin_src elisp
 (use-package! eww
-  :hook (eww-after-render . eww-auto-rdrview)
   :config
   (setopt eww-readable-urls '("lwn\\.net")))
 #+end_src
@@ -2278,6 +2277,8 @@ It should be the title of the web page as returned by `rdrview'."
         (when (and (string-match-p eww-rdrview-urls url)
                    (not eww-rdrview-mode))
           (eww-rdrview-toggle-and-reload))))
+
+    (add-hook 'eww-after-render-hook #'eww-auto-rdrview)
 
     (defun fr/eww-readable (rdrview)
       "Toggle display of only the main \"readable\" parts of the current web page."
