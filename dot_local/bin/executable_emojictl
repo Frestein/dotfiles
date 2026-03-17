@@ -3,21 +3,19 @@
 usage() {
     cat <<EOF
 Usage: ${0##*/} PROMPT [FILE]...
-
 A wrapper around rofimoji to set a custom prompt and use wl-copy for clipboard.
 
-Arguments:
-  PROMPT      The prompt string to display in rofimoji.
-  FILE        One or more emoji data files (e.g., emoji, nerd_font)
-              as accepted by rofimoji's --files option.  If multiple files are
-              given, they are passed as separate arguments after --files.
-              If no FILE is given, rofimoji uses its built-in default data.
-
-  --help      Show this help message.
+Options:
+  PROMPT          The prompt string to display in rofimoji.
+  FILE            One or more emoji data files (e.g., emoji, nerd_font)
+                  as accepted by rofimoji's --files option.  If multiple files are
+                  given, they are passed as separate arguments after --files.
+                  If no FILE is given, rofimoji uses its built-in default data.
+  -h, --help      Show this help message.
 EOF
 }
 
-if [ "$1" = "--help" ] || [ $# -eq 0 ]; then
+if [ "$1" = "--help" ] || [ "$1" = "-h" ] || [ $# -eq 0 ]; then
     usage
     exit 0
 fi

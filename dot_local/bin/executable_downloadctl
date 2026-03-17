@@ -1,0 +1,197 @@
+#!/usr/bin/env sh
+#
+# Utility to download files from various sites & types
+#
+# Requirements:
+# - fuzzel: for dmenu
+# - wl-clipboard: for clipboard access (wl-paste)
+# - yt-dlp: for downloading videos and audio from various sites
+# Optional:
+# - aria2c: for fast downloading (external downloader for yt-dlp and direct links)
+# - qbittorrent: for torrents (magnet or .torrent)
+# - curl: fallback for direct links if aria2c is missing
+
+set -e -u
+
+usage() {
+    cat <<EOF
+Usage: ${0##*/} [OPTION] [URL] [DIR]
+Download files from various sites.
+
+Options:
+    URL             Link to download (if omitted, uses clipboard)
+    DIR             Directory to save to (if omitted, choose via fuzzel)
+    -h, --help      Show this help message
+EOF
+}
+
+# Check for help flag first
+case "${1:-}" in
+-h | --help)
+    usage
+    exit 0
+    ;;
+esac
+
+# Helper to show notifications and echo
+send_notify() {
+    message="$1"
+    echo "$message"
+    notify-send -u low -h string:x-dunst-stack-tag:downloader "$message"
+}
+
+# Check for required commands
+for cmd in wl-paste yt-dlp fuzzel; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        send_notify "Error: $cmd is not installed."
+        exit 1
+    fi
+done
+
+# Optional tools
+HAVE_ARIA2=0
+if command -v aria2c >/dev/null 2>&1; then
+    HAVE_ARIA2=1
+fi
+
+HAVE_QBT=0
+if command -v qbittorrent >/dev/null 2>&1; then
+    HAVE_QBT=1
+fi
+
+# Get link from argument or clipboard
+if [ -z "${1:-}" ]; then
+    link=$(wl-paste)
+else
+    link="$1"
+fi
+
+if [ -z "$link" ]; then
+    send_notify "Error: No link provided. Please provide a link as an argument or copy it to the clipboard."
+    exit 1
+fi
+
+# Function to determine if link is a torrent (magnet or .torrent)
+is_torrent() {
+    case "$1" in
+    magnet:*) return 0 ;;
+    *.torrent) return 0 ;;
+    *)
+        if echo "$1" | grep -qE '^https?://.*\.torrent($|\?)'; then
+            return 0
+        fi
+        if [ -f "$1" ] && echo "$1" | grep -q '\.torrent$'; then
+            return 0
+        fi
+        return 1
+        ;;
+    esac
+}
+
+# If it's a torrent, handle with qbittorrent or aria2c
+if is_torrent "$link"; then
+    if [ "$HAVE_QBT" -eq 1 ]; then
+        send_notify "Launching qbittorrent with torrent..."
+        qbittorrent "$link" &
+        exit 0
+    elif [ "$HAVE_ARIA2" -eq 1 ]; then
+        send_notify "qbittorrent not found, using aria2c for torrent download."
+        cd "$HOME" || exit 1
+        aria2c "$link" -x 16 -s 16 -k 1M --seed-time 0
+        exit 0
+    else
+        send_notify "Error: Neither qbittorrent nor aria2c is available for torrent download."
+        exit 1
+    fi
+fi
+
+# Not a torrent: proceed with original logic
+# Validate if the link is a valid URL or a file path
+if ! echo "$link" | grep -qE '^(http|https)://'; then
+    if [ ! -f "$link" ]; then
+        send_notify "Error: The provided input is not a valid URL, magnet link, or file path."
+        exit 1
+    fi
+fi
+
+echo "Link: $link"
+
+# Get directory
+if [ -z "${2:-}" ]; then
+    dirlist=$(find -L "$HOME" -maxdepth 2 \( -name '.*' -prune \) -o -type d -print 2>/dev/null)
+    dir=$(echo "$dirlist" | fuzzel -d -p 'Download to: ')
+    if [ -z "$dir" ]; then
+        exit 1
+    fi
+    if [ ! -d "$dir" ]; then
+        create_directory_option=$(printf "No\nYes" | fuzzel -d -p "$dir does not exist. Create it? " -l 2)
+        if [ "$create_directory_option" = "Yes" ]; then
+            mkdir -p "$dir" || {
+                send_notify "Error: Failed to create directory '$dir'."
+                exit 1
+            }
+        else
+            exit 1
+        fi
+    fi
+else
+    dir="$2"
+fi
+
+[ -z "$dir" ] && exit 1
+echo "Directory: $dir"
+cd "$dir" || {
+    send_notify "Error: Failed to change directory to '$dir'."
+    exit 1
+}
+
+# Log the download attempt
+echo "$link\t$dir\t#$(date)" >>"$HOME/.downloader_history"
+
+# Determine if yt-dlp can handle the link
+if yt-dlp -e --abort-on-error "$link" 2>/dev/null; then
+    echo "Downloader: yt-dlp"
+    type=$(printf "Video\nAudio" | fuzzel -d -p 'Download Type: ' -l 2)
+    if [ "$type" = "Video" ]; then
+        send_notify "Starting video download..."
+        if [ "$HAVE_ARIA2" -eq 1 ]; then
+            file=$(yt-dlp -ic --add-metadata "$link" --abort-on-error \
+                --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" \
+                -o "%(title)s.%(ext)s" --get-filename --no-simulate)
+        else
+            file=$(yt-dlp -ic --add-metadata "$link" --abort-on-error \
+                -o "%(title)s.%(ext)s" --get-filename --no-simulate)
+        fi
+    elif [ "$type" = "Audio" ]; then
+        send_notify "Starting audio download..."
+        if [ "$HAVE_ARIA2" -eq 1 ]; then
+            file=$(yt-dlp -xic --add-metadata "$link" --abort-on-error \
+                --external-downloader aria2c --external-downloader-args "-x 16 -s 16 -k 1M" \
+                -o "%(title)s.%(ext)s" --get-filename --no-simulate)
+        else
+            file=$(yt-dlp -xic --add-metadata "$link" --abort-on-error \
+                -o "%(title)s.%(ext)s" --get-filename --no-simulate)
+        fi
+    else
+        exit 1
+    fi
+else
+    # Not a yt-dlp link: download with aria2c or curl
+    if [ "$HAVE_ARIA2" -eq 1 ]; then
+        send_notify "Starting download with aria2c..."
+        aria2c "$link" -x 16 -s 16 -k 1M --seed-time 0
+        file=""
+    else
+        send_notify "Starting download with curl..."
+        # Use curl with -L to follow redirects, -O to save with remote name, -J to use Content-Disposition
+        curl -L -O -J --remote-time "$link"
+        file=""
+    fi
+fi
+
+# Notify if download was successful (only for yt-dlp case, aria2/curl already print output)
+if [ -n "${file:-}" ] && [ -e "$dir/$file" ] && [ -s "$dir/$file" ]; then
+    notify-send "Download completed: '$file'."
+fi
+
+exit 0
