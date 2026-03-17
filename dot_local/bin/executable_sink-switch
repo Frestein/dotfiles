@@ -1,0 +1,94 @@
+#!/usr/bin/env sh
+
+# Combined sink switcher using pactl (works with PulseAudio and PipeWire-pulse)
+# Cycles through sinks or selects via fuzzel
+
+usage() {
+    cat <<EOF
+Usage: ${0##*/} [OPTION]
+Switch default audio sink.
+
+Options:
+  --dmenu, -d    Interactive selection using fuzzel
+  --help, -h      Show this help message
+
+Without options, cycles to next available sink.
+EOF
+}
+
+# Check for help flag first
+case "$1" in
+--help | -h)
+    usage
+    exit 0
+    ;;
+esac
+
+# Check dependencies
+for cmd in pactl notify-send; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Error: $cmd not found" >&2
+        exit 1
+    fi
+done
+
+# Get list of sink names (more stable than indices)
+get_all_sink_names() {
+    pactl list short sinks | cut -f2
+}
+
+# Get current default sink name
+get_default_sink_name() {
+    pactl info | grep 'Default Sink' | cut -d':' -f2 | sed 's/^[[:space:]]*//'
+}
+
+notify() {
+    notify-send --expire-time 1350 "Switched default output sink to: $1"
+}
+
+if [ "$1" = "--dmenu" ] || [ "$1" = "-d" ]; then
+    # Interactive selection with fuzzel
+    if ! command -v fuzzel >/dev/null 2>&1; then
+        echo "Error: fuzzel not found, cannot select interactively" >&2
+        exit 1
+    fi
+    # Get list of sink names
+    sink_names=$(get_all_sink_names)
+    # fuzzel displays the names and returns the chosen line
+    chosen=$(echo "$sink_names" | fuzzel -d -p 'Switch Output ' --placeholder 'Choose...' -w 50 --minimal-lines)
+    if [ -n "$chosen" ]; then
+        pactl set-default-sink "$chosen"
+        notify "$chosen"
+    else
+        exit 1
+    fi
+else
+    # Check for unexpected arguments
+    if [ $# -gt 0 ]; then
+        echo "Error: Unknown option: $1" >&2
+        usage >&2
+        exit 1
+    fi
+
+    # Circular cycle through sinks using names
+    default_sink=$(get_default_sink_name)
+    sinks=$(get_all_sink_names)
+    first=""
+    next_sink=""
+    found=0
+
+    for sink in $sinks; do
+        [ -z "$first" ] && first=$sink
+        if [ $found -eq 1 ]; then
+            next_sink=$sink
+            break
+        fi
+        [ "$sink" = "$default_sink" ] && found=1
+    done
+
+    # Wrap around if no next sink found
+    [ -z "$next_sink" ] && next_sink=$first
+
+    pactl set-default-sink "$next_sink"
+    notify "$next_sink"
+fi
