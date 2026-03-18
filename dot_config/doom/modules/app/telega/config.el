@@ -589,6 +589,40 @@ argument - MSG to insert additional information after header."
       (when bot
         (insert bot))))
 
+  (defun fr/telega-format--apply (entity-type)
+    "Apply ENTITY-TYPE to region or word at point."
+    (let ((bounds (if (use-region-p)
+                      (cons (region-beginning) (region-end))
+                    (bounds-of-thing-at-point 'symbol))))
+      (unless bounds
+        (user-error "No active region and no word at point"))
+      (telega-chatbuf-input-formatting-set (car bounds) (cdr bounds) entity-type)))
+
+  (defmacro fr/telega-format-define-command (name type &optional url-prompt)
+    "Define interactive command NAME that applies TYPE formatting.
+If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for URL."
+    `(defun ,(intern (concat "fr/telega-format-" name)) ()
+       ,(format "Apply %s formatting to region or word." name)
+       (interactive)
+       (let ((entity-type ,(if url-prompt
+                               `(list :@type ,type :url (read-string ,url-prompt))
+                             type)))
+         (fr/telega-format--apply entity-type))))
+
+  (fr/telega-format-define-command "bold" '(:@type "textEntityTypeBold"))
+  (fr/telega-format-define-command "italic" '(:@type "textEntityTypeItalic"))
+  (fr/telega-format-define-command "underline" '(:@type "textEntityTypeUnderline"))
+  (fr/telega-format-define-command "strikethrough" '(:@type "textEntityTypeStrikethrough"))
+  (fr/telega-format-define-command "spoiler" '(:@type "textEntityTypeSpoiler"))
+  (fr/telega-format-define-command "monospace" '(:@type "textEntityTypePre"))
+  (fr/telega-format-define-command "quote" '(:@type "textEntityTypeBlockQuote"))
+  (fr/telega-format-define-command "link" "textEntityTypeTextUrl" "URL: ")
+
+  (defun fr/telega-format-clear ()
+    "Clear formatting from region or word."
+    (interactive)
+    (fr/telega-format--apply nil))
+
   (map! (:map telega-root-mode-map
          :n "A" #'telega-chat-toggle-archive)
         (:map telega-msg-button-map
@@ -617,7 +651,16 @@ argument - MSG to insert additional information after header."
                    "a" #'telega-auto-translate-mode)
           (:prefix ("i" . "input")
                    "b" #'fr/telega-chatbuf-inline-bot-choose
-                   "f" #'telega-chatbuf-input-formatting-set)
+                   (:prefix ("f" . "format")
+                    :desc "Bold"          "b" #'fr/telega-format-bold
+                    :desc "Italic"        "i" #'fr/telega-format-italic
+                    :desc "Underline"     "u" #'fr/telega-format-underline
+                    :desc "Strikethrough" "s" #'fr/telega-format-strikethrough
+                    :desc "Spoiler"       "S" #'fr/telega-format-spoiler
+                    :desc "Monospace"     "m" #'fr/telega-format-monospace
+                    :desc "Quote"         "q" #'fr/telega-format-quote
+                    :desc "Link"          "l" #'fr/telega-format-link
+                    :desc "Clear"         "c" #'fr/telega-format-clear))
           (:prefix ("d" . "describe")
                    "w" #'telega-describe-connected-websites
                    "s" #'telega-describe-active-sessions
@@ -639,7 +682,6 @@ argument - MSG to insert additional information after header."
                    "c" #'telega-stickerset-choose
                    "t" #'telega-stickerset-trends
                    "s" #'telega-stickerset-search)))))
-
 
 (when (modulep! +mnz)
   (use-package! telega-mnz
