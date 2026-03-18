@@ -52,26 +52,133 @@
 
 (when (modulep! :ui ligatures)
   (after! ligature
-    ;; Enable all Maple Font ligatures
-    ;; https://github.com/subframe7536/maple-font/blob/variable/source/features/README.md#ligatures
+    ;; Arrow operators
+    (defvar +ligature-arrows
+      '("<-" "->" "<--" "-->" "--->" "<---" "->>" "<<-" "<->" "<=>" "=>" "==>" "<=="
+        "<==>" "<-->" "<---->" "<===>" "<====>" ">->" "<-<" "|->" "<-|" "~>" "<~"
+        "~~>" "<~~" "<~>" "-~" "~-" ">=>" "<=<" ">>-" "-<<" ">-" ">--" "--<" "->-" ">-"
+        ">->" "<-<" "|->" "<-|" "~>" "<~" "~~>" "<~~" "<~>" "-~" "~-" ">=>" "<=<"))
+
+    ;; Extra/long arrows
+    (defvar +ligature-arrows-extra
+      '("=======" "-------" "~~~~~~~" "<==>" "<===>" "<====>" "<<==" "==>>" "<<==>>"
+        "|->" "<-|" ">>->" "<<-<<" ">>=>" "<=<<" ">>=>" "<-<<" "|=>" "<=|" "=>>"
+        "<<=" "=<<" "=>=" "=<=" ">-" "-<" ">--" "--<" ">---" "<---" "----" "-----"
+        "------" "=======" ">>>>" "<<<<" ">>>" "<<<" ">>" "<<"))
+
+    ;; C-like operators
+    (defvar +ligature-c-like
+      '("<<" "<<<" ">>" ">>>" "&&" "&&&" "||" "++" "+++" "--" "---" "/*" "*/" "//" "///"
+        "!=" "!==" "===" "==" ">=" "<=" "|=" "^=" "&=" "+=" "-=" "*=" "/=" "%=" "??" "???"
+        "?." "::" ":::" "##" "#?" "#!" "#:" "#=" "#_" "#__" "#_(" "..." ".." ".=" "->"
+        "<:" ":>" "<%" "%>" "<:" ":>" "<::" "::>" "##" "#@" "#$" "#!" "#:" "#=" "#_"
+        "#__" "#_(" "]#" "#######" "0xA12 0x56 1920x1080"))
+
+    ;; HTML/XML specific
+    (defvar +ligature-html
+      '("</" "/>" "</>" "<!--" "<!---->" "<#--" "{{--" "{{!--" "--}}"))
+
+    ;; Brackets and similar constructs
+    (defvar +ligature-brackets
+      '("{{" "}}" "{|" "|}" "[|" "|]" "<|" "|>" "<|>" "<||" "||>" "<|||" "|||>" "_|_"
+        "<!" "<?" "?>" "<%" "%>" "<:" ":>" "<=" "=>"))
+
+    ;; Lisp-specific (comments, reader macros)
+    (defvar +ligature-lisp
+      '(";;" ";;;" "#;" "#!" "#:" "#=" "#_" "#__" "#_(" "#?" "#!" "#:" "#="))
+
+    ;; Markdown headings and separators
+    (defvar +ligature-markdown
+      '("##" "###" "####" "#####" "######" "--" "---" "----" "-----" "------"))
+
+    ;; Logging markers and special comments
+    (defvar +ligature-log
+      '("[TRACE]" "[DEBUG]" "[INFO]" "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "[FIXME]"
+        "[NOTE]" "[HACK]" "[MARK]" "[EROR]" "[WARNING]" "todo))" "fixme))"))
+
+    ;; Functional programming operators
+    (defvar +ligature-functional
+      '("::" ":::" "=>" "=>>" "<=<" ">=>" "<|>" "|>" "<|" "<$>" "<$" "$>" "<*>" "<*" "*>"
+        "<~>" "~~" "~-" "~@" "~~~~~~~" "\\/" "/\\" "|-" "-|" "%%" "<~" "~>" "<~>" "-~" "~-"
+        "=:" ":=" ":=:" "=:=" "<." "<.>" ".>" "+*" "=*" "(*" "*)"))
+
+    ;; Common letter ligatures
+    (defvar +ligature-letters
+      '("ff" "tt" "ll" "Cl" "al" "cl" "el" "il" "tl" "ul" "xl" "all" "ell" "ill" "ull"
+        "Fl" "Tl" "fi" "fj" "fl" "ft" "www"))
+
+    ;; Global letter ligatures
+    (ligature-set-ligatures 't +ligature-letters)
+
+    ;; Programming modes
     (ligature-set-ligatures
-     'prog-mode '("::" ":::" "?:" ":?" ":?>" "<:" ":>" ":<" "<:<" ">:>" "__" "#{"
-	          "#[" "#(" "#?" "#!" "#:" "#=" "#_" "#__" "#_(" "]#" "#######"
-	          "<<" "<<<" ">>" ">>>" "{{" "}}" "{|" "|}" "{{--" "{{!--" "--}}"
-	          "[|" "|]" "!!" "||" "??" "???" "&&" "&&&" "//" "///" "/*" "/**"
-	          "*/" "++" "+++" ";;" ";;;" ".." "..." ".?" "?." "..<" ".=" "<~"
-	          "~>" "~~" "<~>" "<~~" "~~>" "-~" "~-" "~@" "~~~~~~~"
-	          "0xA12 0x56 1920x1080" "<>" "</" "/>" "</>" "<+" "+>" "<+>" "<*"
-	          "*>" "<*>" ">=" "<=" "<=<" ">=>" "==" "===" "!=" "!==" "=/="
-	          "=!=" "|=" "<=>" "<==>" "<==" "==>" "=>" "<=|" "|=>" "=<=" "=>="
-	          "=======" ">=<" ":=" "=:" ":=:" "=:=" "\\ \' \." "--" "---"
-	          "<!--" "<#--" "<!---->" "<->" "<-->" "->" "<-" "-->" "<--" ">->"
-	          "<-<" "|->" "<-|" "-------" ">--" "--<" "<|||" "|||>" "<||"
-	          "||>" "<|" "|>" "<|>" "_|_" "[TRACE]" "[DEBUG]" "[INFO]"
-	          "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "[FIXME]" "[NOTE]"
-	          "[HACK]" "[MARK]" "[EROR]" "[WARNING]" "todo))" "fixme))" "Cl"
-	          "al" "cl" "el" "il" "tl" "ul" "xl" "ff" "tt" "all" "ell" "ill"
-	          "ull" "ll"))))
+     '(prog-mode conf-mode)
+     `(,@+ligature-arrows
+       ,@+ligature-arrows-extra
+       ,@+ligature-c-like
+       ,@+ligature-html
+       ,@+ligature-brackets
+       ,@+ligature-lisp
+       ,@+ligature-functional
+       ,@+ligature-log))
+
+    ;; Text modes
+    (ligature-set-ligatures
+     '(text-mode markdown-mode markdown-ts-mode gfm-mode)
+     `(,@+ligature-arrows
+       ,@+ligature-arrows-extra
+       ,@+ligature-markdown))
+
+    ;; JavaScript / TypeScript / PHP
+    (ligature-set-ligatures
+     '(js-mode typescript-mode typescript-ts-mode php-ts-mode php-mode)
+     `(,@+ligature-arrows
+       ,@+ligature-arrows-extra
+       ,@+ligature-c-like
+       ,@+ligature-html
+       ,@+ligature-brackets
+       ,@+ligature-functional
+       ,@+ligature-log))
+
+    ;; C-like language modes
+    (ligature-set-ligatures
+     '(c-mode c++-mode java-mode java-ts-mode csharp-mode csharp-ts-mode
+       rust-mode rust-ts-mode go-mode go-ts-mode zig-mode zig-ts-mode)
+     `(,@+ligature-arrows
+       ,@+ligature-arrows-extra
+       ,@+ligature-c-like
+       ,@+ligature-brackets
+       ,@+ligature-functional
+       ,@+ligature-log))
+
+    ;; Lisp modes
+    (ligature-set-ligatures
+     '(emacs-lisp-mode lisp-mode lisp-data-mode common-lisp-mode
+       hy-mode scheme-mode geiser-mode)
+     `(,@+ligature-arrows
+       ,@+ligature-arrows-extra
+       ,@+ligature-lisp
+       ,@+ligature-functional))
+
+    ;; Functional languages
+    (ligature-set-ligatures
+     '(haskell-mode haskell-ts-mode elm-mode elm-ts-mode purescript-mode
+       purescript-ts-mode ml-mode caml-mode tuareg-mode fsharp-mode fstar-mode
+       fsharp-ts-mode dafny-mode swift-mode coq-mode idris-mode)
+     `(,@+ligature-arrows
+       ,@+ligature-arrows-extra
+       ,@+ligature-functional
+       ,@+ligature-brackets
+       ,@+ligature-log))
+
+    ;; HTML/XML modes
+    (ligature-set-ligatures
+     '(html-mode nxml-mode)
+     `(,@+ligature-arrows
+       ,@+ligature-arrows-extra
+       ,@+ligature-html
+       ,@+ligature-brackets
+       ,@+ligature-log))))
 
 (custom-set-faces!
   '((font-lock-comment-face font-lock-keyword-face) :slant italic))
