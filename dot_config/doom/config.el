@@ -609,9 +609,6 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
 (setopt confirm-kill-emacs nil)
 (setopt recentf-max-saved-items 500)
 
-(global-auto-revert-mode t)
-(setopt global-auto-revert-non-file-buffers t)
-
 (setopt evil-echo-state nil)
 
 (when (modulep! :editor evil)
