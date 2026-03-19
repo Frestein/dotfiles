@@ -10,6 +10,9 @@ run_with_privileges() {
     if [ -n "$XDG_SESSION_TYPE" ]; then
         set -- "XDG_SESSION_TYPE=$XDG_SESSION_TYPE" "$@"
     fi
+    if [ -n "$LANG" ]; then
+        set -- "LANG=$LANG" "$@"
+    fi
 
     if command -v doas_askpass >/dev/null 2>&1; then
         doas_askpass env "$@"
