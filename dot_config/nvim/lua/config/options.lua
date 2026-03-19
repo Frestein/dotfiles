@@ -72,7 +72,7 @@ o.swapfile = false
 
 --- Spell Checking ---
 o.spelllang = "en_us,ru_ru"
-o.spellfile = os.getenv "XDG_CONFIG_HOME" .. "/nvim/spell/en.utf-8.add"
+o.spellfile = vim.fn.stdpath "config" .. "/spell/en.utf-8.add"
 
 --- Langmapper ---
 local function escape(str)
