@@ -3,7 +3,6 @@
 .config/chromium/
 .config/cl-electron-server/
 .config/configstore/
-.config/cups/
 .config/czkawka/
 .config/dconf/
 .config/doom/custom.el
