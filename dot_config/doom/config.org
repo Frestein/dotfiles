@@ -70,8 +70,6 @@
 - [[#document-management][Document Management]]
   - [[#pdf][PDF]]
   - [[#printer][Printer]]
-    - [[#lpr][Lpr]]
-    - [[#ps-print][PS-Print]]
     - [[#pdf-misc][PDF-Misc]]
 - [[#languages][Languages]]
   - [[#emacs-lisp][Emacs Lisp]]
@@ -1397,24 +1395,6 @@ About Conventional Commits:
 #+end_src
 
 ** Printer
-
-*** Lpr
-
-#+begin_src elisp
-(after! lpr
-  (setq lpr-lp-system t)
-  (setopt lpr-command "lp")
-  (setopt lpr-add-switches nil)
-  (setopt lpr-printer-switch "-d ")
-  (setopt printer-name "Samsung_SCX-3200_Series"))
-#+end_src
-
-*** PS-Print
-
-#+begin_src elisp
-(after! ps-print
-  (setq ps-printer-name "Samsung_SCX-3200_Series"))
-#+end_src
 
 *** PDF-Misc
 

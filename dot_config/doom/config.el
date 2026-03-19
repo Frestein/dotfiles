@@ -1022,16 +1022,6 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
   (map! :map pdf-view-mode-map
         :n "gp" #'pdf-view-goto-page))
 
-(after! lpr
-  (setq lpr-lp-system t)
-  (setopt lpr-command "lp")
-  (setopt lpr-add-switches nil)
-  (setopt lpr-printer-switch "-d ")
-  (setopt printer-name "Samsung_SCX-3200_Series"))
-
-(after! ps-print
-  (setq ps-printer-name "Samsung_SCX-3200_Series"))
-
 (when (modulep! :tools pdf)
   (use-package! pdf-misc
     :after pdf-view
