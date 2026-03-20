@@ -1,0 +1,9 @@
+{{- if (env "CZ_EXT") }}
+
+[".local/bin/TgWsProxy"]
+type = "file"
+url = {{ gitHubLatestReleaseAssetURL "Flowseal/tg-ws-proxy" (printf "TgWsProxy_linux_amd64") | quote }}
+executable = true
+refreshPeriod = "336h"
+
+{{- end }}

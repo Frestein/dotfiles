@@ -1,0 +1,13 @@
+[Unit]
+Description=TgWsProxy
+Documentation=https://github.com/Flowseal/tg-ws-proxy
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+ExecStart=%h/.local/bin/TgWsProxy
+Restart=always
+Slice=app-graphical.slice
+
+[Install]
+WantedBy=graphical-session.target

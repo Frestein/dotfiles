@@ -2065,6 +2065,11 @@ is tomorrow.  With two prefixes, select the deadline."
       (add-hook! doom-init-ui (mu4e 'no-popup)))))
 
 (when (modulep! :app telega)
+  ;; Fuck you, Russian Pederation's government!
+  (after! telega
+    (setopt telega-proxies '((:server "127.0.0.1" :port 1080 :enable t :type (:@type "proxyTypeSocks5")))))
+
+  ;; Autostart
   (defun telega-server-process-running-p ()
     "Check if telega-server process is running."
     (not (string-equal (shell-command-to-string "pgrep -x telega-server") "")))
