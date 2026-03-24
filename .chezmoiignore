@@ -8,7 +8,6 @@
 .config/doom/custom.el
 .config/doom/README.org
 .config/doom.d/
-.config/discord/
 .config/Electron/
 .config/enchant/en_US.*
 .config/enchant/ru_RU.*

@@ -1,0 +1,20 @@
+{
+  "chromiumSwitches": {},
+  "IS_MAXIMIZED": true,
+  "IS_MINIMIZED": false,
+  "WINDOW_BOUNDS": {
+    "x": 14,
+    "y": 44,
+    "width": 1892,
+    "height": 1022
+  },
+  "SKIP_HOST_UPDATE": true,
+  "BACKGROUND_COLOR": "#2c2d32",
+  "offloadAdmControls": true,
+  "enableHardwareAcceleration": true,
+  "OPEN_ON_STARTUP": false,
+  "MINIMIZE_TO_TRAY": true,
+  "asyncVideoInputDeviceInit": false,
+  "openH264Enabled": true,
+  "enableLibOpenH264Electron": false
+}
