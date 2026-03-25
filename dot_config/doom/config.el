@@ -1757,7 +1757,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   :hook (org-agenda-mode . org-super-agenda-mode))
 
 (use-package! org-contacts
-  :when (modulep! :lang org +contacts2)
+  :when (modulep! :lang org +contacts)
   :after org
   :custom
   (org-contacts-files (list (file-name-concat org-directory "contacts.org")))
