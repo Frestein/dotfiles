@@ -1077,8 +1077,34 @@ Overrides ~+corfu/dabbrev-or-last~ and ~+corfu/dabbrev-or-next~ adding proper es
 #+begin_src elisp
 (when (modulep! :completion corfu)
   (after! (:and corfu eshell)
+    (defadvice! fr/corfu-dabbrev-or-next (&optional arg)
+      "Invoke `cape-dabbrev' but respect `evil-complete-all-buffers'.
+
+Intended to mimic `evil-complete-next', unless the popup is already open."
+      :override #'+corfu/dabbrev-or-next
+      (interactive "p")
+      (if (and (eq major-mode 'eshell-mode)
+               (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
+          (let ((n (or arg 1)))
+            (and (not (memq last-command '(eshell-next-matching-input-from-input
+                                           eshell-previous-matching-input-from-input)))
+                 (> n 1)
+                 (setq n (1+ n)))
+            (eshell-next-matching-input-from-input n)
+            (setq this-command 'eshell-next-matching-input-from-input))
+        (if corfu--candidates
+            (corfu-next arg)
+          (require 'cape)
+          (let ((cape-dabbrev-buffer-function
+                 (if (bound-and-true-p evil-complete-all-buffers)
+                     #'cape-same-mode-buffers
+                   #'current-buffer)))
+            (cape-dabbrev t)
+            (when (> corfu--total 0)
+              (corfu--goto (or arg 0)))))))
+
     (defadvice! fr/corfu-dabbrev-or-last (&optional arg)
-      "Trigger corfu popup and select the first candidate.
+      "Invoke `cape-dabbrev' but respect `evil-complete-all-buffers'.
 
 Intended to mimic `evil-complete-previous', unless the popup is already open."
       :override #'+corfu/dabbrev-or-last
@@ -1097,35 +1123,13 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
         (if corfu--candidates
             (corfu-previous arg)
           (require 'cape)
-          (let ((cape-dabbrev-check-other-buffers
-                 (bound-and-true-p evil-complete-all-buffers)))
+          (let ((cape-dabbrev-buffer-function
+                 (if (bound-and-true-p evil-complete-all-buffers)
+                     #'cape-same-mode-buffers
+                   #'current-buffer)))
             (cape-dabbrev t)
             (when (> corfu--total 0)
-              (corfu--goto (- corfu--total (or arg 1))))))))
-
-    (defadvice! fr/corfu-dabbrev-or-next (&optional arg)
-      "Trigger corfu popup and select the first candidate.
-
-Intended to mimic `evil-complete-next', unless the popup is already open."
-      :override #'+corfu/dabbrev-or-next
-      (interactive "p")
-      (if (and (eq major-mode 'eshell-mode)
-               (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
-          (let ((n (or arg 1)))
-            (and (not (memq last-command '(eshell-next-matching-input-from-input
-                                           eshell-previous-matching-input-from-input)))
-                 (> n 1)
-                 (setq n (1+ n)))
-            (eshell-next-matching-input-from-input n)
-            (setq this-command 'eshell-next-matching-input-from-input))
-        (if corfu--candidates
-            (corfu-next arg)
-          (require 'cape)
-          (let ((cape-dabbrev-check-other-buffers
-                 (bound-and-true-p evil-complete-all-buffers)))
-            (cape-dabbrev t)
-            (when (> corfu--total 0)
-              (corfu--goto (or arg 0)))))))))
+              (corfu--goto (- corfu--total (or arg 1))))))))))
 #+end_src
 
 *** Vertico
