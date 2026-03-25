@@ -121,6 +121,7 @@
        trashed              ; freedesktop.org trashcan
        tree-sitter          ; syntax and parsing, sitting in a tree...
        tldr
+       translate
        ;; upload            ; map local to remote projects via ssh/ftp
        zoxide
 
