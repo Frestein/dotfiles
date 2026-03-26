@@ -988,6 +988,7 @@ Disable evil-snipe on specific modes.
       (:prefix ("o" . "open")
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
+       :desc "Contacts" "c" #'org-contacts
        (:when (modulep! :app pomm)
          :desc "Third Time" "," #'pomm-third-time
          :desc "Pomodoro" "." #'pomm)
@@ -1474,6 +1475,8 @@ About Conventional Commits:
   (setopt org-edit-src-persistent-message nil)
 
   (setopt org-startup-with-link-previews t)
+
+  (setopt org-read-date-force-compatible-dates nil)
 
   ;; BUG: The second format is displayed incorrectly.
   ;; For example:
@@ -2202,13 +2205,10 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 :PROPERTIES:
 :EMAIL: %(org-contacts-template-email)
 :PHONE: %^{Phone}
-:ALIAS: %^{Alias}
 :NICKNAME: %^{Nickname}
-:IGNORE:
-:ICON: %^{Icon}
-:NOTE: %^{Note}
+:BIO: %^{Bio}
 :ADDRESS: %^{Address}
-:BIRTHDAY: %^{Birthday (dd-mm-yyyy)}
+:BIRTHDAY: %^{Birthday}u
 :END:"))))
 
   (when (modulep! :email mu4e)
@@ -2217,8 +2217,95 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
       (add-to-list 'mu4e-headers-actions
                    '("org-contact-add" . mu4e-action-add-org-contact) t)
       (add-to-list 'mu4e-view-actions
-                   '("org-contact-add" . mu4e-action-add-org-contact) t))))
+                   '("org-contact-add" . mu4e-action-add-org-contact) t)))
+
+  ;; Reduce count results for vertico
+  (advice-add 'org-contacts :around
+              (lambda (orig &rest args)
+                (let ((vertico-count 5))
+                  (apply orig args))))
+
+  ;; Reset cache
+  (advice-add 'org-contacts :before #'org-contacts--candidates-cache-reset)
+
+  ;; Unnecessary variable
+  (makunbound 'org-contacts-ahead-space-padding)
+
+
+  ;; INFO: Corrected the work and improved it
+  (defadvice! fr/org-contacts--candidate (headline)
+    "Return candidate string from Org HEADLINE epom element node."
+    :override #'org-contacts--candidate
+    (let* ((org-contacts-icon-size 32)
+           (contact-name (org-element-property :raw-value headline))
+           (tags (let ((pos (org-element-property :begin headline)))
+                   (org-with-point-at pos
+                     (split-string (or (org-entry-get nil "ALLTAGS") "") ":" t))))
+           (properties (org-entry-properties headline 'standard))
+           ;; avatar
+           (avatar-image-path
+            (when-let* ((avatar-value (org-entry-get headline "AVATAR"))
+                        (avatar-link-path (cond
+                                           ((or (string-match org-link-bracket-re avatar-value)
+                                                (string-match org-link-any-re avatar-value))
+                                            (when-let* ((link-internal (or (match-string 1 avatar-value) (match-string 2 avatar-value)))
+                                                        (_ (and (or (string-prefix-p "file:" link-internal)
+                                                                    (string-prefix-p "attachment:" link-internal))
+                                                                (seq-some
+                                                                 (lambda (ext) (string-suffix-p ext link-internal))
+                                                                 image-file-name-extensions))))
+                                              (when (string-match "\\([file\\|attachment]\\):\\(.*\\)" link-internal)
+                                                (match-string 2 link-internal))))
+                                           ((string-match org-link-plain-re avatar-value)
+                                            (match-string 2 avatar-value))
+                                           ((string-match (concat (regexp-opt image-file-name-extensions) (rx line-end)) avatar-value)
+                                            (match-string 0 avatar-value))))
+                        (avatar-absolute-path (file-name-concat
+                                               (or org-contacts-directory
+                                                   (expand-file-name (file-name-directory (car org-contacts-files))))
+                                               avatar-link-path))
+                        (_ (org-file-image-p avatar-absolute-path))
+                        (_ (file-exists-p avatar-absolute-path)))
+              avatar-absolute-path))
+           ;; Helper lambda for standard fields
+           (field (lambda (prop label face)
+                    (let ((val (org-entry-get headline prop)))
+                      (when (and val (not (string-empty-p val)))
+                        (concat (propertize (concat label ": ") 'face '(:foreground "SlateGray4" :height 90))
+                                (propertize val 'face face))))))
+           (nickname (funcall field org-contacts-nickname-property "nick"
+                              '(:slant italic :foreground "DarkOliveGreen1")))
+           (email (funcall field org-contacts-email-property "email"
+                           '(:foreground "MediumPurple3")))
+           (phone (funcall field "PHONE" "phone" '(:foreground "LightBlue")))
+           (address (funcall field "ADDRESS" "address" '(:foreground "LightGreen")))
+           (birthday (funcall field "BIRTHDAY" "birthday" '(:foreground "LightGoldenrod")))
+           ;; Bio needs string-fill
+           (bio (let ((val (org-entry-get headline "Bio")))
+                  (when (and val (not (string-empty-p val)))
+                    (concat (propertize "bio: " 'face '(:foreground "SlateGray4" :height 90))
+                            (propertize (string-fill val
+                                                     (or fill-column (abs org-tags-column) (- (window-width) 15)))
+                                        'face '(:height 95))))))
+           (info-parts (delq nil (list email phone address birthday bio)))
+           (info (if info-parts (concat "\n" (mapconcat #'identity info-parts "\n")) "")))
+      ;; Check if headline is a contact
+      (when (seq-intersection org-contacts-identity-properties-list (mapcar 'car properties))
+        (propertize
+         (concat
+          (if avatar-image-path
+              (propertize " " 'display (create-image avatar-image-path nil nil
+                                                     :ascent 30
+                                                     :width org-contacts-icon-size))
+            "")
+          (propertize contact-name 'face '(:inherit org-level-1))
+          (or (when nickname (concat " (" nickname ")")) "")
+          (or (when tags (concat " " (propertize (concat "[" (string-join tags ":") "]")
+                                                 'face '(:inherit org-tag)))) ""))
+         'contact-name contact-name
+         'annotation info)))))
 #+end_src
+
 
 *** QoL
 
