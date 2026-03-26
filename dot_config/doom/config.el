@@ -1723,7 +1723,10 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
                                :finalize 'insert-link))))))
         (deactivate-mark)))
 
-    (advice-add #'org-roam-node-insert :override #'fr/org-roam-node-insert)))
+    (advice-add #'org-roam-node-insert :override #'fr/org-roam-node-insert)
+
+    (advice-add #'org-roam-tag-remove :after (ignore-args #'org-save-all-org-buffers))
+    (advice-add #'org-roam-tag-add :after (ignore-args #'org-save-all-org-buffers))))
 
 (use-package! org-mem
   :when (modulep! :lang org +mem)
