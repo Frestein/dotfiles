@@ -1802,7 +1802,6 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   ;; Unnecessary variable
   (makunbound 'org-contacts-ahead-space-padding)
 
-
   ;; INFO: Corrected the work and improved it
   (defadvice! fr/org-contacts--candidate (headline)
     "Return candidate string from Org HEADLINE epom element node."

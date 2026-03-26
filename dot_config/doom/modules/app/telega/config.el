@@ -22,18 +22,16 @@
   (setopt telega-use-images t)
   (setopt telega-animation-play-inline 60)
 
-  ;; TODO: Use 'setopt' after issue will be closed.
-  ;; https://github.com/zevlg/telega.el/issues/545
-  (setq telega-video-player-command (cond ((executable-find "mpv")
-                                           '(concat "mpv"
-                                             (when telega-ffplay-media-timestamp
-                                               (format " --start=%f" telega-ffplay-media-timestamp))
-                                             (when telega-video-play-incrementally
-                                               " --cache=no")))
-                                          ((executable-find "ffplay")
-                                           '(concat "ffplay -autoexit"
-                                             (when telega-ffplay-media-timestamp
-                                               (format " -ss %f" telega-ffplay-media-timestamp))))))
+  (setopt telega-video-player-command (cond ((executable-find "mpv")
+                                             '(concat "mpv"
+                                               (when telega-ffplay-media-timestamp
+                                                 (format " --start=%f" telega-ffplay-media-timestamp))
+                                               (when telega-video-play-incrementally
+                                                 " --cache=no")))
+                                            ((executable-find "ffplay")
+                                             '(concat "ffplay -autoexit"
+                                               (when telega-ffplay-media-timestamp
+                                                 (format " -ss %f" telega-ffplay-media-timestamp))))))
 
   (when (executable-find "tgs2png")
     (setopt telega-sticker-animated-play t))
@@ -41,10 +39,7 @@
   (setopt telega-known-inline-bots (append telega-known-inline-bots
                                            '("@vid" "@hbvidbot" "@hlebashbot" "@wiki" "@foursquare")))
 
-
-  ;; TODO: Use 'setopt' after issue will be closed.
-  ;; https://github.com/zevlg/telega.el/issues/546
-  (setq telega-filter-button-width '(0.10 10 20))
+  (setopt telega-filter-button-width '(0.10 10 20))
 
   (setopt telega-filters-custom '(("Main" . main)
                                   ("lng_filters_type_no_archived" . archive)))
@@ -482,7 +477,7 @@ argument - MSG to insert additional information after header."
     "Frestein's inserter for the folders prefixing chat's title."
     (let ((fmt-spec (or fmt-spec (eval-when-compile
                                    (propertize "%F" 'face 'bold)))))
-      (if telega-tdlib--chat-folder-tags-p
+      (if telega-tdlib--folder-tags-enabled-p
           (telega-folders-insert-as-tags fmt-spec telega-chat-folders)
         (when (cond ((> (length telega-chat-folders) 1)
                      (telega-ins (telega-symbol 'multiple-folders)))
