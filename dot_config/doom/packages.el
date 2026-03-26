@@ -18,11 +18,8 @@
   (package! corg
     :recipe (:host github :repo "isamert/corg.el"))
 
-  ;; TODO: Adjust when doomelpa will be synced
-  ;; https://github.com/orgs/doomemacs/discussions/68
   (when (modulep! :lang org +contacts)
-    (package! org-contacts
-      :recipe (:host github :repo "emacsmirror/org-contacts")))
+    (package! org-contacts))
 
   (when (modulep! :lang org +super)
     (package! org-super-agenda))
