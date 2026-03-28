@@ -263,6 +263,91 @@
         (setq telega-mnz-mode-lighter
               (concat " " (telega-symbol 'mode) "Mnz")))))
 
+  ;; TODO: Delete when the problem with automatic proxy enablement is fixed
+  (defadvice! fixed-telega--on-updateAuthorizationState (event)
+    "Proceed with user authorization state change using EVENT."
+    :override #'telega--on-updateAuthorizationState
+    (let* ((state (plist-get event :authorization_state))
+           (stype (plist-get state :@type)))
+      (setq telega--auth-state (substring stype 18))
+      (telega-status--set (concat "Auth " telega--auth-state))
+      (cl-ecase (intern stype)
+        (authorizationStateWaitTdlibParameters
+         ;; Tune permissions for docker's /dev/snd, /dev/video*
+         (when-let ((devices-chown-cmd
+                     (telega-docker-exec-cmd
+                      "chmod -R o+rw /dev/snd /dev/video0" nil
+                      "-u 0" 'no-error)))
+           (telega-debug "docker RUN: %s" devices-chown-cmd)
+           (shell-command-to-string devices-chown-cmd))
+
+         ;; NOTE: Setup proxies.  Only `telega-proxies' setup enables
+         ;; some proxy.  See
+         ;; https://github.com/zevlg/telega.el/issues/233
+         (telega--disableProxy)
+         (dolist (proxy telega-proxies)
+           (telega--addProxy proxy t))
+
+         (telega--setTdlibParameters))
+
+        (authorizationStateWaitPhoneNumber
+         (if (and (not telega--relogin-with-phone-number)
+                  telega-use-images
+                  (or (executable-find "qrencode")
+                      ;; NOTE: docker image has "qrencode" tool
+                      telega-use-docker))
+             (progn
+               ;; NOTE: transition to
+               ;; "authorizationStateWaitOtherDeviceConfirmation" state
+               ;; takes some time, so display QR code dialog first, then
+               ;; wait for QR code itself
+               (telega--requestQrCodeAuthentication)
+               (telega-qr-code--show nil))
+
+           (setq telega--relogin-with-phone-number nil)
+           (telega--setAuthenticationPhoneNumber
+            (read-string "Telega phone number: " "+"))))
+
+        (authorizationStateWaitCode
+         (let ((code (read-string "Telega login code: ")))
+           (telega--checkAuthenticationCode code)))
+
+        (authorizationStateWaitOtherDeviceConfirmation
+         (telega-qr-code--show (plist-get state :link)))
+
+        (authorizationStateWaitRegistration
+         (let* ((names (split-string (read-from-minibuffer "Your Name: ") " "))
+                (first-name (car names))
+                (last-name (mapconcat 'identity (cdr names) " ")))
+           (telega--registerUser first-name last-name)))
+
+        (authorizationStateWaitPassword
+         (let* ((hint (plist-get state :password_hint))
+                (pass (password-read
+                       (concat "Telegram password"
+                               (if (string-empty-p hint)
+                                   ""
+                                 (format "(hint='%s')" hint))
+                               ": "))))
+           (telega--checkAuthenticationPassword pass)))
+
+
+        (authorizationStateReady
+         ;; Hide previously possibly shown QR code auth dialog
+         (telega-qr-code--hide)
+
+         ;; TDLib is now ready to answer queries
+         (telega--authorization-ready))
+
+        (authorizationStateLoggingOut
+         )
+
+        (authorizationStateClosing
+         )
+
+        (authorizationStateClosed
+         (telega-server-kill)))))
+
   ;; INFO: Redesign, make topic icon optional.
   (defadvice! fr/telega-chatbuf-prompt-ins-topic (&optional max-width with-topic-icon-p)
     "Inserter for the current topic in the chatbuf's input prompt."
