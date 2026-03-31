@@ -2535,6 +2535,22 @@ current users."
     (setopt message-sendmail-f-is-evil t)
     (setopt send-mail-function #'sendmail-send-it)
     (setopt doom-modeline-mu4e t)
+    (setopt mu4e-bookmarks
+            '((:name "Unread messages"
+               :query "maildir:/gmail/inbox AND (flag:new OR flag:unread)"
+               :favorite t
+               :hide-if-no-unread t
+               :key ?u)
+              (:name "Today's messages"
+               :query "date:today..now"
+               :key ?t)
+              (:name "Last 7 days"
+               :query "date:7d..now"
+               :hide-unread t
+               :key ?w)
+              (:name "Messages with images"
+               :query "mime:image/*"
+               :key ?p)))
 
     (when (modulep! :email mu4e +gmail)
       ;; don't need to run cleanup after indexing for gmail
