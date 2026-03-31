@@ -2535,6 +2535,7 @@ current users."
     (setopt message-sendmail-f-is-evil t)
     (setopt send-mail-function #'sendmail-send-it)
     (setopt doom-modeline-mu4e t)
+
     (setopt mu4e-bookmarks
             '((:name "Unread messages"
                :query "maildir:/gmail/inbox AND (flag:new OR flag:unread)"
@@ -2551,6 +2552,38 @@ current users."
               (:name "Messages with images"
                :query "mime:image/*"
                :key ?p)))
+
+    (defadvice! fr/mu4e-initialise-icons ()
+      :override #'+mu4e-initialise-icons
+      (setopt mu4e-use-fancy-chars t)
+      (setq mu4e-modeline-all-clear     (cons "C:" (+mu4e-normalised-icon "nf-md-email_off" :set "mdicon" :height 1.0 :space-right t))   ; 󱏣
+            mu4e-modeline-all-read      (cons "R:" (+mu4e-normalised-icon "nf-md-email_check" :set "mdicon" :height 1.0 :space-right t)) ; 󰪱
+            mu4e-modeline-new-items     (cons "N:" (+mu4e-normalised-icon "nf-md-email_sync" :set "mdicon" :height 1.0 :space-right t))  ; 󱋇
+            mu4e-modeline-unread-items  (cons "U:" (+mu4e-normalised-icon "nf-md-email_alert" :set "mdicon" :height 1.0 :space-right t)) ; 󰛏
+            mu4e-headers-attach-mark    (cons "a"  (+mu4e-normalised-icon "nf-md-attachment" :set "mdicon" :color "silver"))             ; 󰁦
+            mu4e-headers-calendar-mark  (cons "c"  (+mu4e-normalised-icon "nf-cod-calendar" :set "codicon"))                             ; 
+            mu4e-headers-draft-mark     (cons "d"  (+mu4e-normalised-icon "nf-fa-pencil"))                                               ; 
+            mu4e-headers-encrypted-mark (cons "e"  (+mu4e-normalised-icon "nf-cod-lock" :set "codicon"))                                 ; 
+            mu4e-headers-flagged-mark   (cons "F"  (+mu4e-normalised-icon "nf-md-flag_outline" :set "mdicon"))                           ; 󰈽
+            mu4e-headers-list-mark      (cons "l"  (+mu4e-normalised-icon "nf-fa-list"))                                                 ; 
+            mu4e-headers-new-mark       (cons "n"  (+mu4e-normalised-icon "nf-md-new_box" :set "mdicon"))                                ; 󰎔
+            mu4e-headers-passed-mark    (cons "P"  (+mu4e-normalised-icon "nf-oct-arrow_right" :set "octicon"))                          ; 
+            mu4e-headers-personal-mark  (cons "p"  (+mu4e-normalised-icon "nf-fa-user_o"))                                               ; 
+            mu4e-headers-replied-mark   (cons "r"  (+mu4e-normalised-icon "nf-fa-reply"))                                                ; 
+            mu4e-headers-seen-mark      (cons "s"  "")
+            mu4e-headers-signed-mark    (cons "S"  (+mu4e-normalised-icon "nf-md-shield_outline" :set "mdicon"))                         ; 󰒙
+            mu4e-headers-trashed-mark   (cons "t"  (+mu4e-normalised-icon "nf-fa-trash_o"))                                              ; 
+            mu4e-headers-unread-mark    (cons "u"  (+mu4e-normalised-icon "nf-fa-eye_slash" :v-adjust 0.05))))                           ; 
+
+    (if (display-graphic-p)
+        (fr/mu4e-initialise-icons)
+      ;; When it's the server, wait till the first graphical frame
+      (add-hook! 'server-after-make-frame-hook
+        (defun fr/mu4e-initialise-icons-hook ()
+          (when (display-graphic-p)
+            (fr/mu4e-initialise-icons)
+            (remove-hook 'server-after-make-frame-hook
+                         #'fr/mu4e-initialise-icons-hook)))))
 
     (when (modulep! :email mu4e +gmail)
       ;; don't need to run cleanup after indexing for gmail
