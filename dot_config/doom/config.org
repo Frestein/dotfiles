@@ -2713,7 +2713,21 @@ is tomorrow.  With two prefixes, select the deadline."
 (when (modulep! :app telega)
   ;; Fuck you, Russian Pederation's government!
   (after! telega
-    (setopt telega-proxies '((:server "127.0.0.1" :port 1080 :enable t :type (:@type "proxyTypeSocks5")))))
+    (let ((config-file (expand-file-name "TgWsProxy/config.json" (xdg-config-home))))
+      (when (file-exists-p config-file)
+        (with-temp-buffer
+          (insert-file-contents config-file)
+          (let* ((json-object-type 'alist)
+                 (json-array-type 'list)
+                 (json-key-type 'string)
+                 (data (json-read))
+                 (secret (cdr (assoc "secret" data)))
+                 (host (cdr (assoc "host" data)))
+                 (port (cdr (assoc "port" data))))
+            (when (and secret host port)
+              (setopt telega-proxies `((:server ,host
+                                        :port ,port
+                                        :type (:@type "proxyTypeMtproto" :secret ,secret))))))))))
 
   ;; Autostart
   (defun telega-server-process-running-p ()
