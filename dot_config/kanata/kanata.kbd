@@ -1,5 +1,4 @@
 (defcfg
-    ;; linux-dev             /dev/input/event5:/dev/input/event6
     process-unmapped-keys yes
 )
 
@@ -112,6 +111,9 @@
     caps @caps 
     lmet @lmet
     spc  @spc
+)
+
+(deflayermap (game)
 )
 
 (deflayermap (transparent)
