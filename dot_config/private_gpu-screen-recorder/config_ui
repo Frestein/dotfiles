@@ -1,7 +1,7 @@
 main.config_file_version 2
 main.hotkeys_enable_option disable_hotkeys
 main.joystick_hotkeys_enable_option disable_hotkeys
-main.language
+main.language 
 main.notification_speed normal
 main.show_hide_hotkey 26 16
 main.software_encoding_warning_shown false
@@ -38,7 +38,7 @@ record.record_options.webcam_camera_height 0
 record.record_options.webcam_camera_width 0
 record.record_options.webcam_flip_horizontally false
 record.record_options.webcam_height 30
-record.record_options.webcam_source
+record.record_options.webcam_source 
 record.record_options.webcam_video_format auto
 record.record_options.webcam_width 30
 record.record_options.webcam_x 0
@@ -78,7 +78,7 @@ replay.record_options.webcam_camera_height 0
 replay.record_options.webcam_camera_width 0
 replay.record_options.webcam_flip_horizontally false
 replay.record_options.webcam_height 30
-replay.record_options.webcam_source
+replay.record_options.webcam_source 
 replay.record_options.webcam_video_format auto
 replay.record_options.webcam_width 30
 replay.record_options.webcam_x 0
@@ -94,7 +94,7 @@ replay.start_stop_hotkey 95 17
 replay.time 60
 replay.turn_on_replay_automatically_mode dont_turn_on_automatically
 screenshot.change_image_resolution false
-screenshot.custom_script
+screenshot.custom_script 
 screenshot.image_format jpg
 screenshot.image_height 0
 screenshot.image_quality very_high
@@ -112,10 +112,10 @@ screenshot.take_screenshot_region_hotkey 102 4
 screenshot.take_screenshot_window_hotkey 102 1
 screenshot.use_led_indicator false
 streaming.custom.container flv
-streaming.custom.key
-streaming.custom.url
-streaming.kick.key
-streaming.kick.url
+streaming.custom.key 
+streaming.custom.url 
+streaming.kick.key 
+streaming.kick.url 
 streaming.record_options.advanced_view false
 streaming.record_options.application_audio_invert false
 streaming.record_options.audio_codec opus
@@ -145,13 +145,13 @@ streaming.record_options.webcam_camera_height 0
 streaming.record_options.webcam_camera_width 0
 streaming.record_options.webcam_flip_horizontally false
 streaming.record_options.webcam_height 30
-streaming.record_options.webcam_source
+streaming.record_options.webcam_source 
 streaming.record_options.webcam_video_format auto
 streaming.record_options.webcam_width 30
 streaming.record_options.webcam_x 0
 streaming.record_options.webcam_y 0
-streaming.rumble.key
+streaming.rumble.key 
 streaming.service twitch
 streaming.start_stop_hotkey 93 16
-streaming.twitch.key
-streaming.youtube.key
+streaming.twitch.key 
+streaming.youtube.key 
