@@ -2725,9 +2725,14 @@ is tomorrow.  With two prefixes, select the deadline."
                  (host (cdr (assoc "host" data)))
                  (port (cdr (assoc "port" data))))
             (when (and secret host port)
-              (setopt telega-proxies `((:server ,host
-                                        :port ,port
-                                        :type (:@type "proxyTypeMtproto" :secret ,secret))))))))))
+              (add-hook 'telega-before-auth-hook
+                        (lambda ()
+                          (telega--addProxy `(:server ,host
+                                              :port ,port
+                                              :type (:@type "proxyTypeMtproto"
+                                                     :secret ,secret))
+                              'enable)))))))))
+
 
   ;; Autostart
   (defun telega-server-process-running-p ()
