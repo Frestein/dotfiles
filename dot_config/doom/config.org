@@ -1392,6 +1392,10 @@ About Conventional Commits:
 
 #+begin_src elisp
 (when (modulep! :tools pdf)
+  (after! pdf-tools
+    ;; Recompile epdfinfo after poppler update
+    (pdf-tools-install t nil t nil))
+
   (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
 
@@ -2732,7 +2736,6 @@ is tomorrow.  With two prefixes, select the deadline."
                                               :type (:@type "proxyTypeMtproto"
                                                      :secret ,secret))
                               'enable)))))))))
-
 
   ;; Autostart
   (defun telega-server-process-running-p ()

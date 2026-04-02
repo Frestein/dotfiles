@@ -1021,6 +1021,10 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
 (setopt projectile-project-search-path '(("~/Projects/" . 2)))
 
 (when (modulep! :tools pdf)
+  (after! pdf-tools
+    ;; Recompile epdfinfo after poppler update
+    (pdf-tools-install t nil t nil))
+
   (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
 
