@@ -421,8 +421,11 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
   :hook (eshell-load . eshell-vterm-mode))
 
 (when (modulep! :term vterm)
+  (use-package! vterm
+    :custom
+    (vterm-always-compile-module t))
+
   (after! vterm
-    (setopt vterm-always-compile-module t)
     (setopt vterm-max-scrollback 10000)
 
     (set-popup-rule! "^\\*vterm" :ignore t)
