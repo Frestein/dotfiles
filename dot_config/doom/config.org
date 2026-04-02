@@ -1458,6 +1458,23 @@ About Conventional Commits:
   (add-to-list '+lisp-quicklisp-paths (expand-file-name "quicklisp" (xdg-data-home)))
 
   (after! sly
+    (when (modulep! :app telega)
+      ;; INFO: Prevent sly from running while using telega.el
+      (defadvice! fixed-common-lisp-init-sly-h ()
+        "Attempt to auto-start sly when opening a lisp buffer."
+        :override #'+common-lisp-init-sly-h
+        (unless (string-match-p "\\*Telega Mnz" (buffer-name))
+          (cond ((or (doom-temp-buffer-p (current-buffer))
+                     (sly-connected-p)))
+                ((executable-find (car (if (listp inferior-lisp-program)
+                                           inferior-lisp-program
+                                         (split-string inferior-lisp-program))))
+                 (let ((sly-auto-start 'always))
+                   (sly-auto-start)
+                   (add-hook 'kill-buffer-hook #'+common-lisp--cleanup-sly-maybe-h nil t)))
+                ((message "WARNING: Couldn't find `inferior-lisp-program' (%s)"
+                          inferior-lisp-program))))))
+
     (map! :map lisp-mode-map
           :localleader
           (:prefix "e"
