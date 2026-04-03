@@ -136,113 +136,145 @@
                (telega-auto-translate--chatbuf-prompt-ins-translation)
                (telega-ins "  ")))
 
-    (setopt telega-symbol-alarm                 "󰯪 "
-            telega-symbol-attachment            "󰁦"
-            telega-symbol-audio                 ""
-            telega-symbol-author-hidden         " "
-            telega-symbol-bell                  " "
-            telega-symbol-blocked               (propertize "󰂭" 'face 'error)
-            telega-symbol-boost                 " "
-            telega-symbol-bulp                  " "
-            telega-symbol-button-close          "󰅘"
-            telega-symbol-chat-list             " "
-            telega-symbol-checklist             " "
-            telega-symbol-circle                ""
-            telega-symbol-codeblock             ""
-            telega-symbol-contact               " "
-            telega-symbol-copyright             ""
-            telega-symbol-credit-card           ""
-            telega-symbol-direct-messages       "󰍥"
-            telega-symbol-distance              " "
-            telega-symbol-eye                   " "
-            telega-symbol-failed                (propertize "" 'face 'error)
-            telega-symbol-favorite              ""
-            telega-symbol-flames                ""
-            telega-symbol-forum                 "󰠢"
-            telega-symbol-forward               ""
-            telega-symbol-game                  " "
-            telega-symbol-invoice               "󰗋 "
-            telega-symbol-keyboard              " "
-            telega-symbol-leave-comment         " "
-            telega-symbol-lightning             " "
-            telega-symbol-location              " "
-            telega-symbol-lock                  " "
-            telega-symbol-member                " "
+    ;; Unified function to get icons with padding and color
+    (cl-defun fr/telega-icon (name &key color left-pad right-pad)
+      "Return Nerd icon string with optional face and spaces."
+      (let* ((set-name (progn (string-match "\\`nf-\\([a-z]+\\)-" name) (match-string 1 name)))
+             (icon-set-name
+              (cond
+               ((member set-name '("md")) "mdicon")
+               ((member set-name '("fa" "fae")) "faicon")
+               ((member set-name '("cod")) "codicon")
+               ((member set-name '("weather")) "wicon")
+               ((member set-name '("oct")) "octicon")
+               ((member set-name '("linux")) "flicon")
+               ((member set-name '("seti" "custom")) "sucicon")
+               ((member set-name '("pl" "ple" "pom")) "pomicon")
+               ((member set-name '("iec")) "ipsicon")
+               ((member set-name '("dev")) "devicon")))
+             (icon-func (intern (concat "nerd-icons-" icon-set-name)))
+             (icon (if color
+                       (funcall icon-func name :face color)
+                     (funcall icon-func name))))
+        (when left-pad (setq icon (concat " " icon)))
+        (when right-pad (setq icon (concat icon " ")))
+        icon))
+
+    (setopt telega-symbol-alarm                 (fr/telega-icon "nf-md-alarm_light_outline" :right-pad t) ; 󰯪
+            telega-symbol-attachment            (fr/telega-icon "nf-md-attachment") ; 󰁦
+            telega-symbol-audio                 (fr/telega-icon "nf-seti-audio") ; 
+            telega-symbol-author-hidden         (fr/telega-icon "nf-fa-user_secret" :right-pad t) ; 
+            telega-symbol-bell                  (fr/telega-icon "nf-oct-bell" :right-pad t) ; 
+            telega-symbol-blocked               (fr/telega-icon "nf-md-block_helper" :color 'error)
+            telega-symbol-boost                 (fr/telega-icon "nf-oct-rocket" :right-pad t) ; 
+            telega-symbol-bulp                  (fr/telega-icon "nf-fa-lightbulb" :right-pad t) ; 
+            telega-symbol-button-close          (fr/telega-icon "nf-md-close_box_outline") ; 󰅘
+            telega-symbol-chat-list             (fr/telega-icon "nf-fa-comments_o" :right-pad t); 
+            telega-symbol-checklist             (fr/telega-icon "nf-fa-tasks" :right-pad t) ; 
+            telega-symbol-circle                (fr/telega-icon "nf-fa-circle_o") ; 
+            telega-symbol-codeblock             (fr/telega-icon "nf-fa-code") ; 
+            telega-symbol-contact               (fr/telega-icon "nf-fa-user_o" :right-pad t) ; 
+            telega-symbol-copyright             (fr/telega-icon "nf-fa-copyright") ; 
+            telega-symbol-credit-card           (fr/telega-icon "nf-fa-credit_card_alt") ; 
+            telega-symbol-direct-messages       (fr/telega-icon "nf-md-message_outline") ; 󰍥
+            telega-symbol-distance              (fr/telega-icon "nf-fa-ruler" :right-pad t) ; 
+            telega-symbol-eye                   (fr/telega-icon "nf-oct-eye" :left-pad t) ; 
+            telega-symbol-failed                (fr/telega-icon "nf-fa-circle_exclamation" :color 'error) ; 
+            telega-symbol-favorite              (fr/telega-icon "nf-fa-star_o") ; 
+            telega-symbol-flames                (fr/telega-icon "nf-oct-flame") ; 
+            telega-symbol-forum                 (fr/telega-icon "nf-md-forum_outline") ; 󰠢
+            telega-symbol-forward               (fr/telega-icon "nf-fa-share") ; 
+            telega-symbol-game                  (fr/telega-icon "nf-cod-game" :right-pad t) ; 
+            telega-symbol-invoice               (fr/telega-icon "nf-md-account_voice" :right-pad t) ; 󰗋
+            telega-symbol-keyboard              (fr/telega-icon "nf-fa-keyboard" :right-pad t) ; 
+            telega-symbol-leave-comment         (fr/telega-icon "nf-fa-comment_dots" :right-pad t) ; 
+            telega-symbol-lightning             (fr/telega-icon "nf-fa-bolt" :right-pad t) ; 
+            telega-symbol-location              (fr/telega-icon "nf-oct-location" :right-pad t) ; 
+            telega-symbol-lock                  (fr/telega-icon "nf-oct-lock" :right-pad t) ; 
+            telega-symbol-member                (fr/telega-icon "nf-fa-user_o" :right-pad t) ; 
             telega-symbol-mode                  ""
-            telega-symbol-my-notes              ""
-            telega-symbol-menu                  "󰍜"
-            telega-symbol-online-status         ""
-            telega-symbol-outline-close         "󰍟"
-            telega-symbol-outline-open          "󰍝"
-            telega-symbol-pause                 ""
-            telega-symbol-pending               "󰔟"
-            telega-symbol-phone                 " "
-            telega-symbol-photo                 ""
-            telega-symbol-pin                   (propertize "" 'face 'telega-shadow)
-            telega-symbol-play                  ""
-            telega-symbol-poll                  ""
-            telega-symbol-premium               (propertize " 󰦥" 'face 'telega-blue)
-            telega-symbol-reaction              ""
-            telega-symbol-reaction-mark         ""
-            telega-symbol-reply                 ""
-            telega-symbol-reply-quote           ""
-            telega-symbol-right-arrow           "  "
-            telega-symbol-star                  (propertize "󰓎" 'face 'error)
-            telega-symbol-story                 ""
-            telega-symbol-story-reply           ""
-            telega-symbol-telegram              (propertize " " 'face '(italic telega-blue))
-            telega-symbol-telegram-star         (propertize "󰓎" 'face '(:foreground "goldenrod"))
-            telega-symbol-timer-clock           "󰔛 "
+            telega-symbol-my-notes              (fr/telega-icon "nf-cod-notebook") ; 
+            telega-symbol-menu                  (fr/telega-icon "nf-md-menu") ; 󰍜
+            telega-symbol-online-status         (fr/telega-icon "nf-oct-dot_fill") ; 
+            telega-symbol-outline-close         (fr/telega-icon "nf-md-menu_right") ; 󰍟
+            telega-symbol-outline-open          (fr/telega-icon "nf-md-menu_down") ; 󰍝
+            telega-symbol-pause                 (fr/telega-icon "nf-fa-pause_circle_o") ; 
+            telega-symbol-pending               (fr/telega-icon "nf-md-timer_sand") ; 󰔟
+            telega-symbol-phone                 (fr/telega-icon "nf-fa-phone" :right-pad t) ; 
+            telega-symbol-photo                 (fr/telega-icon "nf-fa-image") ; 
+            telega-symbol-pin                   (fr/telega-icon "nf-oct-pin" :color 'telega-shadow) ; 
+            telega-symbol-play                  (fr/telega-icon "nf-oct-play") ; 
+            telega-symbol-poll                  (fr/telega-icon "nf-fa-square_poll_horizontal") ; 
+            telega-symbol-premium               (fr/telega-icon "nf-md-star_face" :left-pad t :color 'telega-blue) ; 󰦥
+            telega-symbol-reaction              (fr/telega-icon "nf-cod-reactions") ; 
+            telega-symbol-reaction-mark         (fr/telega-icon "nf-cod-reactions") ; 
+            telega-symbol-reply                 (fr/telega-icon "nf-fa-reply") ; 
+            telega-symbol-reply-quote           (concat (fr/telega-icon "nf-fa-reply") (fr/telega-icon "nf-fa-quote_right")) ; 
+            telega-symbol-right-arrow           (fr/telega-icon "nf-fa-angles_right" :left-pad t :right-pad t) ; 
+            telega-symbol-star                  (fr/telega-icon "nf-md-star" :color 'error) ; 󰓎
+            telega-symbol-story                 (fr/telega-icon "nf-fa-circle") ; 
+            telega-symbol-story-reply           (concat (fr/telega-icon "nf-fa-circle") (fr/telega-icon "nf-fa-reply")) ; 
+            telega-symbol-telegram              (fr/telega-icon "nf-fae-telegram" :right-pad t :color '(italic telega-blue)) ; 
+            telega-symbol-telegram-star         (fr/telega-icon "nf-md-star" :color '(:foreground "goldenrod")) ; 󰓎
+            telega-symbol-timer-clock           (fr/telega-icon "nf-md-timer_outline" :right-pad t) ; 󰔛
             telega-symbol-topic                 " #"
-            telega-symbol-typing                ""
-            telega-symbol-verified              (propertize " " 'face 'telega-blue)
-            telega-symbol-video                 ""
-            telega-symbol-video-chat            "󰯜"
-            telega-symbol-video-chat-active     (propertize "󰯜" 'face 'success)
-            telega-symbol-video-chat-passive    (propertize "󰯛" 'face 'telega-shadow)
+            telega-symbol-typing                (fr/telega-icon "nf-fa-pen") ; 
+            telega-symbol-verified              (fr/telega-icon "nf-cod-verified_filled" :right-pad t :color 'telega-blue) ; 
+            telega-symbol-video                 (fr/telega-icon "nf-oct-video") ; 
+            telega-symbol-video-chat            (fr/telega-icon "nf-md-video_outline") ; 󰯜
+            telega-symbol-video-chat-active     (fr/telega-icon "nf-md-video_outline" :color 'success) ; 󰯜
+            telega-symbol-video-chat-passive    (fr/telega-icon "nf-md-video_off_outline" :color 'telega-shadow) ; 󰯛
             telega-symbol-horizontal-bar        "─"
             telega-symbol-vertical-bar          "│"
-            telega-symbol-folder                "󰉖 "
-            telega-symbol-multiple-folders      "󰉕 "
-            telega-symbol-checkmark             "󰄬"
-            telega-symbol-heavy-checkmark       "󰄭"
-            telega-symbol-checkbox-on           ""
-            telega-symbol-checkbox-off          ""
-            telega-symbol-radiobox-on           "󰝥"
-            telega-symbol-radiobox-off          "󰝦"
-            telega-symbol-poll-options          (list "󰝦" "󰝥")
-            telega-symbol-poll-multiple-options (list "󰄱" "󰱒")
-            telega-symbol-dice-list             (list "󱅊" "󰇊" "󰇋" "󰇌" "󰇍" "󰇎" "󰇏")
-            telega-folder-icons-alist '(("Airplane" . " ")
-                                        ("All"      . "󰻞 ")
-                                        ("Book"     . " ")
-                                        ("Bots"     . " ")
-                                        ("Cat"      . "󰄛 ")
-                                        ("Channels" . " ")
-                                        ("Crown"    . "󱇐 ")
-                                        ("Custom"   . "󰉖 ")
-                                        ("Favorite" . " ")
-                                        ("Flower"   . "󰉊 ")
-                                        ("Game"     . " ")
-                                        ("Groups"   . "󰭘 ")
-                                        ("Home"     . " ")
-                                        ("Light"    . " ")
-                                        ("Like"     . " ")
-                                        ("Love"     . " ")
-                                        ("Mask"     . "󰴂 ")
-                                        ("Money"    . " ")
-                                        ("Note"     . "󰺿 ")
-                                        ("Palette"  . "󰸌 ")
-                                        ("Party"    . " ")
-                                        ("Private"  . " ")
-                                        ("Setup"    . "󰨸 ")
-                                        ("Sport"    . "󱅝 ")
-                                        ("Study"    . " ")
-                                        ("Trade"    . "󰄨 ")
-                                        ("Travel"   . " ")
-                                        ("Unmuted"  . " ")
-                                        ("Unread"   . " ")
-                                        ("Work"     . " ")))
+            telega-symbol-folder                (fr/telega-icon "nf-md-folder_outline" :right-pad t) ; 󰉖
+            telega-symbol-multiple-folders      (fr/telega-icon "nf-md-folder_multiple_outline" :right-pad t) ; 󰉕
+            telega-symbol-checkmark             (fr/telega-icon "nf-md-check") ; 󰄬
+            telega-symbol-heavy-checkmark       (fr/telega-icon "nf-md-check_all") ; 󰄭
+            telega-symbol-checkbox-on           (fr/telega-icon "nf-oct-checkbox") ; 
+            telega-symbol-checkbox-off          (fr/telega-icon "nf-seti-checkbox_unchecked") ; 
+            telega-symbol-radiobox-on           (fr/telega-icon "nf-fa-circle") ; 
+            telega-symbol-radiobox-off          (fr/telega-icon "nf-fa-circle_o") ; 
+            telega-symbol-poll-options          (list (fr/telega-icon "nf-fa-circle_o") ; 
+                                                      (fr/telega-icon "nf-fa-circle")) ; 
+            telega-symbol-poll-multiple-options (list (fr/telega-icon "nf-seti-checkbox_unchecked") ; 
+                                                      (fr/telega-icon "nf-oct-checkbox")) ; 
+            telega-symbol-dice-list             (list (fr/telega-icon "nf-fa-dice")    ; 
+                                                      (fr/telega-icon "nf-md-dice_1")  ; 󰇊
+                                                      (fr/telega-icon "nf-md-dice_2")  ; 󰇋
+                                                      (fr/telega-icon "nf-md-dice_3")  ; 󰇌
+                                                      (fr/telega-icon "nf-md-dice_4")  ; 󰇍
+                                                      (fr/telega-icon "nf-md-dice_5")  ; 󰇎
+                                                      (fr/telega-icon "nf-md-dice_6")) ; 󰇏
+            telega-folder-icons-alist `(("Airplane" . ,(fr/telega-icon "nf-fae-telegram" :right-pad t)) ; 
+                                        ("All"      . ,(fr/telega-icon "nf-md-chat_outline" :right-pad t)) ; 󰻞
+                                        ("Book"     . ,(fr/telega-icon "nf-fa-book" :right-pad t)) ; 
+                                        ("Bots"     . ,(fr/telega-icon "nf-fa-robot" :right-pad t)) ; 
+                                        ("Cat"      . ,(fr/telega-icon "nf-md-cat" :right-pad t)) ; 󰄛
+                                        ("Channels" . ,(fr/telega-icon "nf-oct-megaphone" :right-pad t)) ; 
+                                        ("Crown"    . ,(fr/telega-icon "nf-md-crown_outline" :right-pad t)) ; 󱇐
+                                        ("Custom"   . ,(fr/telega-icon "nf-md-folder_outline" :right-pad t)) ; 󰉖
+                                        ("Favorite" . ,(fr/telega-icon "nf-fa-star" :right-pad t)) ; 
+                                        ("Flower"   . ,(fr/telega-icon "nf-md-flower" :right-pad t)) ; 󰉊
+                                        ("Game"     . ,(fr/telega-icon "nf-cod-game" :right-pad t)) ; 
+                                        ("Groups"   . ,(fr/telega-icon "nf-md-account_group_outline" :right-pad t)) ; 󰭘
+                                        ("Home"     . ,(fr/telega-icon "nf-cod-home" :right-pad t)) ; 
+                                        ("Light"    . ,(fr/telega-icon "nf-fa-lightbulb" :right-pad t)) ; 
+                                        ("Like"     . ,(fr/telega-icon "nf-oct-thumbsup" :right-pad t)) ; 
+                                        ("Love"     . ,(fr/telega-icon "nf-fa-heard_o" :right-pad t)) ; 
+                                        ("Mask"     . ,(fr/telega-icon "nf-md-drama_masks" :right-pad t)) ; 󰴂
+                                        ("Money"    . ,(fr/telega-icon "nf-fa-money_bill_1_wave" :right-pad t)) ; 
+                                        ("Note"     . ,(fr/telega-icon "nf-md-notebook_outline" :right-pad t)) ; 󰺿
+                                        ("Palette"  . ,(fr/telega-icon "nf-md-palette_outline" :right-pad t)) ; 󰸌
+                                        ("Party"    . ,(fr/telega-icon "nf-fa-champagne_glasses" :right-pad t)) ; 
+                                        ("Private"  . ,(fr/telega-icon "nf-fa-user_o" :right-pad t)) ; 
+                                        ("Setup"    . ,(fr/telega-icon "nf-md-clipboard_text_outline" :right-pad t)) ; 󰨸
+                                        ("Sport"    . ,(fr/telega-icon "nf-md-weight_lifter" :right-pad t)) ; 󱅝
+                                        ("Study"    . ,(fr/telega-icon "nf-fa-graduation_cap" :right-pad t)) ; 
+                                        ("Trade"    . ,(fr/telega-icon "nf-md-chart_bar" :right-pad t)) ; 󰄨
+                                        ("Travel"   . ,(fr/telega-icon "nf-fa-suitcase" :right-pad t)) ; 
+                                        ("Unmuted"  . ,(fr/telega-icon "nf-oct-bell" :right-pad t)) ; 
+                                        ("Unread"   . ,(fr/telega-icon "nf-oct-checkbox" :right-pad t)) ; 
+                                        ("Work"     . ,(fr/telega-icon "nf-fa-briefcase" :right-pad t)))) ; 
 
     (setq telega-chat-preview-mode-lighter
           (concat " " (telega-symbol 'mode) "Preview"))
