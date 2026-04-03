@@ -37,5 +37,6 @@
         (read--expression-try-read)
       (paredit-RET))))
 
-(use-package! enhanced-evil-paredit
-  :hook (paredit-mode . enhanced-evil-paredit-mode))
+;; BUG:
+;; (use-package! enhanced-evil-paredit
+;;   :hook (paredit-mode . enhanced-evil-paredit-mode))
