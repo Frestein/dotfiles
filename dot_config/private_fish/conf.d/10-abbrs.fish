@@ -1,10 +1,21 @@
+# ============================================================================
+# Abbreviations for the interactive usage
+# ============================================================================
+
+# Stop execution if the shell is not interactive
 if not status is-interactive && test "$CI" != true
     exit
 end
 
+# ----------------------------------------------------------------------------
+# Quick abbreviations
+# ----------------------------------------------------------------------------
 abbr -a -- q exit
 abbr -a -- c clear
 
+# ----------------------------------------------------------------------------
+# Better defaults
+# ----------------------------------------------------------------------------
 if type -q bc
     abbr -a -- bc bc -q
 end
@@ -13,6 +24,14 @@ if type -q btm
     abbr -a -- btm btm -b --hide_avg_cpu
 end
 
+# ----------------------------------------------------------------------------
+# Clipboard management
+# ----------------------------------------------------------------------------
+abbr -a -- clipfzf 'cliphist list | fzf -d "\t" --with-nth 2 | cliphist decode | wl-copy'
+
+# ----------------------------------------------------------------------------
+# Translation (trans)
+# ----------------------------------------------------------------------------
 if type -q trans
     abbr -a -- t trans :ru
     abbr -a -- tt trans :en
@@ -20,13 +39,22 @@ if type -q trans
     abbr -a -- ttl trans :en --shell --brief
 end
 
-abbr -a -- tb nc termbin.com 9999 # Share files
+# ----------------------------------------------------------------------------
+# File sharing
+# ----------------------------------------------------------------------------
+abbr -a -- tb nc termbin.com 9999
 
+# ----------------------------------------------------------------------------
+# Fastfetch
+# ----------------------------------------------------------------------------
 if type -q fastfetch
     abbr -a -- f fastfetch
     abbr -a -- ff fastfetch -c $XDG_CONFIG_HOME/fastfetch/config-full.jsonc
 end
 
+# ----------------------------------------------------------------------------
+# Eza
+# ----------------------------------------------------------------------------
 if type -q eza
     set EZA_DEFAULTS --group --group-directories-first
 
@@ -45,6 +73,9 @@ if type -q eza
     set -e EZA_DEFAULTS
 end
 
+# ----------------------------------------------------------------------------
+# Editors & File Manager
+# ----------------------------------------------------------------------------
 if type -q yazi
     abbr -a -- y yazi
 end
@@ -64,31 +95,57 @@ if type -q emacs
     abbr -a -- dm doom
 end
 
+# ----------------------------------------------------------------------------
+# Dotfiles (Chezmoi)
+# ----------------------------------------------------------------------------
 if type -q chezmoi
     abbr -a -- cz chezmoi
     abbr -a -- czx env CZ_EXT=1 chezmoi
 end
 
-if type -q ansbile
+# ----------------------------------------------------------------------------
+# Ansible
+# ----------------------------------------------------------------------------
+if type -q ansible
     abbr -a -- a ansible
 end
 
+# ----------------------------------------------------------------------------
+# Docker
+# ----------------------------------------------------------------------------
 if type -q docker
     abbr -a -- d docker
 end
 
+# ----------------------------------------------------------------------------
+# Systemd
+# ----------------------------------------------------------------------------
 if type -q systemctl
     abbr -a -- sc systemctl
     abbr -a -- scu systemctl --user
-    abbr -a -- jctl journalctl -p 3 -xb # Get the error messages from journalctl
 end
 
+if type -q journalctl
+    # Get the error messages
+    abbr -a -- jctl journalctl -p 3 -xb
+end
+
+# ----------------------------------------------------------------------------
+# Network
+# ----------------------------------------------------------------------------
 if type -q speedtest-go
     abbr -a -- speedtest speedtest-go
 end
 
+abbr -a -- myip 'dig +short myip.opendns.com @resolver1.opendns.com'
+abbr -a -- ips "ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+# ----------------------------------------------------------------------------
+# Arch Linux: Pacman
+# ----------------------------------------------------------------------------
 if type -q pacman
-    abbr -a -- pacrip "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" # Recent installed packages
+    # Recently installed packages
+    abbr -a -- pacrip "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
     abbr -a -- pacupg doas pacman -Syu
     abbr -a -- pacin doas pacman -S
     abbr -a -- paclean doas pacman -Sc
@@ -114,6 +171,9 @@ if type -q pacman
     abbr -a -- pacmanallkeys doas pacman-key --refresh-keys
 end
 
+# ----------------------------------------------------------------------------
+# Arch Linux: Yay (AUR helper)
+# ----------------------------------------------------------------------------
 if type -q yay
     abbr -a -- yaconf yay -Pg
     abbr -a -- yaclean yay -Sc
