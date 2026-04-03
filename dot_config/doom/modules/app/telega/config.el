@@ -96,6 +96,30 @@
                     telega-chat-fill-column))))
 
   (when (modulep! +icons)
+    ;; Unified function to get icons with padding and color
+    (cl-defun fr/telega-icon (name &key color left-pad right-pad)
+      "Return Nerd icon string with optional face and spaces."
+      (let* ((set-name (progn (string-match "\\`nf-\\([a-z]+\\)-" name) (match-string 1 name)))
+             (icon-set-name
+              (cond
+               ((member set-name '("md")) "mdicon")
+               ((member set-name '("fa" "fae")) "faicon")
+               ((member set-name '("cod")) "codicon")
+               ((member set-name '("weather")) "wicon")
+               ((member set-name '("oct")) "octicon")
+               ((member set-name '("linux")) "flicon")
+               ((member set-name '("seti" "custom")) "sucicon")
+               ((member set-name '("pl" "ple" "pom")) "pomicon")
+               ((member set-name '("iec")) "ipsicon")
+               ((member set-name '("dev")) "devicon")))
+             (icon-func (intern (concat "nerd-icons-" icon-set-name)))
+             (icon (if color
+                       (funcall icon-func name :face color)
+                     (funcall icon-func name))))
+        (when left-pad (setq icon (concat " " icon)))
+        (when right-pad (setq icon (concat icon " ")))
+        icon))
+
     (setopt telega-emoji-use-images nil)
 
     (setopt telega-symbols-emojify
@@ -134,31 +158,7 @@
                  (telega-chatbuf-prompt-ins-chat-avatar))
                (telega-chatbuf-prompt-ins-topic 20 t)
                (telega-auto-translate--chatbuf-prompt-ins-translation)
-               (telega-ins "  ")))
-
-    ;; Unified function to get icons with padding and color
-    (cl-defun fr/telega-icon (name &key color left-pad right-pad)
-      "Return Nerd icon string with optional face and spaces."
-      (let* ((set-name (progn (string-match "\\`nf-\\([a-z]+\\)-" name) (match-string 1 name)))
-             (icon-set-name
-              (cond
-               ((member set-name '("md")) "mdicon")
-               ((member set-name '("fa" "fae")) "faicon")
-               ((member set-name '("cod")) "codicon")
-               ((member set-name '("weather")) "wicon")
-               ((member set-name '("oct")) "octicon")
-               ((member set-name '("linux")) "flicon")
-               ((member set-name '("seti" "custom")) "sucicon")
-               ((member set-name '("pl" "ple" "pom")) "pomicon")
-               ((member set-name '("iec")) "ipsicon")
-               ((member set-name '("dev")) "devicon")))
-             (icon-func (intern (concat "nerd-icons-" icon-set-name)))
-             (icon (if color
-                       (funcall icon-func name :face color)
-                     (funcall icon-func name))))
-        (when left-pad (setq icon (concat " " icon)))
-        (when right-pad (setq icon (concat icon " ")))
-        icon))
+               (telega-ins (fr/telega-icon "nf-fa-angle_right" :left-pad t :right-pad t)))) ; 
 
     (setopt telega-symbol-alarm                 (fr/telega-icon "nf-md-alarm_light_outline" :right-pad t) ; 󰯪
             telega-symbol-attachment            (fr/telega-icon "nf-md-attachment") ; 󰁦
