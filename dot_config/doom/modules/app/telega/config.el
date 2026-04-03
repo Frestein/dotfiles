@@ -688,6 +688,9 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
                     :desc "Quote"         "q" #'fr/telega-format-quote
                     :desc "Link"          "l" #'fr/telega-format-link
                     :desc "Clear"         "c" #'fr/telega-format-clear))
+          (:prefix ("f" . "folder")
+                   "a" #'telega-chat-add-to-folder
+                   "d" #'telega-chat-remove-from-folder)
           (:prefix ("d" . "describe")
                    "w" #'telega-describe-connected-websites
                    "s" #'telega-describe-active-sessions
