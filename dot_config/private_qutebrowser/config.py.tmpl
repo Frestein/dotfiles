@@ -251,9 +251,6 @@ c.qt.args = [
     "enable-features=VaapiIgnoreDriverChecks,AcceleratedVideoDecodeLinuxGL,AcceleratedVideoEncoder,FluentOverlayScrollbar,",
     # TEST: AcceleratedVideoDecodeLinuxZeroCopyGL
 ]
-c.qt.environ = {
-    "QTWEBENGINE_FORCE_USE_GBM": "0",
-}
 c.qt.workarounds.disable_accelerated_2d_canvas = "never"
 
 ################################################################################
