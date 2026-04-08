@@ -15,6 +15,8 @@
 (when (modulep! :lang org)
   (package! org-expose-emphasis-markers)
 
+  (package! org-edna)
+
   (package! corg
     :recipe (:host github :repo "isamert/corg.el"))
 

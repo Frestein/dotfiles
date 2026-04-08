@@ -1425,6 +1425,7 @@ If on a:
   (setopt org-agenda-files (list (expand-file-name "agenda" org-directory)))
   (setopt org-agenda-timegrid-use-ampm t)
   (setopt org-agenda-restore-windows-after-quit t)
+  (setopt org-agenda-dim-blocked-tasks 'invisible)
   (setopt org-tag-alist
           '((:startgrouptag)
             ("🏡 Place")
@@ -1768,6 +1769,14 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (use-package! org-super-agenda
   :when (modulep! :lang org +super)
   :hook (org-agenda-mode . org-super-agenda-mode))
+
+(use-package! org-edna
+  :when (modulep! :lang org)
+  :after org
+  :hook (doom-after-init . org-edna-mode)
+  :config
+  (dolist (prop '("TRIGGER" "BLOCKER"))
+    (add-to-list 'org-default-properties prop)))
 
 (use-package! org-contacts
   :when (modulep! :lang org +contacts)
