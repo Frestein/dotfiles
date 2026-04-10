@@ -2085,7 +2085,7 @@ current users."
             mu4e-headers-encrypted-mark (cons "e"  (+mu4e-normalised-icon "nf-cod-lock" :set "codicon"))                                 ; 
             mu4e-headers-flagged-mark   (cons "F"  (+mu4e-normalised-icon "nf-md-flag_outline" :set "mdicon"))                           ; 󰈽
             mu4e-headers-list-mark      (cons "l"  (+mu4e-normalised-icon "nf-fa-list"))                                                 ; 
-            mu4e-headers-new-mark       (cons "n"  (+mu4e-normalised-icon "nf-md-new_box" :set "mdicon"))                                ; 󰎔
+            mu4e-headers-new-mark       (cons "n"  (+mu4e-normalised-icon "nf-md-new_box" :set "mdicon" :height 0.95))                   ; 󰎔
             mu4e-headers-passed-mark    (cons "P"  (+mu4e-normalised-icon "nf-oct-arrow_right" :set "octicon"))                          ; 
             mu4e-headers-personal-mark  (cons "p"  (+mu4e-normalised-icon "nf-fa-user_o"))                                               ; 
             mu4e-headers-replied-mark   (cons "r"  (+mu4e-normalised-icon "nf-fa-reply"))                                                ; 
