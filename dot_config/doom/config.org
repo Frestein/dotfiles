@@ -1988,33 +1988,47 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     (add-hook hook #'org-save-all-org-buffers))
 
   (defun fr/org-agenda-delete-empty-blocks ()
-    "Remove empty agenda blocks. A block is identified as empty
-if there are fewer than 2 non-empty lines in the block
-(excluding the line with `org-agenda-block-separator' characters)."
+    "Remove empty agenda blocks.
+A block is identified as empty if there are fewer than
+2 non-empty, visible lines in the block (excluding the line
+with `org-agenda-block-separator' characters)."
     (when org-agenda-compact-blocks
       (user-error "Cannot delete empty compact blocks"))
     (setq buffer-read-only nil)
     (save-excursion
       (goto-char (point-min))
       (let* ((blank-line-re "^\\s-*$")
-             (content-line-count (if (looking-at-p blank-line-re) 0 1))
+             (content-line-count
+              ;; Initial value: the first row is counted if it is not empty and visible
+              (if (and (not (looking-at-p blank-line-re))
+                       (not (invisible-p (point))))
+                  1
+                0))
              (start-pos (point))
              (block-re (format "%c\\{10,\\}" org-agenda-block-separator)))
         (while (and (not (eobp)) (forward-line))
           (cond
            ((looking-at-p block-re)
+            ;; Complete the previous block if it is empty
             (when (< content-line-count 2)
               (delete-region start-pos (1+ (point-at-bol))))
             (setq start-pos (point))
             (forward-line)
-            (setq content-line-count (if (looking-at-p blank-line-re) 0 1)))
+            ;; Resetting the counter for a new block, taking into account visibility
+            (setq content-line-count
+                  (if (and (not (looking-at-p blank-line-re))
+                           (not (invisible-p (point))))
+                      1
+                    0)))
            ((not (looking-at-p blank-line-re))
-            (setq content-line-count (1+ content-line-count)))))
+            ;; Increment the counter only for visible non-empty lines
+            (unless (invisible-p (point))
+              (setq content-line-count (1+ content-line-count))))))
+        ;; Processing the last block
         (when (< content-line-count 2)
           (delete-region start-pos (point-max)))
         (goto-char (point-min))
-        ;; The above strategy can leave a separator line at the beginning
-        ;; of the buffer.
+        ;; Removing a possible separator at the beginning of the buffer
         (when (looking-at-p block-re)
           (delete-region (point) (1+ (point-at-eol))))))
     (setq buffer-read-only t))
