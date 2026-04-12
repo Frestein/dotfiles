@@ -2013,7 +2013,7 @@ It should be the title of the web page as returned by `rdrview'."
     (elfeed-update))
 
   (after! elfeed
-    (setopt elfeed-search-filter "@2-week-ago +unread -reddit")
+    (setopt elfeed-search-filter "@2-week-ago +unread +awesome -reddit ")
 
     (map! :map elfeed-show-mode-map
           :n [escape] #'elfeed-kill-buffer
