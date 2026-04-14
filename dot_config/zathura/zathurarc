@@ -8,10 +8,15 @@ set database sqlite
 map D set "first-page-column 1:1"
 map <A-d> set "first-page-column 1:2"
 
-# Smooth scrolling
-map j feedkeys "<C-Down>"
-map k feedkeys "<C-Up>"
+map "<C-k>" navigate previous
+map "<C-j>" navigate next
+map "<C-Up>" navigate previous
+map "<C-Down>" navigate next
 
+map j smooth-down
+map k smooth-up
+
+# Cyrillic support
 map й feedkeys q
 map ц feedkeys w
 map у feedkeys e
@@ -35,8 +40,8 @@ map п feedkeys g
 # but subsequent keys stay unmodified
 map gп feedkeys gg
 map р feedkeys h
-map о feedkeys "<C-Down>"
-map л feedkeys "<C-Up>"
+map о feedkeys j
+map л feedkeys k
 map д feedkeys l
 map ж feedkeys ;
 map э feedkeys "'"
