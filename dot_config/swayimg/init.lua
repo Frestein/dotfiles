@@ -47,7 +47,10 @@ swayimg.viewer.set_image_chessboard(10, 0xffaaaaaa, 0xff555555)
 -- Scale, position, antialiasing
 local antialiasing_enabled = true
 
-swayimg.viewer.set_default_scale("optimal")
+-- Force set scale mode on window resize (useful for tiling compositors)
+swayimg.on_window_resize(function()
+	swayimg.viewer.set_fix_scale("optimal")
+end)
 swayimg.viewer.set_default_position("center")
 swayimg.enable_antialiasing(antialiasing_enabled)
 swayimg.viewer.enable_loop(true)
