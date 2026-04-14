@@ -915,15 +915,23 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
   (after! magit
     (require 'once)
 
+    (defgroup fr/magit-conventional-commits nil
+      "Customization for conventional commits in Magit."
+      :group 'magit)
+
+    (defcustom fr/magit-enable-conventional-commits t
+      "Enable conventional commit prompts in Magit.
+Can be set to nil in .dir-locals.el to disable for a specific project."
+      :type 'boolean
+      :safe #'booleanp
+      :group 'fr/magit-conventional-commits)
+
     (defun fr/magit--get-project-unique-identifier ()
       "Generate a unique identifier for the current project."
       (let* ((project-path (magit-toplevel))
              (canonical-path (file-truename project-path)))
         (secure-hash 'md5 canonical-path)))
 
-    ;; Many thanks
-    ;; - https://j-e-s-s-e.com/blog/add-conventional-commits-with-scopes-to-your-magit-commit-messages
-    ;; - https://github.com/jesse-c/dotfiles/blob/8b9326ea7d37687d365efa9e86cb30056665beec/home/dot_config/emacs/init.el#L551
     (defun fr/magit--find-conventional-commit-scopes ()
       "Find all scopes used in conventional commits in the current Git project."
       (let* ((project-id (fr/magit--get-project-unique-identifier))
@@ -934,30 +942,23 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
              (default-directory (magit-toplevel))
              (temp-buffer (generate-new-buffer " *commit-scopes-temp*")))
 
-        ;; Create cache directory if it doesn't exist
         (unless (file-exists-p cache-dir)
           (make-directory cache-dir t))
 
-        ;; Use Emacs Lisp to extract scopes directly
         (with-current-buffer temp-buffer
           (call-process "git" nil t nil "log" "--pretty=format:%s")
           (goto-char (point-min))
 
-          ;; Extract scopes using a regular expression
           (let ((scopes '()))
             (while (re-search-forward "\\(feat\\|fix\\|docs\\|style\\|refactor\\|perf\\|test\\|build\\|ci\\|chore\\|revert\\)(\\([^)]+\\))" nil t)
               (let ((scope-text (match-string 2)))
-                ;; Split by comma and add each scope
                 (dolist (scope (split-string scope-text "," t "[ \t]+"))
                   (push (string-trim scope) scopes))))
 
-            ;; Write unique scopes to the cache file
             (with-temp-file cache-file
               (insert (mapconcat #'identity (delete-dups scopes) "\n")))))
 
         (kill-buffer temp-buffer)
-
-        ;; Return the cache file path
         cache-file))
 
     (defun fr/magit--get-commit-scopes ()
@@ -970,7 +971,7 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
              (default-directory (magit-toplevel)))
         (unless (and (file-exists-p cache-file)
                      (> (time-to-seconds (time-since (file-attribute-modification-time (file-attributes cache-file))))
-                        (* 60 60 24)))  ; Cache for 24 hours
+                        (* 60 60 24)))
           (fr/magit--find-conventional-commit-scopes))
 
         (when (file-exists-p cache-file)
@@ -979,10 +980,12 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
             (split-string (buffer-string) "\n" t)))))
 
     (defun fr/magit-conventional-commit-prompt ()
-      "Prompt for conventional commit type with scope completion."
+      "Prompt for conventional commit type with scope completion.
+Does nothing if `fr/magit-enable-conventional-commits' is nil."
       (let ((commit-types '("feat" "fix" "docs" "style" "refactor" "perf" "test" "build" "ci" "cd" "chore" "revert")))
         (condition-case nil
-            (if (y-or-n-p "Use conventional commit format? ")
+            (if (and fr/magit-enable-conventional-commits
+                     (y-or-n-p "Use conventional commit format? "))
                 (let* ((type (completing-read "Commit type: " commit-types nil t))
                        (scopes (fr/magit--get-commit-scopes))
                        (scope-input (completing-read "Scope (optional, comma-separated for multiple): " scopes nil nil)))
