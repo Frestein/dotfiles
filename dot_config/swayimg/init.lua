@@ -49,7 +49,12 @@ local antialiasing_enabled = true
 
 -- Force set scale mode on window resize (useful for tiling compositors)
 swayimg.on_window_resize(function()
-	swayimg.viewer.set_fix_scale("optimal")
+	local mode = swayimg.get_mode()
+	if mode == "viewer" then
+		swayimg.viewer.set_fix_scale("optimal")
+	elseif mode == "slideshow" then
+		swayimg.slideshow.set_fix_scale("optimal")
+	end
 end)
 swayimg.viewer.set_default_position("center")
 swayimg.enable_antialiasing(antialiasing_enabled)
