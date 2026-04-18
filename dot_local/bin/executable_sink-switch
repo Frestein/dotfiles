@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Combined sink switcher using pactl (works with PulseAudio and PipeWire-pulse)
-# Cycles through sinks or selects via fuzzel
+# Cycles through sinks or selects via fuzzel.
 
 usage() {
     cat <<EOF
@@ -32,7 +32,11 @@ for cmd in pactl notify-send; do
     fi
 done
 
-# Get list of sink names (more stable than indices)
+# ----------------------------------------------------------------------
+# Helper functions working with sink names and descriptions
+# ----------------------------------------------------------------------
+
+# Get list of sink names (raw internal names)
 get_all_sink_names() {
     pactl list short sinks | cut -f2
 }
@@ -42,9 +46,40 @@ get_default_sink_name() {
     pactl info | grep 'Default Sink' | cut -d':' -f2 | sed 's/^[[:space:]]*//'
 }
 
-notify() {
-    notify-send --expire-time 1350 "Switched default output sink to: $1"
+# Get description for a given sink name
+# Uses pactl list sinks and extracts the Description: field.
+get_sink_description() {
+    sink_name="$1"
+    # Escape dots and other regex characters in sink_name for grep -F (fixed string)
+    # Use -F to treat as literal string
+    pactl list sinks | grep -A 20 "Name: $sink_name" | grep -m1 "Description:" | cut -d':' -f2- | sed 's/^[[:space:]]*//'
 }
+
+# Get all sinks as "name|description" lines
+get_all_sinks_with_desc() {
+    for name in $(get_all_sink_names); do
+        desc=$(get_sink_description "$name")
+        # If description is empty, fallback to name
+        if [ -z "$desc" ]; then
+            desc="$name"
+        fi
+        echo "$name|$desc"
+    done
+}
+
+# Notify using description
+notify() {
+    sink_name="$1"
+    desc=$(get_sink_description "$sink_name")
+    if [ -z "$desc" ]; then
+        desc="$sink_name"
+    fi
+    notify-send --expire-time 1350 "Switched default output sink to: $desc"
+}
+
+# ----------------------------------------------------------------------
+# Main logic
+# ----------------------------------------------------------------------
 
 if [ "$1" = "--dmenu" ] || [ "$1" = "-d" ]; then
     # Interactive selection with fuzzel
@@ -52,13 +87,30 @@ if [ "$1" = "--dmenu" ] || [ "$1" = "-d" ]; then
         echo "Error: fuzzel not found, cannot select interactively" >&2
         exit 1
     fi
-    # Get list of sink names
-    sink_names=$(get_all_sink_names)
-    # fuzzel displays the names and returns the chosen line
-    chosen=$(echo "$sink_names" | fuzzel -d -p 'Switch Output ' --placeholder 'Choose...' -w 50 --minimal-lines)
+
+    # Get list of "description (name)" for display
+    # We'll build a list where each line is "description (name)"
+    # This helps if descriptions are not unique, but name is unique.
+    temp_file=$(mktemp)
+    get_all_sinks_with_desc | while IFS='|' read -r name desc; do
+        echo "$desc ($name)" >>"$temp_file"
+    done
+
+    # Show fuzzel and capture chosen line
+    chosen=$(cat "$temp_file" | fuzzel -d -p 'Switch Output ' --placeholder 'Choose...' -w 58 --minimal-lines)
+
+    rm -f "$temp_file"
+
     if [ -n "$chosen" ]; then
-        pactl set-default-sink "$chosen"
-        notify "$chosen"
+        # Extract sink name from the chosen line: everything after last '(' and before ')'
+        sink_name=$(echo "$chosen" | sed 's/.*(\(.*\))/\1/')
+        if [ -n "$sink_name" ]; then
+            pactl set-default-sink "$sink_name"
+            notify "$sink_name"
+        else
+            echo "Error: could not extract sink name from selection" >&2
+            exit 1
+        fi
     else
         exit 1
     fi
