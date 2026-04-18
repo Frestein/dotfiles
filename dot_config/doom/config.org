@@ -88,6 +88,7 @@
     - [[#org-super-agenda][Org Super Agenda]]
     - [[#org-edna][Org Edna]]
     - [[#org-contacts][Org Contacts]]
+    - [[#calfw-org][Calfw Org]]
     - [[#qol][QoL]]
       - [[#org-expose-emphasis-markers][Org Expose Emphasis Markers]]
       - [[#corg][Corg]]
@@ -1017,6 +1018,7 @@ Disable evil-snipe on specific modes.
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
        :desc "Contacts" "c" #'org-contacts
+       :desc "Calendar" "C" #'calfw-org-open-calendar
        (:when (modulep! :app pomm)
          :desc "Third Time" "," #'pomm-third-time
          :desc "Pomodoro" "." #'pomm)
@@ -2371,6 +2373,25 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
          'annotation info)))))
 #+end_src
 
+
+*** Calfw Org
+
+#+begin_src elisp
+(defcustom fr/calfw-skip-habits t
+  "When non-nil, skip habit tasks in calfw calendar view."
+  :type 'boolean
+  :group 'calfw-org)
+
+(defun fr/calfw-advice-skip-habits (orig-fun &rest args)
+  "Advice to skip habit tasks in calfw calendar view."
+  (if fr/calfw-skip-habits
+      (let ((org-agenda-skip-function
+             '(org-agenda-skip-entry-if 'regexp ":STYLE:.*habit")))
+        (apply orig-fun args))
+    (apply orig-fun args)))
+
+(advice-add 'calfw-org--collect-schedules-period :around #'fr/calfw-advice-skip-habits))
+#+end_src
 
 *** QoL
 

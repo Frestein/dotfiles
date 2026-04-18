@@ -719,6 +719,7 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
        :desc "Contacts" "c" #'org-contacts
+       :desc "Calendar" "C" #'calfw-org-open-calendar
        (:when (modulep! :app pomm)
          :desc "Third Time" "," #'pomm-third-time
          :desc "Pomodoro" "." #'pomm)
@@ -1930,6 +1931,21 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
                                                  'face '(:inherit org-tag)))) ""))
          'contact-name contact-name
          'annotation info)))))
+
+(defcustom fr/calfw-skip-habits t
+  "When non-nil, skip habit tasks in calfw calendar view."
+  :type 'boolean
+  :group 'calfw-org)
+
+(defun fr/calfw-advice-skip-habits (orig-fun &rest args)
+  "Advice to skip habit tasks in calfw calendar view."
+  (if fr/calfw-skip-habits
+      (let ((org-agenda-skip-function
+             '(org-agenda-skip-entry-if 'regexp ":STYLE:.*habit")))
+        (apply orig-fun args))
+    (apply orig-fun args)))
+
+(advice-add 'calfw-org--collect-schedules-period :around #'fr/calfw-advice-skip-habits))
 
 (use-package! org-expose-emphasis-markers
   :hook (org-mode . org-expose-emphasis-markers-mode))
