@@ -221,6 +221,19 @@
 (setopt user-full-name "Frestein"
         user-mail-address "frestein@tuta.io")
 
+(setopt holiday-general-holidays nil)
+(setopt holiday-christian-holidays nil)
+(setopt holiday-hebrew-holidays nil)
+(setopt holiday-islamic-holidays nil)
+(setopt holiday-bahai-holidays nil)
+(setopt holiday-oriental-holidays nil)
+(setopt holiday-solar-holidays nil)
+(setopt holiday-other-holidays
+        '((holiday-fixed 1 1 "New Year's Day")
+          (holiday-fixed 2 22 "Birthday")
+          (holiday-fixed 11 19 "International Men's Day")))
+(setopt calendar-holidays holiday-other-holidays)
+
 (defun toggle-echo-area-messages ()
   "Toggle the log of recent echo-area messages: the `*Messages*' buffer.
 The number of messages retained in that buffer is specified by

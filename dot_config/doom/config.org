@@ -21,6 +21,7 @@
   - [[#misc][Misc]]
 - [[#personal][Personal]]
   - [[#user][User]]
+  - [[#holidays][Holidays]]
   - [[#functions][Functions]]
   - [[#misc-1][Misc]]
 - [[#system-integration][System Integration]]
@@ -399,6 +400,23 @@ All Maple Font [[https://github.com/subframe7536/maple-font/blob/variable/source
 #+begin_src elisp
 (setopt user-full-name "Frestein"
         user-mail-address "frestein@tuta.io")
+#+end_src
+
+** Holidays
+
+#+begin_src elisp
+(setopt holiday-general-holidays nil)
+(setopt holiday-christian-holidays nil)
+(setopt holiday-hebrew-holidays nil)
+(setopt holiday-islamic-holidays nil)
+(setopt holiday-bahai-holidays nil)
+(setopt holiday-oriental-holidays nil)
+(setopt holiday-solar-holidays nil)
+(setopt holiday-other-holidays
+        '((holiday-fixed 1 1 "New Year's Day")
+          (holiday-fixed 2 22 "Birthday")
+          (holiday-fixed 11 19 "International Men's Day")))
+(setopt calendar-holidays holiday-other-holidays)
 #+end_src
 
 ** Functions
