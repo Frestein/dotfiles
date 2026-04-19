@@ -1932,20 +1932,22 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
          'contact-name contact-name
          'annotation info)))))
 
-(defcustom fr/calfw-skip-habits t
-  "When non-nil, skip habit tasks in calfw calendar view."
-  :type 'boolean
-  :group 'calfw-org)
+(when (modulep! :app calendar)
+  (defcustom fr/calfw-skip-habits t
+    "When non-nil, skip habit tasks in calfw calendar view."
+    :type 'boolean
+    :group 'calfw-org)
 
-(defun fr/calfw-advice-skip-habits (orig-fun &rest args)
-  "Advice to skip habit tasks in calfw calendar view."
-  (if fr/calfw-skip-habits
-      (let ((org-agenda-skip-function
-             '(org-agenda-skip-entry-if 'regexp ":STYLE:.*habit")))
-        (apply orig-fun args))
-    (apply orig-fun args)))
+  (defun fr/calfw-advice-skip-habits (orig-fun &rest args)
+    "Advice to skip habit tasks in calfw calendar view."
+    (if fr/calfw-skip-habits
+        (let ((org-agenda-skip-function
+               '(org-agenda-skip-entry-if 'regexp ":STYLE:.*habit")))
+          (apply orig-fun args))
+      (apply orig-fun args)))
 
-(advice-add 'calfw-org--collect-schedules-period :around #'fr/calfw-advice-skip-habits))
+  (after! calfw-org
+    (advice-add 'calfw-org--collect-schedules-period :around #'fr/calfw-advice-skip-habits)))
 
 (use-package! org-expose-emphasis-markers
   :hook (org-mode . org-expose-emphasis-markers-mode))
