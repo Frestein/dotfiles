@@ -688,6 +688,11 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
         :n "gZ" #'zoxide-find-file))
 
 (map! :leader
+      "x" nil
+      (:prefix ("x" . "diagnostics")
+               (:when (modulep! :checkers syntax -flymake)
+                 :desc "Toggle flycheck" "x" #'fr/flycheck-toggle-error-list))
+      :desc "Toggle scratch buffer" "S" #'doom/toggle-scratch-buffer
       (:prefix ("s" . "search")
                (:when (modulep! :completion vertico)
                  :desc "Ripgrep" "g" #'consult-ripgrep)
@@ -876,6 +881,15 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
 
     (add-to-list 'marginalia-prompt-categories '("\\<Describe module\\>" . doom-module))
     (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
+
+(when (modulep! :checkers syntax -flymake)
+  (defun fr/flycheck-toggle-error-list ()
+    "Toggle the error list for the current buffer."
+    (interactive)
+    (let ((win (get-buffer-window flycheck-error-list-buffer)))
+      (if win
+          (delete-window win)
+        (flycheck-list-errors)))))
 
 (when (modulep! :tools eval)
   (set-popup-rule! "^\\*eros inspect" :side 'right :size 0.5 :height 0.5 :ttl 0 :slot 1 :modeline t))
