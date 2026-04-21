@@ -61,6 +61,7 @@ set -q POWERSHELL_TELEMETRY_OPTOUT; or set -x POWERSHELL_TELEMETRY_OPTOUT 1
 
 set -q DMENU; or set -x DMENU "fuzzel -d"
 
+set -x SUDO_PROMPT (tput setaf 3)"[sudo]"(tput sgr0)" password for "(tput setaf 10)"%p"(tput sgr0)": "
 set -q SUDO_ASKPASS; or set -x SUDO_ASKPASS $HOME/.local/bin/askpass
 set -q DOAS_ASKPASS; or set -x DOAS_ASKPASS $SUDO_ASKPASS
 

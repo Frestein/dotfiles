@@ -12,6 +12,8 @@ fi
 
 # ----------------------------Prompt--------------------------- #
 
+export SUDO_PROMPT="$(tput setaf 3)[sudo]$(tput sgr0) password for $(tput setaf 10)%p$(tput sgr0): "
+
 eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline.omp.toml")"
 
 # ------------------Completions & Initializations-------------- #
