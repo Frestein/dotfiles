@@ -1129,6 +1129,8 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
 
   (setopt org-read-date-force-compatible-dates nil)
 
+  (setopt org-table-shrunk-column-indicator "...")
+
   ;; BUG: The second format is displayed incorrectly.
   ;; For example:
   ;; SCHEDULED: <2025-09-26 Fri 02:00 PM-16:00>
