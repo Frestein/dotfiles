@@ -1610,6 +1610,9 @@ If a region is active, emphasize it, else emphasize the word at point."
         "E" #'org-export-dispatch
         (:prefix ("l" . "links")
                  "l" #'fr/org-insert-link-dwim)
+        (:prefix ("b" . "tables")
+                 (:prefix ("t" . "toggle")
+                          "w" #'org-table-toggle-column-width))
         (:prefix ("e" . "emphasize")
          :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
          :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
