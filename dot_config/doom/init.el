@@ -60,7 +60,7 @@
        snippets             ; my elves. They type so I don't have to
        (symex +ide)
        (whitespace +guess +trim)  ; a butler for your whitespace
-       ;; word-wrap         ; soft wrapping with language-aware indent
+       word-wrap         ; soft wrapping with language-aware indent
        ripgrep
 
        :emacs
