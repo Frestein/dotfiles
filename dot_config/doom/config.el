@@ -32,13 +32,14 @@
   `(mode-line :background ,(doom-color 'base3) :foreground ,(doom-color 'modeline-fg)))
 
 (setopt doom-font                (font-spec :family "Maple Mono NF" :size 14))
-(setq   doom-big-font            (font-spec :family "Maple Mono NF" :size 24))
 (setopt doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14))
 (setopt doom-serif-font          (font-spec :family "Noto Serif" :size 14))
 (setopt doom-emoji-font          (font-spec :family "Twemoji" :size 14))
 
+(setq doom-big-font-increment 8)
+
 (setopt doom-symbol-font doom-font)
-(setq doom-symbol-fallback-font-families '("Twemoji"))
+(setopt doom-symbol-fallback-font-families '("Twemoji"))
 
 (when (modulep! :app telega)
   (after! telega
@@ -906,8 +907,8 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
   (remove-hook 'doom-first-file-hook #'ultra-scroll-mode))
 
 (when (modulep! :ui zen)
-  (setq +zen-text-scale 0)
-  (setq +zen-mixed-pitch-modes nil)
+  (setopt +zen-text-scale 0.0)
+  (setopt +zen-mixed-pitch-modes nil)
   (setopt writeroom-width 100))
 
 (when (modulep! :ui hl-todo)
