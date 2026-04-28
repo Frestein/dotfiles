@@ -39,7 +39,17 @@
 (setq doom-big-font-increment 8)
 
 (setopt doom-symbol-font doom-font)
-(setopt doom-symbol-fallback-font-families '("Twemoji"))
+(setopt doom-symbol-fallback-font-families
+        '("Twemoji"
+          "Noto Color Emoji"
+          "Noto Sans Symbols"
+          "Noto Sans Symbols 2"
+          "Noto Sans Math"
+          "DejaVu Sans"
+          "Symbola"
+          "JoyPixels"
+          "Source Code Pro"
+          "Segoe UI Symbol"))
 
 (when (modulep! :app telega)
   (after! telega
