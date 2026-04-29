@@ -36,7 +36,7 @@
            . ,(gt-translator
                :taker (gt-taker :text 'paragraph)
                :engines (gt-google-engine)
-               :render (gt-insert-render :type 'replace))))))
+               :render (gt-insert-render :type 'replace)))))
 
-(set-popup-rule! "^\\*gt-result"
-  :side 'right :size 0.5 :ttl 0 :quit t :select nil :modeline t)
+  (set-popup-rule! (regexp-quote "*gt-result*")
+    :side 'right :size .5 :ttl 0 :quit t :select nil :modeline nil))
