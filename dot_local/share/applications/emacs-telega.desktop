@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Emacs (Telega)
+Comment=Open tg:// and tonsite:// links in Emacs via Telega
+Exec=/usr/bin/emacs --eval "(telega-browse-url \"%u\")"
+Icon=emacs
+Type=Application
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/tg;x-scheme-handler/tonsite;
+Categories=Network;InstantMessaging;

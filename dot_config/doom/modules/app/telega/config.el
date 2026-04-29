@@ -663,6 +663,12 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
         (fr/telega--override-evil-collection-keys))
     (fr/telega--init-map-h))
 
+  ;; Recognize Telegram links for browse-url
+  (setq browse-url-handlers
+        (append '(("\\`tg:" . telega-browse-url)
+                  ("\\`tonsite:" . telega-browse-url))
+                browse-url-handlers))
+
   (set-popup-rule! (lambda (buf-name _action)
                      (and (or (string-match-p "^\\*Telega" buf-name)
                               (string-match-p "^\\*Telegram" buf-name))
