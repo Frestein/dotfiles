@@ -47,7 +47,6 @@
   - [[#settings][Settings]]
   - [[#mappings][Mappings]]
     - [[#evil][Evil]]
-      - [[#evil-collection][Evil Collection]]
       - [[#evil-snipe][Evil Snipe]]
     - [[#which-key][Which-Key]]
     - [[#map][map!]]
@@ -923,33 +922,6 @@ Override default Doom's auth-sources.
 
 #+begin_src elisp
 (setopt evil-echo-state nil)
-#+end_src
-
-**** Evil Collection
-
-Override evil-collection binds.
-
-#+begin_src elisp
-(when (modulep! :editor evil)
-  (when (modulep! :app telega)
-    (after! telega
-      (defun fr/telega-chatbuf-cancel-both ()
-        (interactive)
-        (telega-chatbuf-filter-cancel)
-        (telega-chatbuf-thread-cancel))
-
-      (evil-collection-define-key 'normal 'telega-root-mode-map
-        "gVD" #'telega-view-default)
-
-      (evil-collection-define-key 'normal 'telega-chat-mode-map
-        "_" #'fr/telega-chatbuf-cancel-both
-
-        "Za" #'telega-chatbuf-attach-animation
-        "Zf" #'telega-chatbuf-attach-file
-        "Zv" #'telega-chatbuf-attach-video
-
-        (kbd "<tab>") 'telega-button-forward
-        (kbd "<backtab>") 'telega-button-backward))))
 #+end_src
 
 **** Evil Snipe

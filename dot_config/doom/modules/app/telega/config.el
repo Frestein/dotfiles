@@ -170,7 +170,7 @@
             telega-symbol-boost                 (fr/telega-icon "nf-oct-rocket" :right-pad t) ; 
             telega-symbol-bulp                  (fr/telega-icon "nf-fa-lightbulb" :right-pad t) ; 
             telega-symbol-button-close          (fr/telega-icon "nf-md-close_box_outline") ; 󰅘
-            telega-symbol-chat-list             (fr/telega-icon "nf-fa-comments_o" :right-pad t); 
+            telega-symbol-chat-list             (fr/telega-icon "nf-fa-comments_o" :right-pad t) ; 
             telega-symbol-checklist             (fr/telega-icon "nf-fa-tasks" :right-pad t) ; 
             telega-symbol-circle                (fr/telega-icon "nf-fa-circle_o") ; 
             telega-symbol-codeblock             (fr/telega-icon "nf-fa-code") ; 
@@ -239,12 +239,12 @@
                                                       (fr/telega-icon "nf-fa-circle")) ; 
             telega-symbol-poll-multiple-options (list (fr/telega-icon "nf-seti-checkbox_unchecked") ; 
                                                       (fr/telega-icon "nf-oct-checkbox")) ; 
-            telega-symbol-dice-list             (list (fr/telega-icon "nf-fa-dice")    ; 
-                                                      (fr/telega-icon "nf-md-dice_1")  ; 󰇊
-                                                      (fr/telega-icon "nf-md-dice_2")  ; 󰇋
-                                                      (fr/telega-icon "nf-md-dice_3")  ; 󰇌
-                                                      (fr/telega-icon "nf-md-dice_4")  ; 󰇍
-                                                      (fr/telega-icon "nf-md-dice_5")  ; 󰇎
+            telega-symbol-dice-list             (list (fr/telega-icon "nf-fa-dice") ; 
+                                                      (fr/telega-icon "nf-md-dice_1") ; 󰇊
+                                                      (fr/telega-icon "nf-md-dice_2") ; 󰇋
+                                                      (fr/telega-icon "nf-md-dice_3") ; 󰇌
+                                                      (fr/telega-icon "nf-md-dice_4") ; 󰇍
+                                                      (fr/telega-icon "nf-md-dice_5") ; 󰇎
                                                       (fr/telega-icon "nf-md-dice_6")) ; 󰇏
             telega-folder-icons-alist `(("Airplane" . ,(fr/telega-icon "nf-fae-telegram" :right-pad t)) ; 
                                         ("All"      . ,(fr/telega-icon "nf-md-chat_outline" :right-pad t)) ; 󰻞
@@ -651,68 +651,26 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
     (interactive)
     (fr/telega-format--apply nil))
 
-  (map! (:map telega-root-mode-map
-         :n "A" #'telega-chat-toggle-archive)
-        (:map telega-msg-button-map
-         "SPC" nil
-         :n "C-p" #'telega-msg-previous
-         :n "C-n" #'telega-msg-next)
-        (:map telega-chat-mode-map
-         :n [tab] #'telega-button-forward
-         :n [backtab] #'telega-button-backward
-         :n "C-p" #'telega-msg-previous
-         :n "C-n" #'telega-msg-next
-         :n "ZA" #'telega-chatbuf-attach-audio
-         :n "Zc" #'telega-chatbuf-attach-clipboard
-         :n "ZC" #'telega-chatbuf-attach-checklist
-         :n "ZV" #'telega-chatbuf-attach-voice-note
-         :n "Zd" #'telega-chatbuf-attach-dice
-         :n "Zm" #'telega-chatbuf-attach-media
-         :n "Zp" #'telega-chatbuf-attach-poll
-         :n "Zs" #'telega-chatbuf-attach-sticker
-         :n "Zz" #'telega-chatbuf-attach
-         (:localleader
-          "@" #'fr/telega-chatbuf-inline-bot-choose
-          (:prefix ("t" . "translate")
-                   "r" #'telega-translate-region
-                   "R" #'telega-translate-region-inplace
-                   "a" #'telega-auto-translate-mode)
-          (:prefix ("i" . "input")
-                   "b" #'fr/telega-chatbuf-inline-bot-choose
-                   (:prefix ("f" . "format")
-                    :desc "Bold"          "b" #'fr/telega-format-bold
-                    :desc "Italic"        "i" #'fr/telega-format-italic
-                    :desc "Underline"     "u" #'fr/telega-format-underline
-                    :desc "Strikethrough" "s" #'fr/telega-format-strikethrough
-                    :desc "Spoiler"       "S" #'fr/telega-format-spoiler
-                    :desc "Monospace"     "m" #'fr/telega-format-monospace
-                    :desc "Quote"         "q" #'fr/telega-format-quote
-                    :desc "Link"          "l" #'fr/telega-format-link
-                    :desc "Clear"         "c" #'fr/telega-format-clear))
-          (:prefix ("f" . "folder")
-                   "a" #'telega-chat-add-to-folder
-                   "d" #'telega-chat-remove-from-folder)
-          (:prefix ("d" . "describe")
-                   "w" #'telega-describe-connected-websites
-                   "s" #'telega-describe-active-sessions
-                   "n" #'telega-describe-network
-                   "N" #'telega-describe-notifications
-                   "p" #'telega-describe-privacy-settings
-                   "c" #'telega-describe-chat
-                   "C" #'telega-describe-chat-members)
-          (:prefix ("s" . "search")
-                   "s" #'telega-chatbuf-filter-search
-                   "S" #'telega-chatbuf-filter-by-sender
-                   "t" #'telega-chatbuf-filter-by-topic
-                   "p" #'telega-chatbuf-filter-scheduled
-                   "h" #'telega-chatbuf-filter-hashtag
-                   "f" #'telega-chatbuf-filter
-                   "F" #'telega-chatbuf-filter-favorite)
-          (:prefix ("S" . "stickers")
-                   "f" #'telega-sticker-choose-favorite-or-recent
-                   "c" #'telega-stickerset-choose
-                   "t" #'telega-stickerset-trends
-                   "s" #'telega-stickerset-search)))))
+  (defun fr/telega-chatbuf-cancel-dwim ()
+    "Cancel both the active filter and thread in the Telega chat buffer."
+    (interactive)
+    (telega-chatbuf-filter-cancel)
+    (telega-chatbuf-thread-cancel))
+
+  ;; Initialize custom keybindings
+  (if (modulep! :editor evil)
+      (after! evil-collection
+        (fr/telega--override-evil-collection-keys))
+    (fr/telega--init-map-h))
+
+  (set-popup-rule! (lambda (buf-name _action)
+                     (and (or (string-match-p "^\\*Telega" buf-name)
+                              (string-match-p "^\\*Telegram" buf-name))
+                          (not (string= buf-name "*Telega Root*"))
+                          (not (string= buf-name "*Telegram Messages Preview*"))))
+    :side 'right :size .5 :ttl 0 :quit t :select t :modeline t)
+  (set-popup-rule! (regexp-quote "*Telegram Messages Preview*")
+    :side 'right :size .5 :ttl 0 :quit t :modeline t))
 
 (when (modulep! +mnz)
   (use-package! telega-mnz

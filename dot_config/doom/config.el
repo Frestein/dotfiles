@@ -645,27 +645,6 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
 (setopt evil-echo-state nil)
 
 (when (modulep! :editor evil)
-  (when (modulep! :app telega)
-    (after! telega
-      (defun fr/telega-chatbuf-cancel-both ()
-        (interactive)
-        (telega-chatbuf-filter-cancel)
-        (telega-chatbuf-thread-cancel))
-
-      (evil-collection-define-key 'normal 'telega-root-mode-map
-        "gVD" #'telega-view-default)
-
-      (evil-collection-define-key 'normal 'telega-chat-mode-map
-        "_" #'fr/telega-chatbuf-cancel-both
-
-        "Za" #'telega-chatbuf-attach-animation
-        "Zf" #'telega-chatbuf-attach-file
-        "Zv" #'telega-chatbuf-attach-video
-
-        (kbd "<tab>") 'telega-button-forward
-        (kbd "<backtab>") 'telega-button-backward))))
-
-(when (modulep! :editor evil)
   (after! evil-snipe
     (when (modulep! :app telega)
       (dolist (mode '(telega-root-mode telega-chat-mode telega-chatbuf-mode))
