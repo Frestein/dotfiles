@@ -3,6 +3,9 @@
 
 (package! once)
 
+(when (modulep! :editor evil +vimrc)
+  (package! vimrc-mode))
+
 (when (modulep! :term eshell)
   (package! esh-autosuggest)
 
