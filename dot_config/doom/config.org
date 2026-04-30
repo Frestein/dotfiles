@@ -2820,37 +2820,13 @@ is tomorrow.  With two prefixes, select the deadline."
 
 #+begin_src elisp
 (when (modulep! :app telega)
-  ;; Fuck you, Russian Pederation's government!
-  (after! telega
-    (let ((config-file (expand-file-name "TgWsProxy/config.json" (xdg-config-home))))
-      (when (file-exists-p config-file)
-        (with-temp-buffer
-          (insert-file-contents config-file)
-          (let* ((json-object-type 'alist)
-                 (json-array-type 'list)
-                 (json-key-type 'string)
-                 (data (json-read))
-                 (secret (cdr (assoc "secret" data)))
-                 (host (cdr (assoc "host" data)))
-                 (port (cdr (assoc "port" data))))
-            (when (and secret host port)
-              (add-hook 'telega-before-auth-hook
-                        (lambda ()
-                          (telega--addProxy `(:server ,host
-                                              :port ,port
-                                              :type (:@type "proxyTypeMtproto"
-                                                     :secret ,secret))
-                              'enable)))))))))
-
   ;; Autostart
-  (defun telega-server-process-running-p ()
-    "Check if telega-server process is running."
-    (not (string-equal (shell-command-to-string "pgrep -x telega-server") "")))
+  (fr/start-telega-in-background)
 
-  (unless (telega-server-process-running-p)
-    (if (daemonp)
-        (add-hook! doom-first-input (telega 'no-popup))
-      (add-hook! doom-after-init (telega 'no-popup)))))
+  ;; Use MTProto TgWsProxy
+  (after! telega
+    (when (fboundp 'fr/telega-add-proxy-tgwsproxy)
+      (fr/telega-add-proxy-tgwsproxy t))))
 #+end_src
 
 ** Config
