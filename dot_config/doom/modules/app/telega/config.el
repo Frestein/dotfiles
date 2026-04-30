@@ -674,9 +674,9 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
                               (string-match-p "^\\*Telegram" buf-name))
                           (not (string= buf-name "*Telega Root*"))
                           (not (string= buf-name "*Telegram Messages Preview*"))))
-    :side 'right :size .5 :ttl 0 :quit t :select t :modeline t)
+    :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :select t :modeline t)
   (set-popup-rule! (regexp-quote "*Telegram Messages Preview*")
-    :side 'right :size .5 :ttl 0 :quit t :modeline t))
+    :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :modeline t))
 
 (when (modulep! +mnz)
   (use-package! telega-mnz

@@ -245,7 +245,9 @@
           (holiday-fixed 11 19 "International Men's Day")))
 (setopt calendar-holidays holiday-other-holidays)
 
-(defun toggle-echo-area-messages ()
+;;; Emacs
+
+(defun fr/toggle-echo-area-messages ()
   "Toggle the log of recent echo-area messages: the `*Messages*' buffer.
 The number of messages retained in that buffer is specified by
 the variable `message-log-max'."
@@ -253,6 +255,16 @@ the variable `message-log-max'."
   (if-let* ((win (get-buffer-window (messages-buffer))))
       (quit-window nil win)
     (view-echo-area-messages)))
+
+;;; Doom
+
+;; ui/popup
+
+(defun fr/+popup-display-dynamic-side (buffer alist)
+  "Display popup BUFFER in a side window, choosing side based on frame width."
+  (display-buffer-in-side-window
+   buffer (cons `(side . ,(if (>= (frame-width) 120) 'right 'bottom))
+                alist)))
 
 ;; Increase how much is read from processes in a single chunk
 (setq read-process-output-max (* 4 1024 1024))
@@ -760,7 +772,7 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
                (:when (modulep! :term eee)
                  :desc "Open directory in yazi" "M" #'ee-yazi))
       (:prefix ("h" . "help")
-               "e" #'toggle-echo-area-messages)
+               "e" #'fr/toggle-echo-area-messages)
       (:prefix ("t" . "toggle")
        :desc "Automatic line breaking" "a" #'auto-fill-mode
        (:when (modulep! :tools blamer)
@@ -882,7 +894,8 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
         (flycheck-list-errors)))))
 
 (when (modulep! :tools eval)
-  (set-popup-rule! "^\\*eros inspect" :side 'right :size 0.5 :height 0.5 :ttl 0 :slot 1 :modeline t))
+  (set-popup-rule! (regexp-quote "*eros inspect*")
+    :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :slot 1 :modeline t))
 
 ;; BUG: ws-butler removes last line in Org files despite require-final-newline
 ;; https://github.com/lewang/ws-butler/issues/26
@@ -1234,7 +1247,7 @@ If a region is active, emphasize it, else emphasize the word at point."
     (add-to-list 'org-default-properties "CREATED")
 
     (set-popup-rule! "^\\*Org Src"
-      :side 'right :size 0.5 :ttl 0 :quit nil :select t :modeline t)
+      :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :quit nil :select t :modeline t)
 
     (with-no-warnings
       (custom-declare-face '+org-todo-next

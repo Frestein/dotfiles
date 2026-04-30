@@ -39,4 +39,4 @@
                :render (gt-insert-render :type 'replace)))))
 
   (set-popup-rule! (regexp-quote "*gt-result*")
-    :side 'right :size .5 :ttl 0 :quit t :select nil :modeline nil))
+    :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :slot 1 :ttl 0))
