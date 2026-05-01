@@ -1,28 +1,173 @@
+" ===========================================================================
+" Tridactyl configuration
+" ===========================================================================
+
+" ===========================================================================
+" UI / Behavior
+" ===========================================================================
+
 " Disable normal mode indicator in normal mode.
 set modeindicatormodes.normal false
 
 set keyboardlayoutbase qwerty
 set keyboardlayoutforce true
 
-" Ctrl-F should use the browser's native 'find' functionality.
+" Smooth scrolling
+set smoothscroll true
 
-" But also support Tridactyl search too.
+" ===========================================================================
+" Search engines
+" ===========================================================================
+
+" Clear all existing search engines
+js tri.config.set("searchurls", {})
+
+" ---------------------------------------------------------------------------
+" Instance variables
+" ---------------------------------------------------------------------------
+
+js tri.config.set("instance_4get", "4get.joygnu.org")
+js tri.config.set("instance_searxng", "eu.priv.au")
+js tri.config.set("instance_mozhi", "mozhi.pussthecat.org")
+
+" ---------------------------------------------------------------------------
+" Search engines
+" ---------------------------------------------------------------------------
+
+" Web
+set searchurls.ddg https://duckduckgo.com/?q=%s
+set searchurls.g https://www.google.com/search?q=%s
+set searchurls.ya https://ya.ru/search/?text=%s
+js tri.config.set("searchurls", "4get", `https://${tri.config.get("instance_4get")}/web?country=ru&nsfw=yes&s=%s`)
+js tri.config.set("searchurls", "searxng", `https://${tri.config.get("instance_searxng")}/?q=%s`)
+
+" Maps
+set searchurls.gmap https://www.google.com/maps?q=%s
+set searchurls.osm https://www.openstreetmap.org/search?query=%s
+
+" Translation
+set searchurls.gtrans https://translate.google.com/?text=%s
+js tri.config.set("searchurls", "mozhi", `https://${tri.config.get("instance_mozhi")}/?engine=yandex&from=auto&to=ru&text=%s`)
+
+" Shopping
+set searchurls.ozon https://www.ozon.ru/search/?text=%s
+set searchurls.yam https://market.yandex.ru/search?text=%s
+
+" Development & Packages
+set searchurls.melpa https://melpa.org/#/?q=%s
+set searchurls.toys https://toys.whereis.social/?search=%s
+set searchurls.nix https://search.nixos.org/packages?query=%s
+set searchurls.nur https://nur.nix-community.org/?query=%s
+set searchurls.nixos https://wiki.nixos.org/w/index.php?search=%s
+set searchurls.aur https://aur.archlinux.org/packages?&K=%s
+set searchurls.arch https://wiki.archlinux.org/index.php?search=%s
+set searchurls.source https://sourcegraph.com/search?q=context:global+%s
+set searchurls.gh https://github.com/search?q=%s
+set searchurls.cdb https://codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q=%s
+
+" UserScripts
+set searchurls.gf https://greasyfork.org/en/scripts?q=%s
+set searchurls.sf https://sleazyfork.org/en/scripts?q=%s
+
+" Social & Forums
+set searchurls.reddit https://www.reddit.com/r/%s
+set searchurls.pin https://pinterest.com/search/pins/?q=%s
+
+" Torrents & Media
+set searchurls.rutracker https://rutracker.org/forum/tracker.php?nm=%s
+set searchurls.yt https://www.youtube.com/results?search_query=%s
+set searchurls.ytm https://music.youtube.com/search?q=%s
+set searchurls.lastfm https://www.last.fm/search?q=%s
+set searchurls.kino https://www.kinopoisk.ru/index.php?kp_query=%s
+
+" Anime & Manga
+set searchurls.alist https://anilist.co/search/anime?hide%20my%20anime=true&search=%s
+set searchurls.Alist https://anilist.co/search/anime?hide%20my%20anime=true&adult=true&search=%s
+set searchurls.mlist https://anilist.co/search/manga?hide%20my%20manga=true&search=%s
+set searchurls.Mlist https://anilist.co/search/manga?hide%20my%20manga=true&adult=true&search=%s
+set searchurls.zerochan https://www.zerochan.net/%s
+
+" Gaming
+set searchurls.pdb https://www.protondb.com/search?q=%s
+
+" ---------------------------------------------------------------------------
+" Default search engine
+" ---------------------------------------------------------------------------
+
+set searchengine ddg
+
+" ===========================================================================
+" Quickmarks
+" ===========================================================================
+
+" AI/LLM
+quickmark 1 chat.deepseek.com
+quickmark 2 www.perplexity.ai
+quickmark 3 duck.ai
+
+js tri.instances = {
+    "4get": "4get.joygnu.org",
+    "searxng": "eu.priv.au",
+    "mozhi": "mozhi.pussthecat.org",
+};
+
+" Web
+quickmark d duckduckgo.com
+js tri.excmds.quickmark("s", tri.config.get("instance_4get"));
+js tri.excmds.quickmark("S", tri.config.get("instance_Searxng"));
+
+" Development
+quickmark g codeberg.org/Frestein
+quickmark G github.com/Frestein
+
+" Mail
+quickmark e mail.google.com/mail/u/2/
+quickmark E app.tuta.com
+
+" Translate
+js tri.excmds.quickmark("t", tri.config.get("instance_mozhi") + "/?engine=yandex&from=auto&to=ru");
+quickmark T about:translations#src=en&trg=ru
+
+" Social & Forums
+quickmark p pinterest.com
+quickmark r reddit.com
+
+" Media
+quickmark m music.youtube.com
+quickmark M www.last.fm/user/Frestein
+quickmark k www.kinopoisk.ru/mykp/folders/
+quickmark c coub.com/community/anime
+quickmark y youtube.com
+
+" Anime & Manga
+quickmark a anilist.co/user/Frestein
+
+" About
+quickmark . about:config
+quickmark ? about:about
+quickmark A about:addons
+quickmark D about:downloads
+
+" ===========================================================================
+" Keybindings
+" ===========================================================================
+
+" Scrolling step
+bind j scrollline 5
+bind k scrollline -5
+
+" Find / Search (native browser find)
 bind / fillcmdline find
 bind ? fillcmdline find -?
 bind n findnext 1
 bind N findnext -1
 
-" Smooth scrolling, yes please. This is still a bit janky in Tridactyl.
-set smoothscroll true
+" ===========================================================================
+" Modelines for Emacs and Vim
+" ===========================================================================
 
-" The default jump of 10 is a bit much.
-bind j scrollline 5
-bind k scrollline -5
-
-" Search Engines
-source ~/.config/tridactyl/searchengines
-
-" Quickmarks
-source ~/.config/tridactyl/quickmarks
+" Local Variables:
+" mode: vimrc
+" End:
 
 " vim: filetype=vim
