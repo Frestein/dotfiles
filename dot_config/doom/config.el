@@ -2004,6 +2004,9 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
     :config
     (+fish-common-config 'fish-mode)))
 
+(when (modulep! :editor evil +vimrc)
+  (add-to-list 'auto-mode-alist '("tridactylrc\\'" . vimrc-mode)))
+
 (setopt browse-url-text-browser (executable-find "cha"))
 
 (use-package! eww
