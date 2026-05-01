@@ -12,7 +12,6 @@ set modeindicatormodes.normal false
 set keyboardlayoutbase qwerty
 set keyboardlayoutforce true
 
-" Smooth scrolling
 set smoothscroll true
 
 " ===========================================================================
