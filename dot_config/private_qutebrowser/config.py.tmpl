@@ -295,6 +295,7 @@ unbind = config.unbind
 unbind("<Alt-m>")
 unbind(";i")
 unbind(";I")
+unbind("gO")
 
 # Configuration management
 bind("\\ce", "config-edit")
@@ -325,6 +326,8 @@ bind("gT", "cmd-set-text -s :tab-take")
 bind("gG", "cmd-set-text -s :tab-give")
 bind("gl", "tab-focus last")
 bind("gp", "tab-pin")
+bind("gc", "cmd-set-text :open {url:pretty}")
+bind("gC", "cmd-set-text :open -t -r {url:pretty}")
 bind("<Ctrl-m>", "tab-mute")
 
 # Media
@@ -342,10 +345,12 @@ bind("<Shift-k>", "tab-next")
 bind("<Shift-l>", "forward")
 
 # Command mode
-bind("<Ctrl-p>", "completion-item-focus prev", mode="command")
 bind("<Ctrl-n>", "completion-item-focus next", mode="command")
-bind("<Ctrl-Up>", "command-history-prev", mode="command")
+bind("<Ctrl-p>", "completion-item-focus prev", mode="command")
+bind("<Ctrl-j>", "completion-item-focus next", mode="command")
+bind("<Ctrl-k>", "completion-item-focus prev", mode="command")
 bind("<Ctrl-Down>", "command-history-next", mode="command")
+bind("<Ctrl-Up>", "command-history-prev", mode="command")
 
 # Bookmarks
 bind("b", "buku-dmenu")
@@ -398,7 +403,7 @@ qsites = {
 }
 
 for k, v in qsites.items():
-    bind("gc" + k, "open " + v)
+    bind("go" + k, "open " + v)
     bind("gn" + k, "open -t " + v)
 
 # Kinopoisk
