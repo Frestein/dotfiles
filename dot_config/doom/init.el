@@ -198,7 +198,7 @@
        ;; terra             ; Earth and Moon in alignment for performance.
        (typst +lsp +tree-sitter +preview)
        (toml +lsp +tree-sitter)
-       ;; web               ; the tubes
+       (web +lsp +tree-sitter)   ; the tubes
        (yaml +lsp +tree-sitter)  ; JSON, but readable
        ;; zig               ; C, but simpler
 
