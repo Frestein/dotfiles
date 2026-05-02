@@ -2,17 +2,8 @@
 " Tridactyl configuration
 " ===========================================================================
 
-" ===========================================================================
-" UI / Behavior
-" ===========================================================================
-
-" Disable normal mode indicator in normal mode.
-set modeindicatormodes.normal false
-
-set keyboardlayoutbase qwerty
-set keyboardlayoutforce true
-
-set smoothscroll true
+" Clear all changes not included in the configuration
+sanitise tridactyllocal tridactylsync
 
 " ===========================================================================
 " Search engines
@@ -146,20 +137,86 @@ quickmark . about:config
 quickmark ? about:about
 quickmark A about:addons
 quickmark D about:downloads
+quickmark K about:keyboard
+
+" ===========================================================================
+" Aliases
+" ===========================================================================
 
 " ===========================================================================
 " Keybindings
 " ===========================================================================
 
+" ---------------------------------------------------------------------------
+" Unbind defaults
+" ---------------------------------------------------------------------------
+
+unbind <AS-ArrowUp><AS-ArrowUp><AS-ArrowDown><AS-ArrowDown><AS-ArrowLeft><AS-ArrowRight><AS-ArrowLeft><AS-ArrowRight>ba
+unbind <A-p>
+unbind t
+unbind T
+unbind b
+unbind B
+
+" Doesn't work on Wayland
+unbind ;x
+unbind ;X
+unbind ;c
+unbind ;:
+
+" ---------------------------------------------------------------------------
+" General binds
+" ---------------------------------------------------------------------------
+
+" Tabs
+bind <C-p> pin
+bind t fillcmdline tab
+bind T fillcmdline taball
+bind O fillcmdline tabopen
+bind gc current_url open
+bind gC current_url tabopen
+
 " Scrolling step
-bind j scrollline 5
-bind k scrollline -5
+bind j scrollline 2.5
+bind k scrollline -2.5
 
 " Find / Search (native browser find)
 bind / fillcmdline find
 bind ? fillcmdline find -?
 bind n findnext 1
 bind N findnext -1
+
+" Completion
+bind --mode=ex <C-n> ex.next_completion
+bind --mode=ex <C-p> ex.prev_completion
+bind --mode=ex <C-j> ex.next_completion
+bind --mode=ex <C-k> ex.prev_completion
+
+" Input
+bind --mode=input <C-n> focusinput -n
+bind --mode=input <C-p> focusinput -N
+bind --mode=input <C-j> focusinput -n
+bind --mode=input <C-k> focusinput -N
+
+" Leader
+" Reload config. Explicitly source correct file; have had issues using just "source".
+bind \rc source ~/.config/tridactyl/tridactylrc
+
+" ===========================================================================
+" UI / Behavior
+" ===========================================================================
+
+colors gruvbox-dark
+
+" Disable normal mode indicator in normal mode.
+set modeindicatormodes.normal false
+
+set keyboardlayoutbase qwerty
+set keyboardlayoutforce true
+
+set smoothscroll true
+
+set editorcmd emacsclient -nc "+%l:%c" "%f"
 
 " ===========================================================================
 " Modelines for Emacs and Vim
