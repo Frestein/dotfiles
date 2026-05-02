@@ -884,6 +884,25 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
     (add-to-list 'marginalia-prompt-categories '("\\<Describe module\\>" . doom-module))
     (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
 
+(when (modulep! :editor format +lsp)
+  (defcustom +format-with-lsp-disabled-modes
+    '(css-mode
+      css-ts-mode
+      json-mode
+      jsonc-mode
+      json-ts-mode)
+    "Major modes in which LSP formatting should be automatically disabled."
+    :type '(repeat symbol)
+    :group 'apheleia)
+
+  (defun +format-with-lsp--disable-on-enable ()
+    "Turn off `+format-with-lsp-mode' when it's activated for certain modes."
+    (when (and +format-with-lsp-mode
+               (memq major-mode +format-with-lsp-disabled-modes))
+      (+format-with-lsp-mode -1)))
+
+  (add-hook! '+format-with-lsp-mode-hook #'+format-with-lsp--disable-on-enable))
+
 (when (modulep! :checkers syntax -flymake)
   (defun fr/flycheck-toggle-error-list ()
     "Toggle the error list for the current buffer."
