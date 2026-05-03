@@ -19,6 +19,8 @@
       (add-to-list 'org-src-lang-modes '("hyprlang" . hyprlang-ts))))
 
   (when (modulep! :editor format)
+    (setq-hook! 'hyprlang-ts-mode-hook +format-inhibit t)
+
     (after! apheleia-mode
       (add-to-list 'apheleia-formatters '(whitespace . whitespace-cleanup))
       (add-to-list 'apheleia-mode-alist '(hyprlang-ts . whitespace))))

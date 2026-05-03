@@ -1207,7 +1207,8 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
       css-ts-mode
       json-mode
       jsonc-mode
-      json-ts-mode)
+      json-ts-mode
+      hyprlang-ts-mode)
     "Major modes in which LSP formatting should be automatically disabled."
     :type '(repeat symbol)
     :group 'apheleia)
