@@ -1,6 +1,9 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
+;; TODO: https://github.com/minad/jinx/issues/261
+(unpin! compat)
+
 (package! once)
 
 (when (modulep! :editor evil +vimrc)
