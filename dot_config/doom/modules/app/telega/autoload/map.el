@@ -5,8 +5,6 @@
   "Initialize custom telega keybindings."
   (map! (:map telega-root-mode-map
          :n "h" #'telega-button-backward
-         :n "j" #'telega-button-forward
-         :n "k" #'telega-button-backward
          :n "l" #'telega-button-forward
          :n "gVD" #'telega-view-default)
         (:map telega-chat-button-map
