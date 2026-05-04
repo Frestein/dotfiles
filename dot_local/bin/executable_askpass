@@ -1,3 +1,7 @@
 #!/usr/bin/env sh
 
-exec fuzzel -d --prompt-only ' ' --placeholder 'Password' --password -P 0 -w 25
+if [ -t 0 ]; then
+    exec systemd-ask-password 2>&1
+else
+    exec fuzzel -d --prompt-only ' ' --placeholder 'Password' --password -P 0 -w 25
+fi
