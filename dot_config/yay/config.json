@@ -21,7 +21,7 @@
   "searchby": "name-desc",
   "gitflags": "",
   "removemake": "yes",
-  "sudobin": "doas",
+  "sudobin": "asroot",
   "sudoflags": "",
   "version": "12.4.2",
   "requestsplitn": 150,

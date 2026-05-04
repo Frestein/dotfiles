@@ -159,30 +159,30 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 if command -v pacman >/dev/null 2>&1; then
     # Recently installed packages
     alias pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
-    alias pacupg='doas pacman -Syu'
-    alias pacin='doas pacman -S'
-    alias paclean='doas pacman -Sc'
-    alias pacins='doas pacman -U'
-    alias paclr='doas pacman -Scc'
-    alias pacre='doas pacman -R'
-    alias pacrem='doas pacman -Rns'
+    alias pacupg='asroot pacman -Syu'
+    alias pacin='asroot pacman -S'
+    alias paclean='asroot pacman -Sc'
+    alias pacins='asroot pacman -U'
+    alias paclr='asroot pacman -Scc'
+    alias pacre='asroot pacman -R'
+    alias pacrem='asroot pacman -Rns'
     alias pacrep='pacman -Si'
     alias pacreps='pacman -Ss'
     alias pacloc='pacman -Qi'
     alias paclocs='pacman -Qs'
-    alias pacinsd='doas pacman -S --asdeps'
-    alias pacmir='doas pacman -Syy'
-    alias paclsorphans='doas pacman -Qdt'
-    alias pacfileupg='doas pacman -Fy'
+    alias pacinsd='asroot pacman -S --asdeps'
+    alias pacmir='asroot pacman -Syy'
+    alias paclsorphans='asroot pacman -Qdt'
+    alias pacfileupg='asroot pacman -Fy'
     alias pacfiles='pacman -F'
     alias pacls='pacman -Ql'
     alias pacown='pacman -Qo'
-    alias pacupd='doas pacman -Sy'
-    alias pacmanallkeys='doas pacman-key --refresh-keys'
+    alias pacupd='asroot pacman -Sy'
+    alias pacmanallkeys='asroot pacman-key --refresh-keys'
 
     # Removing orphan packages
     pacrmorphans() {
-        doas pacman -Rs $(pacman -Qtdq)
+        asroot pacman -Rs $(pacman -Qtdq)
     }
 
     # List of explicitly installed packages

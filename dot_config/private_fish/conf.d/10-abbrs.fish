@@ -146,29 +146,29 @@ abbr -a -- ips "ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\
 if type -q pacman
     # Recently installed packages
     abbr -a -- pacrip "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
-    abbr -a -- pacupg doas pacman -Syu
-    abbr -a -- pacin doas pacman -S
-    abbr -a -- paclean doas pacman -Sc
-    abbr -a -- pacins doas pacman -U
-    abbr -a -- paclr doas pacman -Scc
-    abbr -a -- pacre doas pacman -R
-    abbr -a -- pacrem doas pacman -Rns
+    abbr -a -- pacupg asroot pacman -Syu
+    abbr -a -- pacin asroot pacman -S
+    abbr -a -- paclean asroot pacman -Sc
+    abbr -a -- pacins asroot pacman -U
+    abbr -a -- paclr asroot pacman -Scc
+    abbr -a -- pacre asroot pacman -R
+    abbr -a -- pacrem asroot pacman -Rns
     abbr -a -- pacrep pacman -Si
     abbr -a -- pacreps pacman -Ss
     abbr -a -- pacloc pacman -Qi
     abbr -a -- paclocs pacman -Qs
     abbr -a -- paclst pacman -Qe
     abbr -a -- paclsta "pacman -Qem | awk '{print \$1}' | xargs expac --timefmt=\"%F %T\" \"[%l] \$(printf '\\033[1;35m')%n\$(printf '\\033[0m') \$(printf '\\033[0;37m')(%v)\$(printf '\\033[0m')\" | sort -k3"
-    abbr -a -- pacinsd doas pacman -S --asdeps
-    abbr -a -- pacmir doas pacman -Syy
-    abbr -a -- paclsorphans doas pacman -Qdt
-    abbr -a -- pacrmorphans doas pacman -Rs '(pacman -Qtdq)'
-    abbr -a -- pacfileupg doas pacman -Fy
+    abbr -a -- pacinsd asroot pacman -S --asdeps
+    abbr -a -- pacmir asroot pacman -Syy
+    abbr -a -- paclsorphans asroot pacman -Qdt
+    abbr -a -- pacrmorphans asroot pacman -Rs '(pacman -Qtdq)'
+    abbr -a -- pacfileupg asroot pacman -Fy
     abbr -a -- pacfiles pacman -F
     abbr -a -- pacls pacman -Ql
     abbr -a -- pacown pacman -Qo
-    abbr -a -- pacupd doas pacman -Sy
-    abbr -a -- pacmanallkeys doas pacman-key --refresh-keys
+    abbr -a -- pacupd asroot pacman -Sy
+    abbr -a -- pacmanallkeys asroot pacman-key --refresh-keys
 end
 
 # ----------------------------------------------------------------------------
