@@ -1,7 +1,25 @@
 #!/usr/bin/env sh
 
-if [ -t 0 ]; then
-    exec systemd-ask-password 2>&1
-else
+user=$(whoami 2>/dev/null || echo "$USER")
+
+terminal_prompt() {
+    if command -v tput >/dev/null 2>&1; then
+        yellow=$(tput setaf 3)
+        green=$(tput setaf 10)
+        reset=$(tput sgr0)
+        prompt="${yellow}[askpass]${reset} password for ${green}${user}${reset}:"
+    else
+        prompt="[askpass] password for ${user}:"
+    fi
+    exec systemd-ask-password --emoji no "$prompt" 2>&1
+}
+
+graphical_prompt() {
     exec fuzzel -d --prompt-only ' ' --placeholder 'Password' --password -P 0 -w 25
+}
+
+if [ -t 0 ]; then
+    terminal_prompt
+else
+    graphical_prompt
 fi
