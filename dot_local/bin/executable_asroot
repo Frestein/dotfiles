@@ -14,7 +14,7 @@ run_with_privileges() {
         set -- "LANG=$LANG" "$@"
     fi
 
-    if command -v doas_askpass >/dev/null 2>&1; then
+    if command -v doas >/dev/null 2>&1 && command -v doas_askpass >/dev/null 2>&1; then
         doas_askpass env "$@"
     elif command -v sudo-rs >/dev/null 2>&1; then
         sudo-rs -A env "$@"
