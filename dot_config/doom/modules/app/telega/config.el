@@ -676,7 +676,15 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
                           (not (string= buf-name "*Telegram Messages Preview*"))))
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :select t :modeline t)
   (set-popup-rule! (regexp-quote "*Telegram Messages Preview*")
-    :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :modeline t))
+    :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :modeline t)
+
+  (when (modulep! :editor aas)
+    (aas-set-snippets 'telega-chat-mode
+                      "--" "—"
+                      "<<" "«"
+                      ">>" "»")
+
+    (add-hook 'telega-chat-mode-hook #'aas-activate-for-major-mode)))
 
 (when (modulep! +mnz)
   (use-package! telega-mnz
