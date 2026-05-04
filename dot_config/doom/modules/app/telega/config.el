@@ -678,11 +678,36 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
   (set-popup-rule! (regexp-quote "*Telegram Messages Preview*")
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :modeline t)
 
+  (define-abbrev! telega-chat-mode-abbrev-table
+    "r34"            "Rule 34"
+    "r63"            "Rule 63"
+    "yt"             "YouTube"
+    "linkedin"       "LinkedIn"
+    "github"         "GitHub"
+    "gitlab"         "GitLab"
+    "sourcehut"      "SourceHut"
+    "latex"          "LaTeX"
+    "js"             "JavaScript"
+    "ts"             "TypeScript"
+    "elisp"          "Emacs Lisp"
+    "clisp"          "Common Lisp"
+    "yubikey"        "YubiKey"
+    "cicd"           "CI/CD"
+    "ebpf"           "eBPF"
+    "ios"            "iOS"
+    "macos"          "macOS"
+    "cachyos"        "CachyOS"
+    "nixos"          "NixOS")
+
+  (abbrev-table-put telega-chat-mode-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)")
+
+  (add-hook 'telega-chat-mode-hook #'abbrev-mode)
+
   (when (modulep! :editor aas)
     (aas-set-snippets 'telega-chat-mode
-                      "--" "—"
-                      "<<" "«"
-                      ">>" "»")
+      "--" "—"
+      "<<" "«"
+      ">>" "»")
 
     (add-hook 'telega-chat-mode-hook #'aas-activate-for-major-mode)))
 

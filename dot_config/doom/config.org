@@ -54,6 +54,7 @@
   - [[#completion][Completion]]
     - [[#corfu][Corfu]]
     - [[#vertico][Vertico]]
+    - [[#abbrev][Abbrev]]
   - [[#format][Format]]
   - [[#flycheck][Flycheck]]
   - [[#evaluation][Evaluation]]
@@ -1196,6 +1197,82 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
 
     (add-to-list 'marginalia-prompt-categories '("\\<Describe module\\>" . doom-module))
     (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
+#+end_src
+
+*** Abbrev
+
+#+begin_src elisp
+(setq abbrev-file-name (expand-file-name "abbrev.el" doom-user-dir))
+(setq save-abbrevs nil)
+
+(add-hook! '(text-mode-hook prog-mode-hook git-commit-mode-hook) #'abbrev-mode)
+
+(defmacro define-abbrev! (table &rest definitions)
+  "Expand abbrev DEFINITIONS for the given TABLE.
+DEFINITIONS is a sequence of (i) string pairs mapping the
+abbreviation to its expansion or (ii) a string and symbol pair
+making an abbreviation to a function."
+  (declare (indent 1))
+  (unless (zerop (% (length definitions) 2))
+    (error "Uneven number of key+command pairs"))
+  `(if (abbrev-table-p ,table)
+       (progn
+         ,@(mapcar
+            (lambda (pair)
+              (let ((abbrev (nth 0 pair))
+                    (expansion (nth 1 pair)))
+                (if (stringp expansion)
+                    `(define-abbrev ,table ,abbrev ,expansion)
+                  `(define-abbrev ,table ,abbrev "" ,expansion))))
+            (seq-split definitions 2)))
+     (error "%s is not an abbrev table" ,table)))
+
+(define-abbrev! global-abbrev-table
+  "melinks" "https://linktr.ee/frestein"
+  "medot"   "https://codeberg.org/Frestein/dotfiles"
+  "megit"   "https://codeberg.org/Frestein"
+  "mehub"   "https://github.com/Frestein"
+  "meberg"  "https://codeberg.org/Frestein"
+  ";links"  "https://linktr.ee/frestein"
+  ";dot"    "https://codeberg.org/Frestein/dotfiles"
+  ";git"    "https://codeberg.org/Frestein"
+  ";hub"    "https://github.com/Frestein"
+  ";berg"   "https://codeberg.org/Frestein")
+
+(abbrev-table-put global-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)")
+
+(with-eval-after-load 'text-mode
+  (define-abbrev! text-mode-abbrev-table
+    "r34"            "Rule 34"
+    "r63"            "Rule 63"
+    "yt"             "YouTube"
+    "linkedin"       "LinkedIn"
+    "github"         "GitHub"
+    "gitlab"         "GitLab"
+    "sourcehut"      "SourceHut"
+    "latex"          "LaTeX"
+    "js"             "JavaScript"
+    "ts"             "TypeScript"
+    "elisp"          "Emacs Lisp"
+    "clisp"          "Common Lisp"
+    "yubikey"        "YubiKey"
+    "cicd"           "CI/CD"
+    "ebpf"           "eBPF"
+    "ios"            "iOS"
+    "macos"          "macOS"
+    "cachyos"        "CachyOS"
+    "nixos"          "NixOS"
+    ";smile"         "😃"
+    ";laugh"         "🤣"
+    ";clown"         "🤡"
+    ";poo"           "💩"
+    ";banana"        "🍌"
+    ";star"          "🌟")
+
+  (abbrev-table-put text-mode-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)"))
+
+(with-eval-after-load 'org
+  (abbrev-table-put org-mode-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)"))
 #+end_src
 
 ** Format
