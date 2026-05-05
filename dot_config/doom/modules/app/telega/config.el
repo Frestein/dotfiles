@@ -704,10 +704,37 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
   (add-hook 'telega-chat-mode-hook #'abbrev-mode)
 
   (when (modulep! :editor aas)
+    (defun fr/telega-in-code-block-p ()
+      "Return t if point is inside a fenced code block (```)."
+      (save-match-data
+        (let ((pos (point)))
+          (save-excursion
+            (when (re-search-backward "^\\s-*\\(```\\)" nil t)
+              (let ((block-start (match-end 1)))
+                (save-excursion
+                  (goto-char block-start)
+                  (when (re-search-forward "^\\s-*\\(```\\)" nil t)
+                    (<= pos (match-beginning 1))))))))))
+
+    (defun fr/telega-in-inline-code-p ()
+      "Return t if point is inside inline code: org verbatim (~/=) or markdown (`)."
+      (save-excursion
+        (save-match-data
+          (or (org-in-verbatim-emphasis)
+              (let ((pos (point)))
+                (when (re-search-backward "`" (line-beginning-position) t)
+                  (let ((start (point)))
+                    (goto-char pos)
+                    (when (re-search-forward "`" (line-end-position) t)
+                      (and (< start pos) (< pos (point)))))))))))
+
     (aas-set-snippets 'telega-chat-mode
-      "--" "—"
       "<<" "«"
-      ">>" "»")
+      ">>" "»"
+      :cond (lambda ()
+              (not (or (fr/telega-in-code-block-p)
+                       (fr/telega-in-inline-code-p))))
+      "--" "—")
 
     (add-hook 'telega-chat-mode-hook #'aas-activate-for-major-mode)))
 
