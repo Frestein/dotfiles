@@ -684,8 +684,7 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
       :desc "Next buffer" :n "L" #'next-buffer
       :v "gss" #'sort-lines
       (:when (modulep! :term vterm )
-        :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle
-        :desc "Toggle vterm popup" :i "C-/" #'+vterm/toggle)
+        :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle)
       (:when (modulep! :tools zoxide)
         :n "gZ" #'zoxide-find-file))
 
