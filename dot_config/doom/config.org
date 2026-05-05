@@ -2598,7 +2598,35 @@ Requirements:
 #+begin_src elisp
 (use-package! eww
   :config
-  (setopt eww-readable-urls '("lwn\\.net")))
+  (setopt eww-readable-urls '("lwn\\.net"))
+
+  (add-hook 'eww-mode-hook (lambda () (setq-local doom-real-buffer-p t)))
+
+  (set-popup-rule! "^\\*.*eww\\*$"
+    :actions '(fr/+popup-display-dynamic-side)
+    :height .75 :width .5 :quit t :ttl nil :slot 1 :modeline t)
+  (+popup-cleanup-rules-h)
+
+  (defun fr/eww-browse-url-reuse-buffer (original-fn url &rest args)
+    "If URL is already open in an EWW buffer, switch to it.
+Otherwise call ORIGINAL-FN with URL and ARGS."
+    (if-let ((buf (cl-find url (buffer-list)
+                           :test 'string=
+                           :key (lambda (b)
+                                  (when (eq (buffer-local-value 'major-mode b) 'eww-mode)
+                                    (with-current-buffer b
+                                      (eww-current-url)))))))
+        (pop-to-buffer buf)
+      (apply original-fn url args)))
+
+  (advice-add 'eww-browse-url :around #'fr/eww-browse-url-reuse-buffer)
+
+  ;; IMHO, this is bad advice in my workflow
+  (advice-remove 'eww #'+eww-open-in-fullscreen-if-interactive-a)
+
+  (map! :map eww-mode-map
+        [remap quit-window] nil ;; Delete remap to +eww/quit
+        :n "Q" #'+eww/quit))
 #+end_src
 
 *** Shr
@@ -2690,7 +2718,6 @@ It should be the title of the web page as returned by `rdrview'."
 
 #+begin_src elisp
 (when (modulep! :app rss)
-  ;;;###autoload
   (defun fr/elfeed-open-and-update ()
     "Wrapper to load the `elfeed' db from disk before opening, force update search and feeds."
     (interactive)
@@ -2700,6 +2727,10 @@ It should be the title of the web page as returned by `rdrview'."
 
   (after! elfeed
     (setopt elfeed-search-filter "@2-week-ago +unread +awesome -reddit ")
+
+    (set-popup-rule! "^\\*elfeed-entry"
+      :actions '(fr/+popup-display-dynamic-side) :height .75 :width .5 :ttl 0 :slot 1 :modeline t)
+    (+popup-cleanup-rules-h)
 
     (map! :map elfeed-show-mode-map
           :n [escape] #'elfeed-kill-buffer
@@ -2717,6 +2748,7 @@ It should be the title of the web page as returned by `rdrview'."
 #+begin_src elisp
 (when (modulep! :app rss)
   (after! elfeed-goodies
+    (setopt elfeed-goodies/entry-pane-position 'bottom)
     (setopt elfeed-goodies/feed-source-column-width 36)
     (setopt elfeed-goodies/tag-column-width 28)
     (setopt elfeed-goodies/entry-pane-size 0.72)))
