@@ -675,8 +675,12 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
                           (not (string= buf-name "*Telega Root*"))
                           (not (string= buf-name "*Telegram Messages Preview*"))))
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :select t :modeline t)
+
   (set-popup-rule! (regexp-quote "*Telegram Messages Preview*")
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :modeline t)
+
+  (add-hook 'telega-chat-mode-hook (lambda () (setq-local doom-real-buffer-p t)))
+  (add-hook 'telega-root-mode-hook (lambda () (setq-local doom-real-buffer-p t)))
 
   (define-abbrev! telega-chat-mode-abbrev-table
     "melinks"        "https://linktr.ee/frestein"
