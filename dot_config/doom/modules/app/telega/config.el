@@ -679,6 +679,16 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :modeline t)
 
   (define-abbrev! telega-chat-mode-abbrev-table
+    "melinks"        "https://linktr.ee/frestein"
+    "medot"          "https://codeberg.org/Frestein/dotfiles"
+    "megit"          "https://codeberg.org/Frestein"
+    "mehub"          "https://github.com/Frestein"
+    "meberg"         "https://codeberg.org/Frestein"
+    ";links"         "https://linktr.ee/frestein"
+    ";dot"           "https://codeberg.org/Frestein/dotfiles"
+    ";git"           "https://codeberg.org/Frestein"
+    ";hub"           "https://github.com/Frestein"
+    ";berg"          "https://codeberg.org/Frestein"
     "r34"            "Rule 34"
     "r63"            "Rule 63"
     "yt"             "YouTube"
@@ -699,7 +709,7 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
     "cachyos"        "CachyOS"
     "nixos"          "NixOS")
 
-  (abbrev-table-put telega-chat-mode-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)")
+  (abbrev-table-put telega-chat-mode-abbrev-table :regexp "\\(?:^\\|\\<\\)\\(?1:[:;_].*\\|.*\\)")
 
   (add-hook 'telega-chat-mode-hook #'abbrev-mode)
 

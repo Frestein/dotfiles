@@ -920,7 +920,8 @@ making an abbreviation to a function."
   ";hub"    "https://github.com/Frestein"
   ";berg"   "https://codeberg.org/Frestein")
 
-(abbrev-table-put global-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)")
+(abbrev-table-put global-abbrev-table
+                  :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)")
 
 (with-eval-after-load 'text-mode
   (define-abbrev! text-mode-abbrev-table
@@ -950,10 +951,12 @@ making an abbreviation to a function."
     ";banana"        "🍌"
     ";star"          "🌟")
 
-  (abbrev-table-put text-mode-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)"))
+  (abbrev-table-put text-mode-abbrev-table
+                    :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)"))
 
 (with-eval-after-load 'org
-  (abbrev-table-put org-mode-abbrev-table :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)"))
+  (abbrev-table-put org-mode-abbrev-table
+                    :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)"))
 
 (when (modulep! :editor format +lsp)
   (defcustom +format-with-lsp-disabled-modes
