@@ -707,14 +707,24 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
     (defun fr/telega-in-code-block-p ()
       "Return t if point is inside a fenced code block (```)."
       (save-match-data
-        (let ((pos (point)))
-          (save-excursion
-            (when (re-search-backward "^\\s-*\\(```\\)" nil t)
-              (let ((block-start (match-end 1)))
-                (save-excursion
-                  (goto-char block-start)
-                  (when (re-search-forward "^\\s-*\\(```\\)" nil t)
-                    (<= pos (match-beginning 1))))))))))
+        (save-excursion
+          (let* ((orig-pt (point))
+                 (bound (save-excursion
+                          (if (get-char-property orig-pt 'field)
+                              (progn (goto-char (field-beginning orig-pt))
+                                     (line-beginning-position))
+                            (point-min))))
+                 (inside nil))
+            (goto-char bound)
+            (while (re-search-forward "\\(?:^\\|\\s-\\)\\(```\\)" orig-pt t)
+              (if (save-match-data
+                    (save-excursion
+                      (end-of-line)
+                      (skip-chars-backward " \t")
+                      (> (point) (match-end 1))))
+                  (setq inside t)
+                (setq inside (not inside))))
+            inside))))
 
     (defun fr/telega-in-inline-code-p ()
       "Return t if point is inside inline code: org verbatim (~/=) or markdown (`)."
@@ -726,7 +736,10 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
                   (let ((start (point)))
                     (goto-char pos)
                     (when (re-search-forward "`" (line-end-position) t)
-                      (and (< start pos) (< pos (point)))))))))))
+                      (and (< start pos) (< pos (point)))))))
+              (cl-oddp (count-matches "`" (line-beginning-position) (point)))
+              (cl-oddp (count-matches "~" (line-beginning-position) (point)))
+              (cl-oddp (count-matches "=" (line-beginning-position) (point)))))))
 
     (aas-set-snippets 'telega-chat-mode
       "<<" "«"
