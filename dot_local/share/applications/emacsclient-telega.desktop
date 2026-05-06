@@ -7,6 +7,7 @@ Exec=/usr/bin/emacsclient --alternate-editor="" --reuse-frame --eval "(telega-br
 Icon=emacs
 Type=Application
 Terminal=false
+NoDisplay=true
 Categories=Network;InstantMessaging;
 StartupNotify=true
 StartupWMClass=Emacs
