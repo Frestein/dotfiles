@@ -698,6 +698,8 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
           "<mouse-3>" #'dired-mouse-find-file
           :n "gd" #'dirvish-quick-access)))
 
+(setopt image-auto-resize 'fit-window)
+
 (setopt default-input-method "russian-computer")
 (setopt calendar-week-start-day 1)
 (setopt display-line-numbers-type 'relative)

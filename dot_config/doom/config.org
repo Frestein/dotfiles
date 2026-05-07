@@ -39,10 +39,11 @@
     - [[#easypg][EasyPG]]
     - [[#password-manager][Password Manager]]
     - [[#misc-2][Misc]]
-- [[#file-manager][File Manager]]
+- [[#file-management][File Management]]
   - [[#dired][Dired]]
     - [[#config-2][Config]]
     - [[#dirvish][Dirvish]]
+  - [[#image][Image]]
 - [[#editor][Editor]]
   - [[#settings][Settings]]
   - [[#mappings][Mappings]]
@@ -851,7 +852,7 @@ Override default Doom's auth-sources.
 (setopt tls-checktrust t)      ; Ensure SSL/TLS connections undergo trust verification
 #+end_src
 
-* File Manager
+* File Management
 
 ** Dired
 
@@ -967,6 +968,12 @@ Override default Doom's auth-sources.
           "<mouse-2>" #'dired-mouse-find-file-other-window
           "<mouse-3>" #'dired-mouse-find-file
           :n "gd" #'dirvish-quick-access)))
+#+end_src
+
+** Image
+
+#+begin_src elisp
+(setopt image-auto-resize 'fit-window)
 #+end_src
 
 * Editor
