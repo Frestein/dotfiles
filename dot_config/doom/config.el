@@ -760,8 +760,6 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
                  :desc "Osm" "m" #'osm-prefix-map)
                (:when (modulep! :app telega)
                  :desc "Telega" "t" telega-prefix-map)
-               (:when (modulep! :tools trashed)
-                 :desc "Trashed" "T" #'trashed)
                (:when (modulep! :app rss)
                  :desc "Elfeed" "n" #'elfeed)
                (:when (modulep! :app ement)
@@ -770,6 +768,8 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
                           "l" #'ement-room-list
                           "v" #'ement-room-view)))
       (:prefix ("f" . "file")
+               (:when (modulep! :tools trashed)
+                 :desc "Open trash can" "t" #'trashed)
                (:when (modulep! :tools zoxide)
                  :desc "Zoxide" "z" #'zoxide-find-file)
                (:when (modulep! :emacs dired)
