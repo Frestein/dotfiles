@@ -717,7 +717,13 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
         (push 'ebuku-mode evil-snipe-disabled-modes)))))
 
 (setopt which-key-idle-delay 0.2)
-;; (setopt which-key-show-operator-state-maps t) ; BUG: https://github.com/justbur/emacs-which-key/issues/345
+(setopt which-key-idle-secondary-delay 0.0)
+(setopt which-key-separator " ➜ ")
+(setopt which-key-ellipsis "…")
+(setopt which-key-max-description-length 40)
+
+;; BUG: https://github.com/justbur/emacs-which-key/issues/345
+;; (setopt which-key-show-operator-state-maps t)
 
 (map! :n "C-a" #'evil-numbers/inc-at-pt
       :v "C-a" #'evil-numbers/inc-at-pt-incremental

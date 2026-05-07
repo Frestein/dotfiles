@@ -1009,7 +1009,13 @@ Disable evil-snipe on specific modes.
 
 #+begin_src elisp
 (setopt which-key-idle-delay 0.2)
-;; (setopt which-key-show-operator-state-maps t) ; BUG: https://github.com/justbur/emacs-which-key/issues/345
+(setopt which-key-idle-secondary-delay 0.0)
+(setopt which-key-separator " ➜ ")
+(setopt which-key-ellipsis "…")
+(setopt which-key-max-description-length 40)
+
+;; BUG: https://github.com/justbur/emacs-which-key/issues/345
+;; (setopt which-key-show-operator-state-maps t)
 #+end_src
 
 *** map!
