@@ -874,8 +874,41 @@ Override default Doom's auth-sources.
           :n "ga" #'dired-find-alternate-file
           :v "u" #'dired-unmark)
 
+    (map! :map dired-mode-map
+          :localleader
+          (:prefix ("i" . "image")
+                   "m" 'image-dired-tag-files
+                   "r" 'image-dired-delete-tag
+                   "j" 'image-dired-jump-thumbnail-buffer
+                   "i" 'image-dired-dired-display-image
+                   "x" 'image-dired-dired-display-external
+                   "." 'image-dired-display-thumb
+                   "," 'image-dired-display-thumbs
+                   [return] 'image-dired-display-thumb
+                   [S-return] 'image-dired-display-thumbs
+                   "a" 'image-dired-display-thumbs-append
+                   "c" 'image-dired-dired-comment-files
+                   "f" 'image-dired-mark-tagged-files
+                   "t" 'image-dired-dired-toggle-marked-thumbs
+                   "e" 'image-dired-dired-edit-comment-and-tags)))
+
   ;; Ensure this loads after evil-collection
   (add-hook 'dired-mode-hook #'fr/dired--init-map-h 'append)
+
+  (after! dired
+    (set-popup-rule! "^\\*image-dired"
+      :actions '(fr/+popup-display-dynamic-side)
+      :slot 20 :height 0.5 :width 0.5 :select t :quit nil :ttl 0)
+    (+popup-cleanup-rules-h))
+
+  (after! image-dired
+    (setopt image-dired-thumbnail-storage 'standard-large)
+    (setopt image-dired-external-viewer "swayimg")
+    (setopt image-dired-thumb-size 200)
+
+    (map! :map image-dired-thumbnail-mode-map
+          [return] #'image-dired-display-this
+          [S-return] #'image-dired-thumbnail-display-external))
 
   (after! dired-x
     (setopt dired-omit-files
