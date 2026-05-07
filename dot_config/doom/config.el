@@ -597,8 +597,19 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
   (setopt dired-mouse-drag-files t)
   (setopt mouse-drag-and-drop-region-cross-program t)
 
-  (map! :map dired-mode-map
-        :v "u" #'dired-unmark)
+  (defun fr/dired--init-map-h ()
+    "Initialize custom dired keybindings."
+    (map! :map dired-mode-map
+          :n "+" #'dired-create-empty-file
+          :n "a" #'dired-create-empty-file
+          :n "," #'dired-clean-directory
+          :n "." #'dired-omit-mode
+          :n "g." #'dired-omit-mode
+          :n "ga" #'dired-find-alternate-file
+          :v "u" #'dired-unmark)
+
+  ;; Ensure this loads after evil-collection
+  (add-hook 'dired-mode-hook #'fr/dired--init-map-h 'append)
 
   (after! dired-x
     (setopt dired-omit-files
