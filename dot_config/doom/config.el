@@ -1299,6 +1299,12 @@ If a region is active, emphasize it, else emphasize the word at point."
      (t
       (call-interactively #'org-insert-link))))
 
+  (defun fr/org-yank-and-remove-link ()
+    "Copy the Org link at point, then remove it, leaving the description."
+    (interactive)
+    (+org/yank-link)
+    (+org/remove-link))
+
   (map! :map org-mode-map
         :after org
         :localleader
@@ -1307,6 +1313,7 @@ If a region is active, emphasize it, else emphasize the word at point."
         "D" #'org-insert-drawer
         "E" #'org-export-dispatch
         (:prefix ("l" . "links")
+                 "d" #'fr/org-yank-and-remove-link
                  "l" #'fr/org-insert-link-dwim)
         (:prefix ("b" . "tables")
                  (:prefix ("t" . "toggle")
