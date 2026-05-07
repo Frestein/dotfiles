@@ -864,7 +864,13 @@ Override default Doom's auth-sources.
   (setopt mouse-drag-and-drop-region-cross-program t)
 
   (map! :map dired-mode-map
-        :v "u" #'dired-unmark))
+        :v "u" #'dired-unmark)
+
+  (after! dired-x
+    (setopt dired-omit-files
+            (concat dired-omit-files
+                    "\\|^lost\\+found\\'"
+                    "\\|^\\."))))
 #+end_src
 
 *** Dirvish

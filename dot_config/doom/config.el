@@ -598,7 +598,13 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
   (setopt mouse-drag-and-drop-region-cross-program t)
 
   (map! :map dired-mode-map
-        :v "u" #'dired-unmark))
+        :v "u" #'dired-unmark)
+
+  (after! dired-x
+    (setopt dired-omit-files
+            (concat dired-omit-files
+                    "\\|^lost\\+found\\'"
+                    "\\|^\\."))))
 
 (when (modulep! :emacs dired +dirvish)
   (use-package! dirvish
