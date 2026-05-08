@@ -2,116 +2,22 @@
 
 version = 4
 
-[[blocks]]
-type = "rprompt"
-alignment = "right"
-
-[[blocks.segments]]
-leading_diamond = ""
-trailing_diamond = ""
-template = " {{ .Path }}"
-foreground = "#B8BB26"
-background = "#3C3836"
-type = "path"
-style = "diamond"
-
-[blocks.segments.properties]
-style = "folder"
-
-[[blocks.segments]]
-leading_diamond = " "
-trailing_diamond = ""
-template = "{{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}"
-foreground = "lightBlue"
-background = "#3C3836"
-type = "git"
-style = "diamond"
-
-[blocks.segments.properties]
-branch_icon = " "
-branch_identical_icon = ""
-branch_gone_icon = ""
-fetch_status = true
-fetch_upstream_icon = true
-source = "cli"
-
-[[blocks.segments]]
-leading_diamond = " "
-trailing_diamond = ""
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}"
-foreground = "blue"
-background = "#3C3836"
-type = "python"
-style = "diamond"
-
-[[blocks.segments]]
-leading_diamond = " "
-trailing_diamond = ""
-template = "󰟓 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}"
-foreground = "lightBlue"
-background = "#3C3836"
-type = "go"
-style = "diamond"
-
-[[blocks.segments]]
-leading_diamond = " "
-trailing_diamond = ""
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}"
-foreground = "#F29111"
-background = "#3C3836"
-type = "java"
-style = "diamond"
-
-[[blocks.segments]]
-leading_diamond = " "
-trailing_diamond = ""
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}"
-foreground = "#906cff"
-background = "#3C3836"
-type = "kotlin"
-style = "diamond"
-
-[blocks.segments.properties]
-fetch_version = false
-
-[[blocks.segments]]
-leading_diamond = " "
-trailing_diamond = ""
-template = " {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}"
-foreground = "blue"
-background = "#3C3836"
-type = "lua"
-style = "diamond"
-
-[[blocks.segments]]
-leading_diamond = " "
-trailing_diamond = ""
-template = "{{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }}"
-foreground = "#B16286"
-background = "#3C3836"
-type = "battery"
-style = "diamond"
-foreground_templates = [
-  '{{if eq "Charging" .State.String}}#458588{{end}}',
-  '{{if eq "Discharging" .State.String}}#D79921{{end}}',
-  '{{if eq "Full" .State.String}}#98971A{{end}}',
-]
-
-[blocks.segments.properties]
-charged_icon = "● "
-charging_icon = "⇡ "
-discharging_icon = "⇣ "
+# =============================================================================
+# Left prompt (Main prompt)
+# =============================================================================
 
 [[blocks]]
 type = "prompt"
 alignment = "left"
 
+# --- Vi mode -----------------------------------------------------------------
 [[blocks.segments]]
+type = "text"
+style = "diamond"
 leading_diamond = ""
 trailing_diamond = " "
 background = "#3C3836"
-type = "text"
-style = "diamond"
+foreground = "red"
 template = '''
 {{- if .Env.FISH__BIND_MODE -}}
   {{- if eq .Env.FISH__BIND_MODE "default" -}}
@@ -131,7 +37,6 @@ template = '''
   {{ .Env.POSH_VI_MODE }}
 {{- end -}}
 '''
-foreground = "red"
 foreground_templates = [
   # fish
   '{{if eq .Env.FISH__BIND_MODE "default"}}blue{{end}}',
@@ -147,24 +52,153 @@ foreground_templates = [
   '{{if contains "R" .Env.POSH_VI_MODE}}yellow{{end}}',
 ]
 
+# --- Exit code ---------------------------------------------------------------
 [[blocks.segments]]
-leading_diamond = ""
-trailing_diamond = " "
-template = "{{ if .Error }} {{ .Code }}{{ end }}"
-foreground = "red"
-background = "#3C3836"
 type = "status"
 style = "diamond"
-
-[[blocks.segments]]
 leading_diamond = ""
 trailing_diamond = " "
-template = "{{ .UserName }}"
-foreground = "green"
+foreground = "red"
 background = "#3C3836"
+template = "{{ if .Error }} {{ .Code }}{{ end }}"
+
+# --- User --------------------------------------------------------------------
+[[blocks.segments]]
 type = "session"
 style = "diamond"
+leading_diamond = ""
+trailing_diamond = " "
+foreground = "green"
+background = "#3C3836"
+template = "{{ .UserName }}"
 
-[block.segments.properties.mapped_branches]
+# =============================================================================
+# Right prompt (Context information)
+# =============================================================================
+
+[[blocks]]
+type = "rprompt"
+alignment = "right"
+
+# --- Directory ---------------------------------------------------------------
+[[blocks.segments]]
+type = "path"
+style = "diamond"
+leading_diamond = ""
+trailing_diamond = ""
+foreground = "#B8BB26"
+background = "#3C3836"
+template = " {{ .Path }}"
+
+[blocks.segments.properties]
+style = "folder"
+
+# --- Git ---------------------------------------------------------------------
+[[blocks.segments]]
+type = "git"
+style = "diamond"
+leading_diamond = " "
+trailing_diamond = ""
+foreground = "lightBlue"
+background = "#3C3836"
+template = '''
+{{- .UpstreamIcon -}}
+{{- .HEAD -}}
+{{- if .BranchStatus }} {{ .BranchStatus }}{{ end -}}
+'''
+
+[blocks.segments.properties]
+branch_icon = " "
+branch_identical_icon = ""
+branch_gone_icon = ""
+fetch_status = true
+fetch_upstream_icon = true
+source = "cli"
+
+[blocks.segments.properties.mapped_branches]
 "feat/*" = " "
 "bug/*" = " "
+
+# --- Lua ---------------------------------------------------------------------
+[[blocks.segments]]
+type = "lua"
+style = "diamond"
+leading_diamond = " "
+trailing_diamond = ""
+foreground = "blue"
+background = "#3C3836"
+template = '''
+ {{ if not .Error -}}
+  {{ .Full }}
+{{- else -}}
+  {{ .Error }}
+{{- end -}}
+'''
+
+# --- Python ------------------------------------------------------------------
+[[blocks.segments]]
+type = "python"
+style = "diamond"
+leading_diamond = " "
+trailing_diamond = ""
+foreground = "blue"
+background = "#3C3836"
+template = '''
+ {{ if not .Error -}}
+  {{ .Full }}
+  {{- if .Venv }} ({{ .Venv }}){{ end }}
+{{- else -}}
+  {{ .Error }}
+{{- end -}}
+'''
+
+# --- Go -----------------------------------------------------------------------
+[[blocks.segments]]
+type = "go"
+style = "diamond"
+leading_diamond = " "
+trailing_diamond = ""
+foreground = "lightBlue"
+background = "#3C3836"
+template = '''
+󰟓 {{ if not .Error -}}
+  {{ .Full }}
+{{- else -}}
+  {{ .Error }}
+{{- end -}}
+'''
+
+# --- Java --------------------------------------------------------------------
+[[blocks.segments]]
+type = "java"
+style = "diamond"
+leading_diamond = " "
+trailing_diamond = ""
+foreground = "#F29111"
+background = "#3C3836"
+template = '''
+ {{ if not .Error -}}
+  {{ .Full }}
+{{- else -}}
+  {{ .Error }}
+{{- end -}}
+'''
+
+# --- Kotlin ------------------------------------------------------------------
+[[blocks.segments]]
+type = "kotlin"
+style = "diamond"
+leading_diamond = " "
+trailing_diamond = ""
+foreground = "#906cff"
+background = "#3C3836"
+template = '''
+ {{ if not .Error -}}
+  {{ .Full }}
+{{- else -}}
+  {{ .Error }}
+{{- end -}}
+'''
+
+[blocks.segments.properties]
+fetch_version = false
