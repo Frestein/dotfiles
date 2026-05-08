@@ -6,6 +6,22 @@
 sanitise tridactyllocal tridactylsync
 
 " ===========================================================================
+" UI / Behavior
+" ===========================================================================
+
+colors gruvbox-dark
+
+" Disable normal mode indicator in normal mode.
+set modeindicatormodes.normal false
+
+set keyboardlayoutbase qwerty
+set keyboardlayoutforce true
+
+set smoothscroll true
+
+set editorcmd emacsclient -nc "+%l:%c" "%f"
+
+" ===========================================================================
 " Search engines
 " ===========================================================================
 
@@ -201,22 +217,6 @@ bind --mode=input <C-k> focusinput -N
 " Leader
 " Reload config. Explicitly source correct file; have had issues using just "source".
 bind \rc source ~/.config/tridactyl/tridactylrc
-
-" ===========================================================================
-" UI / Behavior
-" ===========================================================================
-
-colors gruvbox-dark
-
-" Disable normal mode indicator in normal mode.
-set modeindicatormodes.normal false
-
-set keyboardlayoutbase qwerty
-set keyboardlayoutforce true
-
-set smoothscroll true
-
-set editorcmd emacsclient -nc "+%l:%c" "%f"
 
 " ===========================================================================
 " Modelines for Emacs and Vim
