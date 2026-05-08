@@ -109,17 +109,42 @@ alignment = "left"
 [[blocks.segments]]
 leading_diamond = ""
 trailing_diamond = " "
-template = "{{ if .Env.POSH_VI_MODE }}{{ .Env.POSH_VI_MODE }}{{ end }}"
-foreground = "red"
 background = "#3C3836"
 type = "text"
 style = "diamond"
+template = '''
+{{- if .Env.FISH__BIND_MODE -}}
+  {{- if eq .Env.FISH__BIND_MODE "default" -}}
+    N
+  {{- else if eq .Env.FISH__BIND_MODE "insert" -}}
+    I
+  {{- else if eq .Env.FISH__BIND_MODE "replace_one" -}}
+    R
+  {{- else if eq .Env.FISH__BIND_MODE "replace" -}}
+    R
+  {{- else if eq .Env.FISH__BIND_MODE "visual" -}}
+    V
+  {{- else -}}
+    ?
+  {{- end -}}
+{{- else if .Env.POSH_VI_MODE -}}
+  {{ .Env.POSH_VI_MODE }}
+{{- end -}}
+'''
+foreground = "red"
 foreground_templates = [
-  "{{if contains \"N\" .Env.POSH_VI_MODE}}blue{{end}}",
-  "{{if contains \"I\" .Env.POSH_VI_MODE}}magenta{{end}}",
-  "{{if contains \"V\" .Env.POSH_VI_MODE}}cyan{{end}}",
-  "{{if contains \"V-L\" .Env.POSH_VI_MODE}}cyan{{end}}",
-  "{{if contains \"R\" .Env.POSH_VI_MODE}}yellow{{end}}",
+  # fish
+  '{{if eq .Env.FISH__BIND_MODE "default"}}blue{{end}}',
+  '{{if eq .Env.FISH__BIND_MODE "insert"}}magenta{{end}}',
+  '{{if eq .Env.FISH__BIND_MODE "replace_one"}}yellow{{end}}',
+  '{{if eq .Env.FISH__BIND_MODE "replace"}}red{{end}}',
+  '{{if eq .Env.FISH__BIND_MODE "visual"}}cyan{{end}}',
+  # zsh
+  '{{if contains "N" .Env.POSH_VI_MODE}}blue{{end}}',
+  '{{if contains "I" .Env.POSH_VI_MODE}}magenta{{end}}',
+  '{{if contains "V-L" .Env.POSH_VI_MODE}}cyan{{end}}',
+  '{{if contains "V" .Env.POSH_VI_MODE}}cyan{{end}}',
+  '{{if contains "R" .Env.POSH_VI_MODE}}yellow{{end}}',
 ]
 
 [[blocks.segments]]

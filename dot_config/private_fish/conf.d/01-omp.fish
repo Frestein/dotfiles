@@ -10,7 +10,7 @@ end
 function fish_default_mode_prompt -d "Display vi prompt mode"
 end
 
-oh-my-posh init fish --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline-fish.omp.toml" | source
+oh-my-posh init fish --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline.omp.toml" | source
 
 function rerender_on_bind_mode_change --on-variable fish_bind_mode -d "Trigger oh-my-posh repaint on vi mode change"
     if test "$fish_bind_mode" != paste -a "$fish_bind_mode" != "$FISH__BIND_MODE"
