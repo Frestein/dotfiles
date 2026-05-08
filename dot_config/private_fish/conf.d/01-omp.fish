@@ -18,3 +18,7 @@ end
 # INFO: This function is masked and does nothing
 function fish_default_mode_prompt -d "Display vi prompt mode"
 end
+
+function rerender_on_dir_change --on-variable PWD
+    omp_repaint_prompt
+end
