@@ -56,43 +56,74 @@ c.tabs.last_close = "close"
 c.url.default_page = "https://duckduckgo.com/"
 c.url.start_pages = "https://duckduckgo.com/"
 c.url.searchengines = {
+    # Web
     "DEFAULT": "duckduckgo.com/?q={}",
-    "4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
-    "sx": f"{instance_searxng}/?q={{"{{}}"}}",
-    "ddg": "duckduckgo.com/?q={}",
-    "alist": "anilist.co/search/anime?hide my anime=true&search={}",
-    "Alist": "anilist.co/search/anime?hide my anime=true&adult=true&search={}",
-    "mlist": "anilist.co/search/manga?hide my manga=true&search={}",
-    "Mlist": "anilist.co/search/manga?hide my manga=true&adult=true&search={}",
-    "zerochan": "www.zerochan.net/{}",
-    "melpa": "melpa.org/#/?q={}",
-    "toys": "toys.whereis.social/?search={}",
-    "nix": "search.nixos.org/packages?query={}",
-    "nur": "nur.nix-community.org/?query={}",
-    "nixos": "wiki.nixos.org/w/index.php?search={}",
-    "aur": "aur.archlinux.org/packages?&K={}",
-    "arch": "wiki.archlinux.org/index.php?search={}",
-    "mozhi": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru&text={{"{{}}"}}",
-    "source": "sourcegraph.com/search?q=context:global+{}",
-    "gh": "github.com/search?q={}",
-    "cdb": "codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q={}",
-    "g": "www.google.com/search?q={}",
-    "gmap": "www.google.com/maps?q={}",
-    "gtrans": "translate.google.com/?text={}",
-    "reddit": "www.reddit.com/r/{}",
-    "rutracker": "rutracker.org/forum/tracker.php?nm={}",
-    "yt": "www.youtube.com/results?search_query={}",
-    "ytm": "music.youtube.com/search?q={}",
-    "lastfm": "www.last.fm/search?q={}",
-    "kino": "www.kinopoisk.ru/index.php?kp_query={}",
-    "pdb": "www.protondb.com/search?q={}",
-    "gf": "greasyfork.org/en/scripts?q={}",
-    "sf": "sleazyfork.org/en/scripts?q={}",
-    "pin": "pinterest.com/search/pins/?q={}",
-    "ozon": "www.ozon.ru/search/?text={}",
-    "ya": "ya.ru/search/?text={}",
-    "yam": "market.yandex.ru/search?text={}",
-    "osm": "www.openstreetmap.org/search?query={}",
+    "search-ddg": "duckduckgo.com/?q={}",
+    "search-g": "google.com/search?q={}",
+    "search-ya": "ya.ru/search/?text={}",
+    "search-4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
+    "search-sx": f"{instance_searxng}/?q={{"{{}}"}}",
+
+    # Development & Packages
+    "wk-nixos": "wiki.nixos.org/w/index.php?search={}",
+    "wk-gentoo": "wiki.gentoo.org/index.php?search={}",
+    "wk-arch": "wiki.archlinux.org/index.php?search={}",
+    "pkg-melpa": "melpa.org/#/?q={}",
+    "pkg-guix": "packages.guix.gnu.org/search/?query={}",
+    "pkg-toys": "toys.whereis.social/?search={}",
+    "pkg-nix": "search.nixos.org/packages?query={}",
+    "pkg-nur": "nur.nix-community.org/?query={}",
+    "pkg-gentoo": "packages.gentoo.org/packages/search?q={}",
+    "pkg-arch": "archlinux.org/packages/?q={}",
+    "pkg-aur": "aur.archlinux.org/packages?&K={}",
+    "pkg-linux": "pkgs.org/search/?q={}",
+    "grep-sg": "sourcegraph.com/search?q=context:global+{}",
+    "grep-gh": "github.com/search?q={}",
+    "grep-cb": "codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q={}",
+
+    # Userscripts
+    "userscript-gf": "greasyfork.org/en/scripts?q={}",
+    "userscript-sf": "sleazyfork.org/en/scripts?q={}",
+
+    # Torrent
+    "torrent-rutracker": "rutracker.org/forum/tracker.php?nm={}",
+
+    # Translation
+    "trans-g": "translate.google.com/?text={}",
+    "trans-mozhi": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru&text={{"{{}}"}}",
+
+    # Maps
+    "map-g": "google.com/maps?q={}",
+    "map-osm": "www.openstreetmap.org/search?query={}",
+
+    # Media
+    "media-yt": "youtube.com/results?search_query={}",
+    "media-kp": "kinopoisk.ru/index.php?kp_query={}",
+
+    # Music
+    "music-ytm": "music.youtube.com/search?q={}",
+    "music-lfm": "last.fm/search?q={}",
+
+    # References
+    "ref-pin": "pinterest.com/search/pins/?q={}",
+    "ref-zch": "zerochan.net/{}",
+    "ref-coub": "coub.com/search?q={}",
+
+    # Social & Forums
+    "social-reddit": "reddit.com/r/{}",
+
+    # Games
+    "games-pdb": "protondb.com/search?q={}",
+
+    # Anime & Manga
+    "anime-sfw": "anilist.co/search/anime?hide my anime=true&search={}",
+    "anime-nfsw": "anilist.co/search/anime?hide my anime=true&adult=true&search={}",
+    "manga-sfw": "anilist.co/search/manga?hide my manga=true&search={}",
+    "manga-nsfw": "anilist.co/search/manga?hide my manga=true&adult=true&search={}",
+
+    # Shopping
+    "shop-ozon": "ozon.ru/search/?text={}",
+    "shop-yam": "market.yandex.ru/search?text={}",
 }
 
 config_dir = Path(__file__).parent
@@ -381,7 +412,7 @@ bind("\\po", "gopass-otp")
 # Tridactyl quickmarks
 qsites = {
     "1": "chat.deepseek.com",
-    "2": "www.perplexity.ai",
+    "2": "perplexity.ai",
     "3": "duck.ai",
     "a": "anilist.co/user/Frestein",
     "s": instance_4get,
@@ -392,8 +423,8 @@ qsites = {
     "e": "mail.google.com/mail/u/2/",
     "E": "app.tuta.com",
     "m": "music.youtube.com",
-    "M": "www.last.fm/user/Frestein",
-    "k": "www.kinopoisk.ru/mykp/folders/",
+    "M": "last.fm/user/Frestein",
+    "k": "kinopoisk.ru/mykp/folders/",
     "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
     "T": "translate.google.com",
     "c": "coub.com/community/anime",
