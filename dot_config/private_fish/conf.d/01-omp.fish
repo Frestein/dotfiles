@@ -6,6 +6,10 @@ if not type -q oh-my-posh
     exit
 end
 
+# INFO: This function is masked and does nothing
+function fish_default_mode_prompt -d "Display vi prompt mode"
+end
+
 oh-my-posh init fish --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline-fish.omp.toml" | source
 
 function rerender_on_bind_mode_change --on-variable fish_bind_mode -d "Trigger oh-my-posh repaint on vi mode change"
@@ -15,10 +19,6 @@ function rerender_on_bind_mode_change --on-variable fish_bind_mode -d "Trigger o
     end
 end
 
-# INFO: This function is masked and does nothing
-function fish_default_mode_prompt -d "Display vi prompt mode"
-end
-
-function rerender_on_dir_change --on-variable PWD
+function rerender_on_dir_change --on-variable PWD -d "Trigger oh-my-posh repaint on prevd/nextd"
     omp_repaint_prompt
 end
