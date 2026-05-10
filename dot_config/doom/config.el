@@ -2501,7 +2501,7 @@ is tomorrow.  With two prefixes, select the deadline."
 
 (when (modulep! :tools fj)
   (after! fj
-    (setq fj-user "Frestein")
+    (setopt fj-user "Frestein")
 
     (when (modulep! :tools pass +auth)
       (setopt fj-token-use-auth-source nil)
