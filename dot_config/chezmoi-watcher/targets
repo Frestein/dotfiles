@@ -1,0 +1,5 @@
+${XDG_CONFIG_HOME:-$HOME/.config}/nvim
+${XDG_CONFIG_HOME:-$HOME/.config}/doom
+${XDG_CONFIG_HOME:-$HOME/.config}/quickshell
+${XDG_CONFIG_HOME:-$HOME/.config}/qutebrowser/config.py
+${XDG_CONFIG_HOME:-$HOME/.config}/tridactyl/tridactylrc
