@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-WATCHED_DIRS=(
+WATCH_TARGETS=(
     "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
     "${XDG_CONFIG_HOME:-$HOME/.config}/doom"
     "${XDG_CONFIG_HOME:-$HOME/.config}/quickshell"
+    "${XDG_CONFIG_HOME:-$HOME/.config}/qutebrowser/config.py"
+    "${XDG_CONFIG_HOME:-$HOME/.config}/tridactyl/tridactylrc"
 )
-MIN_INTERVAL=2
 
+MIN_INTERVAL=2
 declare -A last_event_time
 
 is_temporary_keepfile() {
@@ -25,7 +27,38 @@ is_temporary_keepfile() {
     return 1
 }
 
-inotifywait -m -r -e create -e modify --format '%w%f' "${WATCHED_DIRS[@]}" | while read -r changed_file; do
+declare -A watch_parents
+for target in "${WATCH_TARGETS[@]}"; do
+    if [[ -d "$target" ]]; then
+        watch_parents["$target"]=1
+    else
+        parent_dir=$(dirname "$target")
+        watch_parents["$parent_dir"]=1
+    fi
+done
+
+watch_dirs=("${!watch_parents[@]}")
+
+inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while read -r changed_file; do
+    matched=false
+    for target in "${WATCH_TARGETS[@]}"; do
+        if [[ -d "$target" ]]; then
+            if [[ "$changed_file" == "$target"/* ]]; then
+                matched=true
+                break
+            fi
+        else
+            if [[ "$changed_file" == "$target" ]]; then
+                matched=true
+                break
+            fi
+        fi
+    done
+
+    if ! "$matched"; then
+        continue
+    fi
+
     rel_path="${changed_file/#$HOME\//}"
 
     now=$(date +%s)
