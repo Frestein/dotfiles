@@ -61,8 +61,8 @@ c.url.searchengines = {
     "search-ddg": "duckduckgo.com/?q={}",
     "search-g": "google.com/search?q={}",
     "search-ya": "ya.ru/search/?text={}",
-    "search-4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{"{{}}"}}",
-    "search-sx": f"{instance_searxng}/?q={{"{{}}"}}",
+    "search-4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{}}",
+    "search-sx": f"{instance_searxng}/?q={{}}",
 
     # Development & Packages
     "wk-nixos": "wiki.nixos.org/w/index.php?search={}",
@@ -90,7 +90,7 @@ c.url.searchengines = {
 
     # Translation
     "trans-g": "translate.google.com/?text={}",
-    "trans-mozhi": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru&text={{"{{}}"}}",
+    "trans-mozhi": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru&text={{}}",
 
     # Maps
     "map-g": "google.com/maps?q={}",
