@@ -1878,17 +1878,6 @@ with `org-agenda-block-separator' characters)."
                                   "#+title: %<%Y-%m-%d>\n\n")
                :empty-lines 1)))
 
-    ;; INFO: Filter org-tags-alist keywords.
-    ;; https://github.com/org-roam/org-roam/issues/2477
-    ;; TODO: Adjust when PR will be merged.
-    ;; https://github.com/org-roam/org-roam/pull/2564
-    (defadvice! fixed-org-roam-tag-completions ()
-      "Return list of tags for completions within Org-roam."
-      :override #'org-roam-tag-completions
-      (let ((roam-tags (mapcar #'car (org-roam-db-query [:select :distinct [tag] :from tags])))
-            (org-tags (seq-filter #'stringp (mapcar #'car org-tag-alist))))
-        (seq-uniq (append roam-tags org-tags))))
-
     ;; INFO: Can go to dailies directly
     ;; https://github.com/org-roam/org-roam/issues/2134
     ;; https://github.com/org-roam/org-roam/pull/2141#issuecomment-3021291947 - Thanks!
