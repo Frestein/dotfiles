@@ -26,6 +26,25 @@ done <"$TARGETS_FILE"
 MIN_INTERVAL=2
 declare -A last_event_time
 
+# Cached list of paths managed by chezmoi
+managed_cache=()
+
+update_managed_cache() {
+    # Fill cache with output of chezmoi managed
+    mapfile -t managed_cache < <(chezmoi managed 2>/dev/null || true)
+}
+
+# Check if a relative path is already tracked by chezmoi
+is_managed() {
+    local rel="$1"
+    for m in "${managed_cache[@]}"; do
+        [[ "$m" == "$rel" ]] && return 0
+    done
+    return 1
+}
+
+update_managed_cache
+
 # Check whether a changed file belongs to any of the watched targets.
 # For a directory target, any file inside it (recursively) matches.
 # For a file target, only the exact file matches.
@@ -89,7 +108,7 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while
     fi
 
     # Update or add the file in chezmoi
-    if chezmoi managed 2>/dev/null | grep -qxF "$rel_path"; then
+    if is_managed "$rel_path"; then
         if chezmoi re-add "$rel_path" 2>/dev/null; then
             notify-send -u normal -c "chezmoi" "Chezmoi" "File $rel_path updated"
         else
@@ -98,6 +117,7 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while
     else
         if chezmoi add "$rel_path" 2>/dev/null; then
             notify-send -u normal -c "chezmoi" "Chezmoi" "File $rel_path added"
+            update_managed_cache
         else
             notify-send -u critical -c "chezmoi" "Chezmoi" "Error during add $rel_path"
         fi
