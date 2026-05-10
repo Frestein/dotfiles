@@ -55,6 +55,9 @@ c.spellcheck.languages = ["en-US", "ru-RU"]
 c.tabs.last_close = "close"
 c.url.default_page = "https://duckduckgo.com/"
 c.url.start_pages = "https://duckduckgo.com/"
+
+# fmt: off
+
 c.url.searchengines = {
     # Web
     "DEFAULT": "duckduckgo.com/?q={}",
@@ -126,6 +129,8 @@ c.url.searchengines = {
     "shop-yam": "market.yandex.ru/search?text={}",
 }
 
+# fmt: on
+
 config_dir = Path(__file__).parent
 exclude_file = config_dir / "web_exclude.txt"
 web_exclude = []
@@ -162,20 +167,14 @@ c.bindings.key_mappings.update(dict(zip(ru_keys, en_keys)))
 # Content settings
 ###############################################################################
 
+# fmt: off
+
 config.set("content.cookies.accept", "all", "chrome-devtools://*")
 config.set("content.cookies.accept", "all", "devtools://*")
 
 config.set("content.headers.accept_language", "", "https://matchmaker.krunker.io/*")
-config.set(
-    "content.headers.user_agent",
-    "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}",
-    "https://web.whatsapp.com/",
-)
-config.set(
-    "content.headers.user_agent",
-    "Mozilla/5.0 ({os_info}; rv:133.0) Gecko/20100101 Firefox/133.0",
-    "https://accounts.google.com/*",
-)
+config.set("content.headers.user_agent", "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}", "https://web.whatsapp.com/")
+config.set("content.headers.user_agent", "Mozilla/5.0 ({os_info}; rv:133.0) Gecko/20100101 Firefox/133.0", "https://accounts.google.com/*")
 
 config.set("content.images", True, "chrome-devtools://*")
 config.set("content.images", True, "devtools://*")
@@ -185,16 +184,10 @@ config.set("content.javascript.enabled", True, "devtools://*")
 config.set("content.javascript.enabled", True, "chrome://*/*")
 config.set("content.javascript.enabled", True, "qute://*/*")
 
-config.set(
-    "content.local_content_can_access_remote_urls",
-    True,
-    "file:///home/frestein/.local/share/qutebrowser/userscripts/*",
-)
-config.set(
-    "content.local_content_can_access_file_urls",
-    False,
-    "file:///home/frestein/.local/share/qutebrowser/userscripts/*",
-)
+config.set("content.local_content_can_access_remote_urls", True, "file:///home/frestein/.local/share/qutebrowser/userscripts/*")
+config.set("content.local_content_can_access_file_urls", False, "file:///home/frestein/.local/share/qutebrowser/userscripts/*")
+
+# fmt: on
 
 ################################################################################
 # Advertising blocking
@@ -321,6 +314,8 @@ c.aliases.update(
 
 bind = config.bind
 unbind = config.unbind
+
+# fmt: off
 
 # Unbind defaults
 unbind("<Alt-m>")
@@ -449,3 +444,5 @@ bind("tt", "translate")
 bind("tt", "translate", mode="caret")
 bind("cm", "clear-messages")
 bind(";c", "hint code userscript qute-code-hint")
+
+# fmt: on
