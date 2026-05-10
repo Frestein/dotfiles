@@ -11,22 +11,6 @@ WATCH_TARGETS=(
 MIN_INTERVAL=2
 declare -A last_event_time
 
-is_temporary_keepfile() {
-    local file=$1
-    if [[ "$(basename "$file")" == ".keep" ]]; then
-        local now=$(date +%s)
-        if [[ ! -e "$file" ]]; then
-            return 1
-        fi
-        local mtime=$(stat -c %Y "$file")
-        local age=$((now - mtime))
-        if ((age < 3)); then
-            return 0
-        fi
-    fi
-    return 1
-}
-
 declare -A watch_parents
 for target in "${WATCH_TARGETS[@]}"; do
     if [[ -d "$target" ]]; then
@@ -59,6 +43,10 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while
         continue
     fi
 
+    if [[ -d "$changed_file" ]]; then
+        continue
+    fi
+
     rel_path="${changed_file/#$HOME\//}"
 
     now=$(date +%s)
@@ -72,11 +60,6 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while
 
     if [[ ! -e "$changed_file" ]]; then
         echo "File $changed_file no longer exists, skipping"
-        continue
-    fi
-
-    if is_temporary_keepfile "$changed_file"; then
-        echo "Ignored temporary .keep file: $rel_path"
         continue
     fi
 
