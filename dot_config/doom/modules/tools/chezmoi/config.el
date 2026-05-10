@@ -1,18 +1,18 @@
 ;;; tools/chezmoi/config.el -*- lexical-binding: t; -*-
 
-(defcustom chezmoi-dir (file-name-as-directory
-                        (string-trim-right (shell-command-to-string "chezmoi source-path")))
+(defcustom fr/chezmoi-dir (file-name-as-directory
+                           (string-trim-right (shell-command-to-string "chezmoi source-path")))
   "Location of the chezmoi directory."
   :type '(string)
   :group 'chezmoi)
 
-(defcustom chezmoi-doom-private-dir (concat chezmoi-dir "/dot_config/doom/")
+(defcustom fr/chezmoi-doom-private-dir (concat fr/chezmoi-dir "/dot_config/doom/")
   "Location of the chezmoi managed doom private directory."
   :type '(string)
   :group 'chezmoi
-  :set-after '(chezmoi-dir))
+  :set-after '(fr/chezmoi-dir))
 
-(setopt chezmoi-dir
+(setopt fr/chezmoi-dir
         (if-let* ((dir (getenv "CHEZMOIROOT")))
             (file-name-as-directory dir)
           (file-name-as-directory
@@ -27,8 +27,75 @@
     :type '(string)
     :group 'chezmoi)
 
-  ;;;###autoload
-  (defun +chezmoi-status (arg)
+  ;; Overridden because `chezmoi managed' inexplicably includes .chezmoiscripts,
+  ;; breaking `chezmoi-find' logic.
+  (defadvice! fr/chezmoi-managed ()
+    "List all files and directories managed by chezmoi."
+    :override #'chezmoi-managed
+    (thread-last "managed"
+                 chezmoi--dispatch
+                 (cl-remove-if (lambda (file) (string-prefix-p ".chezmoi" file)))
+                 (cl-map 'list (lambda (file) (concat "~/" file)))))
+
+  ;; Helper that collects every file under the chezmoi source directory,
+  ;; used by `chezmoi-find' when invoked with a prefix argument.
+  (defun chezmoi--all-files ()
+    "Return all managed files plus hidden chezmoi config files from source directory."
+    (let* ((managed (chezmoi-managed-files))
+           (source-files
+            (let ((default-directory fr/chezmoi-dir))
+              (cl-loop for entry in (file-expand-wildcards ".chezmoi*")
+                       for abs = (expand-file-name entry)
+                       if (file-regular-p abs)
+                       collect (abbreviate-file-name abs)
+                       else if (file-directory-p abs)
+                       append (mapcar #'abbreviate-file-name
+                                      (directory-files-recursively abs ".*" nil))))))
+      (delete-dups (append managed source-files))))
+
+  ;; Extended to correctly handle hidden chezmoi files that are frequently
+  ;; needed but missing from the original implementation.
+  (defadvice! fr/chezmoi-find (file)
+    "Edit a source FILE managed by chezmoi.
+
+If the target file has the same state as the source file, add a hook to
+`save-buffer' that applies the source state to the target state.  This way, when
+the buffer editing the source state is saved the target state is kept in sync.
+Note: Does not run =chezmoi edit=.
+
+With a prefix argument (\\[universal-argument]), include hidden chezmoi
+configuration files."
+    :override 'chezmoi-find
+    (interactive
+     (list
+      (let ((files (if current-prefix-arg
+                       (chezmoi--all-files)
+                     (chezmoi-managed-files))))
+        (chezmoi--completing-read "Select a dotfile to edit: "
+                                  files
+                                  'project-file))))
+    (if (string-prefix-p (expand-file-name fr/chezmoi-dir) (expand-file-name file))
+        (find-file file)
+      (let ((source-file (chezmoi-source-file file)))
+        (when source-file
+          (find-file source-file)
+          (let ((target-file (expand-file-name file)))
+            (when-let ((mode (and (chezmoi--use-template target-file)
+                                  (assoc-default target-file auto-mode-alist 'string-match))))
+              (funcall
+               (if (and (listp mode) (null (car mode)))
+                   (save-window-excursion
+                     (let* ((existed (get-file-buffer target-file))
+                            (_ (find-file target-file))
+                            (m major-mode))
+                       (unless existed (kill-current-buffer))
+                       m))
+                 mode)))
+            (message target-file)
+            (unless chezmoi-mode (chezmoi-mode))
+            source-file)))))
+
+  (defun fr/chezmoi-status (arg)
     "View output of `chezmoi status' in a status-buffer.
 If ARG is non-nil, switch to the status-buffer. "
     (interactive "i")
@@ -48,10 +115,11 @@ If ARG is non-nil, switch to the status-buffer. "
             (whitespace-mode 0))))
       b))
 
-  ;;;###autoload
-  (defun chezmoi-diff (arg)
+  ;; I don’t remember why I wrote it.
+  (defadvice! fr/chezmoi-diff (arg)
     "View output of `chezmoi diff' in a diff-buffer.
 If ARG is non-nil, switch to the diff-buffer."
+    :override #'chezmoi-diff
     (interactive "i")
     (let ((b (get-buffer-create "*chezmoi-diff*")))
       (with-current-buffer b
@@ -72,18 +140,18 @@ If ARG is non-nil, switch to the diff-buffer."
             (whitespace-mode 0))))
       b))
 
-  ;;;###autoload
-  (defun chezmoi-dired-add-marked-files (arg)
+  ;; The original function does not support the --encrypt flag.
+  (defadvice! fr/chezmoi-dired-add-marked-files (arg)
     "Add files marked in Dired to source state.
 With universal argument ARG, adds `--encrypt' flag."
+    :override #'chezmoi-dired-add-marked-files
     (interactive "P")
     (dolist (file (dired-get-marked-files))
       (shell-command (concat chezmoi-command " add "
                              (if arg "--encrypt " "")
                              (shell-quote-argument file)))))
 
-  ;;;###autoload
-  (defun +chezmoi-dired-re-add-marked-files (arg)
+  (defun fr/chezmoi-dired-re-add-marked-files (arg)
     "Re-add files marked in Dired to source state.
 With universal argument ARG, adds `--encrypt' flag."
     (interactive "P")
@@ -93,7 +161,7 @@ With universal argument ARG, adds `--encrypt' flag."
                              (shell-quote-argument file)))))
 
   (when (modulep! :editor evil)
-    (add-hook! chezmoi-mode #'+chezmoi--evil-h)))
+    (add-hook! chezmoi-mode #'fr/chezmoi--evil-h)))
 
 ;; TODO: Does not work
 ;; https://github.com/tuh8888/chezmoi.el/issues/29#issuecomment-1678028390
@@ -103,9 +171,9 @@ With universal argument ARG, adds `--encrypt' flag."
   (add-to-list 'completion-at-point-functions #'chezmoi-capf))
 
 (when (modulep! :editor file-templates)
-  (advice-add #'+file-templates-in-emacs-dirs-p
-              :override #'+chezmoi--file-templates-in-emacs-dirs-p-a)
-  (advice-add #'+file-templates-get-short-path
-              :override #'+chezmoi--file-templates-get-short-path-a))
+  (advice-add #'fr/file-templates-in-emacs-dirs-p
+              :override #'fr/chezmoi--file-templates-in-emacs-dirs-p-a)
+  (advice-add #'fr/file-templates-get-short-path
+              :override #'fr/chezmoi--file-templates-get-short-path-a))
 
-(add-hook! doom-after-modules-config #'+chezmoi--init-map-h)
+(add-hook! doom-after-modules-config #'fr/chezmoi--init-map-h)
