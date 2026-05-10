@@ -8,7 +8,7 @@ g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
 
 --- LazyVim  ---
-g.lazyvim_python_lsp = "basedpyright"
+g.lazyvim_python_lsp = "ty"
 g.lazyvim_toml_lsp = "tombi"
 g.lazyvim_html_lsp = "superhtml"
 
