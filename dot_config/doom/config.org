@@ -961,6 +961,70 @@ Override default Doom's auth-sources.
 
     (push 'eza dirvish-preview-dispatchers)
 
+    (with-eval-after-load 'dirvish-widgets
+      (cl-defmethod dirvish-media-metadata ((meta (head epub)))
+        "Return metadata for EPUB file (file-based only)."
+        (let* ((file (cdr meta))
+               (attrs (file-attributes file))
+               (minfo `((Title . ,(file-name-base file))
+                        (Mod-date . ,(format-time-string "%Y-%m-%d %H:%M"
+                                                         (file-attribute-modification-time attrs))))))
+          (format "%s%s"
+                  (dirvish-media--group-heading '("EPUB"))
+                  (dirvish-media--format-metadata minfo '(Title Mod-date)))))
+
+      ;; Added epub support
+      (cl-defmethod dirvish-preview-dispatch ((recipe (head img)) dv)
+        "Insert RECIPE as an image at preview window of DV."
+        (with-current-buffer (dirvish--special-buffer 'preview dv t)
+          (let ((img (cdr recipe)) buffer-read-only)
+            (erase-buffer) (remove-overlays) (insert " ")
+            (add-text-properties 1 2 `(display ,img rear-nonsticky t keymap ,image-map))
+            (pcase-let ((`(,iw . ,ih) (image-size img)))
+              (let* ((p-window (dv-preview-window dv))
+                     (w-pad (max (round (/ (- (window-width p-window) iw) 2)) 0))
+                     (h-pad (max (round (/ (- (window-height p-window) ih) 2)) 0)))
+                (goto-char 1)
+                (insert (make-string (if dirvish-show-media-properties 2 h-pad) ?\n)
+                        (make-string w-pad ?\s))
+                (when dirvish-show-media-properties
+                  (let* ((beg (progn (goto-char (point-max)) (point)))
+                         (file (with-current-buffer (cdr (dv-index dv))
+                                 (dirvish-prop :index)))
+                         (ext (downcase (or (file-name-extension file) "")))
+                         (type (cond ((member ext dirvish-image-exts) 'image)
+                                     ((member ext dirvish-video-exts) 'video)
+                                     ((member ext dirvish-font-exts) 'font)
+                                     ((equal ext "pdf") 'pdf)
+                                     ((equal ext "epub") 'epub)
+                                     (t (user-error "Not a media file")))))
+                    (insert "\n\n\n" (dirvish-media-metadata (cons type file))
+                            (make-string (* h-pad 2) ?\n))
+                    (align-regexp beg (point) "\\(\\\t\\)[^\\\t\\\n]+" 1 4 t)
+                    (goto-char 1)))))
+            (current-buffer)))))
+
+    ;; Added support for gnome-epub-thumbnailer,
+    ;; refused to use dirvish-epub-thumbnailer-program
+    (dirvish-define-preview epub (file preview-window)
+      "Preview epub files.
+Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
+      (when (equal ext "epub")
+        (let* ((width (dirvish-media--img-size preview-window))
+               (height (dirvish-media--img-size preview-window 'height))
+               (cache (dirvish--img-thumb-name file width ".jpg"))
+               (prog (or (executable-find "epub-thumbnailer")
+                         (executable-find "gnome-epub-thumbnailer")))
+               (args (when prog
+                       (if (string-match-p "gnome-epub-thumbnailer" prog)
+                           (list "--size" (number-to-string width) file cache)
+                         (list file cache (number-to-string width))))))
+          (if (and prog args)
+              (if (file-exists-p cache)
+                  `(img . ,(create-image cache nil nil :max-width width :max-height height))
+                `(cache . (,prog ,@args)))
+            nil))))
+
     (setopt mouse-1-click-follows-link nil)
 
     (map! :map dirvish-mode-map
