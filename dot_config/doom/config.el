@@ -773,6 +773,49 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
 
 (setopt evil-echo-state nil)
 
+(when (and (modulep! :editor evil)
+           (modulep! :editor cycle-at-point))
+  (defun fr/cycle-at-point-forward (&optional arg)
+    "Cycle word at point, or first cyclable word forward on current line.
+With prefix ARG, cycle backwards if ARG is negative."
+    (interactive "p")
+    (let* ((orig-pos (point))
+           (line-end (line-end-position))
+           (cycle-data (cycle-at-point--impl-cycle-get-data-for-mode))
+           found new-pos)
+      (if (null cycle-data)
+          (cycle-at-point arg)
+        (save-excursion
+          (goto-char orig-pos)
+          (while (and (not found) (< (point) line-end))
+            (pcase-let ((`(,words . (,beg . ,end))
+                         (cycle-at-point--cycle-words cycle-data)))
+              (if words
+                  (setq found t new-pos beg)
+                (forward-char 1)))))
+        (if found
+            (progn (goto-char new-pos) (cycle-at-point arg))
+          (goto-char orig-pos)
+          (message "No cyclable word found on this line")))))
+
+  (defun fr/increment-dispatch ()
+    "Increment number at point, or cycle word forward if no number."
+    (interactive)
+    (let ((tick (buffer-modified-tick)))
+      (let ((inhibit-message t))
+        (call-interactively #'evil-numbers/inc-at-pt))
+      (when (= tick (buffer-modified-tick))
+        (fr/cycle-at-point-forward 1))))
+
+  (defun fr/decrement-dispatch ()
+    "Decrement number at point, or cycle word backward if no number."
+    (interactive)
+    (let ((tick (buffer-modified-tick)))
+      (let ((inhibit-message t))
+        (call-interactively #'evil-numbers/dec-at-pt))
+      (when (= tick (buffer-modified-tick))
+        (fr/cycle-at-point-forward -1)))))
+
 (when (modulep! :editor evil)
   (after! evil-snipe
     (when (modulep! :app telega)
@@ -792,10 +835,10 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
 ;; BUG: https://github.com/justbur/emacs-which-key/issues/345
 ;; (setopt which-key-show-operator-state-maps t)
 
-(map! :n "C-a" #'evil-numbers/inc-at-pt
+(map! :n "C-a" #'fr/increment-dispatch
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
       :v "C-S-a" #'evil-numbers/inc-at-pt
-      :n "C-x" #'evil-numbers/dec-at-pt
+      :n "C-x" #'fr/decrement-dispatch
       :v "C-x" #'evil-numbers/dec-at-pt-incremental
       :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down

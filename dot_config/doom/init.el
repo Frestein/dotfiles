@@ -58,6 +58,7 @@
        ;; objed             ; text object editing for the innocent
        ;; parinfer          ; turn lisp into python, sort of
        ;; rotate-text       ; cycle region at point between text candidates
+       cycle-at-point       ; like rotate-text, but better
        snippets             ; my elves. They type so I don't have to
        (symex +ide)
        (whitespace +guess +trim)  ; a butler for your whitespace
