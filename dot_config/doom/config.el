@@ -686,7 +686,7 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
       "Use `eza' to generate directory preview."
       :require ("eza")
       (when (file-directory-p file)
-        `(shell . ("eza" "-al" "--group" "--group-directories-first" ,file))))
+        `(shell . ("eza" "-al" "--group" "--group-directories-first" "--icons=always" ,file))))
 
     (push 'eza dirvish-preview-dispatchers)
 
