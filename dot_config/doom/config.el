@@ -429,7 +429,8 @@ the variable `message-log-max'."
          ("yaupd"  "yay -Sy $*"))))))
 
 (use-package! esh-autosuggest
-  :when (modulep! :term eshell)
+  :when (and (modulep! :term eshell)
+             (modulep! :completion company))
   :hook (eshell-mode . esh-autosuggest-mode)
   :config
   (map! :map eshell-mode-map

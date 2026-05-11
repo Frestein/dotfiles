@@ -10,7 +10,8 @@
   (package! vimrc-mode))
 
 (when (modulep! :term eshell)
-  (package! esh-autosuggest)
+  (when (modulep! :completion company)
+    (package! esh-autosuggest))
 
   (when (executable-find "atuin")
     (package! eshell-atuin))
