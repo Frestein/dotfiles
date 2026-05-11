@@ -280,8 +280,12 @@ c.url.searchengines = {
     "pkg-aur": "aur.archlinux.org/packages?&K={}",
     "pkg-linux": "pkgs.org/search/?q={}",
     "grep-sg": "sourcegraph.com/search?q=context:global+{}",
-    "grep-gh": "github.com/search?q={}",
-    "grep-cb": "codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q={}",
+    "grep-gh-code": "github.com/search?q={}&type=code",
+    "grep-gh-repo": "github.com/search?q={}&type=repositories",
+    "grep-gh-issue": "github.com/search?q={}&type=issues",
+    "grep-gh-user": "github.com/search?q={}&type=users",
+    "grep-cb-repo": "codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q={}",
+    "grep-cb-user": "codeberg.org/explore/users?q={}",
 
     # Userscripts
     "userscript-gf": "greasyfork.org/en/scripts?q={}",
