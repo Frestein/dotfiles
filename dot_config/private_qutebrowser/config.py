@@ -319,7 +319,7 @@ c.url.searchengines = {
 
     # Anime & Manga
     "anime-sfw": "anilist.co/search/anime?hide my anime=true&search={}",
-    "anime-nfsw": "anilist.co/search/anime?hide my anime=true&adult=true&search={}",
+    "anime-nsfw": "anilist.co/search/anime?hide my anime=true&adult=true&search={}",
     "manga-sfw": "anilist.co/search/manga?hide my manga=true&search={}",
     "manga-nsfw": "anilist.co/search/manga?hide my manga=true&adult=true&search={}",
 
