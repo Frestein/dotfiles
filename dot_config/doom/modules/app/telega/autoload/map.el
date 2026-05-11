@@ -3,6 +3,9 @@
 ;;;###autoload
 (defun fr/telega--init-map-h (&rest _)
   "Initialize custom telega keybindings."
+  (evil-collection-define-key 'normal 'telega-chat-mode-map
+    (kbd "RET") 'telega-chatbuf-newline-or-input-send)
+
   (map! (:map telega-root-mode-map
          :n "h" #'telega-button-backward
          :n "l" #'telega-button-forward
