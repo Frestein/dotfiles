@@ -563,6 +563,8 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
        :geometry window-geometry))))
 
 (setopt epg-gpg-home-directory (getenv "GNUPGHOME"))
+(setq epa-file-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43"))
+(setopt plstore-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43"))
 
 (when (modulep! :config default +gnupg)
   (use-package! pinentry
