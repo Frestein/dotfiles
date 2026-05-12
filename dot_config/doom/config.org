@@ -225,6 +225,7 @@
                      "Emoticons"
                      "Transport and Map Symbols"
                      "Miscellaneous Symbols and Pictographs"
+                     "Miscellaneous Symbols and Arrows"
                      "Enclosed Alphanumeric Supplement"
                      "Supplemental Symbols and Pictographs"))
       (push "Twemoji" (cadr (assoc block unicode-fonts-block-font-mapping))))))
