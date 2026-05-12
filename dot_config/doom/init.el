@@ -222,6 +222,7 @@
        (rss +org)           ; emacs as an RSS reader
        srs                  ; spaced repetition system inside Org-mode
        pomm                 ; Third Time and Pomodoro
+       mastodon
 
        :config
        literate
