@@ -31,7 +31,6 @@
         (:map telega-chat-mode-map
          :n [tab] #'telega-button-forward
          :n [backtab] #'telega-button-backward
-         :n "_" #'fr/telega-chatbuf-cancel-dwim
          :n "H" #'telega-describe-chat
          :n "C-p" #'telega-msg-previous
          :n "C-n" #'telega-msg-next

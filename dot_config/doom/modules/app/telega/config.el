@@ -651,12 +651,6 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
     (interactive)
     (fr/telega-format--apply nil))
 
-  (defun fr/telega-chatbuf-cancel-dwim ()
-    "Cancel both the active filter and thread in the Telega chat buffer."
-    (interactive)
-    (telega-chatbuf-filter-cancel)
-    (telega-chatbuf-thread-cancel))
-
   ;; Initialize custom keybindings
   (if (modulep! :editor evil)
       (after! evil-collection
