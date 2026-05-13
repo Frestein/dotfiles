@@ -2917,6 +2917,7 @@ It should be the title of the web page as returned by `rdrview'."
 
   (after! elfeed
     (setopt elfeed-search-filter "@2week +unread +awesome -reddit ")
+    (setopt elfeed-search-remain-on-entry '(browse show yank))
 
     (set-popup-rule! "^\\*elfeed-entry"
       :actions '(fr/+popup-display-dynamic-side) :height .75 :width .5 :ttl 0 :slot 1 :modeline t)
