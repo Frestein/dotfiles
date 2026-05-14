@@ -2266,6 +2266,13 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (when (modulep! :editor evil +vimrc)
   (add-to-list 'auto-mode-alist '("tridactylrc\\'" . vimrc-mode)))
 
+(use-package! eglot-python-preset
+  :when (and (modulep! :tools lsp +eglot)
+             (modulep! :lang python +lsp))
+  :config
+  (setopt eglot-python-preset-lsp-server 'rass)
+  (setopt eglot-python-preset-rass-tools '(ty ruff)))
+
 (setopt browse-url-text-browser (executable-find "cha"))
 
 (use-package! eww

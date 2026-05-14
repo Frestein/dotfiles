@@ -100,6 +100,7 @@
   - [[#qml][QML]]
   - [[#fish][Fish]]
   - [[#vimrc][Vimrc]]
+  - [[#python][Python]]
 - [[#www][WWW]]
   - [[#eww][EWW]]
     - [[#config-6][Config]]
@@ -2770,6 +2771,17 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 #+begin_src elisp
 (when (modulep! :editor evil +vimrc)
   (add-to-list 'auto-mode-alist '("tridactylrc\\'" . vimrc-mode)))
+#+end_src
+
+** Python
+
+#+begin_src elisp
+(use-package! eglot-python-preset
+  :when (and (modulep! :tools lsp +eglot)
+             (modulep! :lang python +lsp))
+  :config
+  (setopt eglot-python-preset-lsp-server 'rass)
+  (setopt eglot-python-preset-rass-tools '(ty ruff)))
 #+end_src
 
 * WWW

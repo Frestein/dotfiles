@@ -6,6 +6,10 @@
 
 (package! once)
 
+(when (and (modulep! :tools lsp +eglot)
+           (modulep! :lang python +lsp))
+  (package! eglot-python-preset))
+
 (when (modulep! :editor evil +vimrc)
   (package! vimrc-mode))
 
