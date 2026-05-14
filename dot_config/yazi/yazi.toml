@@ -1,5 +1,9 @@
 #:schema https://yazi-rs.github.io/schemas/yazi.json
 
+# ===========================================================================
+# Preview
+# ===========================================================================
+
 [preview]
 max_width = 900
 max_height = 1200
@@ -7,6 +11,10 @@ image_quality = 90
 image_delay = 0
 # FIX: Need test
 # ueberzug_offset = [5, 1.2, 0, 0]
+
+# ===========================================================================
+# Opener definitions & rules
+# ===========================================================================
 
 [opener]
 image = [
@@ -23,31 +31,98 @@ prepend_rules = [
   # { mime = "application/pdf", use = ["pdf", "open"] },
 ]
 
+# ===========================================================================
+# Other settings
+# ===========================================================================
+
 [tasks]
 image_bound = [10000, 10000]
 
-[plugin]
-prepend_preloaders = [
-  { mime = "application/openxmlformats-officedocument.*", run = "office" },
-  { mime = "application/oasis.opendocument.*", run = "office" },
-  { mime = "application/ms-*", run = "office" },
-  { mime = "application/msword", run = "office" },
-  { url = "*.docx", run = "office" },
-]
-prepend_previewers = [
-  { mime = "audio/*", run = "exifaudio" },
-  { mime = "application/epub+zip", run = "epub-preview" },
-  { mime = "image/{vnd.djvu,x-djvu,djvu}", run = "djvu-view" },
-  { mime = "application/openxmlformats-officedocument.*", run = "office" },
-  { mime = "application/oasis.opendocument.*", run = "office" },
-  { mime = "application/ms-*", run = "office" },
-  { mime = "application/msword", run = "office" },
-  { url = "*.docx", run = "office" },
-]
-prepend_fetchers = [
-  { id = "git", url = "*", run = "git" },
-  { id = "git", url = "*/", run = "git" },
-]
-
 [input]
 cursor_blink = true
+
+# ===========================================================================
+# Plugins
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# git.yazi
+# ---------------------------------------------------------------------------
+
+[[plugin.prepend_fetchers]]
+url = "*"
+run = "git"
+group = "git"
+
+[[plugin.prepend_fetchers]]
+url = "*/"
+run = "git"
+group = "git"
+
+# ---------------------------------------------------------------------------
+# office.yazi
+# ---------------------------------------------------------------------------
+
+[[plugin.prepend_preloaders]]
+mime = "application/openxmlformats-officedocument.*"
+run = "office"
+
+[[plugin.prepend_preloaders]]
+mime = "application/oasis.opendocument.*"
+run = "office"
+
+[[plugin.prepend_preloaders]]
+mime = "application/ms-*"
+run = "office"
+
+[[plugin.prepend_preloaders]]
+mime = "application/msword"
+run = "office"
+
+[[plugin.prepend_preloaders]]
+url = "*.docx"
+run = "office"
+
+[[plugin.prepend_previewers]]
+mime = "application/openxmlformats-officedocument.*"
+run = "office"
+
+[[plugin.prepend_previewers]]
+mime = "application/oasis.opendocument.*"
+run = "office"
+
+[[plugin.prepend_previewers]]
+mime = "application/ms-*"
+run = "office"
+
+[[plugin.prepend_previewers]]
+mime = "application/msword"
+run = "office"
+
+[[plugin.prepend_previewers]]
+url = "*.docx"
+run = "office"
+
+# ---------------------------------------------------------------------------
+# djvu-view.yazi
+# ---------------------------------------------------------------------------
+
+[[plugin.prepend_previewers]]
+mime = "image/{vnd.djvu,x-djvu,djvu}"
+run = "djvu-view"
+
+# ---------------------------------------------------------------------------
+# epub-preview.yazi
+# ---------------------------------------------------------------------------
+
+[[plugin.prepend_previewers]]
+mime = "application/epub+zip"
+run = "epub-preview"
+
+# ---------------------------------------------------------------------------
+# exifaudio.yazi
+# ---------------------------------------------------------------------------
+
+[[plugin.prepend_previewers]]
+mime = "audio/*"
+run = "exifaudio"
