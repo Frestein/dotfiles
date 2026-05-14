@@ -59,6 +59,8 @@
     - [[#abbrev][Abbrev]]
   - [[#format][Format]]
   - [[#flycheck][Flycheck]]
+    - [[#config-3][Config]]
+    - [[#typos][Typos]]
   - [[#evaluation][Evaluation]]
   - [[#whitespace][Whitespace]]
   - [[#smooth-scroll][Smooth Scroll]]
@@ -67,7 +69,7 @@
 - [[#project-management][Project Management]]
   - [[#version-control][Version Control]]
     - [[#magit][Magit]]
-      - [[#config-3][Config]]
+      - [[#config-4][Config]]
       - [[#conventional-commits][Conventional Commits]]
       - [[#magit-delta][Magit-Delta]]
       - [[#magit-todos][Magit-Todos]]
@@ -80,13 +82,13 @@
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#common-lisp][Common Lisp]]
   - [[#org][Org]]
-    - [[#config-4][Config]]
+    - [[#config-5][Config]]
     - [[#override-module-defaults][Override Module Defaults]]
     - [[#org-agenda][Org Agenda]]
     - [[#modules][Modules]]
       - [[#org-habit][Org Habit]]
     - [[#org-roam][Org Roam]]
-      - [[#config-5][Config]]
+      - [[#config-6][Config]]
       - [[#org-mem][Org Mem]]
       - [[#org-roam-ui][Org Roam UI]]
     - [[#org-super-agenda][Org Super Agenda]]
@@ -103,19 +105,19 @@
   - [[#python][Python]]
 - [[#www][WWW]]
   - [[#eww][EWW]]
-    - [[#config-6][Config]]
+    - [[#config-7][Config]]
     - [[#shr][Shr]]
     - [[#browse-url][Browse Url]]
     - [[#rdrview][Rdrview]]
   - [[#elfeed][Elfeed]]
-    - [[#config-7][Config]]
+    - [[#config-8][Config]]
     - [[#elfeed-goodies][Elfeed Goodies]]
     - [[#elfeed-org][Elfeed Org]]
   - [[#mu4e][mu4e]]
 - [[#personal-modules][Personal Modules]]
   - [[#app][App]]
     - [[#telega][Telega]]
-  - [[#config-8][Config]]
+  - [[#config-9][Config]]
     - [[#compile-angel][Compile Angel]]
   - [[#tools][Tools]]
     - [[#biome][Biome]]
@@ -1498,6 +1500,8 @@ making an abbreviation to a function."
 
 ** Flycheck
 
+*** Config
+
 #+begin_src elisp
 (when (modulep! :checkers syntax -flymake)
   (defun fr/flycheck-toggle-error-list ()
@@ -1507,6 +1511,29 @@ making an abbreviation to a function."
       (if win
           (delete-window win)
         (flycheck-list-errors)))))
+#+end_src
+
+*** Typos
+
+#+begin_src elisp
+(when (and (modulep! :checkers syntax -flymake)
+           (executable-find "typos"))
+  (flycheck-def-config-file-var flycheck-typos-toml typos
+                                '(".typos.toml" "typos.toml"))
+
+  (flycheck-define-checker typos
+    "Spell check with typos."
+    :command ("typos" "--format" "brief" source
+              (config-file "--config" flycheck-typos-toml))
+    :error-patterns
+    ((error line-start
+            (file-name) ":" line ":" column ": " (message)
+            line-end))
+    :modes (text-mode prog-mode yaml-mode toml-mode xml-mode
+                      org-mode latex-mode typst-ts-mode markdown-mode gfm-mode
+                      javascript-mode python-mode emacs-lisp-mode lisp-mode))
+
+  (add-to-list 'flycheck-checkers 'typos))
 #+end_src
 
 ** Evaluation

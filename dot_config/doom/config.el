@@ -1156,6 +1156,25 @@ making an abbreviation to a function."
           (delete-window win)
         (flycheck-list-errors)))))
 
+(when (and (modulep! :checkers syntax -flymake)
+           (executable-find "typos"))
+  (flycheck-def-config-file-var flycheck-typos-toml typos
+                                '(".typos.toml" "typos.toml"))
+
+  (flycheck-define-checker typos
+    "Spell check with typos."
+    :command ("typos" "--format" "brief" source
+              (config-file "--config" flycheck-typos-toml))
+    :error-patterns
+    ((error line-start
+            (file-name) ":" line ":" column ": " (message)
+            line-end))
+    :modes (text-mode prog-mode yaml-mode toml-mode xml-mode
+                      org-mode latex-mode typst-ts-mode markdown-mode gfm-mode
+                      javascript-mode python-mode emacs-lisp-mode lisp-mode))
+
+  (add-to-list 'flycheck-checkers 'typos))
+
 (when (modulep! :tools eval)
   (set-popup-rule! (regexp-quote "*eros inspect*")
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :slot 1 :modeline t))
