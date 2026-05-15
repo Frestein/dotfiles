@@ -223,6 +223,7 @@
        srs                  ; spaced repetition system inside Org-mode
        pomm                 ; Third Time and Pomodoro
        mastodon
+       youtube
 
        :config
        literate
