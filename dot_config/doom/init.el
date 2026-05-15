@@ -224,6 +224,7 @@
        pomm                 ; Third Time and Pomodoro
        mastodon
        youtube
+       xmpp
 
        :config
        literate

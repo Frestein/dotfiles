@@ -2646,6 +2646,18 @@ is tomorrow.  With two prefixes, select the deadline."
     (when (fboundp 'fr/telega-add-proxy-tgwsproxy)
       (fr/telega-add-proxy-tgwsproxy t))))
 
+(when (modulep! :app xmpp)
+  (after! jabber
+    (when (modulep! :tools pass +auth)
+      (defun fr/jabber-set-accout ()
+        (setq jabber-account-list
+              `(("frestein@jabber.ru"
+                 (:password . ,(auth-source-pass-get 'secret "social/jabber.ru/fresteinart@gmail.com"))))))
+
+      (if (daemonp)
+          (add-hook! doom-first-input (fr/jabber-set-accout))
+        (add-hook! doom-init-ui (fr/jabber-set-accout))))))
+
 (when (modulep! :tools biome)
   (after! biome
     (setopt biome-query-coords
