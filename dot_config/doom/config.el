@@ -2294,6 +2294,19 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   (setopt eglot-python-preset-lsp-server 'rass)
   (setopt eglot-python-preset-rass-tools '(ty ruff)))
 
+(when (modulep! :lang lua)
+  (when (modulep! :editor format)
+    (after! apheleia
+      (set-formatter! 'stylua
+        '("stylua"
+          (eval (when (locate-dominating-file buffer-file-name "dot_stylua.toml")
+                  "--config-path"))
+          (eval (when-let ((dir (locate-dominating-file buffer-file-name "dot_stylua.toml")))
+                  (expand-file-name "dot_stylua.toml" dir)))
+          "--search-parent-directories"
+          "--stdin-filepath" filepath
+          "-")))))
+
 (setopt browse-url-text-browser (executable-find "cha"))
 
 (use-package! eww
