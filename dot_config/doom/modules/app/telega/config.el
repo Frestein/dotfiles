@@ -6,6 +6,7 @@
          (telega-load . telega-autoplay-mode)
          (telega-chat-mode . turn-off-smartparens-mode)
          (telega-chat-mode . telega-completions-setup-capf)
+         (telega-root-mode . doom-disable-show-paren-mode-h)
          (telega-chat-mode . doom-disable-show-paren-mode-h))
   :init
   (setopt telega-directory    (concat (getenv "XDG_DATA_HOME")  "/telega")
