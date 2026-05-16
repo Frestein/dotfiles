@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch mako for config changes
+PartOf=graphical-session.target mako.service
+After=graphical-session.target mako.service
+
+[Path]
+PathModified=%h/.config/mako/config
+
+[Install]
+WantedBy=graphical-session.target

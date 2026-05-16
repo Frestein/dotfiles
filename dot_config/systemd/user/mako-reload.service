@@ -1,0 +1,7 @@
+[Unit]
+Description=Reloads mako after changes with config
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/makoctl reload
+ExecStart=/usr/bin/notify-send "Mako" "Config changed. Reloading..."
