@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=GoofCord
+Exec=/usr/bin/goofcord "--password-store=gnome-libsecret" %U
+Terminal=false
+Type=Application
+Icon=goofcord
+StartupWMClass=GoofCord
+GenericName=Internet Messenger
+Categories=Network;
+Keywords=discord;goofcord;
+Comment=Take control of your Discord experience with GoofCord – the highly configurable and privacy-minded discord client.
