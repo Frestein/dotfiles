@@ -1,0 +1,13 @@
+[Unit]
+Description=Restore last wallpaper with waypaper
+Documentation=man:waypaper(1)
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/waypaper --restore
+ExecCondition=/lib/systemd/systemd-xdg-autostart-condition "Hyprland" ""
+
+[Install]
+WantedBy=graphical-session.target
