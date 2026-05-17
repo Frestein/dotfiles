@@ -1,13 +1,17 @@
 [
-  {
-    "default": "base"
-  },
-  {
-    "class": "Loading...|War Thunder",
-    "layer": "game"
-  },
-  {
-    "class": "steam_app_739630",
-    "layer": "game"
-  }
+    {
+        "default": "base"
+    },
+    {
+        "class": "Loading...|War Thunder",
+        "layer": "game"
+    },
+    {
+        "class": "steam_app",
+        "layer": "game"
+    },
+    {
+        "class": "xrengine",
+        "layer": "game"
+    }
 ]
