@@ -1231,7 +1231,9 @@ Disable evil-snipe on specific modes.
        (:when (modulep! :term vterm)
          :desc "Open URL using text browser" "W" #'fr/browse-url-text-vterm)
        (:prefix ("a" . "org agenda")
+        :desc "GTD Agenda" "g" (lambda () (interactive) (org-agenda nil "g"))
         :desc "Daily Agenda" "d" (lambda () (interactive) (org-agenda nil "d"))
+        :desc "Weekly Agenda" "w" (lambda () (interactive) (org-agenda nil "w"))
         :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))))
       (:prefix ("c" . "code")
                (:when (modulep! :tools 0x0)
@@ -2282,9 +2284,9 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
         nil)))
 
   (setopt org-agenda-custom-commands
-          '(("d" "Daily Agenda"
+          '(("g" "GTD Agenda"
              ((agenda ""
-                      ((org-agenda-span 'day)
+                      ((org-agenda-span 3)
                        (org-agenda-start-day "+0d")
                        (org-deadline-warning-days 7)))
               (tags-todo "+@easy"
@@ -2341,6 +2343,50 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                           (org-agenda-overriding-header "Unprocessed Inbox Tasks")))
               (tags-todo "-{.*}"
                          ((org-agenda-overriding-header "Untagged Tasks")))))
+            ("d" "Daily Agenda"
+             ((agenda ""
+                      ((org-agenda-span 1)
+                       (org-agenda-start-day "+0d")
+                       (org-deadline-warning-days 1)))
+              (tags-todo "+@easy"
+                         ((org-agenda-overriding-header "Easy Tasks")
+                          (org-agenda-skip-function '(or (fr/org-skip-subtree-if-habit)
+                                                         (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
+              (tags-todo "+PRIORITY=\"A\""
+                         ((org-agenda-overriding-header "High Priority Next Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"B\""
+                         ((org-agenda-overriding-header "Medium Priority Next Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"C\""
+                         ((org-agenda-overriding-header "Low Priority Next Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"A\""
+                         ((org-agenda-overriding-header "High Priority Waiting For Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"B\""
+                         ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
+              (tags-todo "+PRIORITY=\"C\""
+                         ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
+                          (org-agenda-skip-function
+                           '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
+                                (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))))
+            ("w" "Weekly Agenda"
+             ((agenda ""
+                      ((org-agenda-span 'week)
+                       (org-agenda-start-day "+0d")
+                       (org-deadline-warning-days 7)))))
             ("r" "Weekly Review"
              ((agenda ""
                       ((org-agenda-overriding-header "Completed Tasks")
@@ -2350,7 +2396,8 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
               (agenda ""
                       ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
                        (org-agenda-start-with-log-mode t)
-                       (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                       (org-agenda-skip-function '(or (fr/org-skip-subtree-if-habit)
+                                                      (org-agenda-skip-entry-if 'todo 'done)))
                        (org-agenda-span 'week)))))))
 
   (defmacro ignore-args (fnc)
@@ -2432,7 +2479,6 @@ with `org-agenda-block-separator' characters)."
   (after! org
     (add-to-list 'org-modules 'org-habit)
 
-    (setopt org-habit-show-habits-only-for-today nil)
     (setq +org-habit-graph-padding 1)
     (setq +org-habit-graph-window-ratio 0.25)))
 #+end_src
