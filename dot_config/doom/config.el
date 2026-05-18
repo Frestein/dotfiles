@@ -1,30 +1,11 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(when (and (not (modulep! :ui doom-dashboard))
-           (modulep! :lang org))
+(when (not (modulep! :ui doom-dashboard))
   (setopt inhibit-startup-screen t)
   (setopt inhibit-startup-message t)
   (setopt inhibit-startup-echo-area-message (user-login-name))
   (setopt initial-scratch-message "")
-
-  (defun fr/open-agenda-with-redo (key)
-    (org-agenda nil key)
-    (delete-other-windows)
-    (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
-    (get-buffer "*Org Agenda*"))
-
-  (defun fr/initial-agenda-buffer (key)
-    (cond
-     ((get-buffer-window "*Org Agenda*" 'visible)
-      (eshell "γνῶθι σεαυτόν"))
-     ((get-buffer "*Org Agenda*")
-      (get-buffer "*Org Agenda*"))
-     (t
-      (fr/open-agenda-with-redo key))))
-
-  (setopt initial-buffer-choice (lambda () (fr/initial-agenda-buffer "d")))
-
-  (add-hook 'doom-first-input-hook #'org-agenda-redo))
+  (setopt initial-buffer-choice (lambda () (eshell "γνῶθι σεαυτόν"))))
 
 (setopt doom-theme 'doom-gruvbox)
 
