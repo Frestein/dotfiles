@@ -719,59 +719,59 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
 
   (when (modulep! :editor aas)
     (after! aas
-     (defun fr/telega-in-code-block-p ()
-       "Return t if point is inside a fenced code block (```)."
-       (save-match-data
-         (save-excursion
-           (let* ((orig-pt (point))
-                  (bound (save-excursion
-                           (if (get-char-property orig-pt 'field)
-                               (progn (goto-char (field-beginning orig-pt))
-                                      (line-beginning-position))
-                             (point-min))))
-                  (inside nil))
-             (goto-char bound)
-             (while (re-search-forward "\\(?:^\\|\\s-\\)\\(```\\)" orig-pt t)
-               (if (save-match-data
-                     (save-excursion
-                       (end-of-line)
-                       (skip-chars-backward " \t")
-                       (> (point) (match-end 1))))
-                   (setq inside t)
-                 (setq inside (not inside))))
-             inside))))
+      (defun fr/telega-in-code-block-p ()
+        "Return t if point is inside a fenced code block (```)."
+        (save-match-data
+          (save-excursion
+            (let* ((orig-pt (point))
+                   (bound (save-excursion
+                            (if (get-char-property orig-pt 'field)
+                                (progn (goto-char (field-beginning orig-pt))
+                                       (line-beginning-position))
+                              (point-min))))
+                   (inside nil))
+              (goto-char bound)
+              (while (re-search-forward "\\(?:^\\|\\s-\\)\\(```\\)" orig-pt t)
+                (if (save-match-data
+                      (save-excursion
+                        (end-of-line)
+                        (skip-chars-backward " \t")
+                        (> (point) (match-end 1))))
+                    (setq inside t)
+                  (setq inside (not inside))))
+              inside))))
 
-     (defun fr/telega-in-inline-code-p ()
-       "Return t if point is inside inline code: org verbatim (~/=) or markdown (`)."
-       (save-excursion
-         (save-match-data
-           (or (org-in-verbatim-emphasis)
-               (let ((pos (point)))
-                 (when (re-search-backward "`" (line-beginning-position) t)
-                   (let ((start (point)))
-                     (goto-char pos)
-                     (when (re-search-forward "`" (line-end-position) t)
-                       (and (< start pos) (< pos (point)))))))
-               (cl-oddp (count-matches "`" (line-beginning-position) (point)))
-               (cl-oddp (count-matches "~" (line-beginning-position) (point)))
-               (cl-oddp (count-matches "=" (line-beginning-position) (point)))))))
+      (defun fr/telega-in-inline-code-p ()
+        "Return t if point is inside inline code: org verbatim (~/=) or markdown (`)."
+        (save-excursion
+          (save-match-data
+            (or (org-in-verbatim-emphasis)
+                (let ((pos (point)))
+                  (when (re-search-backward "`" (line-beginning-position) t)
+                    (let ((start (point)))
+                      (goto-char pos)
+                      (when (re-search-forward "`" (line-end-position) t)
+                        (and (< start pos) (< pos (point)))))))
+                (cl-oddp (count-matches "`" (line-beginning-position) (point)))
+                (cl-oddp (count-matches "~" (line-beginning-position) (point)))
+                (cl-oddp (count-matches "=" (line-beginning-position) (point)))))))
 
-     (aas-set-snippets 'telega-chat-mode
-       ";а" (string ?а ?\u0301)          ; а́
-       ";е" (string ?е ?\u0301)          ; е́
-       ";и" (string ?и ?\u0301)          ; и́
-       ";о" (string ?о ?\u0301)          ; о́
-       ";у" (string ?у ?\u0301)          ; у́
-       ";ы" (string ?ы ?\u0301)          ; ы́
-       ";э" (string ?э ?\u0301)          ; э́
-       ";ю" (string ?ю ?\u0301)          ; ю́
-       ";я" (string ?я ?\u0301)          ; я́
-       "<<" "«"
-       ">>" "»"
-       :cond (lambda ()
-               (not (or (fr/telega-in-code-block-p)
-                        (fr/telega-in-inline-code-p))))
-       "--" "—"))
+      (aas-set-snippets 'telega-chat-mode
+        ";а" (string ?а ?\u0301)          ; а́
+        ";е" (string ?е ?\u0301)          ; е́
+        ";и" (string ?и ?\u0301)          ; и́
+        ";о" (string ?о ?\u0301)          ; о́
+        ";у" (string ?у ?\u0301)          ; у́
+        ";ы" (string ?ы ?\u0301)          ; ы́
+        ";э" (string ?э ?\u0301)          ; э́
+        ";ю" (string ?ю ?\u0301)          ; ю́
+        ";я" (string ?я ?\u0301)          ; я́
+        "<<" "«"
+        ">>" "»"
+        :cond (lambda ()
+                (not (or (fr/telega-in-code-block-p)
+                         (fr/telega-in-inline-code-p))))
+        "--" "—"))
 
     (add-hook 'telega-chat-mode-hook #'aas-activate-for-major-mode)))
 
