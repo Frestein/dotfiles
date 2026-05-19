@@ -2332,6 +2332,12 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (when (modulep! :editor evil +vimrc)
   (add-to-list 'auto-mode-alist '("tridactylrc\\'" . vimrc-mode)))
 
+(when (modulep! :lang json)
+  (when (modulep! :lang json +lsp)
+    (add-hook 'jsonc-mode-local-vars-hook #'lsp! 'append))
+
+  (add-to-list 'auto-mode-alist '("\\.jsonc\\'" . jsonc-mode)))
+
 (use-package! eglot-python-preset
   :when (and (modulep! :tools lsp +eglot)
              (modulep! :lang python +lsp))

@@ -102,6 +102,7 @@
   - [[#qml][QML]]
   - [[#fish][Fish]]
   - [[#vimrc][Vimrc]]
+  - [[#json][JSON]]
   - [[#python][Python]]
   - [[#lua][Lua]]
 - [[#www][WWW]]
@@ -2847,6 +2848,16 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 #+begin_src elisp
 (when (modulep! :editor evil +vimrc)
   (add-to-list 'auto-mode-alist '("tridactylrc\\'" . vimrc-mode)))
+#+end_src
+
+** JSON
+
+#+begin_src elisp
+(when (modulep! :lang json)
+  (when (modulep! :lang json +lsp)
+    (add-hook 'jsonc-mode-local-vars-hook #'lsp! 'append))
+
+  (add-to-list 'auto-mode-alist '("\\.jsonc\\'" . jsonc-mode)))
 #+end_src
 
 ** Python
