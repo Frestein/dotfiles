@@ -2000,7 +2000,19 @@ with `org-agenda-block-separator' characters)."
           (delete-region (point) (1+ (point-at-eol))))))
     (setq buffer-read-only t))
 
-  (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks))
+  (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks)
+
+  (defun fr/open-agenda-with-redo (key)
+    (global-so-long-mode -1)
+    (unwind-protect
+        (progn
+          (org-agenda nil key)
+          (delete-other-windows)
+          (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
+          (get-buffer "*Org Agenda*"))
+      (global-so-long-mode +1)))
+
+  (add-hook 'doom-first-input-hook #'org-agenda-redo))
 
 (when (modulep! :lang org)
   (after! org
