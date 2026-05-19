@@ -2456,6 +2456,7 @@ with `org-agenda-block-separator' characters)."
   (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks)
 
   (defun fr/open-agenda-with-redo (key)
+    ;; HACK: Temporarily disable so-long to avoid getting a scope error.
     (global-so-long-mode -1)
     (unwind-protect
         (progn
