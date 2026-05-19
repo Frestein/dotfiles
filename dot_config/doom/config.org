@@ -439,6 +439,11 @@ the variable `message-log-max'."
       (quit-window nil win)
     (view-echo-area-messages)))
 
+(when (modulep! :editor evil)
+  (after! evil
+    (defun fr/evil-insert-after-action (&rest _)
+      (run-with-timer 0.01 nil #'evil-insert-state))))
+
 ;;; Doom
 
 ;; ui/popup

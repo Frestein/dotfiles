@@ -674,6 +674,10 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
   (set-popup-rule! (regexp-quote "*Telegram Messages Preview*")
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :modeline t)
 
+
+  (when (modulep! :editor evil)
+    (advice-add 'telega-msg-reply :after #'fr/evil-insert-after-action))
+
   ;; TODO: Research needed. This kills telega after the frame is closed.
   ;; (add-hook 'telega-root-mode-hook (lambda () (setq-local doom-real-buffer-p t)))
   ;; (add-hook 'telega-chat-mode-hook (lambda () (setq-local doom-real-buffer-p t)))
