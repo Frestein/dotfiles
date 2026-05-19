@@ -1,9 +1,12 @@
 #!/usr/bin/env sh
 
-# Default socket path
+# Default socket for wob
 : "${WOBSOCK:=/run/user/$(id -u)/wob.sock}"
 
-# Error handling: if stderr is a terminal, print to stderr; otherwise try notification
+# Cache file to store last successfully read brightness value
+: "${CACHEFILE:=$XDG_RUNTIME_DIR/waybar-brightness.cache}"
+
+# Error handler
 error() {
     msg="$1"
     if [ -t 2 ]; then
@@ -14,21 +17,14 @@ error() {
     exit 1
 }
 
-# Validate that value is a non-negative integer and optionally within 0-100
-# Usage: validate_number "VALUE" "variable_name" [max]
+# Validate a non-negative integer, optionally within range
 validate_number() {
     val="$1"
     name="$2"
     max="${3:-}"
     case "$val" in
-    '' | *[!0-9]*)
-        error "$name must be a non-negative integer, got '$val'"
-        ;;
-    *)
-        if [ -n "$max" ] && [ "$val" -gt "$max" ] 2>/dev/null; then
-            error "$name must be between 0 and $max, got '$val'"
-        fi
-        ;;
+    '' | *[!0-9]*) error "$name must be a non-negative integer, got '$val'" ;;
+    *) [ -n "$max" ] && [ "$val" -gt "$max" ] 2>/dev/null && error "$name must be between 0 and $max, got '$val'" ;;
     esac
 }
 
@@ -50,12 +46,36 @@ Options:
 EOF
 }
 
+# Retrieve brightness, retrying on transient DDC/CI errors
 get_brightness() {
-    ddcutil getvcp 10 | awk '/current/ {gsub(/,/, "", $9); print $9}'
+    _val=""
+    _max_attempts=3
+    _delay=0.1
+    _attempt=1
+    while [ "$_attempt" -le "$_max_attempts" ]; do
+        _val=$(ddcutil getvcp 10 2>/dev/null | awk '/current/ {gsub(/,/, "", $9); print $9}')
+        if [ -n "$_val" ] && [ "$_val" -eq "$_val" ] 2>/dev/null; then
+            echo "$_val"
+            printf '%s\n' "$_val" >"$CACHEFILE"
+            return 0
+        fi
+        sleep "$_delay"
+        _delay=$(awk "BEGIN {print $_delay * 2}")
+        _attempt=$((_attempt + 1))
+    done
+
+    if [ -f "$CACHEFILE" ]; then
+        cat "$CACHEFILE"
+        return 1
+    else
+        echo "0"
+        return 1
+    fi
 }
 
+# Send brightness to wob and signal waybar
 update_brightness() {
-    brightness=$(get_brightness)
+    brightness=$(get_brightness) || true
     printf "%s\n" "$brightness" >"$WOBSOCK"
     if command -v waybar >/dev/null 2>&1; then
         pkill -SIGRTMIN+9 waybar
@@ -63,16 +83,29 @@ update_brightness() {
 }
 
 set_brightness() {
+    _cached=$(cat "$CACHEFILE" 2>/dev/null)
+    [ "$_cached" = "$1" ] && return 0
+
     ddcutil setvcp 10 "$1" >/dev/null && update_brightness
 }
 
 adjust_brightness() {
     direction="$1" # "+" or "-"
     step="${2:-25}"
-
     validate_number "$step" "STEP"
 
-    ddcutil setvcp 10 "$direction" "$step" >/dev/null && update_brightness
+    _current=$(cat "$CACHEFILE" 2>/dev/null || echo 0)
+
+    case "$direction" in
+    "+") _new=$((_current + step)) ;;
+    "-") _new=$((_current - step)) ;;
+    *) error "Invalid direction: $direction" ;;
+    esac
+
+    [ "$_new" -lt 0 ] && _new=0
+    [ "$_new" -gt 100 ] && _new=100
+
+    set_brightness "$_new"
 }
 
 inc_brightness() {
@@ -87,44 +120,36 @@ dmenu_picker() {
     if ! command -v fuzzel >/dev/null 2>&1; then
         error "fuzzel not found (required for --dmenu)"
     fi
-
     new_brightness=$(fuzzel -dw 12 \
         --prompt-only " " \
         --anchor top \
         --placeholder 'Brightness')
-
-    # User cancelled → exit silently
-    if [ -z "$new_brightness" ]; then
-        return 0
-    fi
-
+    [ -z "$new_brightness" ] && return 0
     validate_number "$new_brightness" "Brightness" 100
-
     set_brightness "$new_brightness"
 }
 
 main() {
     case "${1:-}" in
     --get)
-        get_brightness
+        if [ -f "$CACHEFILE" ]; then
+            val=$(cat "$CACHEFILE")
+        else
+            val=$(get_brightness)
+        fi
+        printf '{"text": "%s", "percentage": %s}\n' "$val" "$val"
         ;;
     --set)
-        if [ $# -ne 2 ]; then
-            error "--set requires exactly one argument (VALUE)"
-        fi
+        [ $# -ne 2 ] && error "--set requires exactly one argument (VALUE)"
         validate_number "$2" "VALUE" 100
         set_brightness "$2"
         ;;
     --inc)
-        if [ $# -gt 2 ]; then
-            error "--inc takes at most one argument (STEP)"
-        fi
+        [ $# -gt 2 ] && error "--inc takes at most one argument (STEP)"
         inc_brightness "$2"
         ;;
     --dec)
-        if [ $# -gt 2 ]; then
-            error "--dec takes at most one argument (STEP)"
-        fi
+        [ $# -gt 2 ] && error "--dec takes at most one argument (STEP)"
         dec_brightness "$2"
         ;;
     --dmenu)
