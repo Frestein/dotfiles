@@ -6,10 +6,10 @@ After=graphical-session.target
 
 [Service]
 Type=exec
-ExecStartPre=/usr/bin/sleep 2
 ExecStart=/usr/bin/wl-paste --watch /usr/bin/cliphist store
 Restart=always
-Slice=app-graphical.slice
+RestartSec=1s
+Slice=background.slice
 
 [Install]
 WantedBy=graphical-session.target

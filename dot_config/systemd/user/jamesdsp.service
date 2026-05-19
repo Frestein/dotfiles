@@ -5,10 +5,10 @@ After=graphical-session.target pipewire.service
 BindsTo=pipewire.service
 
 [Service]
-ExecStartPre=/usr/bin/sleep 2
 ExecStart=/usr/bin/jamesdsp --tray
 TimeoutStopSec=5sec
 Restart=on-failure
+RestartSec=1s
 Slice=app-graphical.slice
 
 [Install]
