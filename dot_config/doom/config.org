@@ -91,6 +91,7 @@
       - [[#config-6][Config]]
       - [[#org-mem][Org Mem]]
       - [[#org-roam-ui][Org Roam UI]]
+      - [[#consult-org-roam][Consult Org Roam]]
     - [[#org-super-agenda][Org Super Agenda]]
     - [[#org-edna][Org Edna]]
     - [[#org-contacts][Org Contacts]]
@@ -2627,6 +2628,28 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   (setopt org-roam-ui-follow t)
   (setopt org-roam-ui-update-on-save t)
   (setopt org-roam-ui-open-on-start t))
+#+end_src
+
+**** Consult Org Roam
+
+#+begin_src elisp
+(use-package! consult-org-roam
+  :when (and (modulep! :lang org +roam)
+             (modulep! :completion vertico))
+  :after org-roam
+  :config
+  (consult-org-roam-mode 1)
+
+  (when (executable-find "rg")
+    (setopt consult-org-roam-grep-func #'consult-ripgrep))
+
+  (map! :leader
+        :prefix ("n" . "notes")
+        (:prefix ("r" . "roam")
+         :desc "Search roam" "s" #'consult-org-roam-search
+         :desc "Find backlinks" "b" #'consult-org-roam-backlinks
+         :desc "Find forward-links" "B" #'consult-org-roam-forward-links
+         :desc "Sync database" "S" #'org-roam-db-sync)))
 #+end_src
 
 *** Org Super Agenda

@@ -2154,6 +2154,24 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   (setopt org-roam-ui-update-on-save t)
   (setopt org-roam-ui-open-on-start t))
 
+(use-package! consult-org-roam
+  :when (and (modulep! :lang org +roam)
+             (modulep! :completion vertico))
+  :after org-roam
+  :config
+  (consult-org-roam-mode 1)
+
+  (when (executable-find "rg")
+    (setopt consult-org-roam-grep-func #'consult-ripgrep))
+
+  (map! :leader
+        :prefix ("n" . "notes")
+        (:prefix ("r" . "roam")
+         :desc "Search roam" "s" #'consult-org-roam-search
+         :desc "Find backlinks" "b" #'consult-org-roam-backlinks
+         :desc "Find forward-links" "B" #'consult-org-roam-forward-links
+         :desc "Sync database" "S" #'org-roam-db-sync)))
+
 (use-package! org-super-agenda
   :when (modulep! :lang org +super)
   :hook (org-agenda-mode . org-super-agenda-mode))

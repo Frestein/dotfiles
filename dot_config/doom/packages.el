@@ -36,6 +36,10 @@
 
   (when (modulep! :lang org +roam)
     (package! org-roam-ui)
+
+    (when (modulep! :completion vertico)
+      (package! consult-org-roam))
+
     (when (modulep! :lang org +mem)
       (package! org-mem))))
 
