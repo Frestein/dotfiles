@@ -1525,6 +1525,13 @@ If a region is active, emphasize it, else emphasize the word at point."
     (setq org-element-archive-tag "archive")
     (add-to-list 'org-default-properties "CREATED")
 
+    (dolist (pair '(("4get"       . "https://4get.joygnu.org/web?country=ru&nsfw=yes&s=%s")
+                    ("searxng"    . "https://eu.priv.au/search?q=%s")
+                    ("codeberg"   . "https://codeberg.org/%s")
+                    ("sourcehut"  . "https://git.sr.ht/~%s")
+                    ("gitlab"     . "https://gitlab.com/%s")))
+      (add-to-list 'org-link-abbrev-alist pair t))
+
     (set-popup-rule! "^\\*Org Src"
       :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :quit nil :select t :modeline t)
 
