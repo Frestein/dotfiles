@@ -25,15 +25,11 @@
 
 (when (modulep! :lang org)
   (package! org-expose-emphasis-markers)
-
   (package! org-edna)
-
-  (package! corg
-    :recipe (:host github :repo "isamert/corg.el"))
+  (package! corg)
 
   (when (modulep! :lang org +contacts)
-    (package! org-contacts
-      :recipe (:host github :repo "emacsmirror/org-contacts")))
+    (package! org-contacts))
 
   (when (modulep! :lang org +super)
     (package! org-super-agenda))
