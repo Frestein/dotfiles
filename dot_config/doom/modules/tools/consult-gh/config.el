@@ -9,8 +9,14 @@
   (consult-gh-group-dashboard-by :reason)
   :config
   ;; Remember visited orgs and repos across sessions
-  (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
-  (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list))
+  (if (bound-and-true-p savehist-loaded)
+      (lambda()
+        (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
+        (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list))
+    (add-hook 'savehist-mode-hook
+              (lambda()
+                (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
+                (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)))))
 
 (use-package! consult-gh-transient
   :after consult-gh
