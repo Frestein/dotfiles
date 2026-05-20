@@ -2457,18 +2457,19 @@ with `org-agenda-block-separator' characters)."
 
   (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks)
 
-  (defun fr/open-agenda-with-redo (key)
-    ;; HACK: Temporarily disable so-long to avoid getting a scope error.
-    (global-so-long-mode -1)
-    (unwind-protect
-        (progn
-          (org-agenda nil key)
-          (delete-other-windows)
-          (add-hook 'server-after-make-frame-hook #'org-agenda-redo nil t)
-          (get-buffer "*Org Agenda*"))
-      (global-so-long-mode +1)))
+  (defun fr/org-agenda-temp-fix (key)
+    (require 'so-long)
+    (org-agenda nil key))
 
-  (add-hook 'doom-first-input-hook #'org-agenda-redo))
+  (defun fr/org-agenda-redo-after-frame-delayed ()
+    "Redraw *Org Agenda* with a short delay after frame creation."
+    (run-with-idle-timer 0.1 nil
+                         (lambda ()
+                           (when (get-buffer "*Org Agenda*")
+                             (with-current-buffer "*Org Agenda*"
+                               (org-agenda-redo))))))
+
+  (add-hook 'server-after-make-frame-hook #'fr/org-agenda-redo-after-frame-delayed))
 #+end_src
 
 *** Modules
