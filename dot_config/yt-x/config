@@ -1,0 +1,134 @@
+# List of extensions to load automatically on startup
+CONFIG_AUTOLOADED_EXTENSIONS=""
+
+# Enable or disable colored/formatted output
+# Options: true, false (Default: true)
+CONFIG_ENABLE_COLORS="false"
+
+# The menu launcher tool used for the ui
+# Options: fzf, rofi (Default: fzf)
+CONFIG_LAUNCHER="fzf"
+
+# Enable image/video previews within the selector
+# Options: true, false (Default: false)
+CONFIG_ENABLE_PREVIEW="true"
+CONFIG_ENABLE_PREVIEW_IMAGES="true"
+
+# The tool used to render previews in the terminal
+# Options: chafa, icat, imgcat (Default: chafa)
+CONFIG_IMAGE_RENDERER="chafa"
+
+# Extra arguments for specific image renderers
+CONFIG_CHAFA_ARGS=""
+CONFIG_ICAT_ARGS=""
+CONFIG_IMGCAT_ARGS=""
+
+# custom args for yt-dlp
+CONFIG_YT_DLP_ARGS=""
+
+# The media player used for playback
+# Options: mpv, vlc, tplay (Default: mpv)
+CONFIG_PLAYER="mpv"
+
+# Extra arguments for specific media players
+CONFIG_MPV_ARGS=""
+CONFIG_VLC_ARGS=""
+CONFIG_TPLAY_ARGS=""
+
+# Whether to disown the player, process to prevent blocking the UI
+# options: true, false (Default: false)
+CONFIG_DISOWN_PLAYER="false"
+
+# Maximum number of search results to fetch per page
+# Options: Integer (Default: 30)
+CONFIG_PER_PAGE="30"
+
+# Browser for yt-dlp to get cookies from
+# passed to --cookies-from-browser yt-dlp option
+CONFIG_BROWSER="chromium:~/.local/share/qutebrowser"
+
+# Text editor for manual configuration/metadata editing
+# Options: vim, nano, code ... (Default: $EDITOR or vi)
+CONFIG_EDITOR="nvim"
+
+# The terminal to use to execute commands that require a terminal
+CONFIG_TERMINAL_EXEC=""
+
+# Duration in seconds for desktop notifications
+CONFIG_NOTIFICATION_DURATION="5"
+
+# Directory where downloads are saved
+CONFIG_DOWNLOAD_DIR="/home/frestein/Downloads/yt-x"
+CONFIG_DOWNLOADS_ENUMERATE="false"
+
+# Automatically check for script updates on startup
+# Options: true, false (Default: true)
+CONFIG_CHECK_FOR_UPDATES="false"
+
+# Number of items to keep in the recent history
+CONFIG_NO_OF_RECENT="10"
+
+# Enable or disable saving search queries to history
+# Options: true, false (Default: true)
+CONFIG_ENABLE_SEARCH_HISTORY="true"
+
+# Custom options passed directly to fzf
+CONFIG_FZF_HEADER="\
+"
+CONFIG_FZF_OPTS="
+  --ansi
+  --scheme=history
+  --style=full
+  --color '
+      fg:#ebdbb2
+      fg+:#fbf1c7
+      bg:#282828
+      bg+:#3c3836
+      gutter:#282828
+      hl:#458588
+      hl+:#458588
+      info:#d79921
+      marker:#fb4934
+      prompt:#fb4934
+      spinner:#b8bb26
+      pointer:#b16286
+      header:#83a598
+      border:#928374
+      label:#a89984
+      query:#d5c4a1
+  '
+  --border='sharp'
+  --border-label=''
+  --prompt='  '
+  --marker='+'
+  --pointer=''
+  --separator='─'
+  --scrollbar='│'
+  --layout=reverse
+  --cycle
+  --ghost='Search...'
+  --height=100%
+  --bind=right:accept,left:abort,ctrl-/:toggle-preview,ctrl-space:toggle-wrap+toggle-preview-wrap
+  --no-margin
+  +m
+  -i
+  --exact
+  --tabstop=1
+  --header-border='sharp'
+  --footer-border='sharp'
+  --input-border='sharp'
+  --list-border='sharp'
+  --preview-window=border-sharp,left,35%,wrap
+  --wrap"
+
+# Rofi config all are required to run rofi as a launcher
+# get the official ones from https://github.com/Benexl/yt-x
+CONFIG_ROFI_THEME_MAIN=""
+CONFIG_ROFI_THEME_PREVIEW=""
+CONFIG_ROFI_THEME_PROMPT=""
+CONFIG_ROFI_THEME_CONFIRM=""
+CONFIG_ROFI_THEME_PAGER=""
+
+# Number of days to keep cached preview images, playlists, and logs
+# Options: Integer (Default: 7)
+CONFIG_CACHE_RETENTION_DAYS="7"

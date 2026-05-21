@@ -90,11 +90,11 @@ set -gx FZF_ALT_C_OPTS "
     --bind 'alt-p:toggle-preview'
     --bind 'alt-m:change-multi'
     --list-border='sharp'
-	--border-label='Directories'
+    --border-label='Directories'
     --border-label-pos=-4
     --header 'Preview <M-p>  Multi <M-m>'
     --color header:italic
-	--walker-skip $walker_skip
+    --walker-skip $walker_skip
     --preview 'eza -T --color=always --icons {}'
 "
 
@@ -110,10 +110,10 @@ set -gx FZF_DEFAULT_OPTS "
     --bind 'ctrl-f:$preview_down'
     --bind 'ctrl-b:$preview_up'
     --height 100%
-	--border='sharp'
+    --border='sharp'
     --border-label=''
     --preview-window='border-sharp'
-	--prompt='  '
+    --prompt='  '
     --marker='+'
     --pointer=''
     --separator='─'
@@ -136,10 +136,6 @@ set -gx FZF_DEFAULT_OPTS "
         label:#a89984
         query:#d5c4a1
     '
-"
-
-set -gx YT_X_FZF_OPTS "$FZF_DEFAULT_OPTS
-    --bind=esc:
 "
 
 set -e preview_down preview_up fzf_bind_multiply walker_skip

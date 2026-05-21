@@ -3,3 +3,4 @@
 --sub-lang en.*,ru
 --extractor-args "youtube:bypass_native_jsi;deno_no_jitless"
 --extractor-args "youtubepot-bgutilscript:script_path=$HOME/Tools/bgutil-ytdlp-pot-provider/build/generate_once.js"
+--cookies-from-browser chromium:~/.local/share/qutebrowser
