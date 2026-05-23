@@ -26,6 +26,7 @@
     "custom/session",
     "custom/dismiss_notifications",
     "custom/autohide_lock",
+    "custom/hyprland-layout",
     "hyprland/submap",
     "tray"
   ],
@@ -255,6 +256,15 @@
     "interval": 3600,
     "exec": "wttrbar --nerd --ampm --hide-conditions --location 'Mednogorsk'",
     "return-type": "json"
+  },
+  "custom/hyprland-layout": {
+    "format": "{}",
+    "exec": "/home/frestein/.config/waybar/scripts/hyprland_get_layout.sh",
+    "exec-if": "pgrep -x Hyprland",
+    "return-type": "json",
+    "on-click": "/home/frestein/.config/hypr/scripts/toggle_monocle_layout.sh",
+    "tooltip": true,
+    "signal": 10
   }
 }
 // ===========================================================================

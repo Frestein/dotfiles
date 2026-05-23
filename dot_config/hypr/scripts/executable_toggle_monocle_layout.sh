@@ -8,3 +8,5 @@ if [ "$LAYOUT_CURRENT" = "monocle" ]; then
 else
     hyprctl keyword workspace "$WORKSPACE_CURRENT, layout:monocle"
 fi
+
+pkill -SIGRTMIN+10 waybar
