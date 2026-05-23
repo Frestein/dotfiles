@@ -943,6 +943,8 @@ With prefix ARG, cycle backwards if ARG is negative."
                           (:when (modulep! :lang org +mem)
                             "s" nil)))))
 
+(setopt bookmark-save-flag 1) ;; Save after every change
+
 (defun fr/org-edit-src-code-and-insert ()
   (when (fboundp 'evil-normal-state)
     (evil-normal-state))

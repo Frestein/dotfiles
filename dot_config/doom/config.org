@@ -52,6 +52,7 @@
       - [[#evil-snipe][Evil Snipe]]
     - [[#which-key][Which-Key]]
     - [[#map][map!]]
+  - [[#bookmarks][Bookmarks]]
   - [[#snippets][Snippets]]
   - [[#completion][Completion]]
     - [[#corfu][Corfu]]
@@ -1270,6 +1271,12 @@ Disable evil-snipe on specific modes.
                  (:prefix ("r" . "roam")
                           (:when (modulep! :lang org +mem)
                             "s" nil)))))
+#+end_src
+
+** Bookmarks
+
+#+begin_src elisp
+(setopt bookmark-save-flag 1) ;; Save after every change
 #+end_src
 
 ** Snippets
