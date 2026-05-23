@@ -577,7 +577,18 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
 
   (use-package! pass
     :config
-    (setopt pass-show-keybindings nil)))
+    (setopt pass-show-keybindings nil)
+
+    (set-popup-rule! "^\\*Password-Store"
+      :actions '(fr/+popup-display-dynamic-side)
+      :slot 20 :height 0.5 :width 0.5 :select t :quit nil)
+    (+popup-cleanup-rules-h)
+
+    (map! :map pass-view-mode-map
+          :n "t" #'pass-view-toggle-password
+          :n "c" #'pass-view-copy-password
+          :n "C" #'pass-view-copy-token
+          :n "q" #'pass-view-qrcode)))
 
 (setopt gnutls-verify-error t) ; Prompts user if there are certificate issues
 (setopt tls-checktrust t)      ; Ensure SSL/TLS connections undergo trust verification
