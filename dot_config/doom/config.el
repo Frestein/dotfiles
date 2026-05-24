@@ -2022,10 +2022,6 @@ with `org-agenda-block-separator' characters)."
 
   (add-hook 'org-agenda-finalize-hook #'fr/org-agenda-delete-empty-blocks)
 
-  (defun fr/org-agenda-temp-fix (key)
-    (require 'so-long)
-    (org-agenda nil key))
-
   (defun fr/org-agenda-redo-after-frame-delayed ()
     "Redraw *Org Agenda* with a short delay after frame creation."
     (run-with-idle-timer 0.1 nil

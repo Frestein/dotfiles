@@ -7,4 +7,4 @@ done
 
 # Open the agenda view in a new frame
 emacsclient -nc -F "((title . \"org-agenda\") (name . \"emacs-agenda\"))" \
-    -e "(fr/org-agenda-temp-fix \"d\")"
+    -e "(org-agenda nil \"d\")"
