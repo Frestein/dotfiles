@@ -12,9 +12,11 @@ include = ["*/shaders/Anime4K*", "*/shaders/FSR*"]
 
 # UOSC
 
+{{- $uosc_url := "https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip" }}
+
 [".config/mpv/fonts"]
 type = "archive"
-url = "https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip"
+url = {{ $uosc_url | quote }}
 exact = true
 stripComponents = 1
 refreshPeriod = "336h"
@@ -22,7 +24,7 @@ include = ["fonts/**"]
 
 [".config/mpv/scripts/uosc"]
 type = "archive"
-url = "https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip"
+url = {{ $uosc_url | quote }}
 exact = true
 stripComponents = 2
 refreshPeriod = "336h"
@@ -42,25 +44,29 @@ type = "file"
 url = "https://raw.githubusercontent.com/po5/celebi/refs/heads/master/celebi.lua"
 refreshPeriod = "336h"
 
-# Contact Sheet
+# Gallery View
+
+{{- $gallery_base := "https://raw.githubusercontent.com/occivink/mpv-gallery-view/master/scripts" }}
+
+## Contact Sheet
 
 [".config/mpv/scripts/contact-sheet.lua"]
 type = "file"
-url = "https://raw.githubusercontent.com/occivink/mpv-gallery-view/refs/heads/master/scripts/contact-sheet.lua"
+url = "{{ $gallery_base }}/contact-sheet.lua"
 refreshPeriod = "336h"
 
-# Gallery Thumbgen
+## Gallery Thumbgen
 
 [".config/mpv/scripts/gallery-thumbgen.lua"]
 type = "file"
-url = "https://raw.githubusercontent.com/occivink/mpv-gallery-view/refs/heads/master/scripts/gallery-thumbgen.lua"
+url = "{{ $gallery_base }}/gallery-thumbgen.lua"
 refreshPeriod = "336h"
 
-# Playlist View
+## Playlist View
 
 [".config/mpv/scripts/playlist-view.lua"]
 type = "file"
-url = "https://raw.githubusercontent.com/occivink/mpv-gallery-view/refs/heads/master/scripts/playlist-view.lua"
+url = "{{ $gallery_base }}/playlist-view.lua"
 refreshPeriod = "336h"
 
 # Thumbfast
@@ -128,18 +134,15 @@ refreshPeriod = "336h"
 
 # Sponsorblock
 
-[".config/mpv/scripts/sponsorblock_shared/"]
+[".config/mpv/scripts"]
 type = "archive"
 url = "https://github.com/po5/mpv_sponsorblock/archive/master.tar.gz"
-exact = true
-stripComponents = 2
+stripComponents = 1
 refreshPeriod = "336h"
-include = ["*/sponsorblock_shared/**"]
-
-[".config/mpv/scripts/sponsorblock.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/po5/mpv_sponsorblock/refs/heads/master/sponsorblock.lua"
-refreshPeriod = "336h"
+include = [
+    "sponsorblock.lua",
+    "sponsorblock_shared/**"
+]
 
 # M-x
 
