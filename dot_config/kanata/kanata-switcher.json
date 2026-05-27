@@ -3,6 +3,10 @@
         "default": "base"
     },
     {
+        "class": "gamescope",
+        "layer": "game"
+    },
+    {
         "class": "Loading...|War Thunder",
         "layer": "game"
     },
@@ -12,6 +16,10 @@
     },
     {
         "class": "xrengine",
+        "layer": "game"
+    },
+    {
+        "class": "OxygenNotIncluded",
         "layer": "game"
     }
 ]
