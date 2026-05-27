@@ -20,9 +20,11 @@ stripComponents = 1
 refreshPeriod = "336h"
 include = ["*/yt_dlp_plugins/**"]
 
+{{- $bgutil_url := "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz" }}
+
 [".config/yt-dlp-plugins/bgutil-ytdlp-pot-provider"]
 type = "archive"
-url = "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz"
+url = {{ $bgutil_url | quote }}
 exact = true
 stripComponents = 2
 refreshPeriod = "336h"
@@ -30,7 +32,7 @@ include = ["*/plugin/yt_dlp_plugins/**"]
 
 ["Tools/bgutil-ytdlp-pot-provider"]
 type = "archive"
-url = "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz"
+url = {{ $bgutil_url | quote }}
 exact = true
 stripComponents = 2
 refreshPeriod = "336h"
