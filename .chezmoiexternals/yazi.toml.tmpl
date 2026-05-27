@@ -1,111 +1,47 @@
 {{- if (env "CZ_EXT") }}
 
-[".config/yazi/plugins/toggle-pane.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/toggle-pane.yazi/**"]
+# Official plugins
 
-[".config/yazi/plugins/zoom.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/zoom.yazi/**"]
+{{- $yazi_plugins_base := "https://github.com/yazi-rs/plugins/archive/master.tar.gz" }}
+{{- $yazi_plugins_list := list
+    "toggle-pane.yazi"
+    "zoom.yazi"
+    "vcs-files.yazi"
+    "types.yazi"
+    "chmod.yazi"
+    "diff.yazi"
+    "full-border.yazi"
+    "git.yazi"
+    "mount.yazi"
+    "smart-enter.yazi"
+    "smart-paste.yazi"
+    "smart-filter.yazi"
+}}
 
-[".config/yazi/plugins/vcs-files.yazi"]
+{{- range $plugin := $yazi_plugins_list }}
+[".config/yazi/plugins/{{ $plugin }}"]
 type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
+url = {{ $yazi_plugins_base | quote }}
 exact = true
 stripComponents = 2
 refreshPeriod = "336h"
-include = ["*/vcs-files.yazi/**"]
+include = ["*/{{ $plugin }}/**"]
+{{- end }}
 
-[".config/yazi/plugins/types.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/types.yazi/**"]
+# Community plugins
 
-[".config/yazi/plugins/chmod.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/chmod.yazi/**"]
-
-[".config/yazi/plugins/diff.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/diff.yazi/**"]
-
-[".config/yazi/plugins/full-border.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/full-border.yazi/**"]
-
-[".config/yazi/plugins/git.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/git.yazi/**"]
-
-[".config/yazi/plugins/mount.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/mount.yazi/**"]
-
-[".config/yazi/plugins/smart-enter.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/smart-enter.yazi/**"]
-
-[".config/yazi/plugins/smart-paste.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/smart-paste.yazi/**"]
-
-[".config/yazi/plugins/smart-filter.yazi"]
-type = "archive"
-url = "https://github.com/yazi-rs/plugins/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/smart-filter.yazi/**"]
+{{- $yatline_base := "https://github.com/imsi32" }}
 
 [".config/yazi/plugins/yatline.yazi"]
 type = "archive"
-url = "https://github.com/imsi32/yatline.yazi/archive/master.tar.gz"
+url = "{{ $yatline_base }}/yatline.yazi/archive/master.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "336h"
 
 [".config/yazi/plugins/yatline-gruvbox.yazi"]
 type = "archive"
-url = "https://github.com/imsi32/yatline-gruvbox.yazi/archive/master.tar.gz"
+url = "{{ $yatline_base }}/yatline-gruvbox.yazi/archive/master.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "336h"
@@ -207,6 +143,8 @@ url = "https://github.com/Shallow-Seek/djvu-view.yazi/archive/master.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "336h"
+
+# Flavors
 
 [".config/yazi/flavors/gruvbox-dark.yazi"]
 type = "archive"
