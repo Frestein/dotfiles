@@ -69,6 +69,7 @@
   - [[#highlight-todo][Highlight Todo]]
 - [[#project-management][Project Management]]
   - [[#version-control][Version Control]]
+    - [[#git][Git]]
     - [[#magit][Magit]]
       - [[#config-4][Config]]
       - [[#conventional-commits][Conventional Commits]]
@@ -1618,6 +1619,12 @@ Disable ws-butler in Org Mode.
 #+begin_src elisp
 (add-to-list 'auto-mode-alist
              '("/\\.?config/git/.*\\'" . gitconfig-mode))
+#+end_src
+
+*** Git
+
+#+begin_src elisp
+(setopt git-commit-summary-max-length 80)
 #+end_src
 
 *** Magit
