@@ -11,4 +11,8 @@
 (setopt package-native-compile t)
 
 (use-package! compile-angel
-  :hook (doom-after-modules-config . compile-angel-on-load-mode))
+  :hook (doom-after-modules-config . compile-angel-on-load-mode)
+  :config
+  (push "/init.el" compile-angel-excluded-path-suffixes)
+  (push "/early-init.el" compile-angel-excluded-path-suffixes)
+  (compile-angel-exclude-directory doom-emacs-dir))
