@@ -82,8 +82,6 @@ return {
 				-- TroubleSeparatorHighlight = { fg = colors.bright_yellow, bg = colors.dark4 },
 				--- colorful-winsep.nvim ---
 				ColorfulWinSep = { link = "GruvboxGray" },
-				--- blink.cmp ---
-				BlinkCmpKindSupermaven = { link = "GruvboxYellow" },
 				--- snacks.nvim ---
 				SnacksPickerDir = { link = "GruvboxGray" },
 				SnacksPickerPathHidden = { link = "GruvboxGray" },

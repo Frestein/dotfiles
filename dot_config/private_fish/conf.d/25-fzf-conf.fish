@@ -52,7 +52,6 @@ set walker_skip "
     .renpy
     .skiko
     .spotdl
-    .supermaven
     .terminfo
     .lgp
     .gradle
