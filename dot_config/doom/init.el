@@ -102,9 +102,9 @@
        disk-usage
        ;; docker
        chezmoi
-       (consult-gh +icons)   ; interactive interface for "Github CLI"
+       ;; (consult-gh +icons)   ; interactive interface for "Github CLI"
        fj                   ; client for forgejo instances
-       screenshot
+       ;; screenshot
        0x0
        ;; editorconfig      ; let someone else argue about tabs vs spaces
        ;; ein               ; tame Jupyter notebooks with emacs
