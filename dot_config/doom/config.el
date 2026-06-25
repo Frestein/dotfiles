@@ -835,6 +835,8 @@ With prefix ARG, cycle backwards if ARG is negative."
 ;; BUG: https://github.com/justbur/emacs-which-key/issues/345
 ;; (setopt which-key-show-operator-state-maps t)
 
+(global-set-key [remap delete-frame] #'delete-frame) ;; unbind doom/delete-frame-with-prompt
+
 (map! :n "C-a" #'fr/increment-dispatch
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
       :v "C-S-a" #'evil-numbers/inc-at-pt

@@ -1165,6 +1165,8 @@ Disable evil-snipe on specific modes.
 *** map!
 
 #+begin_src elisp
+(global-set-key [remap delete-frame] #'delete-frame) ;; unbind doom/delete-frame-with-prompt
+
 (map! :n "C-a" #'fr/increment-dispatch
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
       :v "C-S-a" #'evil-numbers/inc-at-pt
