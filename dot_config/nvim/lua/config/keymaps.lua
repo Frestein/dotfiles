@@ -14,6 +14,9 @@ local function unmap_defaults(config)
 			{ mode = "n", key = "H" },
 			{ mode = "n", key = "L" },
 		},
+		["plugins.extras.util.magit"] = {
+			{ mode = "n", key = "<leader>gG" },
+		},
 	}
 
 	if config.data and config.data.extras then
