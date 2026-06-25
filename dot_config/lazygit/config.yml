@@ -7,7 +7,7 @@ gui:
   showBottomLine: false
   showCommandLog: true
 customCommands:
-  - key: "<c-P>"
+  - key: "<ctrl+shift+p>"
     description: "Push to a specific remote repository"
     context: "global"
     loadingText: "Pushing ..."
