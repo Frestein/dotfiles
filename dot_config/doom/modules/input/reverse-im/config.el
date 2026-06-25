@@ -1,7 +1,5 @@
 ;;; editor/reverse-im/config.el -*- lexical-binding: t; -*-
 
-(setq y-or-n-p-use-read-key t)
-
 (use-package! char-fold
   :custom
   (char-fold-symmetric t)
