@@ -2385,6 +2385,8 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   (setopt eglot-python-preset-rass-tools '(ty ruff)))
 
 (when (modulep! :lang lua)
+  (add-to-list 'auto-mode-alist '("conky\\.conf\\'" . lua-mode))
+
   (when (modulep! :editor format)
     (after! apheleia
       (set-formatter! 'stylua
