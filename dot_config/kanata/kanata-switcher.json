@@ -19,6 +19,10 @@
         "layer": "game"
     },
     {
+        "class": "witcher3.exe",
+        "layer": "game"
+    },
+    {
         "class": "OxygenNotIncluded",
         "layer": "game"
     }
