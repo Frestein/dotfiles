@@ -1363,6 +1363,8 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
   (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
 
   (map! :map pdf-view-mode-map
+        :n "K" #'pdf-roll-previous-page
+        :n "J" #'pdf-roll-next-page
         :n "gp" #'pdf-view-goto-page))
 
 (when (modulep! :tools pdf)
