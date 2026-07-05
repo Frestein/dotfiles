@@ -851,8 +851,10 @@ With prefix ARG, cycle backwards if ARG is negative."
       :desc "Previous buffer" :n "H" #'previous-buffer
       :desc "Next buffer" :n "L" #'next-buffer
       :v "gss" #'sort-lines
-      (:when (modulep! :term vterm )
+      (:when (modulep! :term vterm)
         :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle)
+      (:when (modulep! :term ghostel)
+        :desc "Toggle ghostel popup" :n "C-/" #'+ghostel/toggle)
       (:when (modulep! :tools zoxide)
         :n "gZ" #'zoxide-find-file))
 
