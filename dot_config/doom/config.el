@@ -765,6 +765,22 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
 
 (setopt image-auto-resize 'fit-window)
 
+(defun fr/image-random ()
+  "Open a random image file from the current directory."
+  (interactive)
+  (let* ((dir default-directory)
+         (files (directory-files dir t
+                                 "\\.\\(jpg\\|jpeg\\|png\\|gif\\|bmp\\|svg\\)$" t))
+         (file (nth (random (length files)) files)))
+    (if file (find-file file) (message "No images in %s" dir))))
+
+(map! :map image-mode-map
+      :n "n" #'image-next-file
+      :n "p" #'image-previous-file
+      :n "c" #'image-crop
+      :n "r" #'image-rotate
+      :n "R" #'fr/image-random)
+
 (setopt default-input-method "russian-computer")
 (setopt calendar-week-start-day 1)
 (setopt display-line-numbers-type 'relative)
