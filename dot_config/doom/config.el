@@ -887,12 +887,10 @@ With prefix ARG, cycle backwards if ARG is negative."
                (:when (modulep! :completion vertico)
                  :desc "Ripgrep" "g" #'consult-ripgrep)
                (:when (modulep! :tools pass)
-                 "p" nil
-                 "P" nil
                  (:prefix ("p" . "project")
                   :desc "Search project" "p" #'+default/search-project
                   :desc "Search other project" "o" #'+default/search-other-project)
-                 (:prefix ("P" . "Pass")
+                 (:prefix ("P" . "pass")
                   :desc "Username" "u" #'+pass/copy-user
                   :desc "Password" "p" #'+pass/consult)))
       (:prefix "i"
@@ -973,7 +971,7 @@ With prefix ARG, cycle backwards if ARG is negative."
          :desc "Jinx mode" "j" #'jinx-mode))
       (:prefix "n"
                (:when (modulep! :lang org +roam)
-                 (:prefix ("r" . "roam")
+                 (:prefix "r"
                           (:when (modulep! :lang org +mem)
                             "s" nil)))))
 
@@ -1509,11 +1507,11 @@ If a region is active, emphasize it, else emphasize the word at point."
         "B" #'org-babel-tangle
         "D" #'org-insert-drawer
         "E" #'org-export-dispatch
-        (:prefix ("l" . "links")
+        (:prefix "l"
                  "d" #'fr/org-yank-and-remove-link
                  "l" #'fr/org-insert-link-dwim)
-        (:prefix ("b" . "tables")
-                 (:prefix ("t" . "toggle")
+        (:prefix "b"
+                 (:prefix "t"
                           "w" #'org-table-toggle-column-width))
         (:prefix ("e" . "emphasize")
          :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
