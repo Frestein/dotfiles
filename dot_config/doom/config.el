@@ -787,6 +787,9 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
 (setopt confirm-kill-emacs nil)
 (setopt recentf-max-saved-items 500)
 
+(when (modulep! :editor word-wrap)
+  (+global-word-wrap-mode 1))
+
 (setopt evil-echo-state nil)
 
 (when (and (modulep! :editor evil)

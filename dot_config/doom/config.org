@@ -1082,6 +1082,9 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
 (setopt display-line-numbers-type 'relative)
 (setopt confirm-kill-emacs nil)
 (setopt recentf-max-saved-items 500)
+
+(when (modulep! :editor word-wrap)
+  (+global-word-wrap-mode 1))
 #+end_src
 
 ** Mappings
