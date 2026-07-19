@@ -8,7 +8,7 @@
 (use-package! pkgbuild-mode
   :custom
   (pkgbuild-user-mail-address "fresteinart@gmail.com")
-  (pkgbuild-makepkg-command "makepkg -sircfm")
+  (pkgbuild-makepkg-command "makepkg -si")
   :config
   (+pkgbuild-common-config 'pkgbuild-mode)
 
