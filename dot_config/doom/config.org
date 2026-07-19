@@ -3150,6 +3150,7 @@ current users."
     (setopt mu4e-attachment-dir "~/Downloads/mu4e")
     (setopt mu4e-update-interval 300)
     (setopt mu4e-notification-support nil)
+    (setopt mu4e-main-hide-personal-addresses t)
     (setopt sendmail-program (executable-find "msmtp"))
     (setopt message-send-mail-function #'message-send-mail-with-sendmail)
     (setopt message-sendmail-f-is-evil t)
