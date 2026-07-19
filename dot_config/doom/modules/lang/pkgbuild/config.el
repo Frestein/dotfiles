@@ -14,9 +14,9 @@
 
   (map! :map pkgbuild-mode-map
         :localleader
-        "s" #'pkgbuild-update-srcinfo
-        "S" #'pkgbuild-update-sums-line
-        "b" #'pkgbuild-makepkg
+        "s" #'pkgbuild-update-sums-line
+        "S" #'pkgbuild-update-srcinfo
+        "m" #'pkgbuild-makepkg
         "t" #'pkgbuild-tar
         "e" #'pkgbuild-etags
         "i" #'pkgbuild-initialize
