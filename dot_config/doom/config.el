@@ -1182,6 +1182,8 @@ making an abbreviation to a function."
 
   (add-to-list 'flycheck-checkers 'typos))
 
+(setopt eldoc-echo-area-use-multiline-p nil)
+
 (when (modulep! :tools eval)
   (set-popup-rule! (regexp-quote "*eros inspect*")
     :actions '(fr/+popup-display-dynamic-side) :height .5 :width .5 :ttl 0 :slot 1 :modeline t))

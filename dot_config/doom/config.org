@@ -62,6 +62,7 @@
   - [[#flycheck][Flycheck]]
     - [[#config-3][Config]]
     - [[#typos][Typos]]
+  - [[#eldoc][Eldoc]]
   - [[#evaluation][Evaluation]]
   - [[#whitespace][Whitespace]]
   - [[#smooth-scroll][Smooth Scroll]]
@@ -1551,6 +1552,12 @@ making an abbreviation to a function."
                       javascript-mode python-mode emacs-lisp-mode lisp-mode))
 
   (add-to-list 'flycheck-checkers 'typos))
+#+end_src
+
+** Eldoc
+
+#+begin_src elisp
+(setopt eldoc-echo-area-use-multiline-p nil)
 #+end_src
 
 ** Evaluation
