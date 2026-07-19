@@ -1,5 +1,9 @@
 ;;; lang/pkgbuild/config.el -*- lexical-binding: t; -*-
 
+(set-popup-rule! "^\\*PKGBUILD"
+  :actions '(fr/+popup-display-dynamic-side)
+  :slot 20 :height 0.5 :width 0.5 :select t :quit nil)
+
 (defun +pkgbuild-common-config (mode)
   (when (modulep! +lsp)
     (set-eglot-client! mode '("termux-language-server"))
