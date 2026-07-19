@@ -692,26 +692,7 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
     ";dot"           "https://codeberg.org/Frestein/dotfiles"
     ";git"           "https://codeberg.org/Frestein"
     ";hub"           "https://github.com/Frestein"
-    ";berg"          "https://codeberg.org/Frestein"
-    "r34"            "Rule 34"
-    "r63"            "Rule 63"
-    "yt"             "YouTube"
-    "linkedin"       "LinkedIn"
-    "github"         "GitHub"
-    "gitlab"         "GitLab"
-    "sourcehut"      "SourceHut"
-    "latex"          "LaTeX"
-    "js"             "JavaScript"
-    "ts"             "TypeScript"
-    "elisp"          "Emacs Lisp"
-    "clisp"          "Common Lisp"
-    "yubikey"        "YubiKey"
-    "cicd"           "CI/CD"
-    "ebpf"           "eBPF"
-    "ios"            "iOS"
-    "macos"          "macOS"
-    "cachyos"        "CachyOS"
-    "nixos"          "NixOS")
+    ";berg"          "https://codeberg.org/Frestein")
 
   (abbrev-table-put telega-chat-mode-abbrev-table :regexp "\\(?:^\\|\\<\\)\\(?1:[:;_].*\\|.*\\)")
 

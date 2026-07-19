@@ -1471,31 +1471,12 @@ making an abbreviation to a function."
 
 (with-eval-after-load 'text-mode
   (define-abbrev! text-mode-abbrev-table
-    "r34"            "Rule 34"
-    "r63"            "Rule 63"
-    "yt"             "YouTube"
-    "linkedin"       "LinkedIn"
-    "github"         "GitHub"
-    "gitlab"         "GitLab"
-    "sourcehut"      "SourceHut"
-    "latex"          "LaTeX"
-    "js"             "JavaScript"
-    "ts"             "TypeScript"
-    "elisp"          "Emacs Lisp"
-    "clisp"          "Common Lisp"
-    "yubikey"        "YubiKey"
-    "cicd"           "CI/CD"
-    "ebpf"           "eBPF"
-    "ios"            "iOS"
-    "macos"          "macOS"
-    "cachyos"        "CachyOS"
-    "nixos"          "NixOS"
-    ";smile"         "😃"
-    ";laugh"         "🤣"
-    ";clown"         "🤡"
-    ";poo"           "💩"
-    ";banana"        "🍌"
-    ";star"          "🌟")
+    ";smile"  "😃"
+    ";laugh"  "🤣"
+    ";clown"  "🤡"
+    ";poo"    "💩"
+    ";banana" "🍌"
+    ";star"   "⭐")
 
   (abbrev-table-put text-mode-abbrev-table
                     :regexp "\\(?:^\\|[\t\s]+\\)\\(?1:[:;_].*\\|.*\\)"))
