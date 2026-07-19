@@ -1367,6 +1367,8 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
   (map! :map pdf-view-mode-map
         :n "K" #'pdf-roll-previous-page
         :n "J" #'pdf-roll-next-page
+        :n "S-<wheel-up>" #'pdf-roll-previous-page
+        :n "S-<wheel-down>" #'pdf-roll-next-page
         :n "gp" #'pdf-view-goto-page))
 
 (when (modulep! :tools pdf)
