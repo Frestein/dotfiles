@@ -511,7 +511,7 @@ qsites = {
     "E": "app.tuta.com",
     "m": "music.youtube.com",
     "M": "last.fm/user/Frestein",
-    "k": "kinopoisk.ru/mykp/folders/",
+    "k": "kinopoisk.ru/user/frestein/movies/planned-to-watch",
     "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
     "T": "translate.google.com",
     "c": "coub.com/community/anime",
