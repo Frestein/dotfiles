@@ -2688,8 +2688,8 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
     (setopt consult-org-roam-grep-func #'consult-ripgrep))
 
   (map! :leader
-        :prefix ("n" . "notes")
-        (:prefix ("r" . "roam")
+        :prefix "n"
+        (:prefix "r"
          :desc "Search roam" "s" #'consult-org-roam-search
          :desc "Find backlinks" "b" #'consult-org-roam-backlinks
          :desc "Find forward-links" "B" #'consult-org-roam-forward-links
