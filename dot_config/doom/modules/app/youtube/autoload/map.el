@@ -4,7 +4,7 @@
 (defun fr/yeetube--init-map-h ()
   "Initialize yeetube's mappings."
   (map! :leader
-        (:prefix ("A" . "app")
+        (:prefix "A"
          :desc "YouTube (search)" "y" #'yeetube-search
          :desc "YouTube (saved)" "Y" #'yeetube-play-saved-video))
 

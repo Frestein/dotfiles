@@ -19,7 +19,7 @@
          :desc "Ripgrep" "g" #'fr/chezmoi-ripgrep
          ((:when (modulep! :tools magit))
           :desc "Magit status" "S" #'chezmoi-magit-status))
-        (:prefix ("s" . "search")
+        (:prefix "s"
          :desc "Find file in dotfiles" "c" #'chezmoi-find
          :desc "Browse dotfiles" "C" #'fr/chezmoi-browse-dotfiles))
 

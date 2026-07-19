@@ -4,5 +4,5 @@
 (defun +rg--init-map-h ()
   "Initialize rg's mappings."
   (map! :leader
-        (:prefix ("s")
+        (:prefix "s"
          :desc "Ripgrep (menu)" "G" #'rg-menu)))

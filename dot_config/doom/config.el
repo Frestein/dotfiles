@@ -876,11 +876,11 @@ With prefix ARG, cycle backwards if ARG is negative."
 
 (map! :leader
       "x" nil
-      (:prefix ("x" . "diagnostics")
+      (:prefix "x"
                (:when (modulep! :checkers syntax -flymake)
                  :desc "Toggle flycheck" "x" #'fr/flycheck-toggle-error-list))
       :desc "Toggle scratch buffer" "S" #'doom/toggle-scratch-buffer
-      (:prefix ("s" . "search")
+      (:prefix "s"
                (:when (modulep! :completion vertico)
                  :desc "Ripgrep" "g" #'consult-ripgrep)
                (:when (modulep! :tools pass)
@@ -892,9 +892,9 @@ With prefix ARG, cycle backwards if ARG is negative."
                  (:prefix ("P" . "Pass")
                   :desc "Username" "u" #'+pass/copy-user
                   :desc "Password" "p" #'+pass/consult)))
-      (:prefix ("i" . "insert")
+      (:prefix "i"
        :desc "Nerd" "n" #'nerd-icons-insert)
-      (:prefix ("p" . "project")
+      (:prefix "p"
        :desc "Cleanup know projects" "K" #'projectile-cleanup-known-projects)
       (:when (modulep! :app pomm)
         (:prefix ("P" . "pomm")
@@ -907,7 +907,7 @@ With prefix ARG, cycle backwards if ARG is negative."
                           "s" #'pomm-start
                           "S" #'pomm-stop
                           "o" #'pomm)))
-      (:prefix ("o" . "open")
+      (:prefix "o"
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
        :desc "Contacts" "c" #'org-contacts
@@ -921,12 +921,12 @@ With prefix ARG, cycle backwards if ARG is negative."
          :desc "Daemons" "D" #'daemons)
        (:when (modulep! :term vterm)
          :desc "Open URL using text browser" "W" #'fr/browse-url-text-vterm)
-       (:prefix ("a" . "org agenda")
+       (:prefix "a"
         :desc "GTD Agenda" "g" (lambda () (interactive) (org-agenda nil "g"))
         :desc "Daily Agenda" "d" (lambda () (interactive) (org-agenda nil "d"))
         :desc "Weekly Agenda" "w" (lambda () (interactive) (org-agenda nil "w"))
         :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))))
-      (:prefix ("c" . "code")
+      (:prefix "c"
                (:when (modulep! :tools 0x0)
                  :desc "Pastebin code" "p" #'0x0-upload-text)
                (:when (modulep! :tools screenshot)
@@ -949,7 +949,7 @@ With prefix ARG, cycle backwards if ARG is negative."
                           "c" #'ement-connect
                           "l" #'ement-room-list
                           "v" #'ement-room-view)))
-      (:prefix ("f" . "file")
+      (:prefix "f"
                (:when (modulep! :tools trashed)
                  :desc "Open trash can" "t" #'trashed)
                (:when (modulep! :tools zoxide)
@@ -958,9 +958,9 @@ With prefix ARG, cycle backwards if ARG is negative."
                  :desc "Open directory in dirvish" "m" #'dirvish)
                (:when (modulep! :term eee)
                  :desc "Open directory in yazi" "M" #'ee-yazi))
-      (:prefix ("h" . "help")
+      (:prefix "h"
                "e" #'fr/toggle-echo-area-messages)
-      (:prefix ("t" . "toggle")
+      (:prefix "t"
        :desc "Automatic line breaking" "a" #'auto-fill-mode
        (:when (modulep! :tools blamer)
          :desc "Blamer mode" "B" #'global-blamer-mode)
@@ -968,7 +968,7 @@ With prefix ARG, cycle backwards if ARG is negative."
          :desc "Colorful mode" "C" #'global-colorful-mode)
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode))
-      (:prefix ("n" . "notes")
+      (:prefix "n"
                (:when (modulep! :lang org +roam)
                  (:prefix ("r" . "roam")
                           (:when (modulep! :lang org +mem)
