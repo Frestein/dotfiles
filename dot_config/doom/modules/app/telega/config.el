@@ -495,17 +495,6 @@ argument - MSG to insert additional information after header."
 
           (telega-ins "\n")))))
 
-  ;; TODO: Adjust when debug message will be deleted.
-  ;; INFO: Disable debug message.
-  (defadvice! fixed-telega--on-updateSuggestedActions (event)
-    :override #'telega--on-updateSuggestedActions
-    (let ((added-actions (append (plist-get event :added_actions) nil))
-          (removed-actions (append (plist-get event :removed_actions) nil)))
-      (setq telega--suggested-actions
-            (append (seq-difference telega--suggested-actions removed-actions
-                                    #'equal)
-                    added-actions))))
-
   ;; INFO: Add space after vertical bar in folder prefix.
   (defun fr/telega-folders-insert-personalized (&optional fmt-spec)
     "Frestein's inserter for the folders prefixing chat's title."
