@@ -450,6 +450,24 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
              (modulep! :term vterm))
   :hook (eshell-load . eshell-vterm-mode))
 
+(when (modulep! :term ghostel)
+  (after! ghostel
+    (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer))
+    (add-to-list 'ghostel-eval-cmds '("magit-status" magit-status))
+
+    (when (modulep! :tools chezmoi)
+      (add-to-list 'ghostel-eval-cmds '("chezmoi-magit-status" chezmoi-magit-status)))
+
+    (map! :map ghostel-mode-map
+          :ni "C-\\" #'ghostel--send-event
+          :ni "C-K" #'ghostel-previous-prompt
+          :ni "C-j" #'ghostel-next-prompt
+          :i "C-/" #'+ghostel/toggle))
+
+  (after! ghostel-compile
+    (when (modulep! :editor ripgrep)
+      (add-to-list 'ghostel-compile-global-mode-excluded-modes 'rg-mode))))
+
 (when (modulep! :term vterm)
   (use-package! vterm
     :custom
