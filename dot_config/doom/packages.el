@@ -29,7 +29,9 @@
   (package! corg)
 
   (when (modulep! :lang org +contacts)
-    (package! org-contacts))
+    (package! org-contacts
+      :recipe (:host github
+               :repo "emacsmirror/org-contacts")))
 
   (when (modulep! :lang org +super)
     (package! org-super-agenda))
