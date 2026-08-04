@@ -18,14 +18,9 @@ return {
 				[".*/ghostty/config"] = "bash",
 				[".*/kanata/.+"] = "kanata",
 				[".*/newsboat/.+"] = "config",
-				[".*/zathura/themes/.+"] = "zathurarc",
 				[".*/.chezmoiignore"] = "gitignore",
 			},
 		}
-
-		if fs.exists "zathura" then
-			add "zathurarc"
-		end
 
 		if fs.exists ".Xresources" then
 			add "xresources"
