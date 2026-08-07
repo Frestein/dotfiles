@@ -72,7 +72,7 @@
        0x0
        (eval +overlay)
        (lookup +yandex)
-       (lsp +eglot +booster)
+       (lsp +eglot)
        (magit +forge)
        git-auto-commit
        (pass +auth)
