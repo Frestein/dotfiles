@@ -67,7 +67,6 @@ prepend_keymap = [
   # Easyjump
   { on = "i", run = "plugin easyjump", desc = "Easyjump" },
   # Git
-  { on = ["\\", "g", "g"], run = "plugin lazygit", desc = "Lazygit" },
   { on = ["\\", "g", "r"], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the root (git)" },
   { on = ["\\", "g", "v"], run = "plugin vcs-files", desc = "Show Git file changes" },
   # Trash
