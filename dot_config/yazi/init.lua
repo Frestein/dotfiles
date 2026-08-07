@@ -168,11 +168,6 @@ local githead_config = {
 require("githead"):setup(githead_config)
 require("git"):setup()
 require("recycle-bin"):setup()
-require("bookmarks"):setup({
-	persist = "vim",
-	desc_format = "parent",
-	file_pick_mode = "parent",
-})
 require("smart-enter"):setup({
 	open_multi = true,
 })
