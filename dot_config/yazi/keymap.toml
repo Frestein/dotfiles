@@ -2,7 +2,6 @@
 
 [mgr]
 prepend_keymap = [
-  { on = "<Enter>", run = "noop" },
   { on = "q", run = "plugin confirm-quit", desc = "Quit the process" },
   # Hopping
   { on = "J", run = "plugin parent-arrow 1", desc = "Next parent directory" },
