@@ -1,18 +1,36 @@
 {{- if (env "CZ_EXT") }}
 
-# Official plugins
+# Plugins
+## Personal plugins
+### confirm-quit.yazi - Confirm quit
+### folder-rules.yazi - Custom per-folder rules
+### parent-arrow.yazi - QoL. Change parent directory
+### smart-tab.yazi - Create tab for focused directory
+
+## Official plugins
+### types.yazi - Type definitions for language server
+### chmod.yazi - Change the file mode bits
+### diff.yazi - Diff for selected and hovered file
+### toggle-pane.yazi - Maximize preview pane
+### zoom.yazi - Zoom image on preview pane
+### git.yazi - Git status
+### vcs-files.yazi - Filter files by Git changes
+### mount.yazi - Mount manager for disks
+### full-border.yazi - UI. Full border
+### smart-enter.yazi - QoL. Open files or enter directories all in one key
+### smart-filter.yazi - Continuous filtering, automatically enter unique directory, open file on submitting
 
 {{- $yazi_plugins_base := "https://github.com/yazi-rs/plugins/archive/master.tar.gz" }}
 {{- $yazi_plugins_list := list
-    "toggle-pane.yazi"
-    "zoom.yazi"
-    "vcs-files.yazi"
     "types.yazi"
     "chmod.yazi"
     "diff.yazi"
-    "full-border.yazi"
+    "toggle-pane.yazi"
+    "zoom.yazi"
     "git.yazi"
+    "vcs-files.yazi"
     "mount.yazi"
+    "full-border.yazi"
     "smart-enter.yazi"
     "smart-filter.yazi"
 }}
@@ -27,58 +45,18 @@ refreshPeriod = "336h"
 include = ["*/{{ $plugin }}/**"]
 {{- end }}
 
-# Community plugins
+## Community plugins
+### Motions
 
-{{- $yatline_base := "https://github.com/imsi32" }}
-
-[".config/yazi/plugins/yatline.yazi"]
+[".config/yazi/plugins/easyjump.yazi"]
 type = "archive"
-url = "{{ $yatline_base }}/yatline.yazi/archive/master.tar.gz"
+url = "https://github.com/DreamMaoMao/yazi-config/archive/master.tar.gz"
 exact = true
-stripComponents = 1
+stripComponents = 3
 refreshPeriod = "336h"
+include = ["*/plugins/easyjump.yazi/**"]
 
-[".config/yazi/plugins/yatline-gruvbox.yazi"]
-type = "archive"
-url = "{{ $yatline_base }}/yatline-gruvbox.yazi/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "336h"
-
-[".config/yazi/plugins/epub-preview.yazi"]
-type = "archive"
-url = "https://github.com/kirasok/epub-preview.yazi/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "336h"
-
-[".config/yazi/plugins/office.yazi"]
-type = "archive"
-url = "https://github.com/macydnah/office.yazi/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "336h"
-
-[".config/yazi/plugins/restore.yazi"]
-type = "archive"
-url = "https://github.com/boydaihungst/restore.yazi/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "336h"
-
-[".config/yazi/plugins/recycle-bin.yazi"]
-type = "archive"
-url = "https://github.com/uhs-robert/recycle-bin.yazi/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "336h"
-
-[".config/yazi/plugins/githead.yazi"]
-type = "archive"
-url = "https://github.com/llanosrocas/githead.yazi/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "336h"
+### Operations with files
 
 [".config/yazi/plugins/what-size.yazi"]
 type = "archive"
@@ -94,13 +72,34 @@ exact = true
 stripComponents = 1
 refreshPeriod = "336h"
 
-[".config/yazi/plugins/easyjump.yazi"]
+### Recycle Bin
+
+[".config/yazi/plugins/restore.yazi"]
 type = "archive"
-url = "https://github.com/DreamMaoMao/yazi-config/archive/master.tar.gz"
+url = "https://github.com/boydaihungst/restore.yazi/archive/master.tar.gz"
 exact = true
-stripComponents = 3
+stripComponents = 1
 refreshPeriod = "336h"
-include = ["*/plugins/easyjump.yazi/**"]
+
+[".config/yazi/plugins/recycle-bin.yazi"]
+type = "archive"
+url = "https://github.com/uhs-robert/recycle-bin.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
+### Git
+
+[".config/yazi/plugins/githead.yazi"]
+type = "archive"
+url = "https://github.com/llanosrocas/githead.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
+### Preview
+
+#### Grid view for images using swayimg
 
 [".config/yazi/plugins/thumbnail.yazi"]
 type = "archive"
@@ -109,12 +108,25 @@ exact = true
 stripComponents = 1
 refreshPeriod = "336h"
 
-[".config/yazi/plugins/save-clipboard-to-file.yazi"]
+#### Preview for office suite files
+
+[".config/yazi/plugins/office.yazi"]
 type = "archive"
-url = "https://github.com/boydaihungst/save-clipboard-to-file.yazi/archive/master.tar.gz"
+url = "https://github.com/macydnah/office.yazi/archive/master.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "336h"
+
+#### Preview for EPUB files
+
+[".config/yazi/plugins/epub-preview.yazi"]
+type = "archive"
+url = "https://github.com/kirasok/epub-preview.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
+#### Preview for DjVu files
 
 [".config/yazi/plugins/djvu-view.yazi"]
 type = "archive"
@@ -123,7 +135,47 @@ exact = true
 stripComponents = 1
 refreshPeriod = "336h"
 
+#### Preview for media files
+
+[".config/yazi/plugins/mediainfo.yazi"]
+type = "archive"
+url = "https://github.com/boydaihungst/mediainfo.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
+### QoL
+
+#### Paste text in clipboard to file
+
+[".config/yazi/plugins/save-clipboard-to-file.yazi"]
+type = "archive"
+url = "https://github.com/boydaihungst/save-clipboard-to-file.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
+### Status-line and header-line
+
+{{- $yatline_base := "https://github.com/imsi32" }}
+
+[".config/yazi/plugins/yatline.yazi"]
+type = "archive"
+url = "{{ $yatline_base }}/yatline.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
+### Gruvbox colorscheme support for yatline
+[".config/yazi/plugins/yatline-gruvbox.yazi"]
+type = "archive"
+url = "{{ $yatline_base }}/yatline-gruvbox.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
 # Flavors
+## Gruvbox colorscheme
 
 [".config/yazi/flavors/gruvbox-dark.yazi"]
 type = "archive"

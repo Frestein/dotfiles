@@ -118,3 +118,35 @@ run = "djvu-view"
 [[plugin.prepend_previewers]]
 mime = "application/epub+zip"
 run = "epub-preview"
+
+# ---------------------------------------------------------------------------
+# mediainfo.yazi
+# ---------------------------------------------------------------------------
+
+# Replace magick, image, video with mediainfo
+[[plugin.prepend_preloaders]]
+mime = "{audio}/*"
+run = "mediainfo"
+
+[[plugin.prepend_preloaders]]
+mime = "{video,image}/*"
+run = "mediainfo --no-metadata"
+
+# .srt subtitle, adobe illustrator, adobe photoshop file
+[[plugin.prepend_preloaders]]
+mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}"
+run = "mediainfo --no-metadata"
+
+# Replace magick, image, video with mediainfo
+[[plugin.prepend_previewers]]
+mime = "{audio}/*"
+run = "mediainfo"
+
+[[plugin.prepend_previewers]]
+mime = "{video,image}/*"
+run = "mediainfo --no-metadata"
+
+# .srt subtitle, adobe illustrator, adobe photoshop file
+[[plugin.prepend_previewers]]
+mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}"
+run = "mediainfo --no-metadata"

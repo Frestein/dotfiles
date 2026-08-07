@@ -2,23 +2,40 @@
 
 [mgr]
 prepend_keymap = [
+  # Unbind defaults
+  { on = ["t", "t"], run = "noop" },
+  { on = ["t", "r"], run = "noop" },
+  # QoL
+  { on = "l", run = "plugin smart-enter" },
   { on = "q", run = "plugin confirm-quit", desc = "Quit the process" },
-  # Hopping
+  # Motions
+  ## Zoxide
+  { on = ["z", "z"], run = "plugin zoxide", desc = "Zoxide" },
+  { on = ["z", "a"], run = "shell -- zoxide add .", desc = "Add to zoxide" },
+  { on = ["z", "r"], run = "shell -- zoxide remove .", desc = "Remove from zoxide" },
+  ## fzf
+  { on = "Z", run = "plugin fzf" },
+  ## Easyjump
+  { on = "i", run = "plugin easyjump", desc = "Easyjump" },
+  ## Hopping
   { on = "J", run = "plugin parent-arrow 1", desc = "Next parent directory" },
   { on = "K", run = "plugin parent-arrow -1", desc = "Previous parent directory" },
-  # Seeking
-  { on = "<C-f>", run = "seek 5" },
-  { on = "<C-b>", run = "seek -5" },
-  # Operation
-  { on = "l", run = "plugin smart-enter" },
+  # Operations
+  ## Yank
   { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here" },
   { on = "y", run = [
     'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list',
     "yank",
   ] },
+  ## Paste
   { on = ["p", "p"], run = "paste", desc = "Paste yanked files" },
   { on = ["p", "c"], run = "plugin save-clipboard-to-file", desc = "Paste clipboard content to file" },
-  { on = "t", run = "plugin smart-tab", desc = "Create a tab and enter the hovered directory" },
+  ## Filter
+  { on = "F", run = "plugin smart-filter", desc = "Smart filter" },
+  # Tabs
+  { on = ["T", "t"], run = "plugin smart-tab", desc = "Create a tab and enter the hovered directory" },
+  { on = ["T", "r"], run = "tab_rename --interactive", desc = "Rename current tab" },
+  { on = ["T", "c"], run = "close", desc = "Close the current tab, or quit if it's last" },
   # Goto
   { on = ["g", "h"], run = "cd ~", desc = "Home" },
   { on = ["g", "c"], run = "cd ~/.config", desc = "~/.config" },
@@ -33,44 +50,41 @@ prepend_keymap = [
   { on = ["g", "t"], run = "plugin recycle-bin -- open", desc = "Trash" },
   { on = ["g", "."], run = "hidden toggle", desc = "Toggle hidden" },
   { on = ["g", "?"], run = "help", desc = "Open help" },
-  # Zoxide
-  { on = ["z", "z"], run = "plugin zoxide", desc = "Zoxide" },
-  { on = ["z", "a"], run = "shell -- zoxide add .", desc = "Add to zoxide" },
-  { on = ["z", "r"], run = "shell -- zoxide remove .", desc = "Remove from zoxide" },
-  { on = "Z", run = "plugin fzf" },
-  # Chezmoi
+  # Operations with files
+  ## Chmod
+  { on = ["c", "m"], run = "plugin chmod", desc = "Chmod on selected files" },
+  # Diff
+  { on = [".", "d"], run = "plugin diff", desc = "Diff the selected with the hovered file" },
+  ## Compress
+  { on = ["c", "a", "a"], run = "plugin compress", desc = "Archive selected files" },
+  { on = ["c", "a", "p"], run = "plugin compress -p", desc = "Archive selected files (password)" },
+  { on = ["c", "a", "P"], run = "plugin compress -ph", desc = "Archive selected files (password+header)" },
+  ## What-size
+  { on = [".", "s"], run = "plugin what-size", desc = "Show the size of the selected files or cwd" },
+  # Preview
+  { on = ["t", "p"], run = "plugin toggle-pane max-preview", desc = "Toggle maximize preview" },
+  { on = ["t", "m"], run = "plugin mediainfo -- toggle-metadata", desc = "Toggle media preview metadata" },
+  ## Seeking
+  { on = "<C-f>", run = "seek 5" },
+  { on = "<C-b>", run = "seek -5" },
+  ## Zoom
+  { on = "=", run = "plugin zoom 1", desc = "Zoom in hovered file" },
+  { on = "-", run = "plugin zoom -1", desc = "Zoom out hovered file" },
+  ## Show thumbnails using swayimg
+  { on = ["g", "V"], run = "plugin thumbnail", desc = "Show thumbnails for current directory" },
+  # Utilities
+  ## Desktop Trash Can
+  { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },
+  { on = "R", run = "plugin recycle-bin", desc = "Open recycle bin menu" },
+  ## Git
+  { on = ["\\", "g", "r"], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the root (git)" },
+  { on = ["\\", "g", "v"], run = "plugin vcs-files", desc = "Show Git file changes" },
+  ## Chezmoi
   { on = ["C", "a"], run = "shell -- chezmoi add %s", desc = "Add to chezmoi" },
   { on = ["C", "A"], run = "shell -- chezmoi add --encrypt %s", desc = "Add to chezmoi (encrypted)" },
   { on = ["C", "r"], run = "shell -- chezmoi re-add %s", desc = "Re-add to chezmoi" },
   { on = ["C", "R"], run = "shell -- chezmoi re-add --encrypt %s", desc = "Re-add to chezmoi (encrypted)" },
   { on = ["C", "e"], run = "shell -- chezmoi edit %s", desc = "Edit in chezmoi" },
-  # Mount
+  ## Mount manager
   { on = "M", run = "plugin mount", desc = "Mount manager" },
-  # Chmod
-  { on = ["c", "m"], run = "plugin chmod", desc = "Chmod on selected files" },
-  # Diff
-  { on = [".", "d"], run = "plugin diff", desc = "Diff the selected with the hovered file" },
-  # Compress
-  { on = ["c", "a", "a"], run = "plugin compress", desc = "Archive selected files" },
-  { on = ["c", "a", "p"], run = "plugin compress -p", desc = "Archive selected files (password)" },
-  { on = ["c", "a", "P"], run = "plugin compress -ph", desc = "Archive selected files (password+header)" },
-  # What-size
-  { on = [".", "s"], run = "plugin what-size", desc = "Show the size of the selected files or cwd" },
-  # Preview
-  { on = "T", run = "plugin toggle-pane max-preview", desc = "Toggle maximaze preview" },
-  # Zoom
-  { on = "=", run = "plugin zoom 1", desc = "Zoom in hovered file" },
-  { on = "-", run = "plugin zoom -1", desc = "Zoom out hovered file" },
-  # Smart filter
-  { on = "F", run = "plugin smart-filter", desc = "Smart filter" },
-  # Easyjump
-  { on = "i", run = "plugin easyjump", desc = "Easyjump" },
-  # Git
-  { on = ["\\", "g", "r"], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the root (git)" },
-  { on = ["\\", "g", "v"], run = "plugin vcs-files", desc = "Show Git file changes" },
-  # Trash
-  { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },
-  { on = "R", run = "plugin recycle-bin", desc = "Open recycle bin menu" },
-  # Thumbnail
-  { on = ["g", "V"], run = "plugin thumbnail", desc = "Open current directory in gallery" },
 ]
