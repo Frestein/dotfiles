@@ -118,11 +118,3 @@ run = "djvu-view"
 [[plugin.prepend_previewers]]
 mime = "application/epub+zip"
 run = "epub-preview"
-
-# ---------------------------------------------------------------------------
-# exifaudio.yazi
-# ---------------------------------------------------------------------------
-
-[[plugin.prepend_previewers]]
-mime = "audio/*"
-run = "exifaudio"
