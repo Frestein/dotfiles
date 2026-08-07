@@ -1,16 +1,9 @@
 {{- if (env "CZ_EXT") }}
 
-# Shaders
+# Plugins
 
-[".config/mpv/shaders"]
-type = "archive"
-url = "https://github.com/iwalton3/default-shader-pack/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = ["*/shaders/Anime4K*", "*/shaders/FSR*"]
-
-# UOSC
+## UI
+### UOSC - Feature-rich minimalist UI
 
 {{- $uosc_url := "https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip" }}
 
@@ -30,109 +23,123 @@ stripComponents = 2
 refreshPeriod = "336h"
 include = ["scripts/**"]
 
-# Auto Save State
+### M-x - Emacs-like minibuffer
 
-[".config/mpv/scripts/auto-save-state.lua"]
+[".config/mpv/scripts/M-x.lua"]
 type = "file"
-url = "https://raw.githubusercontent.com/dyphire/mpv-scripts/refs/heads/main/auto-save-state.lua"
+url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/M-x.lua"
 refreshPeriod = "336h"
 
-# Celebi
-
-[".config/mpv/scripts/celebi.lua"]
+[".config/mpv/script-modules/extended-menu.lua"]
 type = "file"
-url = "https://raw.githubusercontent.com/po5/celebi/refs/heads/master/celebi.lua"
+url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/script-modules/extended-menu.lua"
 refreshPeriod = "336h"
 
-# Gallery View
-
-{{- $gallery_base := "https://raw.githubusercontent.com/occivink/mpv-gallery-view/master/scripts" }}
-
-## Contact Sheet
-
-[".config/mpv/scripts/contact-sheet.lua"]
-type = "file"
-url = "{{ $gallery_base }}/contact-sheet.lua"
-refreshPeriod = "336h"
-
-## Gallery Thumbgen
-
-[".config/mpv/scripts/gallery-thumbgen.lua"]
-type = "file"
-url = "{{ $gallery_base }}/gallery-thumbgen.lua"
-refreshPeriod = "336h"
-
-## Playlist View
-
-[".config/mpv/scripts/playlist-view.lua"]
-type = "file"
-url = "{{ $gallery_base }}/playlist-view.lua"
-refreshPeriod = "336h"
-
-# Thumbfast
+### Thumbfast - On-the-fly thumbnailer
 
 [".config/mpv/scripts/thumbfast.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/po5/thumbfast/refs/heads/master/thumbfast.lua"
 refreshPeriod = "336h"
 
-# Undo / Redo
+### Gallery View
+
+{{- $gallery_base := "https://raw.githubusercontent.com/occivink/mpv-gallery-view/master/scripts" }}
+
+#### Gallery Thumbgen - Worker for generating gallery thumbnails
+
+[".config/mpv/scripts/gallery-thumbgen.lua"]
+type = "file"
+url = "{{ $gallery_base }}/gallery-thumbgen.lua"
+refreshPeriod = "336h"
+
+#### Contact Sheet - Displays a contact sheet of a video
+
+[".config/mpv/scripts/contact-sheet.lua"]
+type = "file"
+url = "{{ $gallery_base }}/contact-sheet.lua"
+refreshPeriod = "336h"
+
+#### Playlist View - Displays an overview of the current playlist with thumbnails
+
+[".config/mpv/scripts/playlist-view.lua"]
+type = "file"
+url = "{{ $gallery_base }}/playlist-view.lua"
+refreshPeriod = "336h"
+
+## auto-save-state - Periodically saves watch progress
+
+[".config/mpv/scripts/auto-save-state.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/dyphire/mpv-scripts/refs/heads/main/auto-save-state.lua"
+refreshPeriod = "336h"
+
+## celebi - Saves properties between sessions
+
+[".config/mpv/scripts/celebi.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/po5/celebi/refs/heads/master/celebi.lua"
+refreshPeriod = "336h"
+
+## Undo / Redo
 
 [".config/mpv/scripts/undo-redo.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/Eisa01/mpv-scripts/refs/heads/master/scripts/UndoRedo.lua"
 refreshPeriod = "336h"
 
-# YouTube Up Next
-
-[".config/mpv/scripts/youtube-upnext.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/cvzi/mpv-youtube-upnext/refs/heads/main/youtube-upnext.lua"
-refreshPeriod = "336h"
-
-# YouTube Preload
-
-[".config/mpv/scripts/ytdl-preload.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/bitingsock/ytdl-preload/refs/heads/main/ytdl_preload.lua"
-refreshPeriod = "336h"
-
-# Quality Menu
-
-[".config/mpv/scripts/quality-menu.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/christoph-heinrich/mpv-quality-menu/refs/heads/master/quality-menu.lua"
-refreshPeriod = "336h"
-
-# Skip Silence
-
-[".config/mpv/scripts/skipsilence.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/ferreum/mpv-skipsilence/refs/heads/master/skipsilence.lua"
-refreshPeriod = "336h"
-
-# Recent
-
-[".config/mpv/scripts/recent.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/Frestein/recent/refs/heads/master/recent.lua"
-refreshPeriod = "336h"
-
-# Reload
+## Reload - Automatic reloading of slow/stuck video steams
 
 [".config/mpv/scripts/reload.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/Frestein/mpv-reload/refs/heads/master/main.lua"
 refreshPeriod = "336h"
 
-# Russian Layout
+## Skip Silence - Increase playback speed during silence
+
+[".config/mpv/scripts/skipsilence.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/ferreum/mpv-skipsilence/refs/heads/master/skipsilence.lua"
+refreshPeriod = "336h"
+
+## Recent - Shows menu with recently played videos
+
+[".config/mpv/scripts/recent.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/Frestein/recent/refs/heads/master/recent.lua"
+refreshPeriod = "336h"
+
+## russian-layout - Input using Cyrillic layout
 
 [".config/mpv/scripts/russian-layout.lua"]
 type = "file"
 url = "https://codeberg.org/Frestein/russian-layout.mpv/raw/branch/main/russian-layout.lua"
 refreshPeriod = "336h"
 
-# Sponsorblock
+## Services
+### YouTube
+#### YouTube Up Next
+
+[".config/mpv/scripts/youtube-upnext.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/cvzi/mpv-youtube-upnext/refs/heads/main/youtube-upnext.lua"
+refreshPeriod = "336h"
+
+#### YouTube Preload - Precache next entry in playlist
+
+[".config/mpv/scripts/ytdl-preload.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/bitingsock/ytdl-preload/refs/heads/main/ytdl_preload.lua"
+refreshPeriod = "336h"
+
+#### Quality Menu - Allow to change streamed video quality
+
+[".config/mpv/scripts/quality-menu.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/christoph-heinrich/mpv-quality-menu/refs/heads/master/quality-menu.lua"
+refreshPeriod = "336h"
+
+#### Sponsorblock - SKip sponsor' segments
 
 [".config/mpv/scripts"]
 type = "archive"
@@ -144,16 +151,14 @@ include = [
     "sponsorblock_shared/**"
 ]
 
-# M-x
+# Shaders
 
-[".config/mpv/scripts/M-x.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/M-x.lua"
+[".config/mpv/shaders"]
+type = "archive"
+url = "https://github.com/iwalton3/default-shader-pack/archive/master.tar.gz"
+exact = true
+stripComponents = 2
 refreshPeriod = "336h"
-
-[".config/mpv/script-modules/extended-menu.lua"]
-type = "file"
-url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/script-modules/extended-menu.lua"
-refreshPeriod = "336h"
+include = ["*/shaders/Anime4K*", "*/shaders/FSR*"]
 
 {{- end }}
