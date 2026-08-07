@@ -57,7 +57,9 @@ prepend_keymap = [
   # Diff
   { on = [".", "d"], run = "plugin diff", desc = "Diff the selected with the hovered file" },
   # Compress
-  { on = ["c", "a"], run = "plugin compress", desc = "Archive the selected files" },
+  { on = ["c", "a", "a"], run = "plugin compress", desc = "Archive selected files" },
+  { on = ["c", "a", "p"], run = "plugin compress -p", desc = "Archive selected files (password)" },
+  { on = ["c", "a", "P"], run = "plugin compress -ph", desc = "Archive selected files (password+header)" },
   # What-size
   { on = [".", "s"], run = "plugin what-size", desc = "Show the size of the selected files or cwd" },
   # Preview
