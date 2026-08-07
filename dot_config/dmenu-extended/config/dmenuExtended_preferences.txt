@@ -8,8 +8,7 @@
     "filter_binaries": false,
     "follow_symlinks": true,
     "frequently_used": 50,
-    "global_ignore_folders": [
-    ],
+    "global_ignore_folders": [],
     "ignore_folders": [
         "~/GDrive/",
         "~/Tools/",
@@ -49,7 +48,10 @@
     ],
     "path_aliasFile": "",
     "path_shellCommand": "",
-    "prompt": " ",
+    "plugin_repositories": [
+        "https://raw.githubusercontent.com/markhedleyjones/dmenu-extended-plugins/main"
+    ],
+    "prompt": "\ue68f ",
     "scan_hidden_folders": false,
     "terminal": "footclient",
     "terminal_editor": "nvim",
