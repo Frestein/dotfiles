@@ -1,24 +1,7 @@
 {{- if (env "CZ_EXT") }}
 
-[".config/yt-dlp-plugins/YandexTranslate/yt_dlp_plugins"]
-type = "archive"
-url = "https://github.com/gnfalex/YT_yt_dlp_plugin/archive/master.tar.gz"
-exact = true
-stripComponents = 2
-refreshPeriod = "336h"
-include = [
-  "*/yt_dlp_plugins/extractor/**",
-  "*/yt_dlp_plugins/postprocessor/**",
-  "*/yt_dlp_plugins/yandex.protoc",
-]
-
-[".config/yt-dlp-plugins/yt-dlp-YTNSigDeno"]
-type = "archive"
-url = "https://github.com/bashonly/yt-dlp-YTNSigDeno/archive/master.tar.gz"
-exact = true
-stripComponents = 1
-refreshPeriod = "336h"
-include = ["*/yt_dlp_plugins/**"]
+# PO Token provider for YouTube
+# Additional info: https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide
 
 {{- $bgutil_url := "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz" }}
 
@@ -43,6 +26,20 @@ include = [
   "*/server/package-lock.json",
   "*/server/tsconfig.json",
   "*/server/yarn.lock",
+]
+
+# Yandex.Translate for videos based on voice-over-translation (vot) and vot-cli
+
+[".config/yt-dlp-plugins/YandexTranslate/yt_dlp_plugins"]
+type = "archive"
+url = "https://github.com/gnfalex/YT_yt_dlp_plugin/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "336h"
+include = [
+  "*/yt_dlp_plugins/extractor/**",
+  "*/yt_dlp_plugins/postprocessor/**",
+  "*/yt_dlp_plugins/yandex.protoc",
 ]
 
 {{- end }}
