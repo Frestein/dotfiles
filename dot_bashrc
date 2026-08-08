@@ -29,7 +29,6 @@ eval "$(zoxide init bash)"
 eval "$(atuin init bash)"
 eval "$(fzf --bash)"
 eval "$(SHELL=/usr/bin/bash batpipe)"
-eval "$(direnv hook bash)"
 
 # ---------------------------Options--------------------------- #
 
