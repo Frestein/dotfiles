@@ -17,7 +17,3 @@ end
 if type -q batpipe
     batpipe | source
 end
-
-if type -q direnv
-    direnv hook fish | source
-end
