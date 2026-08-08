@@ -1,5 +1,16 @@
-[delta]
-	line-numbers = true
-	syntax-theme = gruvbox-dark
 [core]
 	pager = delta
+[delta]
+	features = decorations diff
+	syntax-theme = gruvbox-dark
+	# line-numbers = true
+[delta "decorations"]
+    file-style = yellow
+    file-decoration-style = white ul
+    hunk-header-decoration-style = white box
+	hunk-header-line-number-style = red
+[delta "diff"]
+	minus-style = syntax "#3c3836"
+	plus-style = syntax "#32302f"
+	minus-emph-style = black bright-red
+	plus-emph-style = black bright-green
