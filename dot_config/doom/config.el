@@ -1874,47 +1874,47 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                          ((org-agenda-overriding-header "Easy Tasks")
                           (org-agenda-skip-function '(or (fr/org-skip-subtree-if-habit)
                                                          (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
-              (tags-todo "+PRIORITY=\"A\""
+              (tags-todo "+PRIORITY=\"A\"-@easy"
                          ((org-agenda-overriding-header "High Priority Next Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"B\""
+              (tags-todo "+PRIORITY=\"B\"-@easy"
                          ((org-agenda-overriding-header "Medium Priority Next Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"C\""
+              (tags-todo "+PRIORITY=\"C\"-@easy"
                          ((org-agenda-overriding-header "Low Priority Next Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"A\""
+              (tags-todo "+PRIORITY=\"A\"-@easy"
                          ((org-agenda-overriding-header "High Priority Waiting For Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"B\""
+              (tags-todo "+PRIORITY=\"B\"-@easy"
                          ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"C\""
+              (tags-todo "+PRIORITY=\"C\"-@easy"
                          ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"A\""
+              (tags-todo "+PRIORITY=\"A\"-@easy"
                          ((org-agenda-overriding-header "High Priority Someday/Maybe Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"B\""
+              (tags-todo "+PRIORITY=\"B\"-@easy"
                          ((org-agenda-overriding-header "Medium Priority Someday/Maybe Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("NEXT" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"C\""
+              (tags-todo "+PRIORITY=\"C\"-@easy"
                          ((org-agenda-overriding-header "Low Priority Someday/Maybe Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
@@ -1926,39 +1926,39 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                          ((org-agenda-overriding-header "Untagged Tasks")))))
             ("d" "Daily Agenda"
              ((agenda ""
-                      ((org-agenda-span 1)
+                      ((org-agenda-span 3)
                        (org-agenda-start-day "+0d")
                        (org-deadline-warning-days 1)))
               (tags-todo "+@easy"
                          ((org-agenda-overriding-header "Easy Tasks")
                           (org-agenda-skip-function '(or (fr/org-skip-subtree-if-habit)
                                                          (org-agenda-skip-entry-if 'todo '("PROJ" "WAIT" "DONE"))))))
-              (tags-todo "+PRIORITY=\"A\""
+              (tags-todo "+PRIORITY=\"A\"-@easy"
                          ((org-agenda-overriding-header "High Priority Next Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"B\""
+              (tags-todo "+PRIORITY=\"B\"-@easy"
                          ((org-agenda-overriding-header "Medium Priority Next Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"C\""
+              (tags-todo "+PRIORITY=\"C\"-@easy"
                          ((org-agenda-overriding-header "Low Priority Next Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("TODO" "PROJ" "WAIT" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"A\""
+              (tags-todo "+PRIORITY=\"A\"-@easy"
                          ((org-agenda-overriding-header "High Priority Waiting For Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"B\""
+              (tags-todo "+PRIORITY=\"B\"-@easy"
                          ((org-agenda-overriding-header "Medium Priority Waiting For Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
                                 (org-agenda-skip-entry-if 'todo '("NEXT" "TODO" "PROJ" "DONE" "LOOP"))))))
-              (tags-todo "+PRIORITY=\"C\""
+              (tags-todo "+PRIORITY=\"C\"-@easy"
                          ((org-agenda-overriding-header "Low Priority Waiting For Tasks")
                           (org-agenda-skip-function
                            '(or (org-agenda-skip-entry-if 'scheduled 'deadline)
