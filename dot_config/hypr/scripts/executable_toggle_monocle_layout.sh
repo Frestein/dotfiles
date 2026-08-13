@@ -4,9 +4,11 @@ WORKSPACE_CURRENT=$(hyprctl activeworkspace -j | jq -r '.id')
 LAYOUT_CURRENT=$(hyprctl activeworkspace | grep 'tiledLayout:' | awk '{print $2}')
 
 if [ "$LAYOUT_CURRENT" = "monocle" ]; then
-    hyprctl keyword workspace "$WORKSPACE_CURRENT, layout:dwindle"
+    NEW_LAYOUT="dwindle"
 else
-    hyprctl keyword workspace "$WORKSPACE_CURRENT, layout:monocle"
+    NEW_LAYOUT="monocle"
 fi
+
+hyprctl eval 'hl.workspace_rule({ workspace = "'$WORKSPACE_CURRENT'", layout = "'$NEW_LAYOUT'" })'
 
 pkill -SIGRTMIN+10 waybar

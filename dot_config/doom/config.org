@@ -802,7 +802,8 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
 
 #+begin_src elisp
 (when (modulep! :app everywhere)
-  (setopt emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
+  (setopt emacs-everywhere-window-focus-command
+          (list "hyprctl" "dispatch" "hl.dsp.focus({ window = \"address:%w\" })"))
   (setopt emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
 
   (require 'json)

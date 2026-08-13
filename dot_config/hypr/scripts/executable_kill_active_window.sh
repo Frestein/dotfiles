@@ -5,7 +5,7 @@ TIMEOUT=300
 
 (
     flock -n 9 || {
-        hyprctl dispatch killactive
+        hyprctl dispatch "hl.dsp.window.close({ window = 'active' })"
         exit 0
     }
 
