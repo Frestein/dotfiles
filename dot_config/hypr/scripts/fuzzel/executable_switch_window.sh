@@ -38,8 +38,11 @@ IS_FULLSCREEN=$(echo "$STATE" | jq -r ".[] | select(.fullscreen > 0)  | select(.
 
 if [ -n "$SELECT_WINDOW" ]; then
     if [ -z "$IS_FULLSCREEN" ]; then
-        hyprctl dispatch focuswindow address:"$ADDRESS_FOCUSED"
+        hyprctl dispatch 'hl.dsp.focus({ window = "address:'"$ADDRESS_FOCUSED"'" })'
     else
-        hyprctl --batch "dispatch focuswindow address:${IS_FULLSCREEN}; dispatch fullscreen 1; dispatch focuswindow address:${ADDRESS_FOCUSED}; dispatch fullscreen 1"
+        hyprctl dispatch 'hl.dsp.focus({ window = "address:'"$IS_FULLSCREEN"'" })'
+        hyprctl dispatch 'hl.dsp.window.fullscreen({ action = "disable" })'
+        hyprctl dispatch 'hl.dsp.focus({ window = "address:'"$ADDRESS_FOCUSED"'" })'
+        hyprctl dispatch 'hl.dsp.window.fullscreen({ action = "enable" })'
     fi
 fi

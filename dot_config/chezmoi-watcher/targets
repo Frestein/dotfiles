@@ -2,5 +2,10 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/nvim
 ${XDG_CONFIG_HOME:-$HOME/.config}/doom
 ${XDG_CONFIG_HOME:-$HOME/.config}/quickshell
 ${XDG_CONFIG_HOME:-$HOME/.config}/qutebrowser/config.py
+${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprland.lua
+${XDG_CONFIG_HOME:-$HOME/.config}/hypr/autostart.lua
+${XDG_CONFIG_HOME:-$HOME/.config}/hypr/rules.lua
+${XDG_CONFIG_HOME:-$HOME/.config}/hypr/binds.lua
+${XDG_CONFIG_HOME:-$HOME/.config}/hypr/themes
 ${XDG_CONFIG_HOME:-$HOME/.config}/tridactyl/tridactylrc
 ${XDG_CONFIG_HOME:-$HOME/.config}/conky
