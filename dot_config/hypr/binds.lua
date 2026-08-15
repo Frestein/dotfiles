@@ -80,15 +80,14 @@ local dmenu_launch_as_root = paths.scripts_path .. "/fuzzel/launch_as_root.sh"
 local dmenu_switch_window = paths.scripts_path .. "/fuzzel/switch_window.sh"
 
 -- Bar
-local bar_toggle_visibility = "pkill -USR1 waybar"
-local bar_lock_visibility =
-	'LOCK="/run/user/$(id -u)/waybar-autohide.lock"; [ -f "$LOCK" ] && rm -f "$LOCK" || touch "$LOCK"; pkill -SIGRTMIN+8 waybar'
-local bar_reload_config = scu("reload waybar")
-local bar_restart_service = scu("restart waybar")
 -- stylua: ignore
-local bar_toggle_auto_hide = scu("is-active --quiet waybar-autohide")
+local bar_toggle_autohide = scu("is-active --quiet waybar-autohide")
 	.. " && " .. scu("stop waybar-autohide")
 	.. " || " .. scu("start waybar-autohide")
+local bar_toggle_visibility = "pkill -USR1 waybar"
+local bar_lock_visibility = paths.scripts_path .. "/toggle_waybar_lock.sh"
+local bar_reload_config = scu("reload waybar")
+local bar_restart_service = scu("restart waybar")
 
 -- Hyprland scripts
 local toggle_monocle_layout = paths.scripts_path .. "/toggle_monocle_layout.sh"
@@ -227,7 +226,7 @@ hl.define_submap("hyprland", function()
 	-- Bar
 	hl.bind("B", hl.dsp.submap("bar"))
 	hl.define_submap("bar", "reset", function()
-		hl.bind("A", hl.dsp.exec_cmd(bar_toggle_auto_hide))
+		hl.bind("A", hl.dsp.exec_cmd(bar_toggle_autohide))
 		hl.bind("T", hl.dsp.exec_cmd(bar_toggle_visibility))
 		hl.bind("SHIFT + T", hl.dsp.exec_cmd(bar_lock_visibility))
 		hl.bind("R", hl.dsp.exec_cmd(bar_reload_config))
