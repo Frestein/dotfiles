@@ -21,10 +21,10 @@ hl.config({
 		resize_on_border = true,
 		border_size = 2,
 		col = {
-			active_border = colors.activeBorder,
-			inactive_border = colors.inactiveBorder,
-			nogroup_border_active = colors.activeBorder,
-			nogroup_border = colors.inactiveBorder,
+			active_border = colors.active_border,
+			inactive_border = colors.inactive_border,
+			nogroup_border_active = colors.active_border,
+			nogroup_border = colors.inactive_border,
 		},
 	},
 
@@ -35,18 +35,18 @@ hl.config({
 	-- FIX: Broken after rewriting groups in Hyprland
 	group = {
 		col = {
-			border_active = colors.groupActiveBorder,
-			border_inactive = colors.groupInactiveBorder,
-			border_locked_active = colors.groupLockedActiveBorder,
-			border_locked_inactive = colors.groupLockedInactiveBorder,
+			border_active = colors.group_active_border,
+			border_inactive = colors.group_inactive_border,
+			border_locked_active = colors.group_locked_active_border,
+			border_locked_inactive = colors.group_locked_inactive_border,
 		},
 		groupbar = {
 			font_size = 10,
 			col = {
-				active = colors.groupBarActiveBorder,
-				inactive = colors.groupBarInactiveBorder,
-				locked_active = colors.groupBarLockedActiveBorder,
-				locked_inactive = colors.groupBarLockedInactiveBorder,
+				active = colors.group_bar_active_border,
+				inactive = colors.group_bar_inactive_border,
+				locked_active = colors.group_bar_locked_active_border,
+				locked_inactive = colors.group_bar_locked_inactive_border,
 			},
 		},
 	},
