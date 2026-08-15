@@ -182,8 +182,8 @@ hl.define_submap("applets", function()
 	hl.bind("E", hl.dsp.submap("emoji"))
 
 	hl.define_submap("emoji", function()
-		hl.bind("E", hl.dsp.exec_cmd(withReset("(" .. enLayout .. ' && emojictl "😃 " emoji)')))
-		hl.bind("N", hl.dsp.exec_cmd(withReset("(" .. enLayout .. ' && emojictl " " nerd_font)')))
+		hl.bind("E", hl.dsp.exec_cmd(withReset("(" .. enLayout .. ' && emojictl "Emoji " emoji)')))
+		hl.bind("N", hl.dsp.exec_cmd(withReset("(" .. enLayout .. ' && emojictl "Nerd " nerd_font)')))
 		hl.bind("M", hl.dsp.exec_cmd(withReset("(" .. enLayout .. ' && emojictl "Math " math)')))
 		hl.bind("W", hl.dsp.exec_cmd(withReset("(" .. enLayout .. ' && emojictl "Writer " latin-1_supplement math)')))
 
