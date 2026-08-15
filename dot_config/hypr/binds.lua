@@ -2,34 +2,69 @@
 
 local paths = require("lib.paths")
 
-local scu = "systemctl --user"
+-- ===========================================================================
+-- Helper functions
+-- ===========================================================================
+
+local reset_submap = "hyprctl dispatch 'hl.dsp.submap(\"reset\")'" -- Resets submap
+
+-- Helper to reset submap before command
+local function with_reset(cmd)
+	return reset_submap .. " && " .. cmd
+end
+
+-- systemctl --user helper
+---@param subcmd string   # systemctl subcommand (e.g., "reload waybar")
+---@return string         # Full systemctl --user command
+local function scu(subcmd)
+	return "systemctl --user " .. subcmd
+end
+
+-- Helper to build uwsm app commands
+---@param cmd string   # Command to run under uwsm
+---@return string      # Full uwsm command
+local function uwsm_app(cmd)
+	return "uwsm app -- " .. cmd
+end
+
 local emacs = "emacsclient -nc"
+
+---@param expr string        # Emacs Lisp expression (without outer quotes)
+---@param extra string|nil   # Optional extra arguments (e.g., --frame-parameters=...)
+---@return string            # Full emacsclient command
+local function emacs_cmd(expr, extra)
+	local cmd = emacs .. ' -e "' .. expr .. '"'
+	if extra then
+		cmd = cmd .. " " .. extra
+	end
+	return cmd
+end
 
 -- ===========================================================================
 -- Variables
 -- ===========================================================================
 
 -- Apps
-local browser = "uwsm app -- " .. os.getenv("BROWSER")
-local discord = 'uwsm app -- goofcord --password-store="gnome-libsecret"'
-local telegram = "uwsm app -- AyuGram"
-local youtube_music = "uwsm app -- youtube-music --enable-features=WebRTCPipeWireCapturer --ozone-platform-hint=auto"
+local browser = uwsm_app(os.getenv("BROWSER"))
+local discord = uwsm_app('goofcord --password-store="gnome-libsecret"')
+local telegram = uwsm_app("AyuGram")
+local youtube_music = uwsm_app("youtube-music --enable-features=WebRTCPipeWireCapturer --ozone-platform-hint=auto")
 
--- -- Emacs
-local emacs_agenda = emacs .. ' -e "(org-agenda nil \\"d\\")"'
-local emacs_capture = emacs .. ' -e "(org-capture nil \\"t\\")" --frame-parameters="((name . \\"emacs-capture\\"))"'
-local emacs_eshell = emacs .. ' -e "(eshell \\"γνῶθι σεαυτόν\\")"'
-local emacs_ebuku = emacs .. ' -e "(ebuku)"'
-local emacs_elfeed = emacs .. ' -e "(fr/elfeed-open-and-update)"'
-local emacs_telega = emacs .. ' -e "(telega)"'
-local emacs_trashed = emacs .. ' -e "(trashed)"'
-local emacs_ibuffer = emacs .. ' -e "(ibuffer)"'
-local emacs_dired = emacs .. ' -e "(dired-jump)"'
-local emacs_ghostel = emacs .. ' -e "(ghostel)"'
-local emacs_pass = emacs .. ' -e "(pass)"'
-local emacs_mu4e = emacs .. ' -e "(=mu4e)"'
+-- Emacs
+local emacs_agenda = emacs_cmd('(org-agenda nil "d")')
+local emacs_capture = emacs_cmd('(org-capture nil "t")', '--frame-parameters="((name . \\"emacs-capture\\"))"')
+local emacs_eshell = emacs_cmd('(eshell "γνῶθι σεαυτόν")')
+local emacs_ebuku = emacs_cmd("(ebuku)")
+local emacs_elfeed = emacs_cmd("(fr/elfeed-open-and-update)")
+local emacs_telega = emacs_cmd("(telega)")
+local emacs_trashed = emacs_cmd("(trashed)")
+local emacs_ibuffer = emacs_cmd("(ibuffer)")
+local emacs_dired = emacs_cmd("(dired-jump)")
+local emacs_ghostel = emacs_cmd("(ghostel)")
+local emacs_pass = emacs_cmd("(pass)")
+local emacs_mu4e = emacs_cmd("(=mu4e)")
 
--- -- Terminal
+-- Terminal
 local term = "footclient"
 local term_calc = "footclient -T 'footclient-center-half-float-calc' qalc"
 local term_top = "footclient -T 'footclient-center-half-float-top' btm -b --hide_avg_cpu"
@@ -37,7 +72,7 @@ local term_yazi = "footclient -T 'footclient-center-half-float-yazi' yazi"
 local term_youtube = "footclient -T 'footclient-center-half-float-yt' yt-x"
 
 -- Dmenu
-local dmenu = "fuzzel -p ' ' -l 15"
+local dmenu_launcher = "fuzzel -p ' ' -l 15"
 local dmenu_clipboard = "cliphist-fuzzel-img"
 local dmenu_pass = "tessen"
 local dmenu_files = "dmenu_extended_run --no-settings"
@@ -48,14 +83,12 @@ local dmenu_switch_window = paths.scripts_path .. "/fuzzel/switch_window.sh"
 local bar_toggle_visibility = "pkill -USR1 waybar"
 local bar_lock_visibility =
 	'LOCK="/run/user/$(id -u)/waybar-autohide.lock"; [ -f "$LOCK" ] && rm -f "$LOCK" || touch "$LOCK"; pkill -SIGRTMIN+8 waybar'
-local bar_reload_config = scu .. " reload waybar"
-local bar_restart_service = scu .. " restart waybar"
-local bar_toggle_auto_hide = scu
-	.. " is-active --quiet waybar-autohide && "
-	.. scu
-	.. " stop waybar-autohide || "
-	.. scu
-	.. " start waybar-autohide"
+local bar_reload_config = scu("reload waybar")
+local bar_restart_service = scu("restart waybar")
+-- stylua: ignore
+local bar_toggle_auto_hide = scu("is-active --quiet waybar-autohide")
+	.. " && " .. scu("stop waybar-autohide")
+	.. " || " .. scu("start waybar-autohide")
 
 -- Hyprland scripts
 local toggle_monocle_layout = paths.scripts_path .. "/toggle_monocle_layout.sh"
@@ -68,16 +101,6 @@ local zoom = require("scripts.zoom")
 
 -- Hyprland behavior
 local set_layout_en = "hyprctl switchxkblayout kanata 0" -- Sets english layout
-local reset_submap = "hyprctl dispatch 'hl.dsp.submap(\"reset\")'" -- Resets submap
-
--- ===========================================================================
--- Functions
--- ===========================================================================
-
--- Helper to reset submap before command
-local function with_reset(cmd)
-	return reset_submap .. " && " .. cmd
-end
 
 -- ===========================================================================
 -- Binds
@@ -106,8 +129,8 @@ hl.define_submap("editor", "reset", function()
 	hl.bind("S", hl.dsp.exec_cmd(emacs_ghostel))
 	hl.bind("P", hl.dsp.exec_cmd(emacs_pass))
 	hl.bind("M", hl.dsp.exec_cmd(emacs_mu4e))
-	hl.bind("R", hl.dsp.exec_cmd(scu .. " reload emacs.service"))
-	hl.bind("SHIFT + R", hl.dsp.exec_cmd(scu .. " restart emacs.service"))
+	hl.bind("R", hl.dsp.exec_cmd(scu("reload emacs.service")))
+	hl.bind("SHIFT + R", hl.dsp.exec_cmd(scu("restart emacs.service")))
 	hl.bind("ESCAPE", hl.dsp.submap("reset"))
 end)
 
@@ -147,7 +170,7 @@ hl.workspace_rule({ workspace = "special:top", on_created_empty = term_top })
 hl.workspace_rule({ workspace = "special:mu4e", on_created_empty = emacs_mu4e })
 
 -- Applets
-hl.bind("CTRL + F1", hl.dsp.exec_cmd("pkill fuzzel || (" .. set_layout_en .. " && " .. dmenu .. ")"))
+hl.bind("CTRL + F1", hl.dsp.exec_cmd("pkill fuzzel || (" .. set_layout_en .. " && " .. dmenu_launcher .. ")"))
 hl.bind("SUPER + X", hl.dsp.exec_cmd("pkill fuzzel || (" .. set_layout_en .. " && " .. dmenu_clipboard .. ")"))
 
 hl.bind("SUPER + A", hl.dsp.submap("applets"))
