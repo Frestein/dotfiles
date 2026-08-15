@@ -1,8 +1,9 @@
 -- All keybindings and submap definitions
 
-local xdg = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config"
-local scriptsDir = xdg .. "/hypr/scripts"
+local paths = require("lib.paths")
+
 local scu = "systemctl --user"
+local emacs = "emacsclient -nc"
 
 -- ===========================================================================
 -- Variables
@@ -15,7 +16,6 @@ local telegram = "uwsm app -- AyuGram"
 local music = "uwsm app -- youtube-music --enable-features=WebRTCPipeWireCapturer --ozone-platform-hint=auto"
 
 -- -- Emacs
-local emacs = "emacsclient -nc"
 local emacsAgenda = emacs .. ' -e "(org-agenda nil \\"d\\")"'
 local emacsCapture = emacs .. ' -e "(org-capture nil \\"t\\")" --frame-parameters="((name . \\"emacs-capture\\"))"'
 local emacsEshell = emacs .. ' -e "(eshell \\"γνῶθι σεαυτόν\\")"'
@@ -56,14 +56,14 @@ local toggleBarAutohide = scu
 	.. " start waybar-autohide"
 
 -- Hyprland' scripts
-local toggleMonocleLayout = scriptsDir .. "/toggle_monocle_layout.sh"
-local toggleBluelight = scriptsDir .. "/toggle_bluelight.sh"
-local colorpicker = scriptsDir .. "/colorpicker.sh"
-local killActiveWindow = scriptsDir .. "/kill_active_window.sh"
-local closeSpecial = scriptsDir .. "/close_special.sh"
-local smartMoveFocus = scriptsDir .. "/smart_move_focus.sh"
-local launchAsRoot = scriptsDir .. "/fuzzel/launch_as_root.sh"
-local switchWindow = scriptsDir .. "/fuzzel/switch_window.sh"
+local toggleMonocleLayout = paths.scripts_path .. "/toggle_monocle_layout.sh"
+local toggleBluelight = paths.scripts_path .. "/toggle_bluelight.sh"
+local colorpicker = paths.scripts_path .. "/colorpicker.sh"
+local killActiveWindow = paths.scripts_path .. "/kill_active_window.sh"
+local closeSpecial = paths.scripts_path .. "/close_special.sh"
+local smartMoveFocus = paths.scripts_path .. "/smart_move_focus.sh"
+local launchAsRoot = paths.scripts_path .. "/fuzzel/launch_as_root.sh"
+local switchWindow = paths.scripts_path .. "/fuzzel/switch_window.sh"
 
 -- Hyprland' behavior
 local enLayout = "hyprctl switchxkblayout kanata 0" -- Sets english layout

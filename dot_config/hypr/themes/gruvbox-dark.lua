@@ -1,5 +1,6 @@
-local M = {}
+local paths = require("lib.paths")
 
+local M = {}
 
 -- ###################
 -- Colorscheme
@@ -71,8 +72,7 @@ M.brightCyan = M.bright6
 M.brightWhite = M.bright7
 
 M.background = M.regular0
-local xdg = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config"
-M.backgroundImage = xdg .. "/hypr/wallpapers/hyprlock/gruvbox_a_city_skyline_with_many_tall_buildings_01.png"
+M.backgroundImage = paths.wallpapers_path .. "/hyprlock/gruvbox_a_city_skyline_with_many_tall_buildings_01.png"
 
 M.accent = M.bright2
 M.accentAlpha = M.brightAlpha2
