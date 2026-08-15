@@ -8,5 +8,6 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/hypr/rules.lua
 ${XDG_CONFIG_HOME:-$HOME/.config}/hypr/binds.lua
 ${XDG_CONFIG_HOME:-$HOME/.config}/hypr/themes
 ${XDG_CONFIG_HOME:-$HOME/.config}/hypr/lib
+${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts
 ${XDG_CONFIG_HOME:-$HOME/.config}/tridactyl/tridactylrc
 ${XDG_CONFIG_HOME:-$HOME/.config}/conky

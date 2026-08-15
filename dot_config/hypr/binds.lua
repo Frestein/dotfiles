@@ -64,6 +64,7 @@ local colorpicker = paths.scripts_path .. "/colorpicker.sh"
 local kill_active_window = paths.scripts_path .. "/kill_active_window.sh"
 local close_special = paths.scripts_path .. "/close_special.sh"
 local move_focus = paths.scripts_path .. "/smart_move_focus.sh"
+local zoom = require("scripts.zoom")
 
 -- Hyprland behavior
 local set_layout_en = "hyprctl switchxkblayout kanata 0" -- Sets english layout
@@ -411,19 +412,16 @@ end)
 
 -- Zoom
 hl.bind("SUPER + Z", hl.dsp.submap("zoom"))
+-- stylua: ignore
 hl.define_submap("zoom", function()
-	local zoom_up =
-		"hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 1.1}')"
-	local zoom_down =
-		"hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor | awk '/^float.*/ {print $2 * 0.9}')"
-
-	hl.bind("mouse_up", hl.dsp.exec_cmd(zoom_up))
-	hl.bind("mouse_down", hl.dsp.exec_cmd(zoom_down))
-	hl.bind("Z", hl.dsp.exec_cmd(zoom_up), { repeating = true })
-	hl.bind("X", hl.dsp.exec_cmd(zoom_down), { repeating = true })
-	hl.bind("C", hl.dsp.exec_cmd("hyprctl -q keyword cursor:zoom_factor 1"))
-	hl.bind("UP", hl.dsp.exec_cmd(zoom_up), { repeating = true })
-	hl.bind("DOWN", hl.dsp.exec_cmd(zoom_down), { repeating = true })
-	hl.bind("0", hl.dsp.exec_cmd("hyprctl -q keyword cursor:zoom_factor 1"))
+	hl.bind("Z", function() zoom(0.5) end, { repeating = true })
+	hl.bind("SHIFT + Z", function() zoom(-0.5) end, { repeating = true })
+	hl.bind("equal", function() zoom(0.5) end, { repeating = true })
+	hl.bind("minus", function() zoom(-0.5) end, { repeating = true })
+	hl.bind("R", function() zoom(0) end)
+	hl.bind("0", function() zoom(0) end)
+	hl.bind("1", function() zoom(1) end)
+	hl.bind("2", function() zoom(2) end)
+	hl.bind("3", function() zoom(3) end)
 	hl.bind("ESCAPE", hl.dsp.submap("reset"))
 end)
