@@ -266,6 +266,22 @@ hl.define_submap("window/workspace", function()
 	hl.bind("Q", hl.dsp.focus({ workspace = "e-1" }))
 	hl.bind("E", hl.dsp.focus({ workspace = "e+1" }))
 
+	-- Workspace Switching
+	for i = 1, 10 do
+		local key = i == 10 and "0" or tostring(i)
+		local ws = i == 10 and "10" or tostring(i)
+		hl.bind(
+			key,
+			hl.dsp.exec_cmd(
+				with_reset(close_special .. " ; hyprctl dispatch 'hl.dsp.focus({ workspace = \"" .. ws .. "\" })'")
+			)
+		)
+		hl.bind(
+			"SHIFT + " .. key,
+			hl.dsp.exec_cmd(with_reset("hyprctl dispatch 'hl.dsp.window.move({ workspace = \"" .. ws .. "\" })'"))
+		)
+	end
+
 	-- Split, Float
 	hl.bind("F", hl.dsp.exec_cmd(with_reset("hyprctl dispatch 'hl.dsp.window.float({ action = \"toggle\" })'")))
 	hl.bind("S", hl.dsp.exec_cmd(with_reset("hyprctl dispatch 'hl.dsp.layout(\"togglesplit\")'")))
@@ -291,6 +307,9 @@ hl.define_submap("window/workspace", function()
 	hl.bind("SUPER + SHIFT + K", hl.dsp.window.move({ x = 0, y = -50, relative = true }), { repeating = true })
 	hl.bind("SUPER + SHIFT + J", hl.dsp.window.move({ x = 0, y = 50, relative = true }), { repeating = true })
 	hl.bind("SUPER + SHIFT + L", hl.dsp.window.move({ x = 50, y = 0, relative = true }), { repeating = true })
+
+	-- Kill Active Window
+	hl.bind("C", hl.dsp.exec_cmd(with_reset("hyprctl dispatch 'hl.dsp.window.close({ window = \"active\" })'")))
 
 	-- Group Management
 	hl.bind("G", hl.dsp.submap("group"))
