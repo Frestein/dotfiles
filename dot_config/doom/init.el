@@ -53,7 +53,6 @@
        :term
        eat
        eshell
-       ;; vterm
        (ghostel +everywhere)
        eee
 
@@ -91,25 +90,25 @@
        tty
 
        :lang
-       common-lisp
-       data
        emacs-lisp
+       ;; common-lisp
        ;; (go +lsp +tree-sitter)
-       (hyprlang +lsp +tree-sitter)
-       (json +lsp +tree-sitter)
        (lua +lsp +tree-sitter +fennel)
-       (markdown +tree-sitter +grip)
-       ;; (nix +tree-sitter)
-       (org +roam +dragndrop +contacts)
        (python +lsp +pyright +tree-sitter)
-       (pkgbuild +lsp)
-       (qt +lsp +tree-sitter)
        ;; (scheme +guile)
        (sh +lsp +tree-sitter +fish)
-       (typst +lsp +tree-sitter +preview)
-       (toml +lsp +tree-sitter)
+       (qt +lsp +tree-sitter)
        (web +lsp +tree-sitter)
+       data
+       (json +lsp +tree-sitter)
+       (toml +lsp +tree-sitter)
        (yaml +lsp +tree-sitter)
+       (hyprlang +lsp +tree-sitter)
+       ;; (nix +lsp +tree-sitter)
+       (pkgbuild +lsp)
+       (org +roam +dragndrop +contacts)
+       (markdown +tree-sitter +grip)
+       (typst +lsp +tree-sitter +preview)
 
        :email
        (mu4e +mbsync +org +gmail)
