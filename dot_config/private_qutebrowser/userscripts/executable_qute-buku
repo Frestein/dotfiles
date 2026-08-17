@@ -3,7 +3,6 @@
 actions=('add' 'open' 'edit' 'del' 'random' 'dmenu')
 
 buku_cmd="buku --nostdin --tacit --np --nc"
-# buku_cmd="buku --nostdin --tacit --np --nc --db $XDG_DATA_HOME/gosuki/gosuki.db"
 
 url_regexp='^(http(s)?:\/\/)?(www.)?([a-zA-Z0-9])+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/[^\s]*)?$'
 
