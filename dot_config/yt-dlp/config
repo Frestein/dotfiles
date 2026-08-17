@@ -1,5 +1,5 @@
 --buffer-size 4096
 --concurrent-fragments 4
---sub-lang en.*,ru
+--sub-langs en.*,ru
 --extractor-args "youtubepot-bgutilscript:script_path=$HOME/Tools/bgutil-ytdlp-pot-provider/build/generate_once.js"
 --cookies-from-browser chromium:~/.local/share/qutebrowser
