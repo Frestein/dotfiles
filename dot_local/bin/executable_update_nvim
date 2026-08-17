@@ -1,0 +1,13 @@
+#!/bin/sh
+
+nvim --headless "+Lazy! sync" +qa
+
+cd "$XDG_CONFIG_HOME/nvim" || exit
+
+chezmoi re-add lazy-lock.json
+
+chezmoi git -- add dot_config/nvim/lazy-lock.json
+
+chezmoi git -- commit -m "chore(nvim): update plugins"
+
+chezmoi git -- push origin
