@@ -194,7 +194,6 @@ hl.define_submap("applets", function()
 	hl.bind("R", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && " .. dmenu_launch_as_root .. ")")))
 	hl.bind("W", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && " .. dmenu_switch_window .. ")")))
 	hl.bind("Q", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && sessionctl --dmenu)")))
-	hl.bind("D", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && downloadctl)")))
 
 	-- Emoji
 	hl.bind("E", hl.dsp.submap("emoji"))
