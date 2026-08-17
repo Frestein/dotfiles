@@ -1,15 +1,30 @@
 {{- if (env "CZ_EXT") }}
 
+# Pastebin
+
 [".local/bin/0x0"]
 type = "file"
 url = "https://raw.githubusercontent.com/Calinou/0x0/refs/heads/master/bin/0x0"
 refreshPeriod = "336h"
 executable = true
 
+# fzf
+
 [".local/bin/fzf-preview.sh"]
 type = "file"
 url = "https://raw.githubusercontent.com/junegunn/fzf/refs/heads/master/bin/fzf-preview.sh"
 refreshPeriod = "336h"
 executable = true
+
+# mpv
+
+{{- if (stat "/usr/share/mpv/scripts/umpv") }}
+
+[".local/bin/umpv"]
+type = "file"
+url = "file:///usr/share/mpv/scripts/umpv"
+executable = true
+
+{{- end }}
 
 {{- end }}
