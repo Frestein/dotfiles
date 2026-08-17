@@ -1,19 +1,6 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
-if type -q zoxide
-    zoxide init fish | source
-end
-
-if type -q atuin
-    atuin init fish | source
-end
-
-if type -q fzf
-    fzf --fish | source
-end
-
-if type -q batpipe
-    batpipe | source
-end
+type -q zoxide; and zoxide init fish | source
+type -q atuin; and atuin init fish | source
+type -q fzf; and fzf --fish | source
+type -q batpipe; and batpipe | source

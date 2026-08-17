@@ -1,10 +1,6 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
-if test "$INSIDE_EMACS" != ghostel
-    exit
-end
+test "$INSIDE_EMACS" = ghostel; or exit
 
 function find_file -d "Switch to a buffer visiting file FILENAME, creating one if none already exists"
     set -q argv[1]; or set argv[1] "."

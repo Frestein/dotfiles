@@ -1,6 +1,4 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
 set -q XDG_CACHE_HOME; or set -x XDG_CACHE_HOME $HOME/.cache
 set -q XDG_CONFIG_HOME; or set -x XDG_CONFIG_HOME $HOME/.config

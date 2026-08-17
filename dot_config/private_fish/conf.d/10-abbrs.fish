@@ -1,21 +1,10 @@
-# ============================================================================
-# Abbreviations for the interactive usage
-# ============================================================================
+status is-interactive; or exit
 
-# Stop execution if the shell is not interactive
-if not status is-interactive && test "$CI" != true
-    exit
-end
-
-# ----------------------------------------------------------------------------
 # Quick abbreviations
-# ----------------------------------------------------------------------------
 abbr -a -- q exit
 abbr -a -- c clear
 
-# ----------------------------------------------------------------------------
 # Better defaults
-# ----------------------------------------------------------------------------
 if type -q bc
     abbr -a -- bc bc -q
 end
@@ -24,14 +13,7 @@ if type -q btm
     abbr -a -- btm btm -b --hide_avg_cpu
 end
 
-# ----------------------------------------------------------------------------
-# Clipboard management
-# ----------------------------------------------------------------------------
-abbr -a -- clipfzf 'cliphist list | fzf -d "\t" --with-nth 2 | cliphist decode | wl-copy'
-
-# ----------------------------------------------------------------------------
 # Translation (trans)
-# ----------------------------------------------------------------------------
 if type -q trans
     abbr -a -- t trans :ru
     abbr -a -- tt trans :en
@@ -39,25 +21,18 @@ if type -q trans
     abbr -a -- ttl trans :en --shell --brief
 end
 
-# ----------------------------------------------------------------------------
 # File sharing
-# ----------------------------------------------------------------------------
 abbr -a -- tb nc termbin.com 9999
 
-# ----------------------------------------------------------------------------
 # Fastfetch
-# ----------------------------------------------------------------------------
 if type -q fastfetch
     abbr -a -- f fastfetch
     abbr -a -- ff fastfetch -c $XDG_CONFIG_HOME/fastfetch/config-full.jsonc
 end
 
-# ----------------------------------------------------------------------------
 # Eza
-# ----------------------------------------------------------------------------
 if type -q eza
     set EZA_DEFAULTS --group --group-directories-first
-
     abbr -a -- lD eza -lD $EZA_DEFAULTS
     abbr -a -- lS eza -lS $EZA_DEFAULTS
     abbr -a -- lT eza -lT $EZA_DEFAULTS
@@ -69,57 +44,41 @@ if type -q eza
     abbr -a -- ls eza $EZA_DEFAULTS
     abbr -a -- lsd eza -d $EZA_DEFAULTS
     abbr -a -- lsdl eza -dl $EZA_DEFAULTS
-
     set -e EZA_DEFAULTS
 end
 
-# ----------------------------------------------------------------------------
 # Editors & File Manager
-# ----------------------------------------------------------------------------
-if type -q yazi
-    abbr -a -- y yazi
+if type -q emacs
+    abbr -a -- e emacsclient -t # TUI
+    abbr -a -- eg emacsclient -nc # GUI
+    abbr -a -- ed ediff # Diff files
+    abbr -a -- dm doom
+    abbr -a -- dms doom sync --aot
+    abbr -a -- dmu doom upgrade -B --aot
 end
 
 if type -q nvim
     abbr -a -- v nvim
-    abbr -a -- vd nvim -d
+    abbr -a -- vd nvim -d # Diff files
 end
 
-if type -q helix
-    abbr -a -- hx helix
+if type -q yazi
+    abbr -a -- y yazi
 end
 
-if type -q emacs
-    abbr -a -- ec emacsclient -nc
-    abbr -a -- ew emacsclient -nw
-    abbr -a -- dm doom
-end
-
-# ----------------------------------------------------------------------------
 # Dotfiles (Chezmoi)
-# ----------------------------------------------------------------------------
 if type -q chezmoi
     abbr -a -- cz chezmoi
+    abbr -a -- czs chezmoi status
+    abbr -a -- czd chezmoi diff
+    abbr -a -- cza chezmoi apply
     abbr -a -- czx env CZ_EXT=1 chezmoi
+    abbr -a -- czsx env CZ_EXT=1 chezmoi status
+    abbr -a -- czdx env CZ_EXT=1 chezmoi diff
+    abbr -a -- czax env CZ_EXT=1 chezmoi apply
 end
 
-# ----------------------------------------------------------------------------
-# Ansible
-# ----------------------------------------------------------------------------
-if type -q ansible
-    abbr -a -- a ansible
-end
-
-# ----------------------------------------------------------------------------
-# Docker
-# ----------------------------------------------------------------------------
-if type -q docker
-    abbr -a -- d docker
-end
-
-# ----------------------------------------------------------------------------
 # Systemd
-# ----------------------------------------------------------------------------
 if type -q systemctl
     abbr -a -- sc systemctl
     abbr -a -- scu systemctl --user
@@ -130,9 +89,7 @@ if type -q journalctl
     abbr -a -- jctl journalctl -p 3 -xb
 end
 
-# ----------------------------------------------------------------------------
 # Network
-# ----------------------------------------------------------------------------
 if type -q speedtest-go
     abbr -a -- speedtest speedtest-go
 end
@@ -140,12 +97,18 @@ end
 abbr -a -- myip 'dig +short myip.opendns.com @resolver1.opendns.com'
 abbr -a -- ips "ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
-# ----------------------------------------------------------------------------
-# Arch Linux: Pacman
-# ----------------------------------------------------------------------------
+# Arch Linux
+## Arch-Update (Update helper)
+if type -q arch-update
+    abbr -a -- au arch-update
+    abbr -a -- aul arch-update -l # Display the list of pending updates
+    abbr -a -- aun arch-update -n # Display latest Arch news
+    abbr -a -- aus arch-update -s # Check for services requiring a post upgrade restart
+end
+
+## Pacman
 if type -q pacman
-    # Recently installed packages
-    abbr -a -- pacrip "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+    abbr -a -- pacrip "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" # Recently installed packages
     abbr -a -- pacupg asroot pacman -Syu
     abbr -a -- pacin asroot pacman -S
     abbr -a -- paclean asroot pacman -Sc
@@ -171,9 +134,7 @@ if type -q pacman
     abbr -a -- pacmanallkeys asroot pacman-key --refresh-keys
 end
 
-# ----------------------------------------------------------------------------
-# Arch Linux: Yay (AUR helper)
-# ----------------------------------------------------------------------------
+## Yay (AUR helper)
 if type -q yay
     abbr -a -- yaconf yay -Pg
     abbr -a -- yaclean yay -Sc

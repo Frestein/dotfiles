@@ -1,6 +1,4 @@
-if not type -q yazi
-    exit
-end
+type -q yazi; or exit
 
 function yy -w yazi -d 'Open yazi and change cwd when exiting'
     set tmp (mktemp -t "yazi-cwd.XXXXXX")

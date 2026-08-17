@@ -1,10 +1,6 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
-if not type -q oh-my-posh
-    exit
-end
+type -q oh-my-posh; or exit
 
 # INFO: This function is masked and does nothing
 function fish_default_mode_prompt -d "Display vi prompt mode"

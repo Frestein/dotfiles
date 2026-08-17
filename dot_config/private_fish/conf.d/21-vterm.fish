@@ -1,10 +1,6 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
-if test "$INSIDE_EMACS" != vterm
-    exit
-end
+test "$INSIDE_EMACS" = vterm; or exit
 
 # Some of the most useful features in emacs-libvterm require shell-side
 # configurations. The main goal of these additional functions is to enable the

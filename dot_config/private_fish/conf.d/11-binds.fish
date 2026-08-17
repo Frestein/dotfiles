@@ -1,6 +1,4 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
 bind yy fish_clipboard_copy
 bind Y fish_clipboard_copy

@@ -1,10 +1,6 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
-if not type -q fzf
-    exit
-end
+type -q fzf; or exit
 
 function fzf_bind_multiply
     set multiplier $argv[1]

@@ -1,10 +1,6 @@
-if not status is-interactive && test "$CI" != true
-    exit
-end
+status is-interactive; or exit
 
-if test "$INSIDE_EMACS" != vterm
-    exit
-end
+test "$INSIDE_EMACS" = vterm; or exit
 
 alias e="find_file"
 alias cz-magit="chezmoi_magit_status"
