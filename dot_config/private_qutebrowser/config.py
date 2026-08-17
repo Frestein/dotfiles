@@ -187,8 +187,8 @@ c.spellcheck.languages = ["en-US", "ru-RU"]
 
 c.tabs.last_close = "close"
 
-c.url.default_page = "https://duckduckgo.com/"
-c.url.start_pages = "https://duckduckgo.com/"
+c.url.default_page = "https://start.duckduckgo.com/"
+c.url.start_pages = "https://start.duckduckgo.com/"
 
 # ---------------------------------------------------------------------------
 # File chooser
