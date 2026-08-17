@@ -1,4 +1,4 @@
-function ediff -w emacsclient -d 'Diff two files with Emacs Ediff in terminal'
+function ediff -w emacsclient -d 'Diff two files with Emacs Ediff'
     if test (count $argv) -ne 2
         echo "Usage: ed <file1> <file2>" >&2
         return 1
