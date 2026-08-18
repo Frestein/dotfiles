@@ -44,7 +44,6 @@
     "plugins.extras.lang.lua",
     "plugins.extras.lang.markdown",
     "plugins.extras.lang.python",
-    "plugins.extras.lang.qml",
     "plugins.extras.lang.shell",
     "plugins.extras.lang.systemd",
     "plugins.extras.lang.toml",
