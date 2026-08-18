@@ -7,7 +7,6 @@ return {
 		vim.filetype.add {
 			pattern = {
 				[".*/.*%.hl"] = "hyprlang",
-				[".*/ghostty/config"] = "bash",
 				[".*/.chezmoiignore"] = "gitignore",
 			},
 		}
