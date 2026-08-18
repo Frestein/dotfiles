@@ -31,8 +31,3 @@
     :recipe (:host github
              :repo "zevlg/telega.el"
              :files ("contrib/ol-telega.el"))))
-
-(when (modulep! +icons)
-  (package! telega-url-shorten-nerd
-    :recipe (:host codeberg
-             :repo "Frestein/telega-url-shorten-nerd")))

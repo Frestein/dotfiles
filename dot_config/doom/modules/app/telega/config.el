@@ -766,9 +766,3 @@ If URL-PROMPT is non-nil, TYPE is treated as base type for link and prompts for 
   :after (org telega)
   :config
   (add-to-list 'org-modules 'ol-telega))
-
-(use-package! telega-url-shorten-nerd
-  :when (modulep! +icons)
-  :hook (telega-load  . global-telega-url-shorten-nerd-mode)
-  :config
-  (setopt telega-url-shorten-nerd-use-images nil))
