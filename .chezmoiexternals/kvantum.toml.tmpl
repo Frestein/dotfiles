@@ -12,20 +12,4 @@ url = {{ gitHubLatestReleaseAssetURL "sachnr/gruvbox-kvantum-themes" "Gruvbox-Da
 refreshPeriod = "336h"
 stripComponents = 3
 
-{{- $nordic_url := "https://github.com/EliverLara/Nordic/archive/master.tar.gz" }}
-
-[".config/Kvantum/Nordic-Darker"]
-type = "archive"
-url = {{ $nordic_url | quote }}
-include = ["*/kde/kvantum/Nordic-Darker/**"]
-refreshPeriod = "336h"
-stripComponents = 4
-
-[".config/Kvantum/Nordic-Darker-Solid"]
-type = "archive"
-url = {{ $nordic_url | quote }}
-include = ["*/kde/kvantum/Nordic-Darker-Solid/**"]
-refreshPeriod = "336h"
-stripComponents = 4
-
 {{- end }}
