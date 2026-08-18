@@ -21,10 +21,6 @@ return {
 			},
 		}
 
-		if fs.exists ".Xresources" then
-			add "xresources"
-		end
-
 		if fs.exists "kanata" then
 			vim.api.nvim_create_autocmd("User", {
 				pattern = "TSUpdate",
