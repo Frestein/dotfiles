@@ -3366,10 +3366,15 @@ is tomorrow.  With two prefixes, select the deadline."
   ;; Autostart
   (fr/start-telega-in-background)
 
-  ;; Use MTProto TgWsProxy
   (after! telega
+    ;; Use MTProto TgWsProxy
     (when (fboundp 'fr/telega-add-proxy-tgwsproxy)
-      (fr/telega-add-proxy-tgwsproxy t))))
+      (fr/telega-add-proxy-tgwsproxy t))
+
+    ;; Ignore messages from blocked senders.
+    ;; (add-hook 'telega-msg-ignore-predicates
+    ;;           (telega-match-gen-predicate 'msg '(sender is-blocked)))
+    ))
 #+end_src
 
 *** XMPP

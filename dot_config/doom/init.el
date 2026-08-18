@@ -118,7 +118,7 @@
        qutebrowser
        ement
        osm
-       (telega +mnz +icons +sponsored2 +blocked)
+       (telega +mnz +icons +sponsored2)
        (rss +org)
        srs
        pomm

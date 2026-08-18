@@ -579,11 +579,6 @@ argument - MSG to insert additional information after header."
               (lambda (reply)
                 (plist-put chat :telega-sponsored-messages reply))))))))
 
-  ;; INFO: Ignore messages from blocked senders.
-  (when (modulep! +blocked)
-    (add-hook 'telega-msg-ignore-predicates
-              (telega-match-gen-predicate 'msg '(sender is-blocked))))
-
   (defun fr/telega-video-play-incementally-mode ()
     "Toggle telega video play incrementally mode."
     (interactive)
