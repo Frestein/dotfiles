@@ -6,7 +6,6 @@ return {
 	opts = function(_, opts)
 		vim.filetype.add {
 			pattern = {
-				[".*/.*%.hl"] = "hyprlang",
 				[".*/.chezmoiignore"] = "gitignore",
 			},
 		}
