@@ -17,7 +17,6 @@ return {
 				[".*/.*%.hl"] = "hyprlang",
 				[".*/ghostty/config"] = "bash",
 				[".*/kanata/.+"] = "kanata",
-				[".*/newsboat/.+"] = "config",
 				[".*/.chezmoiignore"] = "gitignore",
 			},
 		}

@@ -220,7 +220,6 @@ ignored_commands = [
   "yazi",
   "mpv",
   "btm",
-  "newsboat",
   "hyprctl",
   "systemctl --user",
   "systemctl status",
