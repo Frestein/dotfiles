@@ -1157,8 +1157,7 @@ making an abbreviation to a function."
       jsonc-mode
       json-ts-mode
       lua-mode
-      lua-ts-mode
-      hyprlang-ts-mode)
+      lua-ts-mode)
     "Major modes in which LSP formatting should be automatically disabled."
     :type '(repeat symbol)
     :group 'apheleia)

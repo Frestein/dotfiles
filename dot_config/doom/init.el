@@ -103,7 +103,6 @@
        (json +lsp +tree-sitter)
        (toml +lsp +tree-sitter)
        (yaml +lsp +tree-sitter)
-       (hyprlang +lsp +tree-sitter)
        ;; (nix +lsp +tree-sitter)
        (pkgbuild +lsp)
        (org +roam +dragndrop +contacts)
