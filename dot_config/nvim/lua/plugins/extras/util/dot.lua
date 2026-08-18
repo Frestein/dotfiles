@@ -16,27 +16,8 @@ return {
 			pattern = {
 				[".*/.*%.hl"] = "hyprlang",
 				[".*/ghostty/config"] = "bash",
-				[".*/kanata/.+"] = "kanata",
 				[".*/.chezmoiignore"] = "gitignore",
 			},
 		}
-
-		if fs.exists "kanata" then
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "TSUpdate",
-				callback = function()
-					require("nvim-treesitter.parsers").kanata = {
-						install_info = {
-							url = "https://github.com/Frestein/tree-sitter-kanata",
-							revision = "HEAD",
-							queries = "queries",
-						},
-						tier = 4,
-					}
-				end,
-			})
-
-			add "kanata"
-		end
 	end,
 }
