@@ -5,8 +5,12 @@ prepend_keymap = [
   # Unbind defaults
   { on = ["t", "t"], run = "noop" },
   { on = ["t", "r"], run = "noop" },
+  { on = "y", run = "noop" },
+  { on = "p", run = "noop" },
+  { on = "z", run = "noop" },
+  { on = ".", run = "noop" },
   # QoL
-  { on = "l", run = "plugin smart-enter" },
+  { on = "l", run = "plugin smart-enter", desc = "Enter the child directory or open in editor" },
   { on = "q", run = "plugin confirm-quit", desc = "Quit the process" },
   # Motions
   ## Zoxide
@@ -14,7 +18,7 @@ prepend_keymap = [
   { on = ["z", "a"], run = "shell -- zoxide add .", desc = "Add to zoxide" },
   { on = ["z", "r"], run = "shell -- zoxide remove .", desc = "Remove from zoxide" },
   ## fzf
-  { on = "Z", run = "plugin fzf" },
+  { on = "Z", run = "plugin fzf", desc = "Jump to a file/directory via fzf" },
   ## Easyjump
   { on = "i", run = "plugin easyjump", desc = "Easyjump" },
   ## Hopping
@@ -22,11 +26,7 @@ prepend_keymap = [
   { on = "K", run = "plugin parent-arrow -1", desc = "Previous parent directory" },
   # Operations
   ## Yank
-  { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here" },
-  { on = "y", run = [
-    'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list',
-    "yank",
-  ] },
+  { on = ["y", "y"], run = 'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list', desc = "Yank selected files (copy)" },
   ## Paste
   { on = ["p", "p"], run = "paste", desc = "Paste yanked files" },
   { on = ["p", "c"], run = "plugin save-clipboard-to-file", desc = "Paste clipboard content to file" },
@@ -48,6 +48,9 @@ prepend_keymap = [
   { on = ["g", "p"], run = "cd ~/Pictures", desc = "~/Pictures" },
   { on = ["g", "P"], run = "cd ~/Projects", desc = "~/Projects" },
   { on = ["g", "t"], run = "plugin recycle-bin -- open", desc = "Trash" },
+  # Action
+  { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here" },
+  { on = ["t", "h"], run = "hidden toggle", desc = "Toggle hidden" },
   { on = ["g", "."], run = "hidden toggle", desc = "Toggle hidden" },
   { on = ["g", "?"], run = "help", desc = "Open help" },
   # Operations with files
@@ -65,8 +68,8 @@ prepend_keymap = [
   { on = ["t", "p"], run = "plugin toggle-pane max-preview", desc = "Toggle maximize preview" },
   { on = ["t", "m"], run = "plugin mediainfo -- toggle-metadata", desc = "Toggle media preview metadata" },
   ## Seeking
-  { on = "<C-f>", run = "seek 5" },
-  { on = "<C-b>", run = "seek -5" },
+  { on = "<C-f>", run = "seek 5", desc = "Scroll preview down" },
+  { on = "<C-b>", run = "seek -5", desc = "Scroll preview up" },
   ## Zoom
   { on = "=", run = "plugin zoom 1", desc = "Zoom in hovered file" },
   { on = "-", run = "plugin zoom -1", desc = "Zoom out hovered file" },
