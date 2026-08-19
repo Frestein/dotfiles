@@ -27,6 +27,7 @@ prepend_keymap = [
   # Operations
   ## Yank
   { on = ["y", "y"], run = 'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list', desc = "Yank selected files (copy)" },
+  { on = ["y", "c"], run = ["shell -- wl-copy < \"$@\"", "yank"], desc = "Yank file content (copy)" },
   ## Paste
   { on = ["p", "p"], run = "paste", desc = "Paste yanked files" },
   { on = ["p", "c"], run = "plugin save-clipboard-to-file", desc = "Paste clipboard content to file" },
