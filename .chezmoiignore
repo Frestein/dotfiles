@@ -44,10 +44,8 @@
 .config/qt6ct/colors
 .config/qt6ct/qss
 .config/qutebrowser/.ruff_cache
-.config/qutebrowser/bookmarks
 .config/qutebrowser/qsettings
 .config/qutebrowser/autoconfig.yml
-.config/qutebrowser/quickmarks
 .config/rclone/
 .config/rustdesk/
 .config/scc/
