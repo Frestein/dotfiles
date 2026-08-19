@@ -1,6 +1,4 @@
-# ============================================================================
 # Aliases for the interactive POSIX shell
-# ============================================================================
 
 # Stop execution if the shell is not interactive
 case $- in
@@ -8,21 +6,15 @@ case $- in
 *) exit 0 ;;
 esac
 
-# ----------------------------------------------------------------------------
 # Force XDG paths
-# ----------------------------------------------------------------------------
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
-# ----------------------------------------------------------------------------
 # Quick aliases
-# ----------------------------------------------------------------------------
 alias q='exit'
 alias c='clear'
 
-# ----------------------------------------------------------------------------
 # Better defaults
-# ----------------------------------------------------------------------------
 if command -v bc >/dev/null 2>&1; then
     alias bc='bc -q'
 fi
@@ -34,14 +26,7 @@ fi
 alias path='echo "$PATH" | tr ":" " "'
 alias path_list='echo "$PATH" | tr ":" "\n" | sort'
 
-# ----------------------------------------------------------------------------
-# Clipboard management
-# ----------------------------------------------------------------------------
-alias clipfzf='cliphist list | fzf -d $'\t' --with-nth 2 | cliphist decode | wl-copy'
-
-# ----------------------------------------------------------------------------
 # Translation (trans)
-# ----------------------------------------------------------------------------
 if command -v trans >/dev/null 2>&1; then
     alias t='trans :ru'
     alias tt='trans :en'
@@ -49,25 +34,18 @@ if command -v trans >/dev/null 2>&1; then
     alias ttl='trans :en --shell --brief'
 fi
 
-# ----------------------------------------------------------------------------
 # File sharing
-# ----------------------------------------------------------------------------
 alias tb='nc termbin.com 9999'
 
-# ----------------------------------------------------------------------------
 # Fastfetch
-# ----------------------------------------------------------------------------
 if command -v fastfetch >/dev/null 2>&1; then
     alias f='fastfetch'
     alias ff='fastfetch -c "$XDG_CONFIG_HOME/fastfetch/config-full.jsonc"'
 fi
 
-# ----------------------------------------------------------------------------
 # Eza
-# ----------------------------------------------------------------------------
 if command -v eza >/dev/null 2>&1; then
     _eza_defaults='--group --group-directories-first'
-
     alias lD="eza -lD $_eza_defaults"
     alias lS="eza -lS $_eza_defaults"
     alias lT="eza -lT $_eza_defaults"
@@ -79,26 +57,10 @@ if command -v eza >/dev/null 2>&1; then
     alias ls="eza $_eza_defaults"
     alias lsd="eza -d $_eza_defaults"
     alias lsdl="eza -dl $_eza_defaults"
-
     unset _eza_defaults
 fi
 
-# ----------------------------------------------------------------------------
 # Editors & File Manager
-# ----------------------------------------------------------------------------
-if command -v yazi >/dev/null 2>&1; then
-    alias y='yazi'
-fi
-
-if command -v nvim >/dev/null 2>&1; then
-    alias v='nvim'
-    alias vd='nvim -d'
-fi
-
-if command -v helix >/dev/null 2>&1; then
-    alias hx='helix'
-fi
-
 if command -v emacsclient >/dev/null 2>&1 && command -v emacs >/dev/null 2>&1; then
     alias ec='emacsclient -nc'
     alias ew='emacsclient -nw'
@@ -107,37 +69,32 @@ if command -v emacsclient >/dev/null 2>&1 && command -v emacs >/dev/null 2>&1; t
     fi
 fi
 
-# ----------------------------------------------------------------------------
+if command -v nvim >/dev/null 2>&1; then
+    alias v='nvim'
+    alias vd='nvim -d'
+fi
+
+if command -v yazi >/dev/null 2>&1; then
+    alias y='yazi'
+fi
+
 # Dotfiles (Chezmoi)
-# ----------------------------------------------------------------------------
 if command -v chezmoi >/dev/null 2>&1; then
     alias cz='chezmoi'
     alias czx='CZ_EXT=1 chezmoi'
 fi
 
-# ----------------------------------------------------------------------------
-# Docker
-# ----------------------------------------------------------------------------
-if command -v docker >/dev/null 2>&1; then
-    alias d='docker'
-fi
-
-# ----------------------------------------------------------------------------
 # Systemd
-# ----------------------------------------------------------------------------
 if command -v systemctl >/dev/null 2>&1; then
     alias sc='systemctl'
     alias scu='systemctl --user'
 fi
 
 if command -v journalctl >/dev/null 2>&1; then
-    # Get the error messages
-    alias jctl='journalctl -p 3 -xb'
+    alias jctl='journalctl -p 3 -xb' # Get the error messages
 fi
 
-# ----------------------------------------------------------------------------
 # Network
-# ----------------------------------------------------------------------------
 if command -v speedtest-go >/dev/null 2>&1; then
     alias speedtest='speedtest-go'
 fi
@@ -145,9 +102,16 @@ fi
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
-# ----------------------------------------------------------------------------
 # Arch Linux: Pacman
-# ----------------------------------------------------------------------------
+## Arch-Update (Update helper)
+if command -v arch-update >/dev/null 2>&1; then
+    alias au='arch-update'
+    alias aul='arch-update -l' # Display the list of pending updates
+    alias aun='arch-update -n' # Display latest Arch news
+    alias aus='arch-update -s' # Check for services requiring a post upgrade restart
+fi
+
+## Pacman
 if command -v pacman >/dev/null 2>&1; then
     # Recently installed packages
     alias pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
@@ -184,9 +148,7 @@ if command -v pacman >/dev/null 2>&1; then
     }
 fi
 
-# ----------------------------------------------------------------------------
-# Arch Linux: Yay (AUR helper)
-# ----------------------------------------------------------------------------
+## Yay (AUR helper)
 if command -v yay >/dev/null 2>&1; then
     alias yaconf='yay -Pg'
     alias yaclean='yay -Sc'
