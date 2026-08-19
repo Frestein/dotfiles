@@ -75,7 +75,6 @@
        (magit +forge)
        git-auto-commit
        (pass +auth)
-       ebuku
        pdf
        nov
        reader

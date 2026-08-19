@@ -346,8 +346,6 @@ c.aliases.update(
         "kinopoisk-to-cx": 'jseval window.location.href = window.location.href.replace("kinopoisk.ru", "kinopoisk.cx");',
         "git-clone": 'spawn xdg-open "git+{url}"',
         "qr": "spawn -u qr",
-        "buku-random": "spawn -u qute-buku random",
-        "buku-dmenu": "spawn -u qute-buku dmenu",
         "translate": "spawn -u qute-translate-popup",
         "gopass-login-path": f"{gopass}",
         "gopass-login-secret": f"{gopass} --username-target secret --username-pattern 'login: (.+)'",
@@ -451,13 +449,6 @@ bind("<Ctrl-j>", "completion-item-focus next", mode="command")
 bind("<Ctrl-k>", "completion-item-focus prev", mode="command")
 bind("<Ctrl-Down>", "command-history-next", mode="command")
 bind("<Ctrl-Up>", "command-history-prev", mode="command")
-
-# ---------------------------------------------------------------------------
-# Bookmarks
-# ---------------------------------------------------------------------------
-
-bind("b", "buku-dmenu")
-bind("B", "buku-random")
 
 # ---------------------------------------------------------------------------
 # Downloads

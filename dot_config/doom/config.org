@@ -1187,10 +1187,7 @@ Disable evil-snipe on specific modes.
     (when (modulep! :app telega)
       (dolist (mode '(telega-root-mode telega-chat-mode telega-chatbuf-mode))
         (unless (memq mode evil-snipe-disabled-modes)
-          (push mode evil-snipe-disabled-modes))))
-    (when (modulep! :tools ebuku)
-      (unless (memq 'ebuku-mode evil-snipe-disabled-modes)
-        (push 'ebuku-mode evil-snipe-disabled-modes)))))
+          (push mode evil-snipe-disabled-modes))))))
 #+end_src
 
 *** Which-Key
@@ -1290,8 +1287,6 @@ Disable evil-snipe on specific modes.
       (:prefix ("A" . "app")
                (:when (modulep! :tools consult-gh)
                  :desc "Github" "g" #'consult-gh)
-               (:when (modulep! :tools ebuku)
-                 :desc "Ebuku" "b" #'ebuku)
                (:when (modulep! :tools pass)
                  :desc "Pass" "p" #'pass)
                (:when (modulep! :app osm)
