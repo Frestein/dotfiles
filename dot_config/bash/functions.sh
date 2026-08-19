@@ -134,17 +134,6 @@ function yy() {
 	rm -f -- "$tmp"
 }
 
-# Ansible
-function ansible-role-init() {
-	if [[ "$1" = "" ]]; then
-		echo "Usage: $0 <role name>"
-		return 1
-	fi
-	echo "Ansible Role : $1 Creating...."
-	ansible-galaxy init "$1"
-	tree "$1"
-}
-
 # pacman
 function paclist() {
 	pacman -Qqe | xargs -I{} -P0 --no-run-if-empty pacman -Qs --color=auto "^{}$"
