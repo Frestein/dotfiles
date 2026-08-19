@@ -39,7 +39,6 @@ set walker_skip "
     .vcpkg
     .android
     .TranslationPlugin
-    .ansible
     .mono
     .mozilla
     .npm
