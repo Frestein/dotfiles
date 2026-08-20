@@ -47,7 +47,6 @@
     "plugins.extras.ui.colorful-winsep",
     "plugins.extras.ui.line-hints.blame",
     "plugins.extras.ui.style.popups.rounded",
-    "plugins.extras.util.dot",
     "plugins.extras.util.langmapper",
     "plugins.extras.util.magit",
     "plugins.extras.util.mason.disable",
