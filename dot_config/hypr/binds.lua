@@ -51,9 +51,9 @@ local telegram = uwsm_app("AyuGram")
 local youtube_music = uwsm_app("youtube-music --enable-features=WebRTCPipeWireCapturer --ozone-platform-hint=auto")
 
 -- Emacs
-local emacs_agenda = emacs_cmd('(org-agenda nil "d")')
-local emacs_capture = emacs_cmd('(org-capture nil "t")', '--frame-parameters="((name . \\"emacs-capture\\"))"')
-local emacs_eshell = emacs_cmd('(eshell "γνῶθι σεαυτόν")')
+local emacs_agenda = emacs_cmd('(org-agenda nil \\"d\\")')
+local emacs_capture = emacs_cmd('(org-capture nil \\"t\\")', '--frame-parameters="((name . \\"emacs-capture\\"))"')
+local emacs_eshell = emacs_cmd('(eshell \\"γνῶθι σεαυτόν\\")')
 local emacs_elfeed = emacs_cmd("(fr/elfeed-open-and-update)")
 local emacs_telega = emacs_cmd("(telega)")
 local emacs_trashed = emacs_cmd("(trashed)")
