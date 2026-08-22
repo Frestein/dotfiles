@@ -7,171 +7,171 @@ repos=(cachyos-v3 cachyos-core-v3 cachyos-extra-v3 cachyos core extra multilib)
 declare -A installed
 # Read installed packages into 'installed' array
 while read -r pkg; do
-    installed["$pkg"]=1
+	installed["$pkg"]=1
 done < <(pacman -Qq)
 
 # Function to get packages for a specific repository
 # Includes packages from all higher repositories as well
 get_packages_for_repo() {
-    local repo="$1"
-    local -A seen_local
-    local -a pkgs_to_show
+	local repo="$1"
+	local -A seen_local
+	local -a pkgs_to_show
 
-    # Find index of requested repository in repos array
-    local idx=-1
-    for i in "${!repos[@]}"; do
-        if [[ "${repos[i]}" == "$repo" ]]; then
-            idx=$i
-            break
-        fi
-    done
-    # If repository not found, report error and exit
-    if ((idx == -1)); then
-        echo "Repository '$repo' not found" >&2
-        exit 1
-    fi
+	# Find index of requested repository in repos array
+	local idx=-1
+	for i in "${!repos[@]}"; do
+		if [[ "${repos[i]}" == "$repo" ]]; then
+			idx=$i
+			break
+		fi
+	done
+	# If repository not found, report error and exit
+	if ((idx == -1)); then
+		echo "Repository '$repo' not found" >&2
+		exit 1
+	fi
 
-    # Mark all repositories up to requested one
-    local -A marked
-    for ((i = 0; i <= idx; i++)); do
-        marked["${repos[i]}"]=1
-    done
+	# Mark all repositories up to requested one
+	local -A marked
+	for ((i = 0; i <= idx; i++)); do
+		marked["${repos[i]}"]=1
+	done
 
-    # Collect packages from all marked repositories
-    for repokey in "${!marked[@]}"; do
-        mapfile -t repopkgs < <(pacman -Slq "$repokey" 2>/dev/null)
-        for p in "${repopkgs[@]}"; do
-            seen_local["$p"]=1
-        done
-    done
+	# Collect packages from all marked repositories
+	for repokey in "${!marked[@]}"; do
+		mapfile -t repopkgs < <(pacman -Slq "$repokey" 2>/dev/null)
+		for p in "${repopkgs[@]}"; do
+			seen_local["$p"]=1
+		done
+	done
 
-    # Get packages from the requested repository
-    mapfile -t requested_pkgs < <(pacman -Slq "$repo" 2>/dev/null)
-    # Select installed packages that also appear in marked repos
-    for pkg in "${requested_pkgs[@]}"; do
-        if [[ -n "${installed[$pkg]}" && -n "${seen_local[$pkg]}" ]]; then
-            pkgs_to_show+=("$pkg")
-        fi
-    done
+	# Get packages from the requested repository
+	mapfile -t requested_pkgs < <(pacman -Slq "$repo" 2>/dev/null)
+	# Select installed packages that also appear in marked repos
+	for pkg in "${requested_pkgs[@]}"; do
+		if [[ -n "${installed[$pkg]}" && -n "${seen_local[$pkg]}" ]]; then
+			pkgs_to_show+=("$pkg")
+		fi
+	done
 
-    # Print resulting packages
-    printf '%s\n' "${pkgs_to_show[@]}"
+	# Print resulting packages
+	printf '%s\n' "${pkgs_to_show[@]}"
 }
 
 # Function to get all installed packages from all repositories
 get_all_packages() {
-    declare -A seen_global
-    local -a output_lines
+	declare -A seen_global
+	local -a output_lines
 
-    # Iterate through repos and list installed packages
-    for repo in "${repos[@]}"; do
-        mapfile -t repo_pkgs < <(pacman -Slq "$repo" 2>/dev/null)
-        for pkg in "${repo_pkgs[@]}"; do
-            if [[ -n "${installed[$pkg]}" && -z "${seen_global[$pkg]}" ]]; then
-                output_lines+=("$repo: $pkg")
-                seen_global["$pkg"]=1
-            fi
-        done
-    done
+	# Iterate through repos and list installed packages
+	for repo in "${repos[@]}"; do
+		mapfile -t repo_pkgs < <(pacman -Slq "$repo" 2>/dev/null)
+		for pkg in "${repo_pkgs[@]}"; do
+			if [[ -n "${installed[$pkg]}" && -z "${seen_global[$pkg]}" ]]; then
+				output_lines+=("$repo: $pkg")
+				seen_global["$pkg"]=1
+			fi
+		done
+	done
 
-    # Add AUR packages
-    local aur_installed
-    if command -v yay >/dev/null 2>&1; then
-        aur_installed=$(yay -Qm)
-    else
-        aur_installed=$(pacman -Qm)
-    fi
+	# Add AUR packages
+	local aur_installed
+	if command -v yay >/dev/null 2>&1; then
+		aur_installed=$(yay -Qm)
+	else
+		aur_installed=$(pacman -Qm)
+	fi
 
-    while read -r pkg _; do
-        if [[ -z "${seen_global[$pkg]}" ]]; then
-            output_lines+=("aur: $pkg")
-            seen_global["$pkg"]=1
-        fi
-    done <<<"$aur_installed"
+	while read -r pkg _; do
+		if [[ -z "${seen_global[$pkg]}" ]]; then
+			output_lines+=("aur: $pkg")
+			seen_global["$pkg"]=1
+		fi
+	done <<<"$aur_installed"
 
-    # Print all collected packages with repos
-    printf '%s\n' "${output_lines[@]}"
+	# Print all collected packages with repos
+	printf '%s\n' "${output_lines[@]}"
 }
 
 # Function to format output according to specified format
 # Supported formats: json, jsonc, yaml, toml, and plain text (default)
 format_output() {
-    local format="$1"
-    shift
-    local -a lines=("$@")
+	local format="$1"
+	shift
+	local -a lines=("$@")
 
-    case "$format" in
-    yaml)
-        # Group packages by repository and print as:
-        # repo:
-        #   - package1
-        #   - package2
-        declare -A repo_map
-        for line in "${lines[@]}"; do
-            repo="${line%%:*}"
-            pkg="${line#*: }"
-            repo_map["$repo"]+=$'\n'"  - $pkg"
-        done
-        echo "packages:"
-        for repo in "${!repo_map[@]}"; do
-            echo "  $repo:${repo_map["$repo"]}"
-        done
-        ;;
-    json | jsonc)
-        # Group by repository in JSON object style, array of packages per repo
-        declare -A repo_map
-        for line in "${lines[@]}"; do
-            repo="${line%%:*}"
-            pkg="${line#*: }"
-            repo_map["$repo"]+="${pkg},"
-        done
-        echo "{"
-        local first_repo=1
-        for repo in "${!repo_map[@]}"; do
-            # Trim trailing comma
-            packages="${repo_map["$repo"]%,}"
-            if ((first_repo)); then first_repo=0; else echo ","; fi
-            echo -n "  \"$repo\": ["
-            # Convert comma-separated to quoted JSON strings
-            IFS=',' read -ra pkgs <<<"$packages"
-            local first_pkg=1
-            for p in "${pkgs[@]}"; do
-                [[ -z "$p" ]] && continue
-                if ((first_pkg)); then first_pkg=0; else echo -n ", "; fi
-                echo -n "\"$p\""
-            done
-            echo -n "]"
-        done
-        echo
-        echo "}"
-        ;;
-    toml)
-        # Group by repository as tables
-        declare -A repo_map
-        for line in "${lines[@]}"; do
-            repo="${line%%:*}"
-            pkg="${line#*: }"
-            repo_map["$repo"]+=$'\n'"package = \"$pkg\""
-        done
-        for repo in "${!repo_map[@]}"; do
-            echo "[${repo}]"
-            echo "${repo_map["$repo"]}"
-            echo
-        done
-        ;;
-    *)
-        # Default plain text output (no grouping)
-        printf '%s\n' "${lines[@]}"
-        ;;
-    esac
+	case "$format" in
+	yaml)
+		# Group packages by repository and print as:
+		# repo:
+		#   - package1
+		#   - package2
+		declare -A repo_map
+		for line in "${lines[@]}"; do
+			repo="${line%%:*}"
+			pkg="${line#*: }"
+			repo_map["$repo"]+=$'\n'"  - $pkg"
+		done
+		echo "packages:"
+		for repo in "${!repo_map[@]}"; do
+			echo "  $repo:${repo_map["$repo"]}"
+		done
+		;;
+	json | jsonc)
+		# Group by repository in JSON object style, array of packages per repo
+		declare -A repo_map
+		for line in "${lines[@]}"; do
+			repo="${line%%:*}"
+			pkg="${line#*: }"
+			repo_map["$repo"]+="${pkg},"
+		done
+		echo "{"
+		local first_repo=1
+		for repo in "${!repo_map[@]}"; do
+			# Trim trailing comma
+			packages="${repo_map["$repo"]%,}"
+			if ((first_repo)); then first_repo=0; else echo ","; fi
+			echo -n "  \"$repo\": ["
+			# Convert comma-separated to quoted JSON strings
+			IFS=',' read -ra pkgs <<<"$packages"
+			local first_pkg=1
+			for p in "${pkgs[@]}"; do
+				[[ -z "$p" ]] && continue
+				if ((first_pkg)); then first_pkg=0; else echo -n ", "; fi
+				echo -n "\"$p\""
+			done
+			echo -n "]"
+		done
+		echo
+		echo "}"
+		;;
+	toml)
+		# Group by repository as tables
+		declare -A repo_map
+		for line in "${lines[@]}"; do
+			repo="${line%%:*}"
+			pkg="${line#*: }"
+			repo_map["$repo"]+=$'\n'"package = \"$pkg\""
+		done
+		for repo in "${!repo_map[@]}"; do
+			echo "[${repo}]"
+			echo "${repo_map["$repo"]}"
+			echo
+		done
+		;;
+	*)
+		# Default plain text output (no grouping)
+		printf '%s\n' "${lines[@]}"
+		;;
+	esac
 }
 
 # Usage information function
 usage() {
-    echo "Usage: ${0##*/} [-r repository] [-f format]"
-    echo "  -r --repo repository   Output packages only from specified repository (includes higher repos)"
-    echo "  -f --format format       Output format: json, jsonc, yaml, toml (default: plain text)"
-    echo "  --help          Show this help"
+	echo "Usage: ${0##*/} [-r repository] [-f format]"
+	echo "  -r --repo repository   Output packages only from specified repository (includes higher repos)"
+	echo "  -f --format format       Output format: json, jsonc, yaml, toml (default: plain text)"
+	echo "  --help          Show this help"
 }
 
 # Argument parsing (example placeholder, not full code)
@@ -179,36 +179,36 @@ repo_filter=""
 output_format=""
 
 while [[ $# -gt 0 ]]; do
-    case "$1" in
-    -r | --repo)
-        repo_filter="$2"
-        shift 2
-        ;;
-    -f | --format)
-        output_format="$2"
-        shift 2
-        ;;
-    --help)
-        usage
-        exit 0
-        ;;
-    *)
-        usage
-        exit 1
-        ;;
-    esac
+	case "$1" in
+	-r | --repo)
+		repo_filter="$2"
+		shift 2
+		;;
+	-f | --format)
+		output_format="$2"
+		shift 2
+		;;
+	--help)
+		usage
+		exit 0
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
 done
 
 if [[ -n "$repo_filter" ]]; then
-    # Get packages only for specified repository (including higher repos)
-    mapfile -t packages_only < <(get_packages_for_repo "$repo_filter")
-    output_lines=()
-    for pkg in "${packages_only[@]}"; do
-        output_lines+=("$repo_filter: $pkg")
-    done
-    format_output "$output_format" "${output_lines[@]}"
+	# Get packages only for specified repository (including higher repos)
+	mapfile -t packages_only < <(get_packages_for_repo "$repo_filter")
+	output_lines=()
+	for pkg in "${packages_only[@]}"; do
+		output_lines+=("$repo_filter: $pkg")
+	done
+	format_output "$output_format" "${output_lines[@]}"
 else
-    # Show packages for all repositories
-    mapfile -t all_packages < <(get_all_packages)
-    format_output "$output_format" "${all_packages[@]}"
+	# Show packages for all repositories
+	mapfile -t all_packages < <(get_all_packages)
+	format_output "$output_format" "${all_packages[@]}"
 fi

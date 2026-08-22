@@ -5,9 +5,9 @@
 
 # fish as interactive shell
 if [[ $(ps --no-header --pid="$PPID" --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} && ${SHLVL} == 1 ]]; then
-    shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
-    # shellcheck disable=SC2086
-    exec fish $LOGIN_OPTION
+	shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+	# shellcheck disable=SC2086
+	exec fish $LOGIN_OPTION
 fi
 
 # ----------------------------Prompt--------------------------- #
@@ -15,7 +15,7 @@ fi
 export SUDO_PROMPT="$(tput setaf 3)[sudo]$(tput sgr0) password for $(tput setaf 10)%p$(tput sgr0): "
 
 if [ -n "$FISH__BIND_MODE" ]; then
-    unset FISH__BIND_MODE
+	unset FISH__BIND_MODE
 fi
 
 eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubblesline.omp.toml")"
@@ -23,7 +23,7 @@ eval "$(oh-my-posh init bash --config="$XDG_CONFIG_HOME/oh-my-posh/themes/bubble
 # ------------------Completions & Initializations-------------- #
 
 [ -r /usr/share/bash-completion/bash_completion ] &&
-    . /usr/share/bash-completion/bash_completion
+	. /usr/share/bash-completion/bash_completion
 
 eval "$(zoxide init bash)"
 eval "$(atuin init bash)"
@@ -34,7 +34,7 @@ eval "$(SHELL=/usr/bin/bash batpipe)"
 
 # shellcheck disable=SC2155
 [ "$(command -v vivid)" != "" ] &&
-    export LS_COLORS="$(vivid generate gruvbox-dark)"
+	export LS_COLORS="$(vivid generate gruvbox-dark)"
 
 # History
 export HISTSIZE=50000

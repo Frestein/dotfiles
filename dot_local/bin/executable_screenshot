@@ -33,95 +33,95 @@ cli_action="copy"
 
 # Detect available menu program
 define_menu() {
-    if ! command -v "$menu_command"; then
-        if command -v fuzzel >/dev/null 2>&1; then
-            menu_command="fuzzel"
-        elif command -v wofi >/dev/null 2>&1; then
-            menu_command="wofi"
-        elif command -v rofi >/dev/null 2>&1; then
-            menu_command="rofi"
-        elif command -v walker >/dev/null 2>&1; then
-            menu_command="walker"
-        else
-            echo "No menu program found (fuzzel, wofi, rofi, walker)" >&2
-            exit 1
-        fi
-    fi
+	if ! command -v "$menu_command"; then
+		if command -v fuzzel >/dev/null 2>&1; then
+			menu_command="fuzzel"
+		elif command -v wofi >/dev/null 2>&1; then
+			menu_command="wofi"
+		elif command -v rofi >/dev/null 2>&1; then
+			menu_command="rofi"
+		elif command -v walker >/dev/null 2>&1; then
+			menu_command="walker"
+		else
+			echo "No menu program found (fuzzel, wofi, rofi, walker)" >&2
+			exit 1
+		fi
+	fi
 }
 
 # Show menu based on detected command
 show_menu() {
-    prompt="$1"
-    shift
-    menu_opts=("$@") # global array
-    case $menu_command in
-    "fuzzel") fuzzel_menu ;;
-    "wofi") wofi_menu ;;
-    "rofi") rofi_menu ;;
-    "walker") walker_menu ;;
-    esac
+	prompt="$1"
+	shift
+	menu_opts=("$@") # global array
+	case $menu_command in
+	"fuzzel") fuzzel_menu ;;
+	"wofi") wofi_menu ;;
+	"rofi") rofi_menu ;;
+	"walker") walker_menu ;;
+	esac
 }
 
 fuzzel_menu() {
-    printf '%s\n' "${menu_opts[@]}" | fuzzel \
-        --dmenu \
-        --prompt "$prompt " \
-        --placeholder "Choose..." \
-        --minimal-lines
+	printf '%s\n' "${menu_opts[@]}" | fuzzel \
+		--dmenu \
+		--prompt "$prompt " \
+		--placeholder "Choose..." \
+		--minimal-lines
 }
 
 wofi_menu() {
-    printf '%s\n' "${menu_opts[@]}" | wofi \
-        --dmenu \
-        --prompt "$prompt" \
-        -m
+	printf '%s\n' "${menu_opts[@]}" | wofi \
+		--dmenu \
+		--prompt "$prompt" \
+		-m
 }
 
 rofi_menu() {
-    printf '%s\n' "${menu_opts[@]}" | rofi \
-        -dmenu \
-        -p "$prompt" \
-        -markup-rows
+	printf '%s\n' "${menu_opts[@]}" | rofi \
+		-dmenu \
+		-p "$prompt" \
+		-markup-rows
 }
 
 walker_menu() {
-    printf '%s\n' "${menu_opts[@]}" | walker \
-        -d \
-        -p "$prompt"
+	printf '%s\n' "${menu_opts[@]}" | walker \
+		-d \
+		-p "$prompt"
 }
 
 # Timer notifications (reuse notify-send if available)
 timer_notify() {
-    local t="$1"
-    if command -v notify-send >/dev/null 2>&1; then
-        notify-send -t 1000 "Taking Screenshot in $t"
-    else
-        printf 'Taking Screenshot in %s\n' "$t"
-    fi
+	local t="$1"
+	if command -v notify-send >/dev/null 2>&1; then
+		notify-send -t 1000 "Taking Screenshot in $t"
+	else
+		printf 'Taking Screenshot in %s\n' "$t"
+	fi
 }
 
 timer_countdown() {
-    local countdown="$1"
-    for ((i = countdown; i > 0; i--)); do
-        if ((i <= 10 || i == countdown)); then
-            timer_notify "$i"
-        fi
-        sleep 1
-    done
+	local countdown="$1"
+	for ((i = countdown; i > 0; i--)); do
+		if ((i <= 10 || i == countdown)); then
+			timer_notify "$i"
+		fi
+		sleep 1
+	done
 }
 
 takescreenshot() {
-    local grim_cmd=(grimblast --notify "$cli_action" "$cli_type")
+	local grim_cmd=(grimblast --notify "$cli_action" "$cli_type")
 
-    [[ $cli_action == "edit" ]] && grim_cmd+=("--filetype" "ppm")
+	[[ $cli_action == "edit" ]] && grim_cmd+=("--filetype" "ppm")
 
-    env DATE_FORMAT="$date_format" \
-        GRIMBLAST_EDITOR="$editor_command" \
-        "${grim_cmd[@]}"
+	env DATE_FORMAT="$date_format" \
+		GRIMBLAST_EDITOR="$editor_command" \
+		"${grim_cmd[@]}"
 }
 
 usage() {
-    cat <<EOF
+	cat <<EOF
 Usage: ${0##*/} [OPTION]
 
 Options:
@@ -143,91 +143,91 @@ EOF
 
 # Parse CLI arguments
 parse_cli() {
-    # Defaults if user uses --now: capture whole visible outputs (screen)
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-        --now)
-            cli_mode="now"
-            cli_type="screen"
-            shift
-            ;;
-        --delay)
-            cli_mode="delay"
-            if [[ -n "$2" && "$2" =~ ^[0-9]+$ ]]; then
-                if ((1 <= $2 && $2 <= 10)); then
-                    cli_countdown="$2"
-                    shift 2
-                else
-                    echo "Invalid delay: $2 (must be 1–10)" >&2
-                    exit 1
-                fi
-            else
-                echo "Invalid or missing delay value" >&2
-                exit 1
-            fi
-            ;;
-        --active)
-            cli_type="active"
-            shift
-            ;;
-        --area)
-            cli_type="area"
-            shift
-            ;;
-        --copy)
-            cli_action="copy"
-            shift
-            ;;
-        --save)
-            cli_action="save"
-            shift
-            ;;
-        --copysave)
-            cli_action="copysave"
-            shift
-            ;;
-        --edit)
-            cli_action="edit"
-            shift
-            ;;
-        --help | -h)
-            usage
-            exit 0
-            ;;
-        *)
-            echo "Invalid option: $1" >&2
-            usage
-            exit 1
-            ;;
-        esac
-    done
+	# Defaults if user uses --now: capture whole visible outputs (screen)
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		--now)
+			cli_mode="now"
+			cli_type="screen"
+			shift
+			;;
+		--delay)
+			cli_mode="delay"
+			if [[ -n "$2" && "$2" =~ ^[0-9]+$ ]]; then
+				if ((1 <= $2 && $2 <= 10)); then
+					cli_countdown="$2"
+					shift 2
+				else
+					echo "Invalid delay: $2 (must be 1–10)" >&2
+					exit 1
+				fi
+			else
+				echo "Invalid or missing delay value" >&2
+				exit 1
+			fi
+			;;
+		--active)
+			cli_type="active"
+			shift
+			;;
+		--area)
+			cli_type="area"
+			shift
+			;;
+		--copy)
+			cli_action="copy"
+			shift
+			;;
+		--save)
+			cli_action="save"
+			shift
+			;;
+		--copysave)
+			cli_action="copysave"
+			shift
+			;;
+		--edit)
+			cli_action="edit"
+			shift
+			;;
+		--help | -h)
+			usage
+			exit 0
+			;;
+		*)
+			echo "Invalid option: $1" >&2
+			usage
+			exit 1
+			;;
+		esac
+	done
 
-    # Reasonable defaults if some flags missing:
-    # If no type provided but mode now/delay is used, default to 'screen'
-    if [[ -z "$cli_type" && ("$cli_mode" == "now" || "$cli_mode" == "delay") ]]; then
-        cli_type="screen"
-    fi
-    # If no action provided default to 'save'
-    if [[ -z "$cli_action" ]]; then
-        cli_action="save"
-    fi
+	# Reasonable defaults if some flags missing:
+	# If no type provided but mode now/delay is used, default to 'screen'
+	if [[ -z "$cli_type" && ("$cli_mode" == "now" || "$cli_mode" == "delay") ]]; then
+		cli_type="screen"
+	fi
+	# If no action provided default to 'save'
+	if [[ -z "$cli_action" ]]; then
+		cli_action="save"
+	fi
 }
 
 main_cli() {
-    parse_cli "$@"
+	parse_cli "$@"
 
-    if [[ "$cli_mode" == "delay" ]]; then
-        timer_countdown "$cli_countdown"
-    fi
+	if [[ "$cli_mode" == "delay" ]]; then
+		timer_countdown "$cli_countdown"
+	fi
 
-    takescreenshot
+	takescreenshot
 }
 
 # If any CLI args present, run CLI mode; otherwise fall back to interactive menu
 if [[ $# -gt 0 ]]; then
-    define_menu >/dev/null 2>&1 # ensure menu detection so takescreenshot can still rely on editor_command etc.
-    main_cli "$@"
-    exit $?
+	define_menu >/dev/null 2>&1 # ensure menu detection so takescreenshot can still rely on editor_command etc.
+	main_cli "$@"
+	exit $?
 fi
 
 # Interactive menu
@@ -249,8 +249,8 @@ case "$type_choice" in
 esac
 
 if [[ $mode == "timer" ]]; then
-    timer_choice=$(show_menu "Choose Timer" "${timer_opts[@]}") || exit 1
-    countdown=${timer_choice%s} # remove 's'
+	timer_choice=$(show_menu "Choose Timer" "${timer_opts[@]}") || exit 1
+	countdown=${timer_choice%s} # remove 's'
 fi
 
 action_choice=$(show_menu "Action" "${action_opts[@]}") || exit 1
@@ -267,7 +267,7 @@ cli_type="${option_type:-screen}"
 cli_countdown="${countdown:-0}"
 
 if [[ $mode == "timer" && -n "$cli_countdown" ]]; then
-    timer_countdown "$cli_countdown"
+	timer_countdown "$cli_countdown"
 fi
 
 takescreenshot

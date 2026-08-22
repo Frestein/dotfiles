@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 function fzf_bind_multiply() {
-    local multiplier="$1"
-    local prefix="$2"
-    local result=""
+	local multiplier="$1"
+	local prefix="$2"
+	local result=""
 
-    local i
-    for ((i = 1; i <= multiplier; i++)); do
-        result+="${prefix}+"
-    done
+	local i
+	for ((i = 1; i <= multiplier; i++)); do
+		result+="${prefix}+"
+	done
 
-    echo "${result%+}"
+	echo "${result%+}"
 }
 
 preview_down=$(fzf_bind_multiply 10 'preview-down')
