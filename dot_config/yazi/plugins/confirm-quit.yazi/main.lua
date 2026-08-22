@@ -7,11 +7,11 @@ local function entry()
 		return ya.emit("quit", {})
 	end
 
-	local yes = ya.confirm({
+	local yes = ya.confirm {
 		pos = { "center", w = 60, h = 10 },
 		title = "Quit?",
-		body = ui.Text("There are multiple tabs open.\nAre you sure you want to quit?"):wrap(ui.Wrap.YES):fg("white"),
-	})
+		body = ui.Text("There are multiple tabs open.\nAre you sure you want to quit?"):wrap(ui.Wrap.YES):fg "white",
+	}
 
 	if yes then
 		ya.emit("quit", {})

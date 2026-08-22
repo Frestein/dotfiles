@@ -3,10 +3,10 @@
 --------------------------------------------------------------------------------
 
 -- Borders
-require("full-border"):setup({
+require("full-border"):setup {
 	-- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
 	type = ui.Border.PLAIN,
-})
+}
 
 -- INFO: Use full mode indicator
 -- https://github.com/sxyazi/yazi/issues/3332#issuecomment-3533974507
@@ -14,11 +14,11 @@ function Status:mode()
 	local mode = tostring(self._tab.mode):upper()
 
 	local style = self:style()
-	return ui.Line({
-		ui.Span(th.status.sep_left.open):fg(style.main:bg()):bg("reset"),
+	return ui.Line {
+		ui.Span(th.status.sep_left.open):fg(style.main:bg()):bg "reset",
 		ui.Span(" " .. mode .. " "):style(style.main),
 		ui.Span(th.status.sep_left.close):fg(style.main:bg()):bg(style.alt:bg()),
-	})
+	}
 end
 
 -- "light" | "dark"
@@ -168,7 +168,7 @@ local githead_config = {
 require("githead"):setup(githead_config)
 require("git"):setup()
 require("recycle-bin"):setup()
-require("smart-enter"):setup({
+require("smart-enter"):setup {
 	open_multi = true,
-})
+}
 require("folder-rules"):setup()
