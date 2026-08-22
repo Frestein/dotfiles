@@ -2431,7 +2431,21 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
                   (expand-file-name "dot_stylua.toml" dir)))
           "--search-parent-directories"
           "--stdin-filepath" filepath
-          "-")))))
+          "-"))))
+
+  ;; Use tabs for indentation
+  (add-hook 'lua-mode-hook
+            (lambda ()
+              (setopt indent-tabs-mode t)
+              (setopt tab-width 4)
+              (setopt lua-indent-level 4)))
+
+  (when (modulep! :lang lua +tree-sitter)
+    (add-hook 'lua-ts-mode-hook
+              (lambda ()
+		(setopt indent-tabs-mode t)
+		(setopt tab-width 4)
+		(setopt lua-ts-indent-offset 4)))))
 
 (setopt browse-url-text-browser (executable-find "cha"))
 
