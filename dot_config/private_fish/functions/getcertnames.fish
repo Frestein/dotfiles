@@ -27,4 +27,3 @@ function getcertnames -d 'Show all the names (CNs and SANs) listed in the SSL ce
         return 1
     end
 end
-

@@ -11,4 +11,3 @@ function fs -d 'Determine size of a file or total size of a directory'
         du $arg (find . -maxdepth 1 -name '.*' ! -name '.' ! -name '..') ./*
     end
 end
-
