@@ -44,20 +44,27 @@ refreshPeriod = "336h"
 
 ### Gallery View
 
-{{- $gallery_base := "https://raw.githubusercontent.com/occivink/mpv-gallery-view/master/scripts" }}
+{{- $gallery_repo := "https://raw.githubusercontent.com/occivink/mpv-gallery-view/master" }}
+
+# Gallery - Library module required by playlist-view and gallery-thumbgen
+
+[".config/mpv/script-modules/gallery.lua"]
+type = "file"
+url = "{{ $gallery_repo }}/script-modules/gallery.lua"
+refreshPeriod = "336h"
 
 #### Gallery Thumbgen - Worker for generating gallery thumbnails
 
 [".config/mpv/scripts/gallery-thumbgen.lua"]
 type = "file"
-url = "{{ $gallery_base }}/gallery-thumbgen.lua"
+url = "{{ $gallery_repo }}/scripts/gallery-thumbgen.lua"
 refreshPeriod = "336h"
 
 #### Playlist View - Displays an overview of the current playlist with thumbnails
 
 [".config/mpv/scripts/playlist-view.lua"]
 type = "file"
-url = "{{ $gallery_base }}/playlist-view.lua"
+url = "{{ $gallery_repo }}/scripts/playlist-view.lua"
 refreshPeriod = "336h"
 
 ## auto-save-state - Periodically saves watch progress
