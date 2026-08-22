@@ -2395,7 +2395,12 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
   (use-package! fish-mode
     :config
-    (+fish-common-config 'fish-mode)))
+    (+fish-common-config 'fish-mode))
+
+  ;; Use tabs for indentation
+  (add-hook 'fish-mode-hook
+            (lambda ()
+              (setopt indent-tabs-mode t))))
 
 (when (modulep! :editor evil +vimrc)
   (add-to-list 'auto-mode-alist '("tridactylrc\\'" . vimrc-mode)))
