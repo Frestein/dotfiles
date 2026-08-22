@@ -2377,6 +2377,11 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
         (set-eglot-client! mode '("qmlls")))
       (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
 
+;; Use tabs for indentation
+(add-hook 'sh-mode-hook
+          (lambda ()
+            (setopt indent-tabs-mode t)))
+
 (when (modulep! :lang sh +fish)
   (defun +fish-common-config (mode)
     (when (modulep! :lang sh +fish +lsp)

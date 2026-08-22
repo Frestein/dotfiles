@@ -105,6 +105,7 @@
       - [[#corg][Corg]]
   - [[#markdown][Markdown]]
   - [[#qml][QML]]
+  - [[#shell-1][Shell]]
   - [[#fish][Fish]]
   - [[#vimrc][Vimrc]]
   - [[#json][JSON]]
@@ -2910,6 +2911,15 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
           (set-eglot-client! mode '("qmlls6"))
         (set-eglot-client! mode '("qmlls")))
       (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
+#+end_src
+
+** Shell
+
+#+begin_src elisp
+;; Use tabs for indentation
+(add-hook 'sh-mode-hook
+          (lambda ()
+            (setopt indent-tabs-mode t)))
 #+end_src
 
 ** Fish
