@@ -428,7 +428,7 @@ hl.define_submap("screenshot", function()
 
 	-- Edit
 	hl.bind("E", hl.dsp.submap("screenshot-edit"))
-	hl.define_submap("screenshot-edit", function()
+	hl.define_submap("screenshot-edit", "reset", function()
 		hl.bind("PRINT", hl.dsp.exec_cmd("screenshot --now --edit"))
 		hl.bind("S", hl.dsp.exec_cmd("screenshot --now --edit"))
 		hl.bind("A", hl.dsp.exec_cmd("screenshot --active --edit"))
