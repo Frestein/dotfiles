@@ -2919,7 +2919,12 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   (defun +fish-common-config (mode)
     (when (modulep! :lang sh +fish +lsp)
       (set-eglot-client! mode '("fish-lsp" "start"))
-      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)
+
+      (defun +fish-eglot-skip-semicolon (orig-fun &rest args)
+        (unless (and (eq major-mode 'fish-mode) (= last-command-event 59))
+          (apply orig-fun args)))
+      (advice-add 'eglot--post-self-insert-hook :around #'+fish-eglot-skip-semicolon)))
 
   (use-package! fish-mode
     :config
