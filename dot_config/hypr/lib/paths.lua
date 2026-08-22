@@ -2,9 +2,9 @@
 -- Lua files loaded with require() have separate local scopes, so modules that
 -- need these paths import this table instead of repeating os.getenv() lookups.
 
-local home = os.getenv("HOME")
-local config_home = os.getenv("XDG_CONFIG_HOME") or (home .. "/.config")
-local state_home = os.getenv("XDG_STATE_HOME") or (home .. "/.local/state")
+local home = os.getenv "HOME"
+local config_home = os.getenv "XDG_CONFIG_HOME" or (home .. "/.config")
+local state_home = os.getenv "XDG_STATE_HOME" or (home .. "/.local/state")
 
 return {
 	home = home,

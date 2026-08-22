@@ -1,17 +1,17 @@
-require("autostart")
-require("rules")
-require("binds")
+require "autostart"
+require "rules"
+require "binds"
 
-local colors = require("themes.gruvbox-dark")
+local colors = require "themes.gruvbox-dark"
 
-hl.monitor({
+hl.monitor {
 	output = "",
 	mode = "preferred",
 	position = "auto",
 	scale = "auto",
-})
+}
 
-hl.config({
+hl.config {
 	general = {
 		-- I didn’t fucking pay for pixels to sit idle
 		gaps_in = 0,
@@ -96,9 +96,9 @@ hl.config({
 		enable_swallow = true,
 		swallow_regex = "^(foot.*)$",
 	},
-})
+}
 
-hl.device({
+hl.device {
 	name = "kanata",
 	repeat_delay = 250,
-})
+}

@@ -1,4 +1,4 @@
-local paths = require("lib.paths")
+local paths = require "lib.paths"
 
 local M = {}
 
