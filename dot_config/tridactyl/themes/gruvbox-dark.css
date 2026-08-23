@@ -2,167 +2,167 @@
   Gruvbox Dark CLI for Tridactyl
 */
 :root {
-    /* Gruvbox Dark Palette */
-    --bg0_h: #1d2021;
-    --bg0: #282828;
-    --bg1: #3c3836;
-    --bg2: #504945;
-    --bg3: #665c54;
-    --bg4: #7c6f64;
-    --fg0: #fbf1c7;
-    --fg1: #ebdbb2;
-    --fg2: #d5c4a1;
-    --fg3: #bdae93;
-    --fg4: #a89984;
-    --red: #cc241d;
-    --green: #98971a;
-    --yellow: #d79921;
-    --blue: #458588;
-    --purple: #b16286;
-    --aqua: #689d6a;
-    --orange: #d65d0e;
+	/* Gruvbox Dark Palette */
+	--bg0_h: #1d2021;
+	--bg0: #282828;
+	--bg1: #3c3836;
+	--bg2: #504945;
+	--bg3: #665c54;
+	--bg4: #7c6f64;
+	--fg0: #fbf1c7;
+	--fg1: #ebdbb2;
+	--fg2: #d5c4a1;
+	--fg3: #bdae93;
+	--fg4: #a89984;
+	--red: #cc241d;
+	--green: #98971a;
+	--yellow: #d79921;
+	--blue: #458588;
+	--purple: #b16286;
+	--aqua: #689d6a;
+	--orange: #d65d0e;
 
-    /* Generic */
-    --tridactyl-font-family: monospace;
-    --tridactyl-font-family-sans: sans-serif;
-    --tridactyl-cmdl-font-family: var(--tridactyl-font-family) !important;
-    --tridactyl-cmplt-font-family: var(--tridactyl-font-family) !important;
-    --tridactyl-hintspan-font-family: var(--tridactyl-font-family) !important;
-    --tridactyl-font-size: 12pt;
-    --tridactyl-small-font-size: calc(var(--tridactyl-font-size) * 0.75);
-    --tridactyl-bg: var(--bg0);
-    --tridactyl-fg: var(--fg1);
-    --tridactyl-logo: url("moz-extension://__MSG_@@extension_id__/static/logo/Tridactyl_64px.png");
-    --tridactyl-scrollbar-color: auto;
+	/* Generic */
+	--tridactyl-font-family: monospace;
+	--tridactyl-font-family-sans: sans-serif;
+	--tridactyl-cmdl-font-family: var(--tridactyl-font-family) !important;
+	--tridactyl-cmplt-font-family: var(--tridactyl-font-family) !important;
+	--tridactyl-hintspan-font-family: var(--tridactyl-font-family) !important;
+	--tridactyl-font-size: 12pt;
+	--tridactyl-small-font-size: calc(var(--tridactyl-font-size) * 0.75);
+	--tridactyl-bg: var(--bg0);
+	--tridactyl-fg: var(--fg1);
+	--tridactyl-logo: url("moz-extension://__MSG_@@extension_id__/static/logo/Tridactyl_64px.png");
+	--tridactyl-scrollbar-color: auto;
 
-    /* Mode indicator */
-    --tridactyl-status-font-family: var(--tridactyl-font-family);
-    --tridactyl-status-font-size: var(--tridactyl-small-font-size);
-    --tridactyl-status-bg: var(--tridactyl-bg);
-    --tridactyl-status-fg: var(--tridactyl-fg);
-    --tridactyl-status-border: 1px var(--bg3) solid;
-    --tridactyl-status-border-radius: 2px;
+	/* Mode indicator */
+	--tridactyl-status-font-family: var(--tridactyl-font-family);
+	--tridactyl-status-font-size: var(--tridactyl-small-font-size);
+	--tridactyl-status-bg: var(--tridactyl-bg);
+	--tridactyl-status-fg: var(--tridactyl-fg);
+	--tridactyl-status-border: 1px var(--bg3) solid;
+	--tridactyl-status-border-radius: 2px;
 
-    /* Search highlight */
-    --tridactyl-search-highlight-color: var(--yellow);
+	/* Search highlight */
+	--tridactyl-search-highlight-color: var(--yellow);
 
-    /* Hinting */
+	/* Hinting */
 
-    /* Hint character tags */
-    --tridactyl-hintspan-font-family: var(--tridactyl-font-family-sans);
-    --tridactyl-hintspan-font-size: var(--tridactyl-small-font-size);
-    --tridactyl-hintspan-font-weight: bold;
-    --tridactyl-hintspan-fg: var(--bg0);
-    --tridactyl-hintspan-pressed-fg: var(--tridactyl-hintspan-fg);
-    --tridactyl-hintspan-bg: var(--orange);
-    --tridactyl-hintspan-border-color: var(--orange);
-    --tridactyl-hintspan-border-width: 0px;
-    --tridactyl-hintspan-border-style: solid;
-    --tridactyl-hintspan-js-background: var(--bg2);
+	/* Hint character tags */
+	--tridactyl-hintspan-font-family: var(--tridactyl-font-family-sans);
+	--tridactyl-hintspan-font-size: var(--tridactyl-small-font-size);
+	--tridactyl-hintspan-font-weight: bold;
+	--tridactyl-hintspan-fg: var(--bg0);
+	--tridactyl-hintspan-pressed-fg: var(--tridactyl-hintspan-fg);
+	--tridactyl-hintspan-bg: var(--orange);
+	--tridactyl-hintspan-border-color: var(--orange);
+	--tridactyl-hintspan-border-width: 0px;
+	--tridactyl-hintspan-border-style: solid;
+	--tridactyl-hintspan-js-background: var(--bg2);
 
-    /* Element highlights */
-    --tridactyl-hint-active-fg: var(--bg0);
-    --tridactyl-hint-active-bg: var(--green);
-    --tridactyl-hint-active-outline: 1px solid var(--blue);
-    --tridactyl-hint-bg: var(--blue);
-    --tridactyl-hint-outline: 1px solid var(--blue);
+	/* Element highlights */
+	--tridactyl-hint-active-fg: var(--bg0);
+	--tridactyl-hint-active-bg: var(--green);
+	--tridactyl-hint-active-outline: 1px solid var(--blue);
+	--tridactyl-hint-bg: var(--blue);
+	--tridactyl-hint-outline: 1px solid var(--blue);
 
-    /* :viewsource */
-    --tridactyl-vs-bg: var(--tridactyl-bg);
-    --tridactyl-vs-fg: var(--tridactyl-fg);
-    --tridactyl-vs-font-family: var(--tridactyl-font-family);
+	/* :viewsource */
+	--tridactyl-vs-bg: var(--tridactyl-bg);
+	--tridactyl-vs-fg: var(--tridactyl-fg);
+	--tridactyl-vs-font-family: var(--tridactyl-font-family);
 
-    /* commandline */
-    --tridactyl-cmdl-bg: var(--tridactyl-bg);
-    --tridactyl-cmdl-fg: var(--tridactyl-fg);
-    --tridactyl-cmdl-line-height: 1.5;
-    --tridactyl-cmdl-font-size: calc(var(--tridactyl-font-size) * 0.75);
+	/* commandline */
+	--tridactyl-cmdl-bg: var(--tridactyl-bg);
+	--tridactyl-cmdl-fg: var(--tridactyl-fg);
+	--tridactyl-cmdl-line-height: 1.5;
+	--tridactyl-cmdl-font-size: calc(var(--tridactyl-font-size) * 0.75);
 
-    /* completions */
-    --tridactyl-cmplt-option-height: 1.4em;
-    --tridactyl-cmplt-fg: var(--tridactyl-fg);
-    --tridactyl-cmplt-bg: var(--tridactyl-bg);
-    --tridactyl-cmplt-font-size: calc(var(--tridactyl-font-size) * 9 / 12);
-    --tridactyl-cmplt-border-top: 1px solid var(--bg1);
+	/* completions */
+	--tridactyl-cmplt-option-height: 1.4em;
+	--tridactyl-cmplt-fg: var(--tridactyl-fg);
+	--tridactyl-cmplt-bg: var(--tridactyl-bg);
+	--tridactyl-cmplt-font-size: calc(var(--tridactyl-font-size) * 9 / 12);
+	--tridactyl-cmplt-border-top: 1px solid var(--bg1);
 
-    /* sectionHeader */
-    --tridactyl-header-first-bg: var(--bg1);
-    --tridactyl-header-second-bg: var(--bg2);
-    --tridactyl-header-third-bg: var(--bg3);
-    --tridactyl-header-font-size: inherit;
-    --tridactyl-header-font-weight: bold;
-    --tridactyl-header-border-bottom: 1px solid var(--bg1);
-    --tridactyl-completions-header-fg: var(--blue);
-    --tridactyl-completions-header-bg: var(--bg1);
+	/* sectionHeader */
+	--tridactyl-header-first-bg: var(--bg1);
+	--tridactyl-header-second-bg: var(--bg2);
+	--tridactyl-header-third-bg: var(--bg3);
+	--tridactyl-header-font-size: inherit;
+	--tridactyl-header-font-weight: bold;
+	--tridactyl-header-border-bottom: 1px solid var(--bg1);
+	--tridactyl-completions-header-fg: var(--blue);
+	--tridactyl-completions-header-bg: var(--bg1);
 
-    /* url style */
-    --tridactyl-url-text-decoration: none;
-    --tridactyl-url-fg: var(--aqua);
-    --tridactyl-url-bg: var(--tridactyl-bg);
-    --tridactyl-url-cursor: pointer;
+	/* url style */
+	--tridactyl-url-text-decoration: none;
+	--tridactyl-url-fg: var(--aqua);
+	--tridactyl-url-bg: var(--tridactyl-bg);
+	--tridactyl-url-cursor: pointer;
 
-    /* option focused */
-    --tridactyl-of-fg: var(--tridactyl-fg);
-    --tridactyl-of-bg: var(--bg0_h);
+	/* option focused */
+	--tridactyl-of-fg: var(--tridactyl-fg);
+	--tridactyl-of-bg: var(--bg0_h);
 
-    /* new tab spoiler box */
-    --tridactyl-highlight-box-bg: var(--bg0_h);
-    --tridactyl-highlight-box-fg: var(--tridactyl-fg);
+	/* new tab spoiler box */
+	--tridactyl-highlight-box-bg: var(--bg0_h);
+	--tridactyl-highlight-box-fg: var(--tridactyl-fg);
 
-    --tridactyl-private-window-icon-url: url("chrome://browser/skin/privatebrowsing/private-browsing.svg");
+	--tridactyl-private-window-icon-url: url("chrome://browser/skin/privatebrowsing/private-browsing.svg");
 
-    --tridactyl-container-fingerprint-url: url("resource://usercontext-content/fingerprint.svg");
-    --tridactyl-container-briefcase-url: url("resource://usercontext-content/briefcase.svg");
-    --tridactyl-container-dollar-url: url("resource://usercontext-content/dollar.svg");
-    --tridactyl-container-cart-url: url("resource://usercontext-content/cart.svg");
-    --tridactyl-container-circle-url: url("resource://usercontext-content/circle.svg");
-    --tridactyl-container-gift-url: url("resource://usercontext-content/gift.svg");
-    --tridactyl-container-vacation-url: url("resource://usercontext-content/vacation.svg");
-    --tridactyl-container-food-url: url("resource://usercontext-content/food.svg");
-    --tridactyl-container-fruit-url: url("resource://usercontext-content/fruit.svg");
-    --tridactyl-container-pet-url: url("resource://usercontext-content/pet.svg");
-    --tridactyl-container-tree-url: url("resource://usercontext-content/tree.svg");
-    --tridactyl-container-chill-url: url("resource://usercontext-content/chill.svg");
+	--tridactyl-container-fingerprint-url: url("resource://usercontext-content/fingerprint.svg");
+	--tridactyl-container-briefcase-url: url("resource://usercontext-content/briefcase.svg");
+	--tridactyl-container-dollar-url: url("resource://usercontext-content/dollar.svg");
+	--tridactyl-container-cart-url: url("resource://usercontext-content/cart.svg");
+	--tridactyl-container-circle-url: url("resource://usercontext-content/circle.svg");
+	--tridactyl-container-gift-url: url("resource://usercontext-content/gift.svg");
+	--tridactyl-container-vacation-url: url("resource://usercontext-content/vacation.svg");
+	--tridactyl-container-food-url: url("resource://usercontext-content/food.svg");
+	--tridactyl-container-fruit-url: url("resource://usercontext-content/fruit.svg");
+	--tridactyl-container-pet-url: url("resource://usercontext-content/pet.svg");
+	--tridactyl-container-tree-url: url("resource://usercontext-content/tree.svg");
+	--tridactyl-container-chill-url: url("resource://usercontext-content/chill.svg");
 
-    --tridactyl-container-color-blue: var(--blue);
-    --tridactyl-container-color-turquoise: var(--aqua);
-    --tridactyl-container-color-green: var(--green);
-    --tridactyl-container-color-yellow: var(--yellow);
-    --tridactyl-container-color-orange: var(--orange);
-    --tridactyl-container-color-red: var(--red);
-    --tridactyl-container-color-pink: var(--purple);
-    --tridactyl-container-color-purple: var(--purple);
+	--tridactyl-container-color-blue: var(--blue);
+	--tridactyl-container-color-turquoise: var(--aqua);
+	--tridactyl-container-color-green: var(--green);
+	--tridactyl-container-color-yellow: var(--yellow);
+	--tridactyl-container-color-orange: var(--orange);
+	--tridactyl-container-color-red: var(--red);
+	--tridactyl-container-color-pink: var(--purple);
+	--tridactyl-container-color-purple: var(--purple);
 
-    --tridactyl-externaledit-bg: var(--tridactyl-logo) no-repeat center;
+	--tridactyl-externaledit-bg: var(--tridactyl-logo) no-repeat center;
 
-    /* Additional overrides */
-    --currentline: var(--bg1);
+	/* Additional overrides */
+	--currentline: var(--bg1);
 
-    /* Command Line Specific */
-    --tridactyl-cmdl-fg: var(--fg1);
-    --tridactyl-cmdl-bg: var(--bg0);
+	/* Command Line Specific */
+	--tridactyl-cmdl-fg: var(--fg1);
+	--tridactyl-cmdl-bg: var(--bg0);
 
-    /* Hint character tags */
-    --tridactyl-hintspan-fg: var(--bg0) !important;
-    --tridactyl-hintspan-bg: var(--orange) !important;
+	/* Hint character tags */
+	--tridactyl-hintspan-fg: var(--bg0) !important;
+	--tridactyl-hintspan-bg: var(--orange) !important;
 
-    /* Element Colors */
-    --tridactyl-border: var(--bg0);
-    --tridactyl-completions-title: var(--fg1);
-    --tridactyl-completions-title-focused: var(--fg1);
-    --tridactyl-completions-url-focused: var(--fg1);
-    --tridactyl-completions-description-focused: var(--fg1);
-    --tridactyl-documentation: var(--aqua);
+	/* Element Colors */
+	--tridactyl-border: var(--bg0);
+	--tridactyl-completions-title: var(--fg1);
+	--tridactyl-completions-title-focused: var(--fg1);
+	--tridactyl-completions-url-focused: var(--fg1);
+	--tridactyl-completions-description-focused: var(--fg1);
+	--tridactyl-documentation: var(--aqua);
 }
 
 #command-line-holder {
-    border-top: 1px solid var(--tridactyl-border);
-    background: var(--tridactyl-bg);
+	border-top: 1px solid var(--tridactyl-border);
+	background: var(--tridactyl-bg);
 }
 
 #tridactyl-input {
-    color: var(--tridactyl-fg);
-    background: var(--tridactyl-bg);
+	color: var(--tridactyl-fg);
+	background: var(--tridactyl-bg);
 }
 
 #completions table {
@@ -173,8 +173,8 @@
 
 /* COMPLETIONS */
 #completions {
-    color: var(--tridactyl-fg);
-    background: var(--tridactyl-bg);
+	color: var(--tridactyl-fg);
+	background: var(--tridactyl-bg);
 }
 
 #completions .HistoryCompletionSource {
@@ -203,7 +203,7 @@
 
 #completions table tr .title,
 #completions table tr td.excmd {
-    color: var(--tridactyl-completions-title);
+	color: var(--tridactyl-completions-title);
 }
 
 #completions table tr .content,
@@ -220,21 +220,21 @@
 }
 
 #completions .sectionHeader {
-    color: var(--tridactyl-completions-header-fg);
-    background: var(--tridactyl-completions-header-bg);
+	color: var(--tridactyl-completions-header-fg);
+	background: var(--tridactyl-completions-header-bg);
 }
 
 #cmdline_iframe {
 }
 
 .TridactylStatusIndicator {
-    background: var(--tridactyl-bg) !important;
-    border: 1px var(--purple) solid !important;
+	background: var(--tridactyl-bg) !important;
+	border: 1px var(--purple) solid !important;
 }
 
 #completions .focused {
-    background: var(--currentline);
-    font-weight: bold;
+	background: var(--currentline);
+	font-weight: bold;
 }
 
 /* #completions .focused td.title, */
@@ -243,17 +243,17 @@
 /* } */
 
 #completions .focused .url {
-    background: var(--currentline);
-    color: var(--tridactyl-completions-url-focused);
+	background: var(--currentline);
+	color: var(--tridactyl-completions-url-focused);
 }
 
 #completions td.documentation,
 #completions td.content {
-    color: var(--tridactyl-documentation);
+	color: var(--tridactyl-documentation);
 }
 
 #completions .focused td.documentation,
 #completions .focused td.content {
-    background: var(--currentline);
-    color: var(--tridactyl-completions-description-focused);
+	background: var(--currentline);
+	color: var(--tridactyl-completions-description-focused);
 }
