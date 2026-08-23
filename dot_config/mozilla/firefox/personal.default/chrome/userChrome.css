@@ -39,15 +39,15 @@
 @import "includes/gruvbox.css";
 
 :root {
-  --tab-toolbar-navbar-overlap: 0px !important; /* fix for full screen mode */
-  --tab-min-height: 28px !important;
+	--tab-toolbar-navbar-overlap: 0px !important; /* fix for full screen mode */
+	--tab-min-height: 28px !important;
 }
 
 :root #tabbrowser-tabs {
-  --tab-min-height: 28px !important;
+	--tab-min-height: 28px !important;
 }
 
 #nav-bar {
-  box-shadow: none !important;
-  margin: -3px !important;
+	box-shadow: none !important;
+	margin: -3px !important;
 }
