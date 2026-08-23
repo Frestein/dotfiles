@@ -2377,6 +2377,18 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
         (set-eglot-client! mode '("qmlls")))
       (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append))))
 
+(when (modulep! :lang web +tree-sitter)
+  (add-hook 'css-mode-hook (lambda ()
+                             (setopt indent-tabs-mode t)
+                             (setopt tab-width 2)
+                             (setopt css-indent-offset 2)))
+
+  (when (modulep! :lang web +tree-sitter)
+    (add-hook 'css-ts-mode-hook (lambda ()
+                                  (setopt indent-tabs-mode t)
+                                  (setopt tab-width 2)
+                                  (setopt css-indent-offset 2)))))
+
 ;; Use tabs for indentation
 (add-hook 'sh-mode-hook
           (lambda ()
