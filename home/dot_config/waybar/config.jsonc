@@ -2,271 +2,271 @@
 // Waybar configuration
 // ===========================================================================
 {
-  // ---------------------------------------------------------------------------
-  // Schema
-  // ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	// Schema
+	// ---------------------------------------------------------------------------
 
-  "$schema": "https://raw.githubusercontent.com/Magniquick/waybar-config-schema/main/schema.json",
+	"$schema": "https://raw.githubusercontent.com/Magniquick/waybar-config-schema/main/schema.json",
 
-  // ---------------------------------------------------------------------------
-  // UI / Behavior
-  // ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	// UI / Behavior
+	// ---------------------------------------------------------------------------
 
-  "layer": "top",
-  "height": 20,
-  "spacing": 4,
-  "start_hidden": false,
-  "reload_style_on_change": true,
+	"layer": "top",
+	"height": 20,
+	"spacing": 4,
+	"start_hidden": false,
+	"reload_style_on_change": true,
 
-  // ---------------------------------------------------------------------------
-  // Module positions
-  // ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	// Module positions
+	// ---------------------------------------------------------------------------
 
-  "modules-left": [
-    "custom/session",
-    "custom/dismiss_notifications",
-    "custom/autohide_lock",
-    "custom/hyprland-layout",
-    "hyprland/submap",
-    "tray"
-  ],
-  "modules-center": ["hyprland/workspaces"],
-  "modules-right": [
-    "hyprland/language",
-    "cpu",
-    "memory",
-    "temperature",
-    "network",
-    "wireplumber",
-    "custom/brightness",
-    "custom/weather",
-    "clock"
-  ],
+	"modules-left": [
+		"custom/session",
+		"custom/dismiss_notifications",
+		"custom/autohide_lock",
+		"custom/hyprland-layout",
+		"hyprland/submap",
+		"tray"
+	],
+	"modules-center": ["hyprland/workspaces"],
+	"modules-right": [
+		"hyprland/language",
+		"cpu",
+		"memory",
+		"temperature",
+		"network",
+		"wireplumber",
+		"custom/brightness",
+		"custom/weather",
+		"clock"
+	],
 
-  // ---------------------------------------------------------------------------
-  // Waybar modules
-  // ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	// Waybar modules
+	// ---------------------------------------------------------------------------
 
-  "hyprland/workspaces": {
-    "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
-    "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'",
-    "all-outputs": true,
-    "format": "{icon}",
-    "format-icons": {
-      "1": "Ⅰ",
-      "2": "Ⅱ",
-      "3": "Ⅲ",
-      "4": "Ⅳ",
-      "5": "Ⅴ",
-      "6": "Ⅵ",
-      "7": "Ⅶ",
-      "8": "Ⅷ",
-      "9": "Ⅸ",
-      "10": "Ⅹ"
-    }
-  },
-  "hyprland/language": {
-    "format": " {short}",
-    "keyboard-name": "kanata",
-    "on-click": "hyprctl switchxkblayout kanata next"
-  },
-  "hyprland/submap": {
-    "format": "󰘳 {}",
-    "tooltip": false
-  },
-  "image#distro": {
-    "path": "/usr/share/archlinux/icons/archlinux-icon-crystal-256.svg",
-    "size": 14
-  },
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-      "activated": " ",
-      "deactivated": " "
-    },
-    "tooltip-format-activated": "Idle: {status}",
-    "tooltip-format-deactivated": "Idle: {status}"
-  },
-  "wireplumber": {
-    "format": "{icon} {volume}%",
-    "format-muted": "󰝟",
-    "format-icons": ["󰕿", "󰖀", "󰕾"],
-    "on-click": "volctl --toggle",
-    "menu": "on-click-right",
-    "menu-file": "$XDG_CONFIG_HOME/waybar/modules/audio.xml",
-    "menu-actions": {
-      "settings": "pavucontrol"
-    },
-    "max-volume": 100,
-    "scroll-step": 2.0
-  },
-  "mpd": {
-    //"format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {title} ",
-    "format": " {artist} - {title}",
-    "format-disconnected": " Disconnected",
-    //"format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
-    "format-stopped": " Stopped",
-    "unknown-tag": "N/A",
-    "interval": 5,
-    "exec-if": "pgrep mpd",
-    "consume-icons": {
-      "on": " "
-    },
-    "random-icons": {
-      "off": "<span color=\"#f53c3c\"></span> ",
-      "on": " "
-    },
-    "repeat-icons": {
-      "on": " "
-    },
-    "single-icons": {
-      "on": "1 "
-    },
-    "state-icons": {
-      "paused": "",
-      "playing": ""
-    },
-    "tooltip-format": "{artist} - {album} - {title}",
-    "tooltip-format-disconnected": "MPD (disconnected)",
-    "max-length": 50,
-    "on-click": "mpc toggle",
-    "on-click-right": "footclient --app-id 'foot-mp-flt'  ncmpcpp -s visualizer -S playlist",
-    "on-scroll-up": "mpc next",
-    "on-scroll-down": "mpc prev"
-  },
-  "tray": {
-    "spacing": 10,
-    "icon-size": 14
-  },
-  "clock": {
-    "format": "󱑎 {:%I:%M}",
-    "format-alt": " {:%A, %B %d %Y}",
-    "tooltip-format": "<tt><small>{calendar}</small></tt>",
-    "calendar": {
-      "mode": "month",
-      "mode-mon-col": 3,
-      "weeks-pos": "right",
-      "on-scroll": 1,
-      "on-click-right": "mode",
-      "iso8601": true,
-      "format": {
-        "months": "<span color='#b8bb26'><b>{}</b></span>",
-        "days": "<span color='#fbf1c7'><b>{}</b></span>",
-        "weeks": "<span color='#83a598'><b>W{}</b></span>",
-        "weekdays": "<span color='#d3869b'><b>{}</b></span>",
-        "today": "<span color='#fabd2f'><b><u>{}</u></b></span>"
-      }
-    },
-    "actions": {
-      "on-click-right": "mode",
-      "on-click-forward": "tz_up",
-      "on-click-backward": "tz_down",
-      "on-scroll-up": "shift_up",
-      "on-scroll-down": "shift_down"
-    }
-  },
-  "cpu": {
-    "format": " {usage}%"
-  },
-  "memory": {
-    "format": "  {}%",
-    "tooltip-format": "Swap: {swapPercentage}%"
-  },
-  "temperature": {
-    //"thermal-zone": 2,
-    "hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
-    "critical-threshold": 80,
-    //"format-critical": "{icon} {temperatureC}°C",
-    "format": "{icon} {temperatureC}°C",
-    "format-icons": ["", "", ""],
-    "tooltip-format": "CPU: {temperatureC}°C"
-  },
-  "network": {
-    "format-wifi": " {essid} ({signalStrength}%)",
-    "format-ethernet": "󰑩 {bandwidthTotalBytes}",
-    "tooltip-format": " {bandwidthDownBytes}  {bandwidthUpBytes}",
-    "format-linked": "{ifname} (No IP)",
-    "format-disconnected": "󱖣 Disconnected",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}",
-    "interval": 5,
-    "menu": "on-click-right",
-    "menu-file": "$XDG_CONFIG_HOME/waybar/modules/network.xml",
-    "menu-actions": {
-      "networkmanager_dmenu": "networkmanager_dmenu",
-      "nm-connection-editor": "nm-connection-editor"
-    }
-  },
+	"hyprland/workspaces": {
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'",
+		"all-outputs": true,
+		"format": "{icon}",
+		"format-icons": {
+			"1": "Ⅰ",
+			"2": "Ⅱ",
+			"3": "Ⅲ",
+			"4": "Ⅳ",
+			"5": "Ⅴ",
+			"6": "Ⅵ",
+			"7": "Ⅶ",
+			"8": "Ⅷ",
+			"9": "Ⅸ",
+			"10": "Ⅹ"
+		}
+	},
+	"hyprland/language": {
+		"format": " {short}",
+		"keyboard-name": "kanata",
+		"on-click": "hyprctl switchxkblayout kanata next"
+	},
+	"hyprland/submap": {
+		"format": "󰘳 {}",
+		"tooltip": false
+	},
+	"image#distro": {
+		"path": "/usr/share/archlinux/icons/archlinux-icon-crystal-256.svg",
+		"size": 14
+	},
+	"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": " ",
+			"deactivated": " "
+		},
+		"tooltip-format-activated": "Idle: {status}",
+		"tooltip-format-deactivated": "Idle: {status}"
+	},
+	"wireplumber": {
+		"format": "{icon} {volume}%",
+		"format-muted": "󰝟",
+		"format-icons": ["󰕿", "󰖀", "󰕾"],
+		"on-click": "volctl --toggle",
+		"menu": "on-click-right",
+		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/audio.xml",
+		"menu-actions": {
+			"settings": "pavucontrol"
+		},
+		"max-volume": 100,
+		"scroll-step": 2.0
+	},
+	"mpd": {
+		//"format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {title} ",
+		"format": " {artist} - {title}",
+		"format-disconnected": " Disconnected",
+		//"format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+		"format-stopped": " Stopped",
+		"unknown-tag": "N/A",
+		"interval": 5,
+		"exec-if": "pgrep mpd",
+		"consume-icons": {
+			"on": " "
+		},
+		"random-icons": {
+			"off": "<span color=\"#f53c3c\"></span> ",
+			"on": " "
+		},
+		"repeat-icons": {
+			"on": " "
+		},
+		"single-icons": {
+			"on": "1 "
+		},
+		"state-icons": {
+			"paused": "",
+			"playing": ""
+		},
+		"tooltip-format": "{artist} - {album} - {title}",
+		"tooltip-format-disconnected": "MPD (disconnected)",
+		"max-length": 50,
+		"on-click": "mpc toggle",
+		"on-click-right": "footclient --app-id 'foot-mp-flt'  ncmpcpp -s visualizer -S playlist",
+		"on-scroll-up": "mpc next",
+		"on-scroll-down": "mpc prev"
+	},
+	"tray": {
+		"spacing": 10,
+		"icon-size": 14
+	},
+	"clock": {
+		"format": "󱑎 {:%I:%M}",
+		"format-alt": " {:%A, %B %d %Y}",
+		"tooltip-format": "<tt><small>{calendar}</small></tt>",
+		"calendar": {
+			"mode": "month",
+			"mode-mon-col": 3,
+			"weeks-pos": "right",
+			"on-scroll": 1,
+			"on-click-right": "mode",
+			"iso8601": true,
+			"format": {
+				"months": "<span color='#b8bb26'><b>{}</b></span>",
+				"days": "<span color='#fbf1c7'><b>{}</b></span>",
+				"weeks": "<span color='#83a598'><b>W{}</b></span>",
+				"weekdays": "<span color='#d3869b'><b>{}</b></span>",
+				"today": "<span color='#fabd2f'><b><u>{}</u></b></span>"
+			}
+		},
+		"actions": {
+			"on-click-right": "mode",
+			"on-click-forward": "tz_up",
+			"on-click-backward": "tz_down",
+			"on-scroll-up": "shift_up",
+			"on-scroll-down": "shift_down"
+		}
+	},
+	"cpu": {
+		"format": " {usage}%"
+	},
+	"memory": {
+		"format": "  {}%",
+		"tooltip-format": "Swap: {swapPercentage}%"
+	},
+	"temperature": {
+		//"thermal-zone": 2,
+		"hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
+		"critical-threshold": 80,
+		//"format-critical": "{icon} {temperatureC}°C",
+		"format": "{icon} {temperatureC}°C",
+		"format-icons": ["", "", ""],
+		"tooltip-format": "CPU: {temperatureC}°C"
+	},
+	"network": {
+		"format-wifi": " {essid} ({signalStrength}%)",
+		"format-ethernet": "󰑩 {bandwidthTotalBytes}",
+		"tooltip-format": " {bandwidthDownBytes}  {bandwidthUpBytes}",
+		"format-linked": "{ifname} (No IP)",
+		"format-disconnected": "󱖣 Disconnected",
+		"format-alt": "{ifname}: {ipaddr}/{cidr}",
+		"interval": 5,
+		"menu": "on-click-right",
+		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/network.xml",
+		"menu-actions": {
+			"networkmanager_dmenu": "networkmanager_dmenu",
+			"nm-connection-editor": "nm-connection-editor"
+		}
+	},
 
-  // ---------------------------------------------------------------------------
-  // Custom modules
-  // ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	// Custom modules
+	// ---------------------------------------------------------------------------
 
-  "custom/session": {
-    "format": "⏻ ",
-    "exec": "uptime --pretty | sed 's/up //'",
-    "interval": 60,
-    "exec-if": "exit 0",
-    "tooltip-format": "Uptime: {}",
-    "menu": "on-click-right",
-    "menu-file": "$XDG_CONFIG_HOME/waybar/modules/session.xml",
-    "menu-actions": {
-      "logout": "sessionctl --logout",
-      "lock": "sessionctl --lock",
-      "kill": "sessionctl --kill",
-      "reload": "sessionctl --reload",
-      "reboot": "sessionctl --reboot",
-      "shutdown": "sessionctl --shutdown"
-    }
-  },
-  "custom/brightness": {
-    "format": "{icon} {text}%",
-    "tooltip-format": "Brightness: {text}%",
-    "format-icons": ["󰃞", "󰃟", "󰃠"],
-    "return-type": "json",
-    "exec": "brightnessctl --get",
-    "exec-if": "exit 0",
-    "on-click": "pkill -SIGRTMIN+9 waybar",
-    "on-scroll-up": "brightnessctl --inc",
-    "on-scroll-down": "brightnessctl --dec",
-    "menu": "on-click-right",
-    "menu-file": "$XDG_CONFIG_HOME/waybar/modules/brightness.xml",
-    "menu-actions": {
-      "increase": "brightnessctl --inc",
-      "decrease": "brightnessctl --dec",
-      "custom": "brightnessctl --dmenu"
-    },
-    "signal": 9
-  },
-  "custom/dismiss_notifications": {
-    "exec-if": "command -v makoctl",
-    "exec": "( makoctl list | grep -q 'Notification' && echo '\nDismiss Notifications\n' ) || echo '\nNo Notifications' ",
-    "format": "{}",
-    "on-click": "makoctl dismiss -a",
-    "interval": 3
-  },
-  "custom/autohide_lock": {
-    "exec-if": "true",
-    "exec": "LOCK=\"/run/user/$(id -u)/waybar-autohide.lock\"; if [ -f \"$LOCK\" ]; then echo '\nLocked'; else echo ''; fi",
-    "format": "{}",
-    "on-click": "bash -lc 'LOCK=\"/run/user/$(id -u)/waybar-autohide.lock\"; if [ -f \"$LOCK\" ]; then rm -f \"$LOCK\"; else touch \"$LOCK\"; fi; pkill -SIGRTMIN+8 waybar'",
-    "signal": 8
-  },
-  "custom/weather": {
-    "format": "{}°",
-    "tooltip": true,
-    "interval": 3600,
-    "exec": "wttrbar --nerd --ampm --hide-conditions --location 'Mednogorsk'",
-    "return-type": "json"
-  },
-  "custom/hyprland-layout": {
-    "format": "{}",
-    "exec": "/home/frestein/.config/waybar/scripts/hyprland_get_layout.sh",
-    "exec-if": "pgrep -x Hyprland",
-    "return-type": "json",
-    "on-click": "/home/frestein/.config/hypr/scripts/toggle_monocle_layout.sh",
-    "tooltip": true,
-    "signal": 10
-  }
+	"custom/session": {
+		"format": "⏻ ",
+		"exec": "uptime --pretty | sed 's/up //'",
+		"interval": 60,
+		"exec-if": "exit 0",
+		"tooltip-format": "Uptime: {}",
+		"menu": "on-click-right",
+		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/session.xml",
+		"menu-actions": {
+			"logout": "sessionctl --logout",
+			"lock": "sessionctl --lock",
+			"kill": "sessionctl --kill",
+			"reload": "sessionctl --reload",
+			"reboot": "sessionctl --reboot",
+			"shutdown": "sessionctl --shutdown"
+		}
+	},
+	"custom/brightness": {
+		"format": "{icon} {text}%",
+		"tooltip-format": "Brightness: {text}%",
+		"format-icons": ["󰃞", "󰃟", "󰃠"],
+		"return-type": "json",
+		"exec": "brightnessctl --get",
+		"exec-if": "exit 0",
+		"on-click": "pkill -SIGRTMIN+9 waybar",
+		"on-scroll-up": "brightnessctl --inc",
+		"on-scroll-down": "brightnessctl --dec",
+		"menu": "on-click-right",
+		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/brightness.xml",
+		"menu-actions": {
+			"increase": "brightnessctl --inc",
+			"decrease": "brightnessctl --dec",
+			"custom": "brightnessctl --dmenu"
+		},
+		"signal": 9
+	},
+	"custom/dismiss_notifications": {
+		"exec-if": "command -v makoctl",
+		"exec": "( makoctl list | grep -q 'Notification' && echo '\nDismiss Notifications\n' ) || echo '\nNo Notifications' ",
+		"format": "{}",
+		"on-click": "makoctl dismiss -a",
+		"interval": 3
+	},
+	"custom/autohide_lock": {
+		"exec-if": "true",
+		"exec": "LOCK=\"/run/user/$(id -u)/waybar-autohide.lock\"; if [ -f \"$LOCK\" ]; then echo '\nLocked'; else echo ''; fi",
+		"format": "{}",
+		"on-click": "bash -lc 'LOCK=\"/run/user/$(id -u)/waybar-autohide.lock\"; if [ -f \"$LOCK\" ]; then rm -f \"$LOCK\"; else touch \"$LOCK\"; fi; pkill -SIGRTMIN+8 waybar'",
+		"signal": 8
+	},
+	"custom/weather": {
+		"format": "{}°",
+		"tooltip": true,
+		"interval": 3600,
+		"exec": "wttrbar --nerd --ampm --hide-conditions --location 'Mednogorsk'",
+		"return-type": "json"
+	},
+	"custom/hyprland-layout": {
+		"format": "{}",
+		"exec": "/home/frestein/.config/waybar/scripts/hyprland_get_layout.sh",
+		"exec-if": "pgrep -x Hyprland",
+		"return-type": "json",
+		"on-click": "/home/frestein/.config/hypr/scripts/toggle_monocle_layout.sh",
+		"tooltip": true,
+		"signal": 10
+	}
 }
 // ===========================================================================
 // Modelines for Emacs and Vim
