@@ -76,7 +76,7 @@
 
 **/__pycache__/
 **/.elc
-**/README.md
+**/README*
 **/LICENSE
 
 # $HOME/Tools/bgutil-ytdlp-pot-provider
