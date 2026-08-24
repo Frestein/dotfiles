@@ -1,29 +1,29 @@
 [
-    {
-        "default": "base"
-    },
-    {
-        "class": "gamescope",
-        "layer": "game"
-    },
-    {
-        "class": "Loading...|War Thunder",
-        "layer": "game"
-    },
-    {
-        "class": "steam_app",
-        "layer": "game"
-    },
-    {
-        "class": "xrengine",
-        "layer": "game"
-    },
-    {
-        "class": "witcher3.exe",
-        "layer": "game"
-    },
-    {
-        "class": "OxygenNotIncluded",
-        "layer": "game"
-    }
+	{
+		"default": "base"
+	},
+	{
+		"class": "gamescope",
+		"layer": "game"
+	},
+	{
+		"class": "Loading...|War Thunder",
+		"layer": "game"
+	},
+	{
+		"class": "steam_app",
+		"layer": "game"
+	},
+	{
+		"class": "xrengine",
+		"layer": "game"
+	},
+	{
+		"class": "witcher3.exe",
+		"layer": "game"
+	},
+	{
+		"class": "OxygenNotIncluded",
+		"layer": "game"
+	}
 ]
