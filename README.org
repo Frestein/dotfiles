@@ -1,0 +1,50 @@
+#+TITLE: 🐐 dotfiles
+#+AUTHOR: Frestein
+#+EMAIL: fresteinart@gmail.com
+#+OPTIONS: toc:nil
+
+Hacker's keyboard-centric configuration, built with a work-first focus and careful design, managed with [[https://www.chezmoi.io/][chezmoi]].
+
+* Notable features
+
+- *Arch Linux* — rolling-release distribution with minimal base, bleeding-edge software, chosen because it "just works".
+- *Hyprland* — flexible Wayland compositor that seamlessly integrates into the workflow.
+- *Emacs* — heavily hackable "operating system" based on Doom Emacs.
+- *Neovim* — lightweight and minimalistic editor for quick changes.
+- *Qutebrowser* — keyboard-driven browser with stunning UX.
+- *MPV* — minimalistic yet functional video player.
+- *Yazi* — blazingly fast terminal file manager with vim-like UX.
+- *Fish* — user-friendly and feature-rich interactive shell.
+- *Chezmoi* — declarative dotfile management with templating and external dependency fetching.
+
+* Installation
+
+Clone the repository and apply the configuration:
+
+#+BEGIN_SRC sh :eval no
+chezmoi init https://codeberg.org/Frestein/dotfiles  # Initialize chezmoi with the dotfiles repository
+chezmoi apply   # Apply the configuration to the system
+#+END_SRC
+
+* Updating
+
+Pull the latest changes and re-apply:
+
+#+BEGIN_SRC sh :eval no
+chezmoi cd      # Navigate to the chezmoi source directory
+git pull        # Pull latest changes from the repository
+chezmoi status  # Check the status of the applied configuration
+chezmoi diff    # View differences between the source and the applied state
+chezmoi apply   # Apply the updated configuration
+#+END_SRC
+
+To fetch and apply externals, set the ~CZ_EXT~ environment variable:
+
+#+BEGIN_SRC sh :eval no
+env CZ_EXT=1 chezmoi apply
+#+END_SRC
+
+* License
+
+This project is distributed under the GNU General Public License v3.0.
+See the [[file:LICENSE][LICENSE]] file for details.
