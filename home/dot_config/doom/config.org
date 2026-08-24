@@ -2982,7 +2982,12 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   (when (modulep! :lang json +lsp)
     (add-hook 'jsonc-mode-local-vars-hook #'lsp! 'append))
 
-  (add-to-list 'auto-mode-alist '("\\.jsonc\\'" . jsonc-mode)))
+  (add-to-list 'auto-mode-alist '("\\.jsonc\\'" . jsonc-mode))
+
+  ;; Use tabs for indentation
+  (setq-hook! '(json-mode-hook json-ts-mode-hook jsonc-mode-hook)
+    indent-tabs-mode t
+    tab-width 2))
 #+end_src
 
 ** Python
@@ -3014,16 +3019,17 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
           "--stdin-filepath" filepath
           "-"))))
 
-  ;; Use tabs for indentation
   (add-hook 'lua-mode-hook
             (lambda ()
-              (setopt indent-tabs-mode t)
-              (setopt tab-width 4)
-              (setopt lua-indent-level 4)))
+	      ;; Use tabs for indentation
+	      (setopt indent-tabs-mode t)
+	      (setopt tab-width 4)
+	      (setopt lua-indent-level 4)))
 
   (when (modulep! :lang lua +tree-sitter)
     (add-hook 'lua-ts-mode-hook
-              (lambda ()
+	      (lambda ()
+		;; Use tabs for indentation
 		(setopt indent-tabs-mode t)
 		(setopt tab-width 4)
 		(setopt lua-ts-indent-offset 4)))))
