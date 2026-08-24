@@ -63,6 +63,9 @@
 			"8": "Ⅷ",
 			"9": "Ⅸ",
 			"10": "Ⅹ"
+		},
+		"persistent-workspaces": {
+			"*": 6
 		}
 	},
 	"hyprland/language": {
