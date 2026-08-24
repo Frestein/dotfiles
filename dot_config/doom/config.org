@@ -2899,6 +2899,11 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   '(markdown-header-face-4 :inherit outline-4)
   '(markdown-header-face-5 :inherit outline-5)
   '(markdown-header-face-6 :inherit outline-6))
+
+(when (modulep! :lang markdown)
+  ;; Add strict rule only for README.md
+  (setq auto-mode-alist (assoc-delete-all "/README\\(?:\\.md\\)?\\'" auto-mode-alist))
+  (add-to-list 'auto-mode-alist '("/README\\.md\\'" . gfm-mode)))
 #+end_src
 
 ** QML
