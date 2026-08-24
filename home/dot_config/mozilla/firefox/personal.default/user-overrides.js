@@ -1,11 +1,18 @@
-// Personal preferences
+/****************************************************************************
+ * Personal preferences                                                     *
+ ****************************************************************************/
+
+// Network
 user_pref("network.http.http3.enabled", true);
 
 // Fonts
 // See: https://wiki.archlinux.org/title/Firefox#Font_troubleshooting
-user_pref("font.name-list.emoji", "emoji");
+user_pref("font.name-list.emoji", "emoji"); // Use Fontconfig preset for emoji
 user_pref("gfx.font_rendering.fontconfig.max_generic_substitutions", 127);
 user_pref("gfx.font_rendering.opentype_svg.enabled", false);
+
+// Media
+user_pref("media.autoplay.default", 0); // Allow all autoplay
 
 /****************************************************************************
  * Arkenfox                                                                 *
@@ -24,7 +31,7 @@ user_pref("browser.safebrowsing.phishing.enabled", false);
 user_pref("browser.safebrowsing.downloads.enabled", false);
 
 // 0404: disable SB checks for unwanted software
-user_pref("browser.safebrowsing.downloads.remote.block_potentially_unwanted", false);
+user_pref("browser.safebrowsing.downloads.remote.block_potentially_unwanted", false); // prettier-ignore
 user_pref("browser.safebrowsing.downloads.remote.block_uncommon", false);
 
 // 0710: disable DoH
