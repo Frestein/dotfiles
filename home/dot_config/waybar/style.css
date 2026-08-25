@@ -5,10 +5,7 @@
    ============================================= */
 
 * {
-	font-family:
-		Maple Mono,
-		FontAwesome,
-		JetBrainsMono Nerd Font;
+	font-family: monospace;
 	font-size: 13px;
 }
 
