@@ -64,6 +64,7 @@
 			"9": "Ⅸ",
 			"10": "Ⅹ"
 		},
+		"tooltip": false,
 		"persistent-workspaces": {
 			"*": 6
 		}
