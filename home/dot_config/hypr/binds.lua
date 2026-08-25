@@ -256,8 +256,8 @@ hl.bind("SUPER + W", hl.dsp.submap "window/workspace")
 
 hl.define_submap("window/workspace", function()
 	-- Prev/Next Workspace
-	hl.bind("Q", hl.dsp.focus { workspace = "e-1" })
-	hl.bind("E", hl.dsp.focus { workspace = "e+1" })
+	hl.bind("Q", hl.dsp.focus { workspace = "-1" })
+	hl.bind("E", hl.dsp.focus { workspace = "+1" })
 
 	-- Workspace Switching
 	for i = 1, 10 do
@@ -332,10 +332,10 @@ for i = 1, 10 do
 end
 
 -- -- Prev/Next Workspace
-hl.bind("SUPER + SHIFT + H", hl.dsp.focus { workspace = "e-1" })
-hl.bind("SUPER + SHIFT + J", hl.dsp.focus { workspace = "e-1" })
-hl.bind("SUPER + SHIFT + K", hl.dsp.focus { workspace = "e+1" })
-hl.bind("SUPER + SHIFT + L", hl.dsp.focus { workspace = "e+1" })
+hl.bind("SUPER + SHIFT + H", hl.dsp.focus { workspace = "-1" })
+hl.bind("SUPER + SHIFT + J", hl.dsp.focus { workspace = "-1" })
+hl.bind("SUPER + SHIFT + K", hl.dsp.focus { workspace = "+1" })
+hl.bind("SUPER + SHIFT + L", hl.dsp.focus { workspace = "+1" })
 
 -- -- Alt-Tab
 hl.bind(
