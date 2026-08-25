@@ -1,5 +1,9 @@
 @import "themes/gruvbox-dark.css";
 
+/* =============================================
+   Global settings
+   ============================================= */
+
 * {
 	font-family:
 		Maple Mono,
@@ -8,10 +12,10 @@
 	font-size: 13px;
 }
 
+/* Waybar window */
 window#waybar {
 	background-color: @regular0;
-	/*border-bottom: 2px solid @bright0;*/
-	color: #d8dee9;
+	color: @bright7;
 	transition-property: background-color;
 	transition-duration: 0.5s;
 }
@@ -20,15 +24,7 @@ window#waybar.hidden {
 	opacity: 0.2;
 }
 
-window#waybar.termite {
-	background-color: #3f3f3f;
-}
-
-window#waybar.chromium {
-	background-color: #000000;
-	border: none;
-}
-
+/* Buttons (generic) */
 button {
 	/* Use box-shadow instead of border so the text isn't offset */
 	box-shadow: inset 0 -3px transparent;
@@ -43,6 +39,7 @@ button:hover {
 	box-shadow: inset 0 -3px @bright7;
 }
 
+/* Tooltips */
 tooltip {
 	color: @bright7;
 	background-color: @regular0;
@@ -51,6 +48,7 @@ tooltip {
 	border-radius: 0;
 }
 
+/* Module areas */
 .modules-left,
 .modules-right {
 	padding: 0 10px;
@@ -66,76 +64,80 @@ tooltip {
 	margin-right: 0;
 }
 
-#workspaces button {
-	padding: 0 5px;
-	background-color: transparent;
-	color: @bright7;
-}
+/* =============================================
+   Modules
+   ============================================= */
 
-#workspaces button:hover {
-	background: rgba(0, 0, 0, 0.2);
-}
-
-#workspaces button.focused {
-	background-color: @bright4;
-	box-shadow: inset 0 -3px @bright7;
-}
-
-#workspaces button.urgent {
-	background-color: @regular1;
-}
-
-#mode {
-	background-color: @bright4;
-	box-shadow: inset 0 -3px @bright7;
-}
-
-#window,
+/* Workspaces */
 #workspaces {
 	margin: 0 4px;
 }
 
-#clock,
-#battery,
-#cpu,
-#memory,
-#disk,
-#temperature,
-#backlight,
-#network,
-#pulseaudio,
-#wireplumber,
-#custom-media,
-#tray,
-#mode,
-#idle_inhibitor,
-#scratchpad,
-#power-profiles-daemon,
-#mpd,
-#cpu,
-#language,
-#wireplumber,
-#image.distro,
-#submap,
-#custom-weather,
-#custom-pacman,
-#custom-hyprland-layout,
-#custom-brightness {
+#workspaces button {
 	padding: 0 5px;
 	color: @bright7;
 }
 
-#custom-session,
-#custom-dismiss_notifications,
-#custom-autohide_lock {
-	padding: 0 5px 0 0;
-	color: @bright7;
+#workspaces button:not(.empty) {
+	color: @bright4;
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
-#custom-autohide_lock {
-	padding-top: 0.2rem;
-	padding-left: 0.2rem;
-	font-size: 1.3rem;
+#workspaces button.active {
+	color: @bright2;
+}
+
+#workspaces button.urgent {
+	color: @bright3;
+}
+
+#workspaces button:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Clock */
+#clock {
+	padding: 0 5px;
+}
+
+/* CPU */
+#cpu {
+	padding: 0 5px;
+}
+
+/* Distro Icon */
+#image.distro {
+	padding: 0 5px;
+}
+
+/* Language */
+#language {
+	padding: 0 5px;
+}
+
+/* Memory */
+#memory {
+	padding: 0 5px;
+}
+
+/* Network */
+#network {
+	padding: 0 5px;
+}
+
+/* Temperature */
+#temperature {
+	padding: 0 5px;
+}
+
+/* Wireplumber */
+#wireplumber {
+	padding: 0 5px;
+}
+
+/* System Tray */
+#tray {
+	padding: 0 5px;
 }
 
 #tray > .passive {
@@ -146,35 +148,43 @@ tooltip {
 	-gtk-icon-effect: highlight;
 }
 
-#idle_inhibitor.activated {
-	color: @bright7;
-}
-
-#scratchpad {
-	background: rgba(0, 0, 0, 0.2);
-}
-
-#scratchpad.empty {
-	background-color: transparent;
-}
-
-#privacy {
-	padding: 0;
-}
-
-#privacy-item {
+/* Idle inhibitor */
+#idle_inhibitor {
 	padding: 0 5px;
-	color: @bright7;
 }
 
-#privacy-item.screenshare {
-	background-color: @regular3;
+/* Session */
+#custom-session {
+	padding: 0 5px 0 0;
 }
 
-#privacy-item.audio-in {
-	background-color: @regular2;
+/* Dismiss Notifications */
+#custom-dismiss_notifications {
+	padding: 0 5px 0 0;
 }
 
-#privacy-item.audio-out {
-	background-color: @regular4;
+/* Autohide Lock */
+#custom-autohide_lock {
+	padding: 0.2rem 5px 0 0.2rem;
+	font-size: 1.3rem;
+}
+
+/* Brightness */
+#custom-brightness {
+	padding: 0 5px;
+}
+
+/* Hyprland Submap */
+#submap {
+	padding: 0 5px;
+}
+
+/* Hyprland Layout */
+#custom-hyprland-layout {
+	padding: 0 5px;
+}
+
+/* Weather */
+#custom-weather {
+	padding: 0 5px;
 }
