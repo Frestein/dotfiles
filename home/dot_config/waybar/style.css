@@ -48,17 +48,11 @@ tooltip {
 /* Module areas */
 .modules-left,
 .modules-right {
-	padding: 0 10px;
+	padding: 0 5px;
 }
 
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-	margin-left: 0;
-}
-
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
-	margin-right: 0;
+label.module {
+	padding: 0 5px;
 }
 
 /* =============================================
@@ -77,11 +71,11 @@ tooltip {
 
 #workspaces button:not(.empty) {
 	color: @bright4;
-	background-color: rgba(0, 0, 0, 0.1);
 }
 
 #workspaces button.active {
 	color: @bright2;
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 #workspaces button.urgent {
@@ -92,44 +86,14 @@ tooltip {
 	background-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Clock */
-#clock {
-	padding: 0 5px;
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+	margin-left: 0;
 }
 
-/* CPU */
-#cpu {
-	padding: 0 5px;
-}
-
-/* Distro Icon */
-#image.distro {
-	padding: 0 5px;
-}
-
-/* Language */
-#language {
-	padding: 0 5px;
-}
-
-/* Memory */
-#memory {
-	padding: 0 5px;
-}
-
-/* Network */
-#network {
-	padding: 0 5px;
-}
-
-/* Temperature */
-#temperature {
-	padding: 0 5px;
-}
-
-/* Wireplumber */
-#wireplumber {
-	padding: 0 5px;
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+	margin-right: 0;
 }
 
 /* System Tray */
@@ -143,45 +107,4 @@ tooltip {
 
 #tray > .needs-attention {
 	-gtk-icon-effect: highlight;
-}
-
-/* Idle inhibitor */
-#idle_inhibitor {
-	padding: 0 5px;
-}
-
-/* Session */
-#custom-session {
-	padding: 0 5px 0 0;
-}
-
-/* Dismiss Notifications */
-#custom-dismiss_notifications {
-	padding: 0 5px 0 0;
-}
-
-/* Autohide Lock */
-#custom-autohide_lock {
-	padding: 0.2rem 5px 0 0.2rem;
-	font-size: 1.3rem;
-}
-
-/* Brightness */
-#custom-brightness {
-	padding: 0 5px;
-}
-
-/* Hyprland Submap */
-#submap {
-	padding: 0 5px;
-}
-
-/* Hyprland Layout */
-#custom-hyprland-layout {
-	padding: 0 5px;
-}
-
-/* Weather */
-#custom-weather {
-	padding: 0 5px;
 }

@@ -44,7 +44,7 @@
 	],
 
 	// ---------------------------------------------------------------------------
-	// Waybar modules
+	// Modules
 	// ---------------------------------------------------------------------------
 
 	"hyprland/workspaces": {
@@ -104,10 +104,8 @@
 		"scroll-step": 2.0
 	},
 	"mpd": {
-		//"format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {title} ",
 		"format": " {artist} - {title}",
 		"format-disconnected": " Disconnected",
-		//"format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
 		"format-stopped": " Stopped",
 		"unknown-tag": "N/A",
 		"interval": 5,
@@ -172,14 +170,12 @@
 		"format": " {usage}%"
 	},
 	"memory": {
-		"format": "  {}%",
+		"format": " {}%",
 		"tooltip-format": "Swap: {swapPercentage}%"
 	},
 	"temperature": {
-		//"thermal-zone": 2,
 		"hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
 		"critical-threshold": 80,
-		//"format-critical": "{icon} {temperatureC}°C",
 		"format": "{icon} {temperatureC}°C",
 		"format-icons": ["", "", ""],
 		"tooltip-format": "CPU: {temperatureC}°C"
@@ -199,13 +195,8 @@
 			"nm-connection-editor": "nm-connection-editor"
 		}
 	},
-
-	// ---------------------------------------------------------------------------
-	// Custom modules
-	// ---------------------------------------------------------------------------
-
 	"custom/session": {
-		"format": "⏻ ",
+		"format": "⏻",
 		"exec": "uptime --pretty | sed 's/up //'",
 		"interval": 60,
 		"exec-if": "exit 0",
