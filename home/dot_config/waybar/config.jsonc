@@ -26,9 +26,9 @@
 		"custom/session",
 		"custom/dismiss_notifications",
 		"custom/autohide_lock",
+		"group/tray-collapsible",
 		"custom/hyprland-layout",
-		"hyprland/submap",
-		"tray"
+		"hyprland/submap"
 	],
 	"modules-center": ["hyprland/workspaces"],
 	"modules-right": [
@@ -46,7 +46,6 @@
 	// ---------------------------------------------------------------------------
 	// Modules
 	// ---------------------------------------------------------------------------
-
 	"hyprland/workspaces": {
 		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
 		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'",
@@ -135,6 +134,19 @@
 		"on-click-right": "footclient --app-id 'foot-mp-flt'  ncmpcpp -s visualizer -S playlist",
 		"on-scroll-up": "mpc next",
 		"on-scroll-down": "mpc prev"
+	},
+	"group/tray-collapsible": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 150,
+			"click-to-reveal": true
+		},
+		"modules": ["custom/tray-icon", "tray"]
+	},
+	"custom/tray-icon": {
+		"format": "",
+		"tooltip": false,
+		"cursor": true
 	},
 	"tray": {
 		"spacing": 10,
