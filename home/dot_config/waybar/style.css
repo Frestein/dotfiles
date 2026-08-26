@@ -102,3 +102,24 @@ label.module {
 #tray > .needs-attention {
 	-gtk-icon-effect: highlight;
 }
+
+/* Clock */
+.calendar-today {
+	color: @bright3;
+}
+
+.calendar-days {
+	color: @fg0;
+}
+
+.calendar-weeks {
+	color: @bright4;
+}
+
+.calendar-weekdays {
+	color: @bright5;
+}
+
+.calendar-months {
+	color: @bright2;
+}

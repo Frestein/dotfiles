@@ -154,7 +154,6 @@
 	},
 	"clock": {
 		"format": "󱑎 {:%I:%M}",
-		"format-alt": " {:%A, %B %d %Y}",
 		"tooltip-format": "<tt><small>{calendar}</small></tt>",
 		"calendar": {
 			"mode": "month",
@@ -164,17 +163,17 @@
 			"on-click-right": "mode",
 			"iso8601": true,
 			"format": {
-				"months": "<span color='#b8bb26'><b>{}</b></span>",
-				"days": "<span color='#fbf1c7'><b>{}</b></span>",
-				"weeks": "<span color='#83a598'><b>W{}</b></span>",
-				"weekdays": "<span color='#d3869b'><b>{}</b></span>",
-				"today": "<span color='#fabd2f'><b><u>{}</u></b></span>"
+				"months": "<span class='months'><b>{}</b></span>",
+				"days": "<span class='days'><b>{}</b></span>",
+				"weeks": "<span class='weeks'><b>W{}</b></span>",
+				"weekdays": "<span class='weekdays'><b>{}</b></span>",
+				"today": "<span class='today'><b><u>{}</u></b></span>"
 			}
 		},
 		"actions": {
 			"on-click-right": "mode",
-			"on-click-forward": "tz_up",
-			"on-click-backward": "tz_down",
+			"on-click-forward": "shift_up",
+			"on-click-backward": "shift_down",
 			"on-scroll-up": "shift_up",
 			"on-scroll-down": "shift_down"
 		}
