@@ -1419,7 +1419,7 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
 
 *** Vertico
 
-#+begin_src elisp
+#+begin_src elisp :eval no
 ;; thx Sarg https://github.com/doomemacs/doomemacs/pull/8634/changes
 (when (modulep! :completion vertico)
   (with-eval-after-load "lib/help"
@@ -2987,7 +2987,8 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   ;; Use tabs for indentation
   (setq-hook! '(json-mode-hook json-ts-mode-hook jsonc-mode-hook)
     indent-tabs-mode t
-    tab-width 2))
+    tab-width 2
+    js-indent-level 2))
 #+end_src
 
 ** Python

@@ -2431,7 +2431,8 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   ;; Use tabs for indentation
   (setq-hook! '(json-mode-hook json-ts-mode-hook jsonc-mode-hook)
     indent-tabs-mode t
-    tab-width 2))
+    tab-width 2
+    js-indent-level 2))
 
 (use-package! eglot-python-preset
   :when (and (modulep! :tools lsp +eglot)
