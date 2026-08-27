@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+TMPFILE=$(mktemp)
+JSONFILE=$(mktemp)
+
+makoctl history -j >"$TMPFILE"
+
+SELECTION=$(jq -r '.[] | "[\(.id)] [\(.urgency)] \(.app_name): \(.summary)"' "$TMPFILE" | fuzzel --dmenu --counter --minimal-lines --prompt 'Notifications ' -w 58)
+
+if [ -n "$SELECTION" ]; then
+	ID=$(echo "$SELECTION" | sed -n 's/^\[\([0-9]*\)\].*/\1/p')
+	if [ -n "$ID" ]; then
+		jq ".[] | select(.id == $ID)" "$TMPFILE" >"$JSONFILE"
+		footclient -T 'footclient-center-half-float' bash -c "jq . < '$JSONFILE'; echo -e '\nPress any key to close'; read -s -n1"
+	fi
+fi
+
+rm -f "$TMPFILE" "$JSONFILE"

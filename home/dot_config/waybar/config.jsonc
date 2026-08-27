@@ -24,7 +24,7 @@
 
 	"modules-left": [
 		"custom/session",
-		"custom/dismiss_notifications",
+		"custom/notifications",
 		"custom/autohide_lock",
 		"group/tray-collapsible",
 		"custom/hyprland-layout",
@@ -243,12 +243,13 @@
 		},
 		"signal": 9
 	},
-	"custom/dismiss_notifications": {
-		"exec-if": "command -v makoctl",
-		"exec": "( makoctl list | grep -q 'Notification' && echo '\nDismiss Notifications\n' ) || echo '\nNo Notifications' ",
+	"custom/notifications": {
+		"exec": "if makoctl mode | grep -q 'dnd'; then count=$(makoctl list -j | jq length); if [ $count -gt 0 ]; then echo \" $count\"; else echo \"\"; fi; else echo \"\"; fi",
+		"interval": 2,
 		"format": "{}",
-		"on-click": "makoctl dismiss -a",
-		"interval": 3
+		"on-click": "view-notifications",
+		"on-click-right": "makoctl mode -t dnd",
+		"tooltip": false
 	},
 	"custom/autohide_lock": {
 		"exec-if": "true",

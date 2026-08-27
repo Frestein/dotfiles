@@ -40,7 +40,9 @@ default-timeout=0
 #   Mode   #
 ############
 
-[mode=do-not-disturb]
+[mode=dnd]
 invisible=1
+default-timeout=0
+ignore-timeout=1
 
 # vim:ft=dosini
