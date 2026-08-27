@@ -1,0 +1,61 @@
+#!/usr/bin/env sh
+
+# Check if hyprsunset exists
+if ! command -v hyprsunset >/dev/null 2>&1; then
+	echo "Error: hyprsunset not found" >&2
+	notify-send -u critical -h string:x-dunst-stack-tag:bluelight "Bluelight" "hyprsunset not found"
+	exit 1
+fi
+
+NOTIFY=0
+
+show_help() {
+	cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Toggle bluelight filter (hyprsunset) on/off.
+
+Options:
+  -n, --notify       Send notification on toggle
+  -h, --help         Show this help message
+
+If no option is given, toggles bluelight without notification.
+EOF
+	exit 0
+}
+
+# Parse arguments
+while [ $# -gt 0 ]; do
+	case "$1" in
+	-n | --notify)
+		NOTIFY=1
+		shift
+		;;
+	-h | --help)
+		show_help
+		;;
+	*)
+		echo "Unknown option: $1" >&2
+		echo "Use -h or --help for usage." >&2
+		exit 1
+		;;
+	esac
+done
+
+send_notify() {
+	urgency="$1"
+	message="$2"
+	if [ "$NOTIFY" -eq 1 ]; then
+		notify-send -u "$urgency" -h string:x-dunst-stack-tag:bluelight "Bluelight" "$message"
+	fi
+}
+
+PID=$(pgrep -x hyprsunset)
+
+if [ -z "$PID" ]; then
+	hyprsunset >/dev/null 2>&1 &
+	send_notify low "Started"
+else
+	kill "$PID"
+	send_notify low "Stopped"
+fi

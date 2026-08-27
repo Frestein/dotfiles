@@ -2,18 +2,13 @@
 <interface>
   <object class="GtkMenu" id="menu">
     <child>
-      <object class="GtkMenuItem" id="increase">
-        <property name="label">Increase</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="decrease">
-        <property name="label">Decrease</property>
-      </object>
-    </child>
-    <child>
       <object class="GtkMenuItem" id="custom">
-        <property name="label">Custom</property>
+        <property name="label">Set brightness</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="bluelight">
+        <property name="label">Bluelight</property>
       </object>
     </child>
   </object>

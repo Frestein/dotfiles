@@ -90,7 +90,6 @@ local bar_restart_service = scu "restart waybar"
 
 -- Hyprland scripts
 local toggle_monocle_layout = paths.scripts_path .. "/toggle_monocle_layout.sh"
-local toggle_bluelight = paths.scripts_path .. "/toggle_bluelight.sh"
 local colorpicker = paths.scripts_path .. "/colorpicker.sh"
 local kill_active_window = paths.scripts_path .. "/kill_active_window.sh"
 local close_special = paths.scripts_path .. "/close_special.sh"
@@ -388,7 +387,7 @@ hl.bind("SUPER + ALT + H", hl.dsp.exec_cmd "brightnessctl --inc", { repeating = 
 hl.bind("SUPER + ALT + G", hl.dsp.exec_cmd "brightnessctl --dec", { repeating = true })
 
 -- Bluelight
-hl.bind("SUPER + ALT + B", hl.dsp.exec_cmd(toggle_bluelight), { locked = true })
+hl.bind("SUPER + ALT + B", hl.dsp.exec_cmd "toggle-bluelight -n", { locked = true })
 
 -- Colorpicker
 hl.bind("SUPER + P", hl.dsp.exec_cmd(colorpicker))

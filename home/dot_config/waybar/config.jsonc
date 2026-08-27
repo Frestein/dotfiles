@@ -237,9 +237,8 @@
 		"menu": "on-click-right",
 		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/brightness.xml",
 		"menu-actions": {
-			"increase": "brightnessctl --inc",
-			"decrease": "brightnessctl --dec",
-			"custom": "brightnessctl --dmenu"
+			"custom": "brightnessctl --dmenu",
+			"bluelight": "toggle-bluelight"
 		},
 		"signal": 9
 	},
