@@ -22,7 +22,8 @@
 		"memory",
 		"temperature",
 		"network",
-		"wireplumber",
+		"wireplumber#source",
+		"wireplumber#sink",
 		"custom/brightness",
 		"custom/weather",
 		"clock"
@@ -72,7 +73,7 @@
 		"tooltip-format-activated": "Idle: {status}",
 		"tooltip-format-deactivated": "Idle: {status}"
 	},
-	"wireplumber": {
+	"wireplumber#sink": {
 		"format": "{icon} {volume}%",
 		"format-muted": "󰝟",
 		"format-icons": ["󰕿", "󰖀", "󰕾"],
@@ -80,10 +81,22 @@
 		"menu": "on-click-right",
 		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/audio.xml",
 		"menu-actions": {
-			"settings": "pavucontrol"
+			"pavucontrol": "pavucontrol",
+			"pwmenu": "pwmenu -l custom --launcher-command \"fuzzel -d --minimal-lines -w 58 -p 'PipeWire ' --placeholder 'Choose...'\""
 		},
-		"max-volume": 100,
 		"scroll-step": 2.0
+	},
+	"wireplumber#source": {
+		"node-type": "Audio/Source",
+		"format": "󰍬 {volume}%",
+		"format-muted": "󰍭",
+		"on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+		"menu": "on-click-right",
+		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/audio.xml",
+		"menu-actions": {
+			"pavucontrol": "pavucontrol",
+			"pwmenu": "pwmenu -l custom --launcher-command \"fuzzel -d --minimal-lines -w 58 -p 'PipeWire ' --placeholder 'Choose...'\""
+		}
 	},
 	"mpd": {
 		"format": " {artist} - {title}",

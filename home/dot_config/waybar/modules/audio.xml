@@ -2,8 +2,13 @@
 <interface>
   <object class="GtkMenu" id="menu">
     <child>
-      <object class="GtkMenuItem" id="settings">
-        <property name="label">Settings</property>
+      <object class="GtkMenuItem" id="pavucontrol">
+        <property name="label">Pavucontrol</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="pwmenu">
+        <property name="label">Pwmenu</property>
       </object>
     </child>
   </object>
