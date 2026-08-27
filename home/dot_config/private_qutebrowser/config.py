@@ -313,7 +313,6 @@ c.url.searchengines = {
     # References
     "ref-pin": "pinterest.com/search/pins/?q={}",
     "ref-zch": "zerochan.net/{}",
-    "ref-coub": "coub.com/search?q={}",
 
     # Social & Forums
     "social-reddit": "reddit.com/r/{}",
@@ -505,7 +504,6 @@ qsites = {
     "k": "kinopoisk.ru/user/frestein/movies/planned-to-watch",
     "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
     "T": "translate.google.com",
-    "c": "coub.com/community/anime",
     "y": "youtube.com",
     "p": "pinterest.com",
     "r": "reddit.com",
