@@ -209,9 +209,10 @@ hl.define_submap("hyprland", function()
 	-- Session
 	hl.bind("S", hl.dsp.submap "session")
 	hl.define_submap("session", "reset", function()
-		hl.bind("Q", hl.dsp.exec_cmd "sessionctl --logout", { locked = true })
+		hl.bind("Q", hl.dsp.exec_cmd "sessionctl --shutdown --confirm", { locked = true })
+		hl.bind("R", hl.dsp.exec_cmd "sessionctl --reboot --confirm", { locked = true })
 		hl.bind("L", hl.dsp.exec_cmd "sessionctl --lock")
-		hl.bind("R", hl.dsp.exec_cmd "sessionctl --reload")
+		hl.bind("SHIFT + L", hl.dsp.exec_cmd "sessionctl --logout --confirm", { locked = true })
 		hl.bind("ESCAPE", hl.dsp.submap "reset")
 	end)
 
