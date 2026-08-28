@@ -38,60 +38,75 @@ js tri.config.set("instance_mozhi", "mozhi.pussthecat.org")
 " ---------------------------------------------------------------------------
 
 " Web
-set searchurls.ddg https://duckduckgo.com/?q=%s
-set searchurls.g https://www.google.com/search?q=%s
-set searchurls.ya https://ya.ru/search/?text=%s
-js tri.config.set("searchurls", "4get", `https://${tri.config.get("instance_4get")}/web?country=ru&nsfw=yes&s=%s`)
-js tri.config.set("searchurls", "searxng", `https://${tri.config.get("instance_searxng")}/?q=%s`)
-
-" Maps
-set searchurls.gmap https://www.google.com/maps?q=%s
-set searchurls.osm https://www.openstreetmap.org/search?query=%s
-
-" Translation
-set searchurls.gtrans https://translate.google.com/?text=%s
-js tri.config.set("searchurls", "mozhi", `https://${tri.config.get("instance_mozhi")}/?engine=yandex&from=auto&to=ru&text=%s`)
-
-" Shopping
-set searchurls.ozon https://www.ozon.ru/search/?text=%s
-set searchurls.yam https://market.yandex.ru/search?text=%s
+set searchurls.search-ddg https://duckduckgo.com/?q=%s
+set searchurls.search-g https://www.google.com/search?q=%s
+set searchurls.search-ya https://ya.ru/search/?text=%s
+js tri.config.set("searchurls", "search-4get", `https://${tri.config.get("instance_4get")}/web?country=ru&nsfw=yes&s=%s`)
+js tri.config.set("searchurls", "search-sx", `https://${tri.config.get("instance_searxng")}/?q=%s`)
 
 " Development & Packages
-set searchurls.melpa https://melpa.org/#/?q=%s
-set searchurls.toys https://toys.whereis.social/?search=%s
-set searchurls.nix https://search.nixos.org/packages?query=%s
-set searchurls.nur https://nur.nix-community.org/?query=%s
-set searchurls.nixos https://wiki.nixos.org/w/index.php?search=%s
-set searchurls.aur https://aur.archlinux.org/packages?&K=%s
-set searchurls.arch https://wiki.archlinux.org/index.php?search=%s
-set searchurls.source https://sourcegraph.com/search?q=context:global+%s
-set searchurls.gh https://github.com/search?q=%s
-set searchurls.cdb https://codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q=%s
+set searchurls.wk-nixos https://wiki.nixos.org/w/index.php?search=%s
+set searchurls.wk-gentoo https://wiki.gentoo.org/index.php?search=%s
+set searchurls.wk-arch https://wiki.archlinux.org/index.php?search=%s
+set searchurls.pkg-melpa https://melpa.org/#/?q=%s
+set searchurls.pkg-guix https://packages.guix.gnu.org/search/?query=%s
+set searchurls.pkg-toys https://toys.whereis.social/?search=%s
+set searchurls.pkg-nix https://search.nixos.org/packages?query=%s
+set searchurls.pkg-nur https://nur.nix-community.org/?query=%s
+set searchurls.pkg-gentoo https://packages.gentoo.org/packages/search?q=%s
+set searchurls.pkg-arch https://archlinux.org/packages/?q=%s
+set searchurls.pkg-aur https://aur.archlinux.org/packages?&K=%s
+set searchurls.pkg-linux https://pkgs.org/search/?q=%s
+set searchurls.grep-sg https://sourcegraph.com/search?q=context:global+%s
+set searchurls.grep-gh-code https://github.com/search?q=%s&type=code
+set searchurls.grep-gh-repo https://github.com/search?q=%s&type=repositories
+set searchurls.grep-gh-issue https://github.com/search?q=%s&type=issues
+set searchurls.grep-gh-user https://github.com/search?q=%s&type=users
+set searchurls.grep-cb-repo https://codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q=%s
+set searchurls.grep-cb-user https://codeberg.org/explore/users?q=%s
 
-" UserScripts
-set searchurls.gf https://greasyfork.org/en/scripts?q=%s
-set searchurls.sf https://sleazyfork.org/en/scripts?q=%s
+" Userscripts
+set searchurls.userscript-gf https://greasyfork.org/en/scripts?q=%s
+set searchurls.userscript-sf https://sleazyfork.org/en/scripts?q=%s
+
+" Torrent
+set searchurls.torrent-rutracker https://rutracker.org/forum/tracker.php?nm=%s
+
+" Translation
+set searchurls.trans-g https://translate.google.com/?text=%s
+js tri.config.set("searchurls", "trans-mozhi", `https://${tri.config.get("instance_mozhi")}/?engine=yandex&from=auto&to=ru&text=%s`)
+
+" Maps
+set searchurls.map-g https://www.google.com/maps?q=%s
+set searchurls.map-osm https://www.openstreetmap.org/search?query=%s
+
+" Media
+set searchurls.media-yt https://www.youtube.com/results?search_query=%s
+set searchurls.media-kp https://www.kinopoisk.ru/index.php?kp_query=%s
+
+" Music
+set searchurls.music-ytm https://music.youtube.com/search?q=%s
+set searchurls.music-lfm https://www.last.fm/search?q=%s
+
+" References
+set searchurls.ref-pin https://pinterest.com/search/pins/?q=%s
+set searchurls.ref-zch https://www.zerochan.net/%s
 
 " Social & Forums
-set searchurls.reddit https://www.reddit.com/r/%s
-set searchurls.pin https://pinterest.com/search/pins/?q=%s
+set searchurls.social-reddit https://www.reddit.com/r/%s
 
-" Torrents & Media
-set searchurls.rutracker https://rutracker.org/forum/tracker.php?nm=%s
-set searchurls.yt https://www.youtube.com/results?search_query=%s
-set searchurls.ytm https://music.youtube.com/search?q=%s
-set searchurls.lastfm https://www.last.fm/search?q=%s
-set searchurls.kino https://www.kinopoisk.ru/index.php?kp_query=%s
+" Games
+set searchurls.games-pdb https://www.protondb.com/search?q=%s
 
 " Anime & Manga
-set searchurls.alist https://anilist.co/search/anime?hide%20my%20anime=true&search=%s
-set searchurls.Alist https://anilist.co/search/anime?hide%20my%20anime=true&adult=true&search=%s
-set searchurls.mlist https://anilist.co/search/manga?hide%20my%20manga=true&search=%s
-set searchurls.Mlist https://anilist.co/search/manga?hide%20my%20manga=true&adult=true&search=%s
-set searchurls.zerochan https://www.zerochan.net/%s
+set searchurls.anime-sfw https://anilist.co/search/anime?hide%20my%20anime=true&search=%s
+set searchurls.anime-nsfw https://anilist.co/search/anime?hide%20my%20anime=true&adult=true&search=%s
+set searchurls.manga-sfw https://anilist.co/search/manga?hide%20my%20manga=true&search=%s
+set searchurls.manga-nsfw https://anilist.co/search/manga?hide%20my%20manga=true&adult=true&search=%s
 
-" Gaming
-set searchurls.pdb https://www.protondb.com/search?q=%s
+" Shopping
+set searchurls.shop-ozon https://www.ozon.ru/search/?text=%s
+set searchurls.shop-yam https://market.yandex.ru/search?text=%s
 
 " ---------------------------------------------------------------------------
 " Default search engine
