@@ -123,3 +123,33 @@ label.module {
 .calendar-months {
 	color: @bright2;
 }
+
+/* Session  */
+.session-collapsible-children > * {
+	padding: 0 4px;
+	transition: background-color 0.2s ease;
+}
+
+#custom-session-icon {
+	color: @bright2;
+}
+
+#custom-session-lock {
+	color: @bright4;
+}
+
+#custom-session-logout {
+	color: @bright6;
+}
+
+#custom-session-reboot {
+	color: @bright3;
+}
+
+#custom-session-shutdown {
+	color: @bright1;
+}
+
+.session-collapsible-children > *:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}

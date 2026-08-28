@@ -8,7 +8,7 @@
 	"reload_style_on_change": true,
 	// Module positions
 	"modules-left": [
-		"custom/session",
+		"group/session-collapsible",
 		"custom/notifications",
 		"custom/autohide_lock",
 		"group/tray-collapsible",
@@ -133,8 +133,10 @@
 	"group/tray-collapsible": {
 		"orientation": "inherit",
 		"drawer": {
-			"transition-duration": 150,
-			"click-to-reveal": true
+			"transition-duration": 200,
+			"reveal-delay": 120,
+			"click-to-reveal": false,
+			"children-class": "tray-collapsible-children"
 		},
 		"modules": ["custom/tray-icon", "tray"]
 	},
@@ -145,7 +147,7 @@
 	},
 	"tray": {
 		"spacing": 10,
-		"icon-size": 14
+		"icon-size": 12
 	},
 	"clock": {
 		"format": "󱑎 {:%I:%M}",
@@ -196,22 +198,56 @@
 		"on-click": "view-network -n",
 		"interval": 5
 	},
-	"custom/session": {
-		"format": "⏻",
+	"group/session-collapsible": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 200,
+			"reveal-delay": 120,
+			"click-to-reveal": false,
+			"children-class": "session-collapsible-children"
+		},
+		"modules": [
+			"custom/session-icon",
+			"custom/session-lock",
+			"custom/session-logout",
+			"custom/session-reboot",
+			"custom/session-shutdown"
+		]
+	},
+	"custom/session-icon": {
+		"format": "󰣇",
+		"tooltip-format": "Uptime: {}",
 		"exec": "uptime --pretty | sed 's/up //'",
 		"interval": 60,
-		"exec-if": "exit 0",
-		"tooltip-format": "Uptime: {}",
-		"menu": "on-click-right",
-		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/session.xml",
-		"menu-actions": {
-			"logout": "sessionctl --logout",
-			"lock": "sessionctl --lock",
-			"kill": "sessionctl --kill",
-			"reload": "sessionctl --reload",
-			"reboot": "sessionctl --reboot",
-			"shutdown": "sessionctl --shutdown"
-		}
+		"cursor": true
+	},
+	"custom/session-lock": {
+		"format": "",
+		"tooltip-format": "Lock",
+		"on-click": "sessionctl --lock --confirm",
+		"tooltip": true,
+		"cursor": true
+	},
+	"custom/session-logout": {
+		"format": "󰗽",
+		"tooltip-format": "Logout",
+		"on-click": "sessionctl --logout --confirm",
+		"tooltip": true,
+		"cursor": true
+	},
+	"custom/session-reboot": {
+		"format": "",
+		"tooltip-format": "Reboot",
+		"on-click": "sessionctl --reboot --confirm",
+		"tooltip": true,
+		"cursor": true
+	},
+	"custom/session-shutdown": {
+		"format": "",
+		"tooltip-format": "Shutdown",
+		"on-click": "sessionctl --shutdown --confirm",
+		"tooltip": true,
+		"cursor": true
 	},
 	"custom/brightness": {
 		"format": "{icon} {text}%",
