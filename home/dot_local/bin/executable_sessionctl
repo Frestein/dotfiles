@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
 usage() {
-    cat <<EOF
-Usage: ${0##*/} [OPTION]
+	cat <<EOF
+Usage: ${0##*/} [OPTION] [--confirm]
 
 Options:
   --dmenu              Show interactive menu (default if no options)
@@ -12,114 +12,147 @@ Options:
   --reload             Reload Hyprland config and waybar
   --reboot             Reboot the system
   --shutdown           Power off the system
+  --confirm            Ask for confirmation before performing action
   --help, -h           Show this help
 EOF
 }
 
-# Error handling: if stderr is a terminal, print to stderr; otherwise try notification
+# Error handling
 error() {
-    msg="$1"
-    if [ -t 2 ]; then
-        echo "Error: $msg" >&2
-    else
-        notify-send -h string:x-dunst-stack-tag:session -u critical "Brightness" "Error: $msg" 2>/dev/null || echo "Error: $msg" >&2
-    fi
-    exit 1
+	msg="$1"
+	if [ -t 2 ]; then
+		echo "Error: $msg" >&2
+	else
+		notify-send -h string:x-dunst-stack-tag:session -u critical "Session" "Error: $msg" 2>/dev/null || echo "Error: $msg" >&2
+	fi
+	exit 1
+}
+
+# Confirmation dialog via fuzzel
+confirm_action() {
+	action_name="$1"
+	choice=$(printf "Yes\nNo" | fuzzel -d --minimal-lines -p "Confirm ${action_name}? " --placeholder "Choose...")
+	[ "$choice" = "Yes" ]
 }
 
 do_logout() {
-    if uwsm check is-active; then
-        uwsm stop
-    elif [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
-        if command -v hyprshutdown >/dev/null 2>&1; then
-            hyprshutdown
-        else
-            hyprctl dispatch "hl.dsp.exit()"
-        fi
-    fi
+	if uwsm check is-active; then
+		uwsm stop
+	elif [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+		if command -v hyprshutdown >/dev/null 2>&1; then
+			hyprshutdown
+		else
+			hyprctl dispatch "hl.dsp.exit()"
+		fi
+	fi
 }
 
 do_lock() {
-    loginctl lock-session
+	loginctl lock-session
 }
 
 do_kill() {
-    if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
-        hyprctl kill >/dev/null &
-    fi
+	if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+		hyprctl kill >/dev/null &
+	fi
 }
 
 do_reload() {
-    if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
-        hyprctl reload
-    fi
-    if command -v waybar >/dev/null 2>&1; then
-        systemctl --user reload waybar
-    fi
-    if command -v mako >/dev/null 2>&1; then
-        systemctl --user reload mako
-    fi
-    notify-send -u low -h string:x-dunst-stack-tag:session "Session" "Config reloaded"
-}
-
-do_suspend() {
-    systemctl suspend
-}
-
-do_hibernate() {
-    systemctl hibernate
+	if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
+		hyprctl reload
+	fi
+	if command -v waybar >/dev/null 2>&1; then
+		systemctl --user reload waybar
+	fi
+	if command -v mako >/dev/null 2>&1; then
+		systemctl --user reload mako
+	fi
+	notify-send -u low -h string:x-dunst-stack-tag:session "Session" "Config reloaded"
 }
 
 do_reboot() {
-    systemctl reboot
+	systemctl reboot
 }
 
 do_shutdown() {
-    systemctl poweroff
+	systemctl poweroff
 }
 
+# Show menu and return selected action name (e.g. "logout")
 show_menu() {
-    options="󰗽 Logout\n Lock\n󰯈 Kill mode\n Reload\n Reboot\n Shutdown"
+	options="󰗽 Logout\n Lock\n󰯈 Kill\n Reload\n Reboot\n Shutdown"
 
-    selected_option=$(
-        printf "%b" "$options" | fuzzel -d \
-            --minimal-lines \
-            -p " " \
-            --placeholder "Session "
-    )
+	selected=$(printf "%b" "$options" | fuzzel -d \
+		--minimal-lines \
+		-p " " \
+		--placeholder "Session ")
 
-    command=$(printf "%s\n" "$selected_option" | grep -o -E "[a-zA-Z]+")
-
-    case "$command" in
-    "Logout") do_logout ;;
-    "Lock") do_lock ;;
-    "Kill") do_kill ;;
-    "Reload") do_reload ;;
-    "Reboot") do_reboot ;;
-    "Shutdown") do_shutdown ;;
-    *) exit 0 ;;
-    esac
+	# Extract action name from selected line (first word after icon)
+	echo "$selected" | awk '{print tolower($2)}'
 }
 
 main() {
-    case "${1:-}" in
-    --dmenu) show_menu ;;
-    --logout) do_logout ;;
-    --lock) do_lock ;;
-    --kill) do_kill ;;
-    --reload) do_reload ;;
-    --reboot) do_reboot ;;
-    --shutdown) do_shutdown ;;
-    --help | -h)
-        usage
-        exit 0
-        ;;
-    "")
-        usage
-        exit 1
-        ;;
-    *) error "Unknown option '$1'" ;;
-    esac
+	local action=""
+	local confirm=0
+
+	# Parse arguments
+	for arg in "$@"; do
+		case "$arg" in
+		--confirm) confirm=1 ;;
+		--logout | --lock | --kill | --reload | --reboot | --shutdown | --dmenu)
+			action="$arg"
+			;;
+		--help | -h)
+			usage
+			exit 0
+			;;
+		*)
+			error "Unknown option '$arg'"
+			;;
+		esac
+	done
+
+	# Default to --dmenu if no action given
+	if [ -z "$action" ]; then
+		action="--dmenu"
+	fi
+
+	# If --dmenu, get action from menu
+	if [ "$action" = "--dmenu" ]; then
+		selected_action=$(show_menu)
+		if [ -z "$selected_action" ]; then
+			exit 0 # canceled
+		fi
+		# Map selected action to command
+		case "$selected_action" in
+		logout) action="--logout" ;;
+		lock) action="--lock" ;;
+		kill) action="--kill" ;;
+		reload) action="--reload" ;;
+		reboot) action="--reboot" ;;
+		shutdown) action="--shutdown" ;;
+		*) exit 0 ;;
+		esac
+	fi
+
+	# Confirm if requested
+	if [ $confirm -eq 1 ]; then
+		action_name="${action#--}"
+		if ! confirm_action "$action_name"; then
+			exit 0
+		fi
+	fi
+
+	# Execute action
+	case "$action" in
+	--logout) do_logout ;;
+	--lock) do_lock ;;
+	--kill) do_kill ;;
+	--reload) do_reload ;;
+	--reboot) do_reboot ;;
+	--shutdown) do_shutdown ;;
+	*) error "Internal error: unknown action '$action'" ;;
+	esac
 }
 
 main "$@"
