@@ -124,6 +124,23 @@ label.module {
 	color: @bright2;
 }
 
+/* Temperature */
+#temperature.cpu {
+	color: @bright4;
+}
+
+#temperature.gpu {
+	color: @bright6;
+}
+
+#temperature.warning {
+	color: @bright3;
+}
+
+#temperature.critical {
+	color: @bright1;
+}
+
 /* Session  */
 .session-collapsible-children > * {
 	padding: 0 4px;

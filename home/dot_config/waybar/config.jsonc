@@ -20,7 +20,8 @@
 		"hyprland/language",
 		"cpu",
 		"memory",
-		"temperature",
+		"temperature#cpu",
+		"temperature#gpu",
 		"network",
 		"wireplumber#source",
 		"wireplumber#sink",
@@ -182,12 +183,23 @@
 		"format": " {}%",
 		"tooltip-format": "Swap: {swapPercentage}%"
 	},
-	"temperature": {
-		"hwmon-path": "/sys/class/hwmon/hwmon4/temp1_input",
-		"critical-threshold": 80,
+	"temperature#cpu": {
+		"hwmon-name": "coretemp",
+		"input-filename": "temp1_input",
+		"warning-threshold": 65,
+		"critical-threshold": 72,
 		"format": "{icon} {temperatureC}°C",
 		"format-icons": ["", "", ""],
 		"tooltip-format": "CPU: {temperatureC}°C"
+	},
+	"temperature#gpu": {
+		"hwmon-name": "amdgpu",
+		"input-filename": "temp1_input",
+		"warning-threshold": 80,
+		"critical-threshold": 86,
+		"format": "{icon} {temperatureC}°C",
+		"format-icons": ["", "", ""],
+		"tooltip-format": "GPU: {temperatureC}°C"
 	},
 	"network": {
 		"format-wifi": " {essid} ({signalStrength}%)",
