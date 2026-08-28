@@ -8,7 +8,6 @@ Options:
   --dmenu              Show interactive menu (default if no options)
   --logout             Log out from the session
   --lock               Lock the screen
-  --reload             Reload Hyprland config and waybar
   --reboot             Reboot the system
   --shutdown           Power off the system
   --confirm            Ask for confirmation before performing action
@@ -50,19 +49,6 @@ do_lock() {
 	loginctl lock-session
 }
 
-do_reload() {
-	if [ -n "${HYPRLAND_INSTANCE_SIGNATURE}" ]; then
-		hyprctl reload
-	fi
-	if command -v waybar >/dev/null 2>&1; then
-		systemctl --user reload waybar
-	fi
-	if command -v mako >/dev/null 2>&1; then
-		systemctl --user reload mako
-	fi
-	notify-send -u low -h string:x-dunst-stack-tag:session "Session" "Config reloaded"
-}
-
 do_reboot() {
 	systemctl reboot
 }
@@ -73,11 +59,11 @@ do_shutdown() {
 
 # Show menu and return selected action name (e.g. "logout")
 show_menu() {
-	options="󰗽 Logout\n Lock\n Reload\n Reboot\n Shutdown"
+	options="󰗽 Logout\n Lock\n Reboot\n Shutdown"
 
 	selected=$(printf "%b" "$options" | fuzzel -d \
 		--minimal-lines \
-		-p " " \
+		-p "󰣇 " \
 		--placeholder "Session ")
 
 	# Extract action name from selected line (first word after icon)
@@ -92,7 +78,7 @@ main() {
 	for arg in "$@"; do
 		case "$arg" in
 		--confirm) confirm=1 ;;
-		--logout | --lock | --reload | --reboot | --shutdown | --dmenu)
+		--logout | --lock | --reboot | --shutdown | --dmenu)
 			action="$arg"
 			;;
 		--help | -h)
@@ -120,7 +106,6 @@ main() {
 		case "$selected_action" in
 		logout) action="--logout" ;;
 		lock) action="--lock" ;;
-		reload) action="--reload" ;;
 		reboot) action="--reboot" ;;
 		shutdown) action="--shutdown" ;;
 		*) exit 0 ;;
@@ -139,7 +124,6 @@ main() {
 	case "$action" in
 	--logout) do_logout ;;
 	--lock) do_lock ;;
-	--reload) do_reload ;;
 	--reboot) do_reboot ;;
 	--shutdown) do_shutdown ;;
 	*) error "Internal error: unknown action '$action'" ;;
