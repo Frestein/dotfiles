@@ -2,9 +2,6 @@
 " Tridactyl configuration
 " ===========================================================================
 
-" Clear all changes not included in the configuration
-sanitise tridactyllocal tridactylsync
-
 " ===========================================================================
 " UI / Behavior
 " ===========================================================================
@@ -214,8 +211,10 @@ bind --mode=input <C-j> focusinput -n
 bind --mode=input <C-k> focusinput -N
 
 " Leader
-" Reload config. Explicitly source correct file; have had issues using just "source".
-bind \rc source ~/.config/tridactyl/tridactylrc
+" Reload config
+bind \rc composite sanitise tridactylconfig; source ~/.config/tridactyl/tridactylrc
+
+fillcmdline_nofocus Config loaded
 
 " ===========================================================================
 " Modelines for Emacs and Vim
