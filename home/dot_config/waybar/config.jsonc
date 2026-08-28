@@ -190,17 +190,11 @@
 	"network": {
 		"format-wifi": " {essid} ({signalStrength}%)",
 		"format-ethernet": "󰑩 {bandwidthTotalBytes}",
-		"tooltip-format": " {bandwidthDownBytes}  {bandwidthUpBytes}",
-		"format-linked": "{ifname} (No IP)",
+		"format-linked": "󰩩 {ifname} (No IP)",
 		"format-disconnected": "󱖣 Disconnected",
-		"format-alt": "{ifname}: {ipaddr}/{cidr}",
-		"interval": 5,
-		"menu": "on-click-right",
-		"menu-file": "$XDG_CONFIG_HOME/waybar/modules/network.xml",
-		"menu-actions": {
-			"networkmanager_dmenu": "networkmanager_dmenu",
-			"nm-connection-editor": "nm-connection-editor"
-		}
+		"tooltip-format": " {bandwidthDownBytes}\n {bandwidthUpBytes}",
+		"on-click": "view-network -n",
+		"interval": 5
 	},
 	"custom/session": {
 		"format": "⏻",

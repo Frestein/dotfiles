@@ -1,0 +1,103 @@
+#!/usr/bin/env sh
+
+NOTIFY=0
+
+show_help() {
+	cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Show network information (interface, IP, gateway, MAC, speed, SSID, signal, etc.).
+
+Options:
+  -n, --notify       Send notification instead of printing to terminal
+  -h, --help         Show this help message
+
+If no option is given, prints to terminal.
+EOF
+	exit 0
+}
+
+# Parse arguments
+while [ $# -gt 0 ]; do
+	case "$1" in
+	-n | --notify)
+		NOTIFY=1
+		shift
+		;;
+	-h | --help)
+		show_help
+		;;
+	*)
+		echo "Unknown option: $1" >&2
+		echo "Use -h or --help for usage." >&2
+		exit 1
+		;;
+	esac
+done
+
+# Determine default interface
+iface=$(ip route | grep default | awk '{print $5}' | head -n1)
+
+if [ -z "$iface" ]; then
+	echo "Error: no active network interface found" >&2
+	if [ "$NOTIFY" -eq 1 ]; then
+		notify-send -u critical -h string:x-dunst-stack-tag:network "Network" "No active interface"
+	fi
+	exit 1
+fi
+
+# MAC address
+mac=$(cat "/sys/class/net/$iface/address" 2>/dev/null)
+
+# IP and CIDR
+ip_cidr=$(ip -4 addr show "$iface" | grep -oP '(?<=inet\s)\d+(\.\d+){3}/\d+' | head -n1)
+ipaddr=$(echo "$ip_cidr" | cut -d/ -f1)
+cidr=$(echo "$ip_cidr" | cut -d/ -f2)
+
+# Gateway
+gwaddr=$(ip route | grep default | awk '{print $3}' | head -n1)
+
+# Link speed (Ethernet) or bitrate (Wi-Fi)
+speed=""
+if echo "$iface" | grep -q '^e'; then
+	# Ethernet: read speed from ethtool or sysfs
+	if command -v ethtool >/dev/null 2>&1; then
+		speed=$(ethtool "$iface" 2>/dev/null | grep -i "Speed" | awk '{print $2}')
+	else
+		speed=$(cat "/sys/class/net/$iface/speed" 2>/dev/null)
+	fi
+	[ -n "$speed" ] && speed="${speed}Mb/s"
+fi
+
+# SSID, signal, frequency, bitrate (Wi-Fi only)
+essid=""
+signal=""
+frequency=""
+tx_bitrate=""
+if echo "$iface" | grep -q '^w'; then
+	essid=$(iw dev "$iface" info 2>/dev/null | grep ssid | awk '{print $2}')
+	signal=$(iw dev "$iface" link 2>/dev/null | grep signal | awk '{print $2}' | sed 's/-//')
+	frequency=$(iw dev "$iface" info 2>/dev/null | grep freq | awk '{print $2}')
+	# bitrate from /proc/net/wireless? Actually use iw dev link
+	tx_bitrate=$(iw dev "$iface" link 2>/dev/null | grep "tx bitrate" | awk '{print $3, $4}')
+fi
+
+# Build message
+msg="Interface: $iface\nMAC: ${mac:-N/A}\nIP: ${ipaddr:-N/A}\nCIDR: ${cidr:-N/A}\nGateway: ${gwaddr:-N/A}"
+
+if [ -n "$speed" ]; then
+	msg="$msg\nSpeed: $speed"
+elif [ -n "$tx_bitrate" ]; then
+	msg="$msg\nTx Bitrate: $tx_bitrate"
+fi
+
+if [ -n "$essid" ]; then
+	msg="$msg\nSSID: $essid\nSignal: ${signal:-N/A}%"
+	[ -n "$frequency" ] && msg="$msg\nFrequency: ${frequency}GHz"
+fi
+
+if [ "$NOTIFY" -eq 1 ]; then
+	notify-send -u low -h string:x-dunst-stack-tag:network "Network" "$msg"
+else
+	echo "$msg" | sed 's/\\n/\n/g'
+fi
