@@ -85,7 +85,8 @@
 			"pavucontrol": "pavucontrol",
 			"pwmenu": "pwmenu -l custom --launcher-command \"fuzzel -d --minimal-lines -w 58 -p 'PipeWire ' --placeholder 'Choose...'\""
 		},
-		"scroll-step": 2.0
+		"scroll-step": 2.0,
+		"tooltip": false
 	},
 	"wireplumber#source": {
 		"node-type": "Audio/Source",
@@ -97,7 +98,8 @@
 		"menu-actions": {
 			"pavucontrol": "pavucontrol",
 			"pwmenu": "pwmenu -l custom --launcher-command \"fuzzel -d --minimal-lines -w 58 -p 'PipeWire ' --placeholder 'Choose...'\""
-		}
+		},
+		"tooltip": false
 	},
 	"mpd": {
 		"format": " {artist} - {title}",
@@ -263,7 +265,6 @@
 	},
 	"custom/brightness": {
 		"format": "{icon} {text}%",
-		"tooltip-format": "Brightness: {text}%",
 		"format-icons": ["󰃞", "󰃟", "󰃠"],
 		"return-type": "json",
 		"exec": "brightnessctl --get",
@@ -277,7 +278,8 @@
 			"custom": "brightnessctl --dmenu",
 			"bluelight": "toggle-bluelight"
 		},
-		"signal": 9
+		"signal": 9,
+		"tooltip": false
 	},
 	"custom/notifications": {
 		"exec": "if makoctl mode | grep -q 'dnd'; then count=$(makoctl list -j | jq length); if [ $count -gt 0 ]; then echo \" $count\"; else echo \"\"; fi; else echo \"\"; fi",

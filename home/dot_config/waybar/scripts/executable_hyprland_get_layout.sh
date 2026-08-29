@@ -3,7 +3,7 @@
 LAYOUT=$(hyprctl activeworkspace -j | jq -r '.tiledLayout')
 
 if [ "$LAYOUT" = "monocle" ]; then
-    echo '{"text": " Monocle", "tooltip": "Layout: monocle"}'
+	echo '{"text": " Monocle", "tooltip": "Change to Dwindle"}'
 else
-    echo '{"text": " Dwindle", "tooltip": "Layout: dwindle"}'
+	echo '{"text": " Dwindle", "tooltip": "Change to Monocle"}'
 fi
