@@ -1,0 +1,8 @@
+[Unit]
+Description=Check disk usage and send critical notification if threshold exceeded
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/check-disk-usage
+Environment=DISPLAY=:0
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus

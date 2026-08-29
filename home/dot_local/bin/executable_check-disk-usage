@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Check disk usage for mount partitions.
+# Send a critical notification if usage exceeds THRESHOLD_PERCENT.
+
+THRESHOLD_PERCENT=95
+
+df -H -t ext4 -t btrfs --output=target,pcent | tail -n +2 | while read -r mount pct; do
+	pct_num=${pct%\%}
+	if [ "$pct_num" -gt "$THRESHOLD_PERCENT" ]; then
+		# Create a unique tag for each mount point (replace spaces/slashes)
+		tag="disk-space-$(basename "$mount" | sed 's/[^a-zA-Z0-9]/-/g')"
+		notify-send -u critical -t 0 -h "string:x-dunst-stack-tag:$tag" \
+			"Low disk space on $mount" \
+			"Used ${pct_num}% of total capacity. Please free up space."
+	fi
+done
