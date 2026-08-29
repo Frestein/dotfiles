@@ -19,7 +19,8 @@
 	"modules-right": [
 		"hyprland/language",
 		"cpu",
-		"memory",
+		"memory#ram",
+		"memory#swap",
 		"temperature#cpu",
 		"temperature#gpu",
 		"network",
@@ -181,9 +182,13 @@
 	"cpu": {
 		"format": " {usage}%"
 	},
-	"memory": {
+	"memory#ram": {
 		"format": " {}%",
-		"tooltip-format": "Swap: {swapPercentage}%"
+		"tooltip": false
+	},
+	"memory#swap": {
+		"format": "󰯍 {swapPercentage}%",
+		"tooltip": false
 	},
 	"temperature#cpu": {
 		"hwmon-name": "coretemp",
