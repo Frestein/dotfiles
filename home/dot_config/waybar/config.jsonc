@@ -197,7 +197,7 @@
 		"critical-threshold": 72,
 		"format": "{icon} {temperatureC}°C",
 		"format-icons": ["", "", ""],
-		"tooltip-format": "CPU: {temperatureC}°C"
+		"tooltip-format": "CPU"
 	},
 	"temperature#gpu": {
 		"hwmon-name": "amdgpu",
@@ -206,7 +206,7 @@
 		"critical-threshold": 86,
 		"format": "{icon} {temperatureC}°C",
 		"format-icons": ["", "", ""],
-		"tooltip-format": "GPU: {temperatureC}°C"
+		"tooltip-format": "GPU"
 	},
 	"network": {
 		"format-wifi": " {essid} ({signalStrength}%)",
