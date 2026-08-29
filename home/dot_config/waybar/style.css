@@ -141,7 +141,29 @@ label.module {
 	color: @bright1;
 }
 
-/* Session  */
+/* Disk */
+.disk-collapsible-children > * {
+	padding: 0 4px;
+	transition: background-color 0.2s ease;
+}
+
+#disk.root {
+	color: @bright2;
+}
+
+#disk.home {
+	color: @bright3;
+}
+
+#disk.hdd1 {
+	color: @orange1;
+}
+
+.disk-collapsible-children > *:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Session */
 .session-collapsible-children > * {
 	padding: 0 4px;
 	transition: background-color 0.2s ease;

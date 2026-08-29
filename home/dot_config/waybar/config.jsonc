@@ -9,6 +9,8 @@
 	// Module positions
 	"modules-left": [
 		"group/session-collapsible",
+		"clock",
+		"custom/weather",
 		"custom/notifications",
 		"custom/autohide_lock",
 		"group/tray-collapsible",
@@ -18,6 +20,7 @@
 	"modules-center": ["hyprland/workspaces"],
 	"modules-right": [
 		"hyprland/language",
+		"group/disk-collapsible",
 		"cpu",
 		"memory#ram",
 		"memory#swap",
@@ -26,9 +29,7 @@
 		"network",
 		"wireplumber#source",
 		"wireplumber#sink",
-		"custom/brightness",
-		"custom/weather",
-		"clock"
+		"custom/brightness"
 	],
 	// Modules
 	"hyprland/workspaces": {
@@ -216,6 +217,37 @@
 		"tooltip-format": " {bandwidthDownBytes}\n {bandwidthUpBytes}",
 		"on-click": "view-network -n",
 		"interval": 5
+	},
+	"group/disk-collapsible": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 200,
+			"transition-left-to-right": false,
+			"reveal-delay": 120,
+			"click-to-reveal": false,
+			"children-class": "disk-collapsible-children"
+		},
+		"modules": ["custom/disk-icon", "disk#root", "disk#home", "disk#hdd1"]
+	},
+	"custom/disk-icon": {
+		"format": "󰋊",
+		"cursor": true,
+		"tooltip": false
+	},
+	"disk#root": {
+		"format": "{free:G}G",
+		"paths": ["/"],
+		"tooltip-format": "Root: {used}/{total} ({percentage_used}%)"
+	},
+	"disk#home": {
+		"format": "{free:G}G",
+		"paths": ["/home"],
+		"tooltip-format": "Home: {used}/{total} ({percentage_used}%)"
+	},
+	"disk#hdd1": {
+		"format": "{free:G}G",
+		"paths": ["/mnt/sda"],
+		"tooltip-format": "HDD1: {used}/{total} ({percentage_used}%)"
 	},
 	"group/session-collapsible": {
 		"orientation": "inherit",
