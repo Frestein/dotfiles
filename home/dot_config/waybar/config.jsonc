@@ -23,8 +23,7 @@
 		"group/disk-collapsible",
 		"group/temperature-collapsible",
 		"cpu",
-		"memory#ram",
-		"memory#swap",
+		"group/memory-collapsible",
 		"network",
 		"wireplumber#source",
 		"wireplumber#sink",
@@ -178,13 +177,31 @@
 	"cpu": {
 		"format": " {usage}%"
 	},
+	"group/memory-collapsible": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 200,
+			"transition-left-to-right": false,
+			"reveal-delay": 120,
+			"click-to-reveal": false,
+			"children-class": "memory-collapsible-children"
+		},
+		"modules": ["custom/memory-icon", "memory#ram", "memory#swap"]
+	},
+	"custom/memory-icon": {
+		"format": " {}%",
+		"exec": "free | awk '/Mem|Swap/ { used+=$3; total+=$2 } END { print int(used/total*100) }'",
+		"interval": 30,
+		"cursor": true,
+		"tooltip": false
+	},
 	"memory#ram": {
 		"format": " {}%",
-		"tooltip": false
+		"tooltip-format": "RAM"
 	},
 	"memory#swap": {
 		"format": "󰯍 {swapPercentage}%",
-		"tooltip": false
+		"tooltip-format": "Swap"
 	},
 	"group/temperature-collapsible": {
 		"orientation": "inherit",
