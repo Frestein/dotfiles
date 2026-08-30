@@ -11,8 +11,8 @@
 		"group/session-collapsible",
 		"clock",
 		"custom/weather",
+		"custom/autohide-lock",
 		"custom/notifications",
-		"custom/autohide_lock",
 		"group/tray-collapsible",
 		"custom/hyprland-layout",
 		"hyprland/submap"
@@ -23,9 +23,9 @@
 		"group/wireplumber-collapsible",
 		"group/disk-collapsible",
 		"group/temperature-collapsible",
+		"network",
 		"cpu",
 		"group/memory-collapsible",
-		"network",
 		"custom/brightness"
 	],
 	// Modules
@@ -371,7 +371,7 @@
 		"on-click-right": "makoctl mode -t dnd",
 		"tooltip": false
 	},
-	"custom/autohide_lock": {
+	"custom/autohide-lock": {
 		"exec-if": "true",
 		"exec": "LOCK=\"/run/user/$(id -u)/waybar-autohide.lock\"; if [ -f \"$LOCK\" ]; then echo '\nLocked'; else echo ''; fi",
 		"format": "{}",
