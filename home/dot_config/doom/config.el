@@ -567,18 +567,23 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
        :title window-title
        :geometry window-geometry))))
 
-(setopt epg-gpg-home-directory (getenv "GNUPGHOME"))
-(setq epa-file-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43"))
-(setopt plstore-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43"))
+(setopt epg-gpg-home-directory (getenv "GNUPGHOME")) ;; Respect XDG Base Directory Specification
+(setq epa-file-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43")) ;; Personal PGP Key Fingerprint
+(setopt plstore-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43")) ;; Personal PGP Key Fingerprint
 
-(when (modulep! :config default +gnupg)
-  (use-package! pinentry
-    :hook (doom-after-init . pinentry-start)))
+(setq epa-armor t) ;; Use ASCII Armor for encryption
+(setopt epa-file-name-regexp "\\.\\(gpg\\|asc\\)\\(~\\|\\.~[0-9]+~\\)?\\'") ;; Support auto encrypt/decrypt for .gpg and .asc files
 
 (when (modulep! :config default)
   (after! xdg
+    ;; Override Doom's default auth-sources.
     (setopt auth-sources (list (concat (xdg-config-home) "/authinfo")
                                (file-name-concat doom-profile-state-dir "authinfo.gpg")))))
+
+(when (modulep! :config default +gnupg)
+  ;; Use Emacs as front-end for pinentry
+  (use-package! pinentry
+    :hook (doom-after-init . pinentry-start)))
 
 (when (modulep! :tools pass)
   ;; INFO: Do not backup gopass files.
