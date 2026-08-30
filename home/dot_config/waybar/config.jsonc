@@ -21,11 +21,10 @@
 	"modules-right": [
 		"hyprland/language",
 		"group/disk-collapsible",
+		"group/temperature-collapsible",
 		"cpu",
 		"memory#ram",
 		"memory#swap",
-		"temperature#cpu",
-		"temperature#gpu",
 		"network",
 		"wireplumber#source",
 		"wireplumber#sink",
@@ -187,13 +186,28 @@
 		"format": "󰯍 {swapPercentage}%",
 		"tooltip": false
 	},
+	"group/temperature-collapsible": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 200,
+			"transition-left-to-right": false,
+			"reveal-delay": 120,
+			"click-to-reveal": false,
+			"children-class": "temperature-collapsible-children"
+		},
+		"modules": ["custom/temperature-icon", "temperature#cpu", "temperature#gpu"]
+	},
+	"custom/temperature-icon": {
+		"format": "",
+		"cursor": true,
+		"tooltip": false
+	},
 	"temperature#cpu": {
 		"hwmon-name": "coretemp",
 		"input-filename": "temp1_input",
 		"warning-threshold": 65,
 		"critical-threshold": 72,
-		"format": "{icon} {temperatureC}°C",
-		"format-icons": ["", "", ""],
+		"format": "{temperatureC}°C",
 		"tooltip-format": "CPU"
 	},
 	"temperature#gpu": {
@@ -201,8 +215,7 @@
 		"input-filename": "temp1_input",
 		"warning-threshold": 80,
 		"critical-threshold": 86,
-		"format": "{icon} {temperatureC}°C",
-		"format-icons": ["", "", ""],
+		"format": "{temperatureC}°C",
 		"tooltip-format": "GPU"
 	},
 	"network": {

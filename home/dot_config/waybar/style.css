@@ -126,6 +126,11 @@ label.module {
 }
 
 /* Temperature */
+.temperature-collapsible-children > * {
+	padding: 0 4px;
+	transition: background-color 0.2s ease;
+}
+
 #temperature.cpu {
 	color: @bright4;
 }
@@ -140,6 +145,10 @@ label.module {
 
 #temperature.critical {
 	color: @bright1;
+}
+
+.temperature-collapsible-children > *:hover {
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Disk */
