@@ -61,6 +61,7 @@ label.module {
 #workspaces button {
 	padding: 0 5px;
 	color: @bright7;
+	transition: background-color 0.2s ease;
 }
 
 #workspaces button:not(.empty) {
