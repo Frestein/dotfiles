@@ -20,13 +20,12 @@
 	"modules-center": ["hyprland/workspaces"],
 	"modules-right": [
 		"hyprland/language",
+		"group/wireplumber-collapsible",
 		"group/disk-collapsible",
 		"group/temperature-collapsible",
 		"cpu",
 		"group/memory-collapsible",
 		"network",
-		"wireplumber#source",
-		"wireplumber#sink",
 		"custom/brightness"
 	],
 	// Modules
@@ -69,6 +68,26 @@
 		},
 		"tooltip-format-activated": "Idle: {status}",
 		"tooltip-format-deactivated": "Idle: {status}"
+	},
+	"group/wireplumber-collapsible": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 200,
+			"transition-left-to-right": false,
+			"reveal-delay": 120,
+			"click-to-reveal": false,
+			"children-class": "wireplumber-collapsible-children"
+		},
+		"modules": [
+			"custom/wireplumber-icon",
+			"wireplumber#source",
+			"wireplumber#sink"
+		]
+	},
+	"custom/wireplumber-icon": {
+		"format": "󰓃",
+		"cursor": true,
+		"tooltip": false
 	},
 	"wireplumber#sink": {
 		"format": "{icon} {volume}%",
