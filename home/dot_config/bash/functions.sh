@@ -71,15 +71,6 @@ function fs() {
 	fi
 }
 
-# Run `dig` and display the most useful info
-function digga() {
-	if [[ "$1" = "" ]]; then
-		echo "Usage: $0 <domain>"
-		return 1
-	fi
-	dig +nocmd "$1" any +multiline +noall +answer
-}
-
 # Show all the names (CNs and SANs) listed in the SSL certificate for a given domain
 function getcertnames() {
 	if [[ "$1" = "" ]]; then
