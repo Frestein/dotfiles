@@ -42,9 +42,14 @@ function check_disk_usage() {
 	)
 }
 
-# Show active network interfaces
-function ifactive() {
-	ifconfig | grep 'flags=' | grep 'UP' | awk -F: '{print $1}'
+# Show active network interface on device
+ip-active() {
+	ip -br link show | awk '$2 == "UP" {print $1}'
+}
+
+# Show all network addresses on device
+ip-abbr() {
+	ip -o addr show | awk '{split($4,a,"/"); print a[1]}'
 }
 
 # Create a new directory and enter it
