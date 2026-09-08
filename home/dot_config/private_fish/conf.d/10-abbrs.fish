@@ -94,8 +94,8 @@ if type -q speedtest-go
     abbr -a -- speedtest speedtest-go
 end
 
-abbr -a -- myip 'dig +short myip.opendns.com @resolver1.opendns.com'
-abbr -a -- ips "ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+abbr -a -- ip-pub 'curl -s ifconfig.me'
+abbr -a -- ip-addr "ip -o addr show | awk '{split(\$4,a,\"/\"); print a[1]}'"
 
 # Arch Linux
 ## Arch-Update (Update helper)
