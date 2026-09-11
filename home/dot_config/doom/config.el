@@ -2062,6 +2062,10 @@ with `org-agenda-block-separator' characters)."
 
 (when (modulep! :lang org)
   (after! org
+    (add-to-list 'org-modules 'ol-man))) ; Enable support for man pages
+
+(when (modulep! :lang org)
+  (after! org
     (add-to-list 'org-modules 'org-habit)
 
     (setq +org-habit-graph-padding 1)

@@ -90,6 +90,7 @@
     - [[#override-module-defaults][Override Module Defaults]]
     - [[#org-agenda][Org Agenda]]
     - [[#modules][Modules]]
+      - [[#org-link][Org Link]]
       - [[#org-habit][Org Habit]]
     - [[#org-roam][Org Roam]]
       - [[#config-6][Config]]
@@ -2536,6 +2537,14 @@ with `org-agenda-block-separator' characters)."
 #+end_src
 
 *** Modules
+
+**** Org Link
+
+#+begin_src elisp
+(when (modulep! :lang org)
+  (after! org
+    (add-to-list 'org-modules 'ol-man))) ; Enable support for man pages
+#+end_src
 
 **** Org Habit
 
