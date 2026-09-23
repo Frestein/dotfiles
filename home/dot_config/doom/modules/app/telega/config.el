@@ -375,33 +375,41 @@ argument - MSG to insert additional information after header."
                 (telega-ins--with-face (telega-msg-sender-title-faces sender)
                   (telega-ins " --" signature))))
 
-            ;; Admin badge if any
+
+            ;; Sender tag or owner/admin badge
             (when (telega-user-p sender)
-              (when-let ((admin (telega-chat-admin-get chat sender)))
-                (telega-ins--with-face 'telega-shadow
-                  (telega-ins " ("
-                              (or (telega-tl-str admin :custom_title)
-                                  (if (plist-get admin :is_owner)
-                                      (telega-i18n "lng_owner_badge")
-                                    (telega-i18n "lng_admin_badge")))
-                              ")"))))
+              (let* ((admin (telega-chat-admin-get chat sender))
+                     (sender-tag (or (telega-tl-str msg :sender_tag)
+                                     (telega-tl-str admin :custom_title)
+                                     (when (plist-get admin :is_owner)
+                                       (telega-i18n "lng_owner_badge"))
+                                     (when admin
+                                       (telega-i18n "lng_admin_badge")))))
+                (when sender-tag
+                  (telega-ins " ")
+                  (telega-ins--with-style
+                      (telega-box-button-style
+                          (cond ((plist-get admin :is_owner) 'owner-sender-tag)
+                                (admin 'admin-sender-tag)
+                                (t 'sender-tag)))
+                    (telega-ins sender-tag)))))
 
             ;; Sender's boost count
-            (let ((boost-count (plist-get msg :sender_boost_count)))
-              (unless (telega-zerop boost-count)
+            (let ((boost-count (telega-tl-get0 msg :sender_boost_count)))
+              (unless (zerop boost-count)
                 (telega-ins--with-face (assq :foreground palette)
                   (telega-ins " " (telega-symbol 'boost))
                   (when (> boost-count 1)
                     (telega-ins-fmt "%d" boost-count)))))
 
             ;; Paid stars
-            (let ((paid-stars (plist-get msg :paid_message_star_count)))
-              (unless (telega-zerop paid-stars)
+            (let ((paid-stars (telega-tl-get0 msg :paid_message_star_count)))
+              (unless (zerop paid-stars)
                 (telega-ins " " (telega-symbol 'telegram-star))
                 (telega-ins-fmt "%d" paid-stars)))
 
             ;; via <bot>
-            (when-let* ((via-bot-user-id (plist-get msg :via_bot_user_id))
+            (when-let* ((via-bot-user-id (telega-tl-get0 msg :via_bot_user_id))
                         (via-bot (unless (zerop via-bot-user-id)
                                    (telega-user-get via-bot-user-id)))
                         (bot-title (telega-ins--as-string
@@ -414,8 +422,15 @@ argument - MSG to insert additional information after header."
               (telega-ins " " (telega-i18n "lng_inline_bot_via"
                                 :inline_bot bot-title)))
 
+            ;; For <user>
+            (when-let* ((bot-caller-id (plist-get msg :guest_bot_caller_id))
+                        (bot-caller (telega-msg-sender bot-caller-id)))
+              (telega-ins " " (telega-i18n "lng_guest_chat_for"
+                                :user (telega-ins--as-string
+                                       (telega-ins--msg-sender bot-caller)))))
+
             ;; Edited date
-            (let ((edited-date (plist-get msg :edit_date)))
+            (let ((edited-date (telega-tl-get0 msg :edit_date)))
               (unless (zerop edited-date)
                 (telega-ins--with-face 'telega-shadow
                   (telega-ins " " (telega-i18n "lng_edited") " ")
@@ -437,13 +452,13 @@ argument - MSG to insert additional information after header."
               (telega-ins " " (telega-symbol 'pin)))
 
             ;; message auto-deletion time
-            (let ((auto-delete-in (plist-get msg :auto_delete_in)))
-              (unless (telega-zerop auto-delete-in)
+            (let ((auto-delete-in (telega-tl-get0 msg :auto_delete_in)))
+              (unless (zerop auto-delete-in)
                 (telega-ins " " (telega-symbol 'flames)
                             (telega-duration-human-readable auto-delete-in 1))))
 
             ;; AI summary
-            (when (plist-get msg :summary_language_code)
+            (when (telega-tl-str msg :summary_language_code)
               (telega-ins " ")
               (telega-ins--text-button
                   (if (plist-get msg :telega-summary)
@@ -465,7 +480,7 @@ argument - MSG to insert additional information after header."
                              'messageSendingStateFailed)
                          (plist-get send-state :can_retry))
                 (telega-ins " ")
-                (telega-ins--box-button "RESEND"
+                (telega-ins--ui-button "RESEND"
                   :action #'telega-msg-resend)))
 
             (when addon-inserter
