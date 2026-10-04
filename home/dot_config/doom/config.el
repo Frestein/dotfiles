@@ -544,29 +544,6 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
           :ni "C-k" #'vterm-previous-prompt
           :ni "C-j" #'vterm-next-prompt)))
 
-(when (modulep! :app everywhere)
-  (setopt emacs-everywhere-window-focus-command
-          (list "hyprctl" "dispatch" "hl.dsp.focus({ window = \"address:%w\" })"))
-  (setopt emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
-
-  (require 'json)
-  (defun emacs-everywhere--app-info-linux-hyprland ()
-    "Return information on the current active window, on a Linux Hyprland session."
-    (let* ((json-string (emacs-everywhere--call "hyprctl" "-j" "activewindow"))
-           (json-object (json-read-from-string json-string))
-           (window-id (cdr (assoc 'address json-object)))
-           (app-name (cdr (assoc 'class json-object)))
-           (window-title (cdr (assoc 'title json-object)))
-           (window-geometry (list (aref (cdr (assoc 'at json-object)) 0)
-                                  (aref (cdr (assoc 'at json-object)) 1)
-                                  (aref (cdr (assoc 'size json-object)) 0)
-                                  (aref (cdr (assoc 'size json-object)) 1))))
-      (make-emacs-everywhere-app
-       :id window-id
-       :class app-name
-       :title window-title
-       :geometry window-geometry))))
-
 (setopt epg-gpg-home-directory (getenv "GNUPGHOME")) ;; Respect XDG Base Directory Specification
 (setq epa-file-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43")) ;; Personal PGP Key Fingerprint
 (setopt plstore-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43")) ;; Personal PGP Key Fingerprint
