@@ -208,9 +208,6 @@
       (user-error "Cannot restart Emacs 28 or older"))
     (restart-emacs)))
 
-(with-eval-after-load "lib/docs"
-  (remove-hook! 'doom-docs-mode-hook #'doom-docs--display-menu-h))
-
 (setopt user-full-name "Frestein"
         user-mail-address "frestein@tuta.io")
 

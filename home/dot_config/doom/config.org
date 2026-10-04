@@ -18,12 +18,11 @@
     - [[#ligatures][Ligatures]]
     - [[#faces][Faces]]
   - [[#commands][Commands]]
-  - [[#misc][Misc]]
 - [[#personal][Personal]]
   - [[#user][User]]
   - [[#holidays][Holidays]]
   - [[#functions][Functions]]
-  - [[#misc-1][Misc]]
+  - [[#misc][Misc]]
 - [[#system-integration][System Integration]]
   - [[#xdg][XDG]]
   - [[#shell][Shell]]
@@ -38,7 +37,7 @@
   - [[#security][Security]]
     - [[#easypg][EasyPG]]
     - [[#password-manager][Password Manager]]
-    - [[#misc-2][Misc]]
+    - [[#misc-1][Misc]]
 - [[#file-management][File Management]]
   - [[#dired][Dired]]
     - [[#config-2][Config]]
@@ -395,13 +394,6 @@ All Maple Font [[https://github.com/subframe7536/maple-font/blob/variable/source
     (unless (fboundp 'restart-emacs)
       (user-error "Cannot restart Emacs 28 or older"))
     (restart-emacs)))
-#+end_src
-
-** Misc
-
-#+begin_src elisp
-(with-eval-after-load "lib/docs"
-  (remove-hook! 'doom-docs-mode-hook #'doom-docs--display-menu-h))
 #+end_src
 
 * Personal
