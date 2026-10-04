@@ -114,15 +114,15 @@
        :app
        calendar
        qutebrowser
-       ement
-       osm
+       ;; ement
+       ;; xmpp
        (telega +mnz +icons +sponsored2)
+       osm
        (rss +org)
        srs
        pomm
        mastodon
        youtube
-       xmpp
 
        :config
        literate
