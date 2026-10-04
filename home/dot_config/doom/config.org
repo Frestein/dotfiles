@@ -57,7 +57,6 @@
   - [[#snippets][Snippets]]
   - [[#completion][Completion]]
     - [[#corfu][Corfu]]
-    - [[#vertico][Vertico]]
     - [[#abbrev][Abbrev]]
   - [[#format][Format]]
   - [[#flycheck][Flycheck]]
@@ -1418,38 +1417,6 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
             (cape-dabbrev t)
             (when (> corfu--total 0)
               (corfu--goto (- corfu--total (or arg 1))))))))))
-#+end_src
-
-*** Vertico
-
-#+begin_src elisp :eval no
-;; thx Sarg https://github.com/doomemacs/doomemacs/pull/8634/changes
-(when (modulep! :completion vertico)
-  (with-eval-after-load "lib/help"
-    (defvar fr/doom-module-descriptions
-      (with-temp-buffer
-        (seq-filter
-         'identity
-         (mapcar
-          (lambda (hm)
-            (when-let* ((f (cadr hm))
-                        (name (car hm))
-                        ((file-regular-p f)))
-              (insert-file-contents f nil 0 1024 t)
-              (goto-char (point-min))
-              (when (search-forward "#+subtitle: " nil t)
-                (cons name
-                      (propertize (string-trim (buffer-substring (point) (line-end-position)))
-                                  'face (get-text-property 0 'face name))))))
-          (doom--help-modules-list))))))
-
-  (after! marginalia
-    (defun marginalia-annotate-doom-module (cand)
-      (marginalia--fields
-       ((cdr (assoc-string cand fr/doom-module-descriptions)))))
-
-    (add-to-list 'marginalia-prompt-categories '("\\<Describe module\\>" . doom-module))
-    (add-to-list 'marginalia-annotators '(doom-module marginalia-annotate-doom-module))))
 #+end_src
 
 *** Abbrev
