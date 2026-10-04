@@ -1,0 +1,9 @@
+[__config__]
+keyfile = "~/.config/nvchecker/keyfile.toml"
+newver = ".nv_new.json"
+oldver = ".nv_old.json"
+
+[bgutil-ytdlp-pot-provider]
+source = "github"
+github = "Brainicism/bgutil-ytdlp-pot-provider"
+use_latest_tag = true
