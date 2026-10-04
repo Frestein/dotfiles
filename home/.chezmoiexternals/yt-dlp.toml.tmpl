@@ -3,7 +3,8 @@
 # PO Token provider for YouTube
 # Additional info: https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide
 
-{{- $bgutil_url := "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/master.tar.gz" }}
+{{- $bgutil_tag := "2.0.1" }}
+{{- $bgutil_url := printf "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/refs/tags/%s.tar.gz" $bgutil_tag }}
 
 [".config/yt-dlp-plugins/bgutil-ytdlp-pot-provider"]
 type = "archive"
@@ -22,10 +23,11 @@ refreshPeriod = "336h"
 include = [
   "*/server/src/**",
   "*/server/types/**",
-  "*/server/package.json",
+  "*/server/deno.json",
+  "*/server/deno.lock",
   "*/server/package-lock.json",
+  "*/server/package.json",
   "*/server/tsconfig.json",
-  "*/server/yarn.lock",
 ]
 
 # Yandex.Translate for videos based on voice-over-translation (vot) and vot-cli
