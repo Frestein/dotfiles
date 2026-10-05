@@ -3,3 +3,6 @@
 
 (when (executable-find "zoxide")
   (package! zoxide))
+
+(when (modulep! :term eshell)
+  (package! eshell-z :disable t))
