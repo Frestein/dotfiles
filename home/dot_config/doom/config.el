@@ -1323,7 +1323,8 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
     ;; Recompile epdfinfo after poppler update
     (pdf-tools-install t nil t nil))
 
-  (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
+  ;; FIX: pdf-view-roll-minor-mode has been broken in Emacs 31
+  ;; (add-hook 'pdf-view-mode-hook #'pdf-view-roll-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (hl-line-mode 0)))
 
   (map! :map pdf-view-mode-map
