@@ -30,14 +30,37 @@
         "`eshell/cd' with interactive selection."
         (if target (zoxide-find-file target) (zoxide-find-file)))
 
-      (defun eshell/z (&optional target)
-        "Change eshell directory using zoxide.
-If TARGET nil/empty, `eshell/cd' to $HOME."
+      (defun eshell/z (&rest targets)
+        "Change directory using zoxide, falling back to cd.
+If TARGETS is nil, go to $HOME."
         (let ((home (or (getenv "HOME") "~")))
-          (if (and target (not (string-empty-p target)))
-              (let ((candidate (car (zoxide-query target))))
-                (if candidate (eshell/cd candidate) (eshell/cd target)))
-            (eshell/cd home))))))
+          (cond
+           ((null targets)
+            (eshell/cd home))
+           (t
+            (let* ((candidate (car (apply #'zoxide-query targets)))
+                   (path (expand-file-name (car targets))))
+              (cond
+               (candidate
+                (eshell/cd candidate))
+               ((file-directory-p path)
+                (eshell/cd path)
+                (zoxide-add path)
+                nil)
+               (t
+                (error "No match found for %s" (string-join targets " ")))))))))
+
+      (defun pcomplete/z ()
+        "Completion for the `z' command."
+        (if (string-match-p "/" pcomplete-stub)
+            ;; Nested path — delegate to file completion
+            (pcomplete-here (pcomplete-dirs))
+          ;; Top-level — combine zoxide paths with local dirs
+          (pcomplete-here
+           (append
+            (mapcar (lambda (d) (file-relative-name d default-directory))
+                    (zoxide-query))
+            (pcomplete-dirs)))))))
   :config
   (fmakunbound 'zoxide-query)
   (fmakunbound 'zoxide-query-with)
@@ -62,13 +85,12 @@ The second argument ARGS is passed to zoxide directly, like `query -l'."
           (append-to-buffer "*zoxide*" (point-min) (point-max))
           (warn "Zoxide error. See buffer *zoxide* for more details.")))))
 
-  (defun zoxide-query (&optional query)
-    "Search zoxide database with QUERY by calling zoxide query."
-    (let ((results (if query
-                       (zoxide-run nil "query" "-l" query)
-                     (zoxide-run nil "query" "-l"))))
-      (mapcar #'file-name-as-directory
-              (split-string results "\n"))))
+  (defun zoxide-query (&rest queries)
+    "Search zoxide database with QUERIES by calling zoxide query.
+Multiple QUERIES are AND-ed together, as in the zoxide CLI."
+    (let* ((results (apply #'zoxide-run nil "query" "-l" queries))
+           (lines (split-string results "\n" t)))
+      (mapcar #'file-name-as-directory lines)))
 
   (defun zoxide--open-with (query callback &optional noninteractive)
     "Search QUERY and run CALLBACK function with a selected path.
