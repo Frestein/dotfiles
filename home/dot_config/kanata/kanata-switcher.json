@@ -19,7 +19,11 @@
 		"layer": "game"
 	},
 	{
-		"class": "witcher3.exe",
+		"class": "witcher3",
+		"layer": "game"
+	},
+	{
+		"class": "openttd",
 		"layer": "game"
 	},
 	{
