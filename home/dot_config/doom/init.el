@@ -121,8 +121,8 @@
        (rss +org)
        srs
        pomm
-       youtube
        ;; mastodon
+       ;; youtube
 
        :config
        literate
