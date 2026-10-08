@@ -61,8 +61,8 @@
        jinx
 
        :tools
-       blamer
        ;; biome
+       ;; blamer
        debugger
        (daemons +systemd +lsp)
        disk-usage
