@@ -132,19 +132,22 @@ local viewer = swayimg.viewer
 
 local function step_left(dx)
 	local pos = viewer.get_position()
-	viewer.position = { x = pos.x + dx, y = pos.y }
+	viewer.set_abs_position(pos.x + dx, pos.y)
 end
+
 local function step_right(dx)
 	local pos = viewer.get_position()
-	viewer.position = { x = pos.x - dx, y = pos.y }
+	viewer.set_abs_position(pos.x - dx, pos.y)
 end
+
 local function step_up(dy)
 	local pos = viewer.get_position()
-	viewer.position = { x = pos.x, y = pos.y + dy }
+	viewer.set_abs_position(pos.x, pos.y + dy)
 end
+
 local function step_down(dy)
 	local pos = viewer.get_position()
-	viewer.position = { x = pos.x, y = pos.y - dy }
+	viewer.set_abs_position(pos.x, pos.y - dy)
 end
 local function zoom(amount)
 	local scale = viewer.scale
