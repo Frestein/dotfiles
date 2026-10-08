@@ -560,3 +560,6 @@ end)
 gallery.on_mouse("Ctrl+ScrollDown", function()
 	gallery.thumb_size = gallery.thumb_size - 20
 end)
+gallery.on_mouse("MouseRight", function()
+	swayimg.mode = "viewer"
+end)
