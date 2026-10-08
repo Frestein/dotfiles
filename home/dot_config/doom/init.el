@@ -65,7 +65,7 @@
        ;; blamer
        debugger
        (daemons +systemd +lsp)
-       disk-usage
+       ;; disk-usage
        chezmoi
        fj
        0x0
