@@ -43,6 +43,7 @@
     - [[#config-2][Config]]
     - [[#dirvish][Dirvish]]
   - [[#image][Image]]
+- [[#buffer-management][Buffer Management]]
 - [[#editor][Editor]]
   - [[#settings][Settings]]
   - [[#mappings][Mappings]]
@@ -1063,6 +1064,12 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
       :n "c" #'image-crop
       :n "r" #'image-rotate
       :n "R" #'fr/image-random)
+#+end_src
+
+* Buffer Management
+
+#+begin_src elisp
+(setopt switch-to-prev-buffer-skip 'this) ; Skip buffers already visible on the same frame
 #+end_src
 
 * Editor

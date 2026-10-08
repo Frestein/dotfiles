@@ -779,6 +779,8 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
       :n "r" #'image-rotate
       :n "R" #'fr/image-random)
 
+(setopt switch-to-prev-buffer-skip 'this) ; Skip buffers already visible on the same frame
+
 (setopt default-input-method "russian-computer")
 (setopt calendar-week-start-day 1)
 (setopt display-line-numbers-type 'relative)
