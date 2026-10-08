@@ -63,20 +63,22 @@ swayimg.viewer.history = 50
 swayimg.viewer.preload = 25
 
 -- Text overlay
-swayimg.viewer.set_text("topleft", {
-	"{name}",
-	"{format}",
-	"{sizehr}",
-	"{frame.width}x{frame.height}",
-	"{meta.*}",
-})
-swayimg.viewer.set_text("topright", {
-	"{list.index}/{list.total}",
-})
-swayimg.viewer.set_text("bottomleft", {
-	"{scale}%",
-	"{frame.index}/{frame.total}",
-})
+swayimg.viewer.text = {
+	topleft = {
+		"{name}",
+		"{format}",
+		"{sizehr}",
+		"{frame.width}x{frame.height}",
+		"{meta.*}",
+	},
+	topright = {
+		"{list.index}/{list.total}",
+	},
+	bottomleft = {
+		"{scale}%",
+		"{frame.index}/{frame.total}",
+	},
+}
 
 -- ============================================================================
 -- Slideshow mode
@@ -92,10 +94,12 @@ swayimg.slideshow.preload = 25
 swayimg.slideshow.history = 50
 
 -- Text overlay
-swayimg.slideshow.set_text("bottomright", {
-	"{dir}",
-	"Status: {status}",
-})
+swayimg.slideshow.text = {
+	bottomright = {
+		"{dir}",
+		"Status: {status}",
+	},
+}
 
 -- ============================================================================
 -- Gallery mode
@@ -114,10 +118,12 @@ swayimg.gallery.preload = true
 swayimg.gallery.pstore = false
 
 -- Text overlay
-swayimg.gallery.set_text("bottomright", {
-	"{name}",
-	"Status: {status}",
-})
+swayimg.gallery.text = {
+	bottomright = {
+		"{name}",
+		"Status: {status}",
+	},
+}
 
 -- ============================================================================
 -- Key bindings – helper functions
