@@ -67,8 +67,8 @@
        (daemons +systemd +lsp)
        ;; disk-usage
        chezmoi
-       0x0
        ;; fj
+       ;; 0x0
        (eval +overlay)
        (lookup +yandex)
        (lsp +eglot)
