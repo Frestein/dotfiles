@@ -319,6 +319,7 @@ c.url.searchengines = {
 
     # Games
     "games-pdb": "protondb.com/search?q={}",
+    "games-steam": "store.steampowered.com/search?term={}",
 
     # Anime & Manga
     "anime-sfw": "anilist.co/search/anime?hide my anime=true&search={}",
