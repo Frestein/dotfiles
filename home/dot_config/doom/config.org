@@ -81,6 +81,7 @@
   - [[#printer][Printer]]
     - [[#pdf-misc][PDF-Misc]]
 - [[#languages][Languages]]
+  - [[#tree-sitter][Tree-Sitter]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#common-lisp][Common Lisp]]
   - [[#org][Org]]
@@ -1800,6 +1801,12 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
 #+end_src
 
 * Languages
+
+** Tree-Sitter
+
+#+begin_src elisp
+(setopt treesit-auto-install-grammar 'always)
+#+end_src
 
 ** Emacs Lisp
 

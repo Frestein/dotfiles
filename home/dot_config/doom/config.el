@@ -1357,6 +1357,8 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
 
+(setopt treesit-auto-install-grammar 'always)
+
 (after! elisp-mode
   (map! :map emacs-lisp-mode-map
         :localleader
