@@ -97,6 +97,7 @@ set searchurls.social-reddit https://www.reddit.com/r/%s
 
 " Games
 set searchurls.games-pdb https://www.protondb.com/search?q=%s
+set searchurls.games-steam https://store.steampowered.com/search?term=%s
 
 " Anime & Manga
 set searchurls.anime-sfw https://anilist.co/search/anime?hide%20my%20anime=true&search=%s
