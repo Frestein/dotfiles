@@ -47,6 +47,7 @@
 - [[#editor][Editor]]
   - [[#settings][Settings]]
   - [[#mappings][Mappings]]
+    - [[#emacs][Emacs]]
     - [[#evil][Evil]]
       - [[#evil-dial][Evil Dial]]
       - [[#evil-snipe][Evil Snipe]]
@@ -1090,10 +1091,34 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
 
 ** Mappings
 
+*** Emacs
+
+#+begin_src elisp
+;; Move to the last line on M-> not beyond it
+(defun fr/end-of-buffer-dwim (&rest _)
+  "If current line is empty, move to previous line."
+  (when (looking-at-p "^$")
+    (previous-line)))
+
+(advice-add #'end-of-buffer :after #'fr/end-of-buffer-dwim)
+#+end_src
+
 *** Evil
 
 #+begin_src elisp
-(setopt evil-echo-state nil)
+(when (modulep! :editor evil)
+  (setopt evil-echo-state nil)
+
+  (after! evil
+    ;; Move to the last line on G not beyond it
+    (defun fr/evil-goto-line-dwim (count &rest _)
+      "If COUNT is nil and current line is empty, move to previous line."
+      (when (and (null count)
+                 (looking-at-p "^$")
+                 (not (bobp)))
+        (previous-line)))
+
+    (advice-add #'evil-goto-line :after #'fr/evil-goto-line-dwim)))
 #+end_src
 
 **** Evil Dial

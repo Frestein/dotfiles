@@ -790,7 +790,27 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
 (when (modulep! :editor word-wrap)
   (+global-word-wrap-mode 1))
 
-(setopt evil-echo-state nil)
+;; Move to the last line on M-> not beyond it
+(defun fr/end-of-buffer-dwim (&rest _)
+  "If current line is empty, move to previous line."
+  (when (looking-at-p "^$")
+    (previous-line)))
+
+(advice-add #'end-of-buffer :after #'fr/end-of-buffer-dwim)
+
+(when (modulep! :editor evil)
+  (setopt evil-echo-state nil)
+
+  (after! evil
+    ;; Move to the last line on G not beyond it
+    (defun fr/evil-goto-line-dwim (count &rest _)
+      "If COUNT is nil and current line is empty, move to previous line."
+      (when (and (null count)
+                 (looking-at-p "^$")
+                 (not (bobp)))
+        (previous-line)))
+
+    (advice-add #'evil-goto-line :after #'fr/evil-goto-line-dwim)))
 
 (when (and (modulep! :editor evil)
            (modulep! :editor cycle-at-point))
