@@ -6,6 +6,10 @@
   (evil-collection-define-key 'normal 'telega-chat-mode-map
     (kbd "RET") 'telega-chatbuf-newline-or-input-send)
 
+  (map! :leader
+        (:prefix "A"
+         :desc "Telega" "t" telega-prefix-map))
+
   (map! (:map telega-root-mode-map
          :n "h" #'telega-button-backward
          :n "l" #'telega-button-forward
