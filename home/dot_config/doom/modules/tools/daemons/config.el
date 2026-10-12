@@ -2,13 +2,4 @@
 
 (use-package! daemons)
 
-(defun +systemd-common-config (mode)
-  (when (modulep! +lsp)
-    (set-eglot-client! mode '("systemd-lsp"))
-    (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
-
-(use-package! systemd
-  :when (and (modulep! +systemd)
-             (executable-find "systemctl"))
-  :config
-  (+systemd-common-config 'systemd-mode))
+(add-hook! doom-after-modules-config #'fr/daemons--init-map-h)

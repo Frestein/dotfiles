@@ -64,7 +64,7 @@
        ;; biome
        ;; blamer
        debugger
-       (daemons +systemd +lsp)
+       daemons
        ;; disk-usage
        chezmoi
        ;; fj
@@ -107,6 +107,7 @@
        (org +roam +dragndrop +contacts)
        (markdown +tree-sitter +grip)
        (typst +lsp +tree-sitter +preview)
+       (systemd +lsp)
 
        :email
        (mu4e +mbsync +org +gmail)
