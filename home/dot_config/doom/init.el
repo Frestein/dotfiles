@@ -85,7 +85,6 @@
        zoxide
 
        :os
-       (:if (featurep :system 'macos) macos)
        tty
 
        :lang
