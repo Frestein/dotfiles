@@ -1250,25 +1250,11 @@ Disable evil-snipe on specific modes.
        :desc "Nerd" "n" #'nerd-icons-insert)
       (:prefix "p"
        :desc "Cleanup know projects" "K" #'projectile-cleanup-known-projects)
-      (:when (modulep! :app pomm)
-        (:prefix ("P" . "pomm")
-                 (:prefix ("t" . "Third Time")
-                          "s" #'pomm-third-time-start
-                          "S" #'pomm-third-time-stop
-                          "t" #'pomm-third-time-switch
-                          "o" #'pomm-third-time)
-                 (:prefix ("p" . "Pomodoro")
-                          "s" #'pomm-start
-                          "S" #'pomm-stop
-                          "o" #'pomm)))
       (:prefix "o"
        :desc "Open URL using generic browser" "g" #'browse-url-generic
        :desc "Open URL" "w" #'browse-url
        :desc "Contacts" "c" #'org-contacts
        :desc "Calendar" "C" #'calfw-org-open-calendar
-       (:when (modulep! :app pomm)
-         :desc "Third Time" "," #'pomm-third-time
-         :desc "Pomodoro" "." #'pomm)
        (:when (modulep! :term vterm)
          :desc "Open URL using text browser" "W" #'fr/browse-url-text-vterm)
        (:prefix "a"

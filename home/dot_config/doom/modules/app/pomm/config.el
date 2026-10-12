@@ -16,8 +16,8 @@
     :global t
     (setopt pomm-audio-enabled (if pomm-audio-mode t nil)))
 
-  ;; INFO: MPV fix.
-  (defadvice! fixed-pomm--maybe-play-sound (kind)
+  ;; FIX: Fix for mpv. Maybe i should push it to upstream.
+  (defadvice! fix/pomm--maybe-play-sound (kind)
     "Play a sound of KIND.
 
 KIND is a key of `pomm-audio-files'.  The variable
@@ -40,3 +40,5 @@ which can be played by `pomm-audio-player-executable'."
                  "pomm-audio-player" nil
                  prog
                  (append args (list sound))))))))
+
+(add-hook! doom-after-modules-config #'fr/pomm--init-map-h)
