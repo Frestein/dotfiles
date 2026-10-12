@@ -890,9 +890,7 @@ With prefix ARG, cycle backwards if ARG is negative."
       (:when (modulep! :term vterm)
         :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle)
       (:when (modulep! :term ghostel)
-        :desc "Toggle ghostel popup" :n "C-/" #'+ghostel/toggle)
-      (:when (modulep! :tools zoxide)
-        :n "gZ" #'zoxide-find-file))
+        :desc "Toggle ghostel popup" :n "C-/" #'+ghostel/toggle))
 
 (map! :leader
       "x" nil
@@ -932,8 +930,6 @@ With prefix ARG, cycle backwards if ARG is negative."
                (:when (modulep! :app rss)
                  :desc "Elfeed" "n" #'elfeed))
       (:prefix "f"
-               (:when (modulep! :tools zoxide)
-                 :desc "Zoxide" "z" #'zoxide-find-file)
                (:when (modulep! :emacs dired)
                  :desc "Open directory in dirvish" "m" #'dirvish))
       (:prefix "h"

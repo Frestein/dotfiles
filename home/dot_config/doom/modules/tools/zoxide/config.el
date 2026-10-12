@@ -113,3 +113,5 @@ This is a help function to define interactive commands like
     (if query
         (zoxide--open-with query zoxide-find-file-function)
       (zoxide--open-with nil zoxide-find-file-function))))
+
+(add-hook! doom-after-modules-config #'fr/zoxide--init-map-h)
