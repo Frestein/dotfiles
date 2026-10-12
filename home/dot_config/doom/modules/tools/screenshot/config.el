@@ -16,3 +16,5 @@
   (setq screenshot-shadow-radius 16)
   (setq screenshot-shadow-offset-horizontal 8)
   (setq screenshot-shadow-offset-vertical 8))
+
+(add-hook! doom-after-modules-config #'fr/screenshot--init-map-h)
