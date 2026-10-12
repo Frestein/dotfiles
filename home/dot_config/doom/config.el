@@ -940,8 +940,6 @@ With prefix ARG, cycle backwards if ARG is negative."
                "e" #'fr/toggle-echo-area-messages)
       (:prefix "t"
        :desc "Automatic line breaking" "a" #'auto-fill-mode
-       (:when (modulep! :ui colorful)
-         :desc "Colorful mode" "C" #'global-colorful-mode)
        (:when (modulep! :checkers jinx)
          :desc "Jinx mode" "j" #'jinx-mode))
       (:prefix "n"

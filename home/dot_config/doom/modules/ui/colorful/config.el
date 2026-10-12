@@ -11,3 +11,5 @@
     (add-to-list 'colorful-extra-color-keyword-functions
                  '(helpful-mode . colorful-add-color-names)))
   :custom-face (colorful-base ((nil (:box nil)))))
+
+(add-hook! doom-after-modules-config #'fr/colorful--init-map-h)
