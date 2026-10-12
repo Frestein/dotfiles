@@ -927,8 +927,6 @@ With prefix ARG, cycle backwards if ARG is negative."
         :desc "Weekly Agenda" "w" (lambda () (interactive) (org-agenda nil "w"))
         :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))))
       (:prefix ("A" . "app")
-               (:when (modulep! :tools consult-gh)
-                 :desc "Github" "g" #'consult-gh)
                (:when (modulep! :tools pass)
                  :desc "Pass" "p" #'pass)
                (:when (modulep! :app osm)

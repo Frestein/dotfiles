@@ -39,3 +39,5 @@
   :after consult-gh
   :config
   (consult-gh-nerd-icons-mode t))
+
+(add-hook! doom-after-modules-config #'fr/consult-gh--init-map-h)
