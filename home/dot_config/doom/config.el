@@ -929,8 +929,6 @@ With prefix ARG, cycle backwards if ARG is negative."
       (:prefix ("A" . "app")
                (:when (modulep! :tools pass)
                  :desc "Pass" "p" #'pass)
-               (:when (modulep! :app osm)
-                 :desc "Osm" "m" #'osm-prefix-map)
                (:when (modulep! :app rss)
                  :desc "Elfeed" "n" #'elfeed)
                (:when (modulep! :app ement)

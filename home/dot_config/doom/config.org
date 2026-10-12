@@ -1265,8 +1265,6 @@ Disable evil-snipe on specific modes.
       (:prefix ("A" . "app")
                (:when (modulep! :tools pass)
                  :desc "Pass" "p" #'pass)
-               (:when (modulep! :app osm)
-                 :desc "Osm" "m" #'osm-prefix-map)
                (:when (modulep! :app rss)
                  :desc "Elfeed" "n" #'elfeed)
                (:when (modulep! :app ement)
