@@ -1263,8 +1263,6 @@ Disable evil-snipe on specific modes.
         :desc "Weekly Agenda" "w" (lambda () (interactive) (org-agenda nil "w"))
         :desc "Weekly Review" "r" (lambda () (interactive) (org-agenda nil "r"))))
       (:prefix "c"
-               (:when (modulep! :tools 0x0)
-                 :desc "Pastebin code" "p" #'0x0-upload-text)
                (:when (modulep! :tools screenshot)
                  :desc "Screenshot code" "S" #'screenshot))
       (:prefix ("A" . "app")
