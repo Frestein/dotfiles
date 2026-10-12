@@ -930,12 +930,7 @@ With prefix ARG, cycle backwards if ARG is negative."
                (:when (modulep! :tools pass)
                  :desc "Pass" "p" #'pass)
                (:when (modulep! :app rss)
-                 :desc "Elfeed" "n" #'elfeed)
-               (:when (modulep! :app ement)
-                 (:prefix ("e" . "ement")
-                          "c" #'ement-connect
-                          "l" #'ement-room-list
-                          "v" #'ement-room-view)))
+                 :desc "Elfeed" "n" #'elfeed))
       (:prefix "f"
                (:when (modulep! :tools trashed)
                  :desc "Open trash can" "t" #'trashed)
