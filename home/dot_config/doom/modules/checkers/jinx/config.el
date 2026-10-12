@@ -24,3 +24,5 @@
   ;; I prefer for `point' to end up at the start of the word,
   ;; not just after the end.
   (advice-add 'jinx-next :after (lambda (_) (left-word))))
+
+(add-hook! doom-after-modules-config #'fr/jinx--init-map-h)

@@ -1275,9 +1275,7 @@ Disable evil-snipe on specific modes.
       (:prefix "h"
                "e" #'fr/toggle-echo-area-messages)
       (:prefix "t"
-       :desc "Automatic line breaking" "a" #'auto-fill-mode
-       (:when (modulep! :checkers jinx)
-         :desc "Jinx mode" "j" #'jinx-mode))
+       :desc "Automatic line breaking" "a" #'auto-fill-mode)
       (:prefix "n"
                (:when (modulep! :lang org +roam)
                  (:prefix "r"
