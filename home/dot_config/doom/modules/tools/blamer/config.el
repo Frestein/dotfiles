@@ -9,3 +9,5 @@
 
   (custom-set-faces!
     `(blamer-face :foreground ,(doom-color 'comments) :italic true)))
+
+(add-hook! doom-after-modules-config #'fr/blamer--init-map-h)
