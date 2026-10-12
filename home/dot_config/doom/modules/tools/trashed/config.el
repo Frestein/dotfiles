@@ -14,3 +14,5 @@
   (map! :map trashed-mode-map
         [return] #'trashed-view-file
         [S-return] #'trashed-find-file))
+
+(add-hook! doom-after-modules-config #'fr/trashed--init-map-h)

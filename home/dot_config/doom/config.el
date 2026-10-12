@@ -932,8 +932,6 @@ With prefix ARG, cycle backwards if ARG is negative."
                (:when (modulep! :app rss)
                  :desc "Elfeed" "n" #'elfeed))
       (:prefix "f"
-               (:when (modulep! :tools trashed)
-                 :desc "Open trash can" "t" #'trashed)
                (:when (modulep! :tools zoxide)
                  :desc "Zoxide" "z" #'zoxide-find-file)
                (:when (modulep! :emacs dired)
