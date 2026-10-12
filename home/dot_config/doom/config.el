@@ -969,9 +969,7 @@ With prefix ARG, cycle backwards if ARG is negative."
                (:when (modulep! :tools zoxide)
                  :desc "Zoxide" "z" #'zoxide-find-file)
                (:when (modulep! :emacs dired)
-                 :desc "Open directory in dirvish" "m" #'dirvish)
-               (:when (modulep! :term eee)
-                 :desc "Open directory in yazi" "M" #'ee-yazi))
+                 :desc "Open directory in dirvish" "m" #'dirvish))
       (:prefix "h"
                "e" #'fr/toggle-echo-area-messages)
       (:prefix "t"
