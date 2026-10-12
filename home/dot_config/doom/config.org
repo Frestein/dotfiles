@@ -1207,7 +1207,7 @@ Disable evil-snipe on specific modes.
 *** map!
 
 #+begin_src elisp
-(global-set-key [remap delete-frame] #'delete-frame) ;; unbind doom/delete-frame-with-prompt
+(global-set-key [remap delete-frame] #'delete-frame) ; Unbind doom/delete-frame-with-prompt
 
 (map! :n "C-a" #'fr/increment-dispatch
       :v "C-a" #'evil-numbers/inc-at-pt-incremental
@@ -1269,8 +1269,6 @@ Disable evil-snipe on specific modes.
        (:when (modulep! :app pomm)
          :desc "Third Time" "," #'pomm-third-time
          :desc "Pomodoro" "." #'pomm)
-       (:when (modulep! :app srs)
-         :desc "SRS review" "s" #'+org-srs-review-start-org-directory)
        (:when (modulep! :term vterm)
          :desc "Open URL using text browser" "W" #'fr/browse-url-text-vterm)
        (:prefix "a"
