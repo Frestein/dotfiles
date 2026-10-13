@@ -10,9 +10,9 @@
           (lambda (filename)
             (concat "Update " (gac-relative-file-name filename))))
 
-  ;; TODO: Adjust when PR will be merged.
+  ;; FIX: Adjust when PR will be merged.
   ;; https://github.com/ryuslash/git-auto-commit-mode/pull/49
-  (defadvice! fixed-gac-relative-file-name (filename)
+  (defadvice! fix/gac-relative-file-name (filename)
     "Find the path to FILENAME relative to its git directory."
     :override #'gac-relative-file-name
     (let* ((default-directory (file-name-directory (expand-file-name filename)))

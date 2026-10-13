@@ -72,7 +72,7 @@ If TARGETS is nil, go to $HOME."
   (fmakunbound 'zoxide-travel-with-query)
   (makunbound  'zoxide-travel-callback-function)
 
-  (defadvice! fixed-zoxide-run (async &rest args)
+  (defadvice! fix/zoxide-run (async &rest args)
     "Run zoxide command with args.
 The first argument ASYNC specifies whether calling asynchronously or not.
 The second argument ARGS is passed to zoxide directly, like `query -l'."
@@ -106,7 +106,7 @@ This is a help function to define interactive commands like
           (call-interactively callback)
         (funcall callback default-directory))))
 
-  (defadvice! fixed-zoxide-find-file (&optional query)
+  (defadvice! fix/zoxide-find-file (&optional query)
     "Open file in path from zoxide. If QUERY is given, use it."
     :override #'zoxide-find-file
     (interactive)

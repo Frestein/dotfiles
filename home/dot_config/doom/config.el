@@ -2544,7 +2544,7 @@ It should be the title of the web page as returned by `rdrview'."
 (when (modulep! :app rss +org)
   (after! elfeed-org
     ;; INFO: https://github.com/remyhonig/elfeed-org/issues/99
-    (defadvice! fixed-rmh-elfeed-org-import-trees (tree-id)
+    (defadvice! fix/rmh-elfeed-org-import-trees (tree-id)
       "Get trees with `:ID:' property or tag of value TREE-ID.
 Return trees with TREE-ID as the value of the id property or
 with a tag of the same value. Setting an `:ID:' property is not
@@ -2556,7 +2556,8 @@ current users."
           'headline
         (lambda (h)
           (when (or (member tree-id (org-get-tags h))
-                    (equal tree-id (org-element-property :ID h))) h))))))
+                    (equal tree-id (org-element-property :ID h)))
+            h))))))
 
 (when (modulep! :email mu4e)
   (after! mu4e
