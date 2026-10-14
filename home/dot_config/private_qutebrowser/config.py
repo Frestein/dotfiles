@@ -3,14 +3,13 @@
 # ===========================================================================
 
 # This configuration depends on the following Python packages:
-#
-#   python-adblock      - Brave's adblock (python-adblock library)
-#   python-pyperclip    - Clipboard access (qute-code-hint userscript)
-#   python-protobuf     - idk
-#   python-tldextract   - TLD extraction (qute-pass userscript)
+# - python-adblock    : Brave's adblock (python-adblock library)
+# - python-pyperclip  : Clipboard access (qute-code-hint userscript)
+# - python-protobuf   : idk
+# - python-tldextract : TLD extraction (qute-pass userscript)
 
 import os
-from pathlib import Path
+import shlex
 
 # ===========================================================================
 # Avoiding errors
@@ -22,14 +21,13 @@ from pathlib import Path
 
 # Additional info:
 # https://github.com/qutebrowser/qutebrowser/blob/main/doc/help/configuring.asciidoc#avoiding-flake8-errors
+# pylint: disable=C0111
+from qutebrowser.config.config import ConfigContainer  # noqa: E402, F401
+from qutebrowser.config.configfiles import ConfigAPI  # noqa: E402, F401
 
 # pylint: disable=C0111
 c: ConfigContainer = c  # noqa: F821 pylint: disable=E0602,C0103
 config: ConfigAPI = config  # noqa: F821 pylint: disable=E0602,C0103
-
-# pylint: disable=C0111
-from qutebrowser.config.config import ConfigContainer  # noqa: E402, F401
-from qutebrowser.config.configfiles import ConfigAPI  # noqa: E402, F401
 
 # ---------------------------------------------------------------------------
 # Web-sites errors
@@ -64,8 +62,9 @@ config.set("content.javascript.enabled", True, "devtools://*")
 config.set("content.javascript.enabled", True, "chrome://*/*")
 config.set("content.javascript.enabled", True, "qute://*/*")
 
-config.set("content.local_content_can_access_remote_urls", True, "file:///home/frestein/.local/share/qutebrowser/userscripts/*")
-config.set("content.local_content_can_access_file_urls", False, "file:///home/frestein/.local/share/qutebrowser/userscripts/*")
+userscripts = config.datadir / "userscripts"
+config.set("content.local_content_can_access_remote_urls", True, f"file://{userscripts}/*")
+config.set("content.local_content_can_access_file_urls", False, f"file://{userscripts}/*")
 
 # fmt: on
 
@@ -120,7 +119,7 @@ c.content.blocking.adblock.lists = [
 # General settings
 # ===========================================================================
 
-config.load_autoconfig(True)
+config.load_autoconfig()
 
 # ---------------------------------------------------------------------------
 # UI / Behavior
@@ -223,19 +222,18 @@ config.unbind(".")
 en_keys = "qwertyuiop[]asdfghjkl;'zxcvbnm,./" + 'QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?'
 ru_keys = "йцукенгшщзхъфывапролджэячсмитьбю." + "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,"
 
-c.bindings.key_mappings.update(dict(zip(ru_keys, en_keys)))
+c.bindings.key_mappings.update(zip(ru_keys, en_keys))
 
 # ---------------------------------------------------------------------------
 # Web history exclude
 # ---------------------------------------------------------------------------
 
-config_dir = Path(__file__).parent
-exclude_file = config_dir / "web_exclude.txt"
+exclude_file = config.configdir / "web_exclude.txt"
 web_exclude = []
 
 if exclude_file.exists():
     with open(exclude_file) as f:
-        web_exclude = [line.strip() for line in f if line.strip()]
+        web_exclude = [stripped for line in f if (stripped := line.strip())]
 
 c.completion.web_history.exclude = web_exclude
 
@@ -338,9 +336,9 @@ c.url.searchengines = {
 # Aliases
 # ===========================================================================
 
-gopass = f"spawn -u qute-pass -d '{os.environ.get('DMENU')}' -M gopass"
+dmenu = os.environ.get("DMENU", "fuzzel -d")
+gopass = f"spawn -u qute-pass -d {shlex.quote(dmenu)} -M gopass"
 
-c.aliases = config.get("aliases", {})
 c.aliases.update(
     {
         "kinopoisk-to-cx": 'jseval window.location.href = window.location.href.replace("kinopoisk.ru", "kinopoisk.cx");',

@@ -1,20 +1,29 @@
-# pylint: disable=C0111
-c = c  # noqa: F821 pylint: disable=E0602,C0103
-config = config  # noqa: F821 pylint: disable=E0602,C0103G
+# Gruvbox dark (hard) theme by Frestein <fresteinart@gmail.com>
+#
+# Originally based on:
+# - base16-qutebrowser (https://github.com/theova/base16-qutebrowser)
+# - Base16 qutebrowser template by theova and Daniel Mulford
+# - Gruvbox dark (hard) scheme by Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
+# - Gruvbox dark (hard) Qutebrowser theme by Florian Bruhin (me@the-compiler.org)
+
+# ===========================================================================
+# Avoiding errors
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Linter errors
+# ---------------------------------------------------------------------------
+
+# Additional info:
+# https://github.com/qutebrowser/qutebrowser/blob/main/doc/help/configuring.asciidoc#avoiding-flake8-errors
 
 # pylint: disable=C0111
 from qutebrowser.config.config import ConfigContainer  # noqa: E402, F401
 from qutebrowser.config.configfiles import ConfigAPI  # noqa: E402, F401
 
-config: ConfigAPI = config  # noqa: F821 pylint: disable=E0602,C0103
+# pylint: disable=C0111
 c: ConfigContainer = c  # noqa: F821 pylint: disable=E0602,C0103
-
-# gruvbox dark hard qutebrowser theme by Florian Bruhin <me@the-compiler.org>
-#
-# Originally based on:
-#   base16-qutebrowser (https://github.com/theova/base16-qutebrowser)
-#   Base16 qutebrowser template by theova and Daniel Mulford
-#   Gruvbox dark, hard scheme by Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)
+config: ConfigAPI = config  # noqa: F821 pylint: disable=E0602,C0103
 
 ################################################################################
 # Variables
