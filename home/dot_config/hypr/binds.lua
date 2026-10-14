@@ -58,6 +58,7 @@ local emacs_elfeed = emacs_cmd "(fr/elfeed-open-and-update)"
 local emacs_telega = emacs_cmd "(telega)"
 local emacs_trashed = emacs_cmd "(trashed)"
 local emacs_ibuffer = emacs_cmd "(ibuffer)"
+local emacs_scratch = emacs_cmd "(scratch-buffer)"
 local emacs_dired = emacs_cmd "(dired-jump)"
 local emacs_ghostel = emacs_cmd "(ghostel)"
 local emacs_pass = emacs_cmd "(pass)"
@@ -121,6 +122,7 @@ hl.define_submap("editor", "reset", function()
 	hl.bind("T", hl.dsp.exec_cmd(emacs_telega))
 	hl.bind("SHIFT + T", hl.dsp.exec_cmd(emacs_trashed))
 	hl.bind("I", hl.dsp.exec_cmd(emacs_ibuffer))
+	hl.bind("RETURN", hl.dsp.exec_cmd(emacs_scratch))
 	hl.bind("F", hl.dsp.exec_cmd(emacs_dired))
 	hl.bind("S", hl.dsp.exec_cmd(emacs_ghostel))
 	hl.bind("P", hl.dsp.exec_cmd(emacs_pass))
@@ -145,6 +147,7 @@ hl.define_submap("scratchpad", "reset", function()
 	hl.bind("Y", hl.dsp.workspace.toggle_special "youtube")
 	hl.bind("F", hl.dsp.workspace.toggle_special "yazi")
 	hl.bind("A", hl.dsp.workspace.toggle_special "agenda")
+	hl.bind("S", hl.dsp.workspace.toggle_special "scratch")
 	hl.bind("C", hl.dsp.workspace.toggle_special "calc")
 	hl.bind("SHIFT + B", hl.dsp.workspace.toggle_special "top")
 	hl.bind("M", hl.dsp.workspace.toggle_special "mu4e")
@@ -159,6 +162,7 @@ hl.workspace_rule { workspace = "special:elfeed", on_created_empty = emacs_elfee
 hl.workspace_rule { workspace = "special:youtube", on_created_empty = term_youtube }
 hl.workspace_rule { workspace = "special:yazi", on_created_empty = term_yazi }
 hl.workspace_rule { workspace = "special:agenda", on_created_empty = emacs_agenda }
+hl.workspace_rule { workspace = "special:scratch", on_created_empty = emacs_scratch }
 hl.workspace_rule { workspace = "special:calc", on_created_empty = term_calc }
 hl.workspace_rule { workspace = "special:top", on_created_empty = term_top }
 hl.workspace_rule { workspace = "special:mu4e", on_created_empty = emacs_mu4e }
