@@ -53,6 +53,11 @@ label.module {
 	padding: 0 5px;
 }
 
+/* Options for box-based modules */
+box.module {
+	padding: 0 5px;
+}
+
 /* Workspaces */
 #workspaces {
 	margin: 0 4px;
