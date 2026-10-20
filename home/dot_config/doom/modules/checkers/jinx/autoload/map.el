@@ -4,5 +4,5 @@
 (defun fr/jinx--init-map-h ()
   "Initialize jinx's mappings."
   (map! :leader
-        (:prefix "o"
+        (:prefix "t"
          :desc "Jinx mode" "j" #'jinx-mode)))
