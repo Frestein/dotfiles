@@ -92,7 +92,7 @@
        ;; common-lisp
        ;; (go +lsp +tree-sitter)
        (lua +lsp +tree-sitter +fennel)
-       (python +lsp +tree-sitter +uv)
+       (python +lsp +tree-sitter +uv +xonsh)
        ;; (scheme +guile)
        (sh +lsp +tree-sitter +fish)
        (qt +lsp +tree-sitter)

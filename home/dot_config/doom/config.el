@@ -2373,6 +2373,16 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   (setopt eglot-python-preset-lsp-server 'rass)
   (setopt eglot-python-preset-rass-tools '(ty ruff)))
 
+(when (modulep! :lang python +xonsh)
+  (defun +xonsh-common-config (mode)
+    (when (modulep! :lang python +xonsh +lsp)
+      (set-eglot-client! mode '("xonsh-lsp"))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
+
+  (use-package! xonsh-mode
+    :config
+    (+xonsh-common-config 'xonsh-mode)))
+
 (when (modulep! :lang lua)
   (add-to-list 'auto-mode-alist '("conky\\.conf\\'" . lua-mode))
 

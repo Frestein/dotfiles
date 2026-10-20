@@ -45,6 +45,9 @@
     (when (modulep! :lang org +mem)
       (package! org-mem))))
 
+(when (modulep! :lang python +xonsh)
+  (package! xonsh-mode))
+
 (when (modulep! :tools magit)
   (when (and (modulep! :tools magit +delta)
              (executable-find "delta"))

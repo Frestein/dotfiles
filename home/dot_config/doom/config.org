@@ -112,6 +112,7 @@
   - [[#vimrc][Vimrc]]
   - [[#json][JSON]]
   - [[#python][Python]]
+    - [[#xonsh][Xonsh]]
   - [[#lua][Lua]]
 - [[#www][WWW]]
   - [[#eww][EWW]]
@@ -2934,6 +2935,20 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
   :config
   (setopt eglot-python-preset-lsp-server 'rass)
   (setopt eglot-python-preset-rass-tools '(ty ruff)))
+#+end_src
+
+*** Xonsh
+
+#+begin_src elisp
+(when (modulep! :lang python +xonsh)
+  (defun +xonsh-common-config (mode)
+    (when (modulep! :lang python +xonsh +lsp)
+      (set-eglot-client! mode '("xonsh-lsp"))
+      (add-hook (intern (format "%s-local-vars-hook" mode)) #'lsp! 'append)))
+
+  (use-package! xonsh-mode
+    :config
+    (+xonsh-common-config 'xonsh-mode)))
 #+end_src
 
 ** Lua
