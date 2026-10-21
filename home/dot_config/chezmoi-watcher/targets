@@ -11,3 +11,4 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/hypr/lib
 ${XDG_CONFIG_HOME:-$HOME/.config}/hypr/scripts
 ${XDG_CONFIG_HOME:-$HOME/.config}/tridactyl/tridactylrc
 ${XDG_CONFIG_HOME:-$HOME/.config}/conky
+${XDG_CONFIG_HOME:-$HOME/.config}/xonsh

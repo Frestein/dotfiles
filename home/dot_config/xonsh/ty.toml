@@ -1,0 +1,2 @@
+[environment]
+extra-paths = ["/home/frestein/.local/share/uv/tools/xonsh/lib/python3.14/site-packages"]
