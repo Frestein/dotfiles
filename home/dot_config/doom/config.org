@@ -129,6 +129,7 @@
   - [[#app][App]]
     - [[#telega][Telega]]
     - [[#xmpp][XMPP]]
+    - [[#pomm][Pomm]]
   - [[#config-9][Config]]
     - [[#compile-angel][Compile Angel]]
   - [[#tools][Tools]]
@@ -3401,6 +3402,15 @@ is tomorrow.  With two prefixes, select the deadline."
       (if (daemonp)
           (add-hook! doom-first-input (fr/jabber-set-accout))
         (add-hook! doom-init-ui (fr/jabber-set-accout))))))
+#+end_src
+
+*** Pomm
+
+#+begin_src elisp
+(when (modulep! :app pomm)
+  (setopt pomm-work-period 30)
+  (setopt pomm-long-break-period 30)
+  (setopt pomm-short-break-period 8))
 #+end_src
 
 ** Config

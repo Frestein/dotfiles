@@ -2774,6 +2774,11 @@ is tomorrow.  With two prefixes, select the deadline."
           (add-hook! doom-first-input (fr/jabber-set-accout))
         (add-hook! doom-init-ui (fr/jabber-set-accout))))))
 
+(when (modulep! :app pomm)
+  (setopt pomm-work-period 30)
+  (setopt pomm-long-break-period 30)
+  (setopt pomm-short-break-period 8))
+
 (when (modulep! :tools biome)
   (after! biome
     (setopt biome-query-coords
