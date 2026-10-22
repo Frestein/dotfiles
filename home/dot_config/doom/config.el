@@ -779,7 +779,11 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
       :n "r" #'image-rotate
       :n "R" #'fr/image-random)
 
-(setopt switch-to-prev-buffer-skip 'this) ; Skip buffers already visible on the same frame
+;; Skip buffers visible on any frame
+(setopt switch-to-prev-buffer-skip
+        (lambda (_window buffer _bury-or-kill)
+          "Non-nil if BUFFER is shown on any visible frame."
+          (get-buffer-window buffer 'visible)))
 
 (setopt default-input-method "russian-computer")
 (setopt calendar-week-start-day 1)
