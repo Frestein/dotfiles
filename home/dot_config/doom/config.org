@@ -57,6 +57,7 @@
   - [[#snippets][Snippets]]
   - [[#completion][Completion]]
     - [[#corfu][Corfu]]
+    - [[#vertico][Vertico]]
     - [[#abbrev][Abbrev]]
   - [[#format][Format]]
   - [[#flycheck][Flycheck]]
@@ -1372,6 +1373,19 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
             (cape-dabbrev t)
             (when (> corfu--total 0)
               (corfu--goto (- corfu--total (or arg 1))))))))))
+#+end_src
+
+*** Vertico
+
+#+begin_src elisp
+(use-package! vertico-quick
+  :after vertico
+  :when (modulep! :completion vertico)
+  :config
+  (map! :map vertico-map
+        "C-j" #'vertico-quick-jump
+        "M-q" #'vertico-quick-insert
+        "M-q" #'vertico-quick-exit))
 #+end_src
 
 *** Abbrev

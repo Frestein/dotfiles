@@ -1017,6 +1017,15 @@ Intended to mimic `evil-complete-previous', unless the popup is already open."
             (when (> corfu--total 0)
               (corfu--goto (- corfu--total (or arg 1))))))))))
 
+(use-package! vertico-quick
+  :after vertico
+  :when (modulep! :completion vertico)
+  :config
+  (map! :map vertico-map
+        "C-j" #'vertico-quick-jump
+        "M-q" #'vertico-quick-insert
+        "M-q" #'vertico-quick-exit))
+
 (setq abbrev-file-name (expand-file-name "abbrev.el" doom-user-dir))
 (setq save-abbrevs nil)
 
