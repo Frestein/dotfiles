@@ -16,4 +16,5 @@
                  (:prefix ("p" . "Pomodoro")
                           "s" #'pomm-start
                           "S" #'pomm-stop
+                          "p" #'pomm-pause
                           "o" #'pomm))))
