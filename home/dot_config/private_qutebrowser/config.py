@@ -186,9 +186,6 @@ c.spellcheck.languages = ["en-US", "ru-RU"]
 
 c.tabs.last_close = "close"
 
-c.url.default_page = "https://start.duckduckgo.com/"
-c.url.start_pages = "https://start.duckduckgo.com/"
-
 # ---------------------------------------------------------------------------
 # File chooser
 # ---------------------------------------------------------------------------
@@ -253,15 +250,18 @@ instance_mozhi = "mozhi.pussthecat.org"
 # Search engines
 # ---------------------------------------------------------------------------
 
+c.url.default_page = instance_4get
+c.url.start_pages = instance_4get
+
 # fmt: off
 
 c.url.searchengines = {
     # Web
-    "DEFAULT": "duckduckgo.com/?q={}",
+    "DEFAULT": f"{instance_4get}/web?scraper_ac=ddg&country=ru&nsfw=yes&s={{}}",
     "search-ddg": "duckduckgo.com/?q={}",
     "search-g": "google.com/search?q={}",
     "search-ya": "ya.ru/search/?text={}",
-    "search-4get": f"{instance_4get}/web?country=ru&nsfw=yes&s={{}}",
+    "search-4get": f"{instance_4get}/web?scraper_ac=ddg&country=ru&nsfw=yes&s={{}}",
     "search-sx": f"{instance_searxng}/?q={{}}",
 
     # Development & Packages
@@ -301,7 +301,7 @@ c.url.searchengines = {
     "map-osm": "www.openstreetmap.org/search?query={}",
 
     # Media
-    "media-yt": "youtube.com/results?search_query={}",
+    "media-yt": "www.youtube.com/results?search_query={}",
     "media-kp": "kinopoisk.ru/index.php?kp_query={}",
 
     # Music
@@ -503,7 +503,7 @@ qsites = {
     "k": "kinopoisk.ru/user/frestein/movies/planned-to-watch",
     "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
     "T": "translate.google.com",
-    "y": "youtube.com",
+    "y": "www.youtube.com",
     "p": "pinterest.com",
     "r": "reddit.com",
 }
