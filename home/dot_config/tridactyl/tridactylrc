@@ -113,7 +113,7 @@ set searchurls.shop-yam https://market.yandex.ru/search?text=%s
 " Default search engine
 " ---------------------------------------------------------------------------
 
-set searchengine ddg
+set searchengine search-4get
 
 " ===========================================================================
 " Quickmarks
@@ -155,7 +155,7 @@ quickmark r reddit.com
 quickmark m music.youtube.com
 quickmark M www.last.fm/user/Frestein
 quickmark k www.kinopoisk.ru/mykp/folders/
-quickmark y youtube.com
+quickmark y www.youtube.com
 
 " Anime & Manga
 quickmark a anilist.co/user/Frestein
