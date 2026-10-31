@@ -6,11 +6,13 @@ local paths = require "lib.paths"
 -- Helper functions
 -- ===========================================================================
 
-local reset_submap = "hyprctl dispatch 'hl.dsp.submap(\"reset\")'" -- Resets submap
-
--- Helper to reset submap before command
-local function with_reset(cmd)
-	return reset_submap .. " && " .. cmd
+-- Reset submap, then run the given dispatcher
+---@param dispatcher table   # any hl.dsp.* (native or exec_cmd)
+local function reset_then(dispatcher)
+	return function()
+		hl.dispatch(hl.dsp.submap "reset")
+		hl.dispatch(dispatcher)
+	end
 end
 
 -- systemctl --user helper
@@ -38,6 +40,17 @@ local function emacs_cmd(expr, extra)
 		cmd = cmd .. " " .. extra
 	end
 	return cmd
+end
+
+-- Close active special workspace if any; returns true if closed
+local function close_special()
+	local sp = hl.get_active_special_workspace()
+	if not sp then
+		return false
+	end
+	local name = sp.name:match "^special:(.+)$" or sp.name
+	hl.dispatch(hl.dsp.workspace.toggle_special(name))
+	return true
 end
 
 -- ===========================================================================
@@ -93,7 +106,6 @@ local bar_restart_service = scu "restart waybar"
 local toggle_monocle_layout = paths.scripts_path .. "/toggle_monocle_layout.sh"
 local colorpicker = paths.scripts_path .. "/colorpicker.sh"
 local kill_active_window = paths.scripts_path .. "/kill_active_window.sh"
-local close_special = paths.scripts_path .. "/close_special.sh"
 local move_focus = paths.scripts_path .. "/smart_move_focus.sh"
 local zoom = require "scripts.zoom"
 
@@ -173,24 +185,24 @@ hl.bind("SUPER + X", hl.dsp.exec_cmd("pkill fuzzel || (" .. set_layout_en .. " &
 
 hl.bind("SUPER + A", hl.dsp.submap "applets")
 hl.define_submap("applets", function()
-	hl.bind("Z", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && " .. dmenu_pass .. ")")))
-	hl.bind("F", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && " .. dmenu_files .. ")")))
-	hl.bind("B", hl.dsp.exec_cmd(with_reset "brightnessctl --dmenu"))
+	hl.bind("Z", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_pass .. ")")))
+	hl.bind("F", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_files .. ")")))
+	hl.bind("B", reset_then(hl.dsp.exec_cmd "brightnessctl --dmenu"))
 	hl.bind(
 		"S",
-		hl.dsp.exec_cmd(
-			with_reset "pwmenu -l custom --launcher-command \"fuzzel -d --minimal-lines -w 58 -p 'PipeWire ' --placeholder 'Choose...'\""
+		reset_then(
+			hl.dsp.exec_cmd "pwmenu -l custom --launcher-command \"fuzzel -d --minimal-lines -w 58 -p 'PipeWire ' --placeholder 'Choose...'\""
 		)
 	)
 	hl.bind(
 		"SHIFT + S",
-		hl.dsp.exec_cmd(
-			with_reset 'uuctl fuzzel --dmenu -w 100 -p "Select Service " --placeholder "Search..." --minimal-lines'
+		reset_then(
+			hl.dsp.exec_cmd 'uuctl fuzzel --dmenu -w 100 -p "Select Service " --placeholder "Search..." --minimal-lines'
 		)
 	)
-	hl.bind("R", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && " .. dmenu_launch_as_root .. ")")))
-	hl.bind("W", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && " .. dmenu_switch_window .. ")")))
-	hl.bind("Q", hl.dsp.exec_cmd(with_reset("(" .. set_layout_en .. " && sessionctl --dmenu)")))
+	hl.bind("R", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_launch_as_root .. ")")))
+	hl.bind("W", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_switch_window .. ")")))
+	hl.bind("Q", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && sessionctl --dmenu)")))
 
 	-- Emoji
 	hl.bind("E", hl.dsp.submap "emoji")
@@ -208,7 +220,7 @@ end)
 -- Hyprland
 hl.bind("SUPER + D", hl.dsp.submap "hyprland")
 hl.define_submap("hyprland", function()
-	hl.bind("M", hl.dsp.exec_cmd(with_reset(toggle_monocle_layout)))
+	hl.bind("M", reset_then(hl.dsp.exec_cmd(toggle_monocle_layout)))
 
 	-- Session
 	hl.bind("S", hl.dsp.submap "session")
@@ -267,21 +279,17 @@ hl.define_submap("window/workspace", function()
 	for i = 1, 10 do
 		local key = i == 10 and "0" or tostring(i)
 		local ws = i == 10 and "10" or tostring(i)
-		hl.bind(
-			key,
-			hl.dsp.exec_cmd(
-				with_reset(close_special .. " ; hyprctl dispatch 'hl.dsp.focus({ workspace = \"" .. ws .. "\" })'")
-			)
-		)
-		hl.bind(
-			"SHIFT + " .. key,
-			hl.dsp.exec_cmd(with_reset("hyprctl dispatch 'hl.dsp.window.move({ workspace = \"" .. ws .. "\" })'"))
-		)
+		hl.bind(key, function()
+			hl.dispatch(hl.dsp.submap "reset")
+			close_special()
+			hl.dispatch(hl.dsp.focus { workspace = ws })
+		end)
+		hl.bind("SHIFT + " .. key, reset_then(hl.dsp.window.move { workspace = ws }))
 	end
 
 	-- Split, Float
-	hl.bind("F", hl.dsp.exec_cmd(with_reset "hyprctl dispatch 'hl.dsp.window.float({ action = \"toggle\" })'"))
-	hl.bind("S", hl.dsp.exec_cmd(with_reset "hyprctl dispatch 'hl.dsp.layout(\"togglesplit\")'"))
+	hl.bind("F", reset_then(hl.dsp.window.float { action = "toggle" }))
+	hl.bind("S", reset_then(hl.dsp.layout "togglesplit"))
 
 	-- Move Window
 	hl.bind("H", hl.dsp.window.move { direction = "l" })
@@ -306,7 +314,7 @@ hl.define_submap("window/workspace", function()
 	hl.bind("SUPER + SHIFT + L", hl.dsp.window.move { x = 50, y = 0, relative = true }, { repeating = true })
 
 	-- Kill Active Window
-	hl.bind("C", hl.dsp.exec_cmd(with_reset "hyprctl dispatch 'hl.dsp.window.close({ window = \"active\" })'"))
+	hl.bind("C", reset_then(hl.dsp.window.close { window = "active" }))
 
 	-- Group Management
 	hl.bind("G", hl.dsp.submap "group")
@@ -328,10 +336,10 @@ end)
 for i = 1, 10 do
 	local key = i == 10 and "0" or tostring(i)
 	local ws = i == 10 and "10" or tostring(i)
-	hl.bind(
-		"SUPER + " .. key,
-		hl.dsp.exec_cmd(close_special .. " ; hyprctl dispatch 'hl.dsp.focus({ workspace = \"" .. ws .. "\" })'")
-	)
+	hl.bind("SUPER + " .. key, function()
+		close_special()
+		hl.dispatch(hl.dsp.focus { workspace = ws })
+	end)
 	hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move { workspace = ws })
 end
 
@@ -342,21 +350,22 @@ hl.bind("SUPER + SHIFT + K", hl.dsp.focus { workspace = "+1" })
 hl.bind("SUPER + SHIFT + L", hl.dsp.focus { workspace = "+1" })
 
 -- -- Alt-Tab
-hl.bind(
-	"ALT + TAB",
-	hl.dsp.exec_cmd(close_special .. " || hyprctl dispatch 'hl.dsp.focus({ workspace = \"previous\" })'")
-)
+hl.bind("ALT + TAB", function()
+	if not close_special() then
+		hl.dispatch(hl.dsp.focus { workspace = "previous" })
+	end
+end)
 
 -- Mouse Manipulations
 -- -- Workspaces
-hl.bind(
-	"ALT + mouse_up",
-	hl.dsp.exec_cmd(close_special .. " ; hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'")
-)
-hl.bind(
-	"ALT + mouse_down",
-	hl.dsp.exec_cmd(close_special .. " ; hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'")
-)
+hl.bind("ALT + mouse_up", function()
+	close_special()
+	hl.dispatch(hl.dsp.focus { workspace = "e+1" })
+end)
+hl.bind("ALT + mouse_down", function()
+	close_special()
+	hl.dispatch(hl.dsp.focus { workspace = "e-1" })
+end)
 
 -- -- Groups
 hl.bind("ALT + SHIFT + mouse_down", hl.dsp.group.prev())
@@ -418,14 +427,14 @@ end)
 -- Screenshot
 hl.bind("PRINT", hl.dsp.submap "screenshot")
 hl.define_submap("screenshot", function()
-	hl.bind("RETURN", hl.dsp.exec_cmd(with_reset "screenshot"))
-	hl.bind("PRINT", hl.dsp.exec_cmd(with_reset "screenshot --now"))
-	hl.bind("S", hl.dsp.exec_cmd(with_reset "screenshot --now"))
-	hl.bind("A", hl.dsp.exec_cmd(with_reset "screenshot --active"))
-	hl.bind("C", hl.dsp.exec_cmd(with_reset "screenshot --area"))
+	hl.bind("RETURN", reset_then(hl.dsp.exec_cmd "screenshot"))
+	hl.bind("PRINT", reset_then(hl.dsp.exec_cmd "screenshot --now"))
+	hl.bind("S", reset_then(hl.dsp.exec_cmd "screenshot --now"))
+	hl.bind("A", reset_then(hl.dsp.exec_cmd "screenshot --active"))
+	hl.bind("C", reset_then(hl.dsp.exec_cmd "screenshot --area"))
 	for i = 1, 10 do
 		local key = i == 10 and "0" or tostring(i)
-		hl.bind(key, hl.dsp.exec_cmd(with_reset("screenshot --delay " .. i)))
+		hl.bind(key, reset_then(hl.dsp.exec_cmd("screenshot --delay " .. i)))
 	end
 
 	-- Edit
