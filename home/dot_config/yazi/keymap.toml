@@ -48,7 +48,6 @@ prepend_keymap = [
   { on = ["g", "v"], run = "cd ~/Videos", desc = "~/Videos" },
   { on = ["g", "p"], run = "cd ~/Pictures", desc = "~/Pictures" },
   { on = ["g", "P"], run = "cd ~/Projects", desc = "~/Projects" },
-  { on = ["g", "t"], run = "plugin recycle-bin -- open", desc = "Trash" },
   # Action
   { on = "!", run = 'shell "$SHELL" --block', desc = "Open shell here" },
   { on = ["t", "h"], run = "hidden toggle", desc = "Toggle hidden" },
@@ -79,7 +78,6 @@ prepend_keymap = [
   # Utilities
   ## Desktop Trash Can
   { on = "u", run = "plugin restore", desc = "Restore last deleted files/folders" },
-  { on = "R", run = "plugin recycle-bin", desc = "Open recycle bin menu" },
   ## Git
   { on = ["\\", "g", "r"], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the root (git)" },
   { on = ["\\", "g", "v"], run = "plugin vcs-files", desc = "Show Git file changes" },

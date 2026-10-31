@@ -167,7 +167,6 @@ local githead_config = {
 -- Tools
 require("githead"):setup(githead_config)
 require("git"):setup()
-require("recycle-bin"):setup()
 require("smart-enter"):setup {
 	open_multi = true,
 }
