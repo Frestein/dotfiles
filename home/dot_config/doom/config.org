@@ -2472,7 +2472,7 @@ with `org-agenda-block-separator' characters)."
     "Redraw *Org Agenda* with a short delay after frame creation."
     (run-with-idle-timer 0.1 nil
                          (lambda ()
-                           (when (get-buffer "*Org Agenda*")
+                           (when (get-buffer-window "*Org Agenda*" (selected-frame))
                              (with-current-buffer "*Org Agenda*"
                                (org-agenda-redo))))))
 
