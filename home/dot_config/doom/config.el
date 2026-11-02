@@ -449,6 +449,8 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
 
 (when (modulep! :term ghostel)
   (after! ghostel
+    (setopt ghostel-query-before-killing nil) ; Disable confirm before killing ghostel
+
     (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer))
     (add-to-list 'ghostel-eval-cmds '("magit-status" magit-status))
 
