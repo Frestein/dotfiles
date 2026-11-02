@@ -1344,6 +1344,8 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
 
+(setq calc-algebraic-mode t)
+
 (setopt treesit-auto-install-grammar 'always)
 
 (after! elisp-mode

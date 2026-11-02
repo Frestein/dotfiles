@@ -82,6 +82,7 @@
   - [[#pdf][PDF]]
   - [[#printer][Printer]]
     - [[#pdf-misc][PDF-Misc]]
+- [[#calc][Calc]]
 - [[#languages][Languages]]
   - [[#tree-sitter][Tree-Sitter]]
   - [[#emacs-lisp][Emacs Lisp]]
@@ -1797,6 +1798,12 @@ Does nothing if `fr/magit-enable-conventional-commits' is nil."
                  (cons (concat "-P " pages) pdf-misc-print-program-args)
                pdf-misc-print-program-args)))
         (pdf-misc-print-document filename)))))
+#+end_src
+
+* Calc
+
+#+begin_src emacs-lisp :tangle yes
+(setq calc-algebraic-mode t)
 #+end_src
 
 * Languages
