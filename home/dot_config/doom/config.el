@@ -2381,6 +2381,13 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
     tab-width 2
     js-indent-level 2))
 
+(when (modulep! :lang python)
+  (setopt python-check-command "ruff check")
+
+  (map! :map python-base-mode-map
+        :localleader
+        :desc "Check" "c" #'python-check))
+
 (use-package! eglot-python-preset
   :when (and (modulep! :tools lsp +eglot)
              (modulep! :lang python +lsp))
