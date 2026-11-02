@@ -242,7 +242,7 @@ c.completion.web_history.exclude = web_exclude
 # Instance variables
 # ---------------------------------------------------------------------------
 
-instance_4get = "4get.joygnu.org"
+instance_4get = "4get.canine.tools"
 instance_searxng = "eu.priv.au"
 instance_mozhi = "mozhi.pussthecat.org"
 
