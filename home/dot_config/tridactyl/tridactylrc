@@ -29,7 +29,7 @@ js tri.config.set("searchurls", {})
 " Instance variables
 " ---------------------------------------------------------------------------
 
-js tri.config.set("instance_4get", "4get.joygnu.org")
+js tri.config.set("instance_4get", "4get.canine.tools")
 js tri.config.set("instance_searxng", "eu.priv.au")
 js tri.config.set("instance_mozhi", "mozhi.pussthecat.org")
 
