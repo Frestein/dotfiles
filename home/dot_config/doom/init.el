@@ -77,7 +77,7 @@
        (pass +auth)
        pdf
        nov
-       reader
+       emureader
        trashed
        tree-sitter
        tldr
