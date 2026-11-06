@@ -1,0 +1,3 @@
+# Track Org files, instead of generated Elisp files, for literate configuration.
+**/doom/config.org linguist-detectable=true
+**/doom/config.el  linguist-generated
