@@ -18,17 +18,13 @@ image_delay = 0
 
 [opener]
 image = [
-  { for = "linux", run = 'swayimg "$@"', orphan = true, block = true },
-]
-pdf = [
-  { for = "linux", run = 'zathura "$@"', orphan = true, block = true },
+  { for = "linux", run = "swayimg %s", desc = "Swayimg", orphan = true, block = true },
 ]
 
 [open]
 prepend_rules = [
   { mime = "image/{vnd.djvu,x-djvu,djvu}", use = ["open", "reveal"] },
   { mime = "image/*", use = ["image", "open", "reveal"] },
-  # { mime = "application/pdf", use = ["pdf", "open"] },
 ]
 
 # ===========================================================================
@@ -83,6 +79,20 @@ run = "office"
 url = "*.docx"
 run = "office"
 
+# Replace magick, image, video with mediainfo
+[[plugin.prepend_preloaders]]
+mime = "{audio}/*"
+run = "mediainfo"
+
+[[plugin.prepend_preloaders]]
+mime = "{video,image}/*"
+run = "mediainfo --no-metadata"
+
+# .srt subtitle, adobe illustrator, adobe photoshop file
+[[plugin.prepend_preloaders]]
+mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}"
+run = "mediainfo --no-metadata"
+
 [[plugin.prepend_previewers]]
 mime = "application/openxmlformats-officedocument.*"
 run = "office"
@@ -122,20 +132,6 @@ run = "epub-preview"
 # ---------------------------------------------------------------------------
 # mediainfo.yazi
 # ---------------------------------------------------------------------------
-
-# Replace magick, image, video with mediainfo
-[[plugin.prepend_preloaders]]
-mime = "{audio}/*"
-run = "mediainfo"
-
-[[plugin.prepend_preloaders]]
-mime = "{video,image}/*"
-run = "mediainfo --no-metadata"
-
-# .srt subtitle, adobe illustrator, adobe photoshop file
-[[plugin.prepend_preloaders]]
-mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}"
-run = "mediainfo --no-metadata"
 
 # Replace magick, image, video with mediainfo
 [[plugin.prepend_previewers]]
