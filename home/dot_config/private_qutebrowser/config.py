@@ -370,6 +370,7 @@ unbind = config.unbind
 unbind("<Alt-m>")
 unbind(";i")
 unbind(";I")
+unbind("go")
 unbind("gO")
 
 # ---------------------------------------------------------------------------
