@@ -489,7 +489,6 @@ bind("\\po", "gopass-otp")
 qsites = {
     "1": "chat.deepseek.com",
     "2": "perplexity.ai",
-    "3": "duck.ai",
     "a": "anilist.co/user/Frestein",
     "s": instance_4get,
     "S": instance_searxng,
