@@ -964,22 +964,34 @@ With prefix ARG, cycle backwards if ARG is negative."
     (setopt corfu-auto nil)))
 
 (when (modulep! :completion corfu)
-  (after! (:and corfu eshell)
+  (after! corfu
     (defadvice! fr/corfu-dabbrev-or-next (&optional arg)
       "Invoke `cape-dabbrev' but respect `evil-complete-all-buffers'.
 
 Intended to mimic `evil-complete-next', unless the popup is already open."
       :override #'+corfu/dabbrev-or-next
       (interactive "p")
-      (if (and (eq major-mode 'eshell-mode)
+      (if (and (or (eq major-mode 'eshell-mode)
+                   (derived-mode-p 'comint-mode))
                (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
           (let ((n (or arg 1)))
-            (and (not (memq last-command '(eshell-next-matching-input-from-input
-                                           eshell-previous-matching-input-from-input)))
-                 (> n 1)
-                 (setq n (1+ n)))
-            (eshell-next-matching-input-from-input n)
-            (setq this-command 'eshell-next-matching-input-from-input))
+            (if (derived-mode-p 'comint-mode)
+                ;; Comint support
+                (progn
+                  (and (not (memq last-command '(comint-next-matching-input-from-input
+                                                 comint-previous-matching-input-from-input)))
+                       (> n 1)
+                       (setq n (1+ n)))
+                  (comint-next-matching-input-from-input n)
+                  (setq this-command 'comint-next-matching-input-from-input))
+              ;; Eshell support
+              (and (not (memq last-command '(eshell-next-matching-input-from-input
+                                             eshell-previous-matching-input-from-input)))
+                   (> n 1)
+                   (setq n (1+ n)))
+              (eshell-next-matching-input-from-input n)
+              (setq this-command 'eshell-next-matching-input-from-input)))
+        ;; Corfu logic
         (if corfu--candidates
             (corfu-next arg)
           (require 'cape)
@@ -997,17 +1009,27 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
 Intended to mimic `evil-complete-previous', unless the popup is already open."
       :override #'+corfu/dabbrev-or-last
       (interactive "p")
-      (if (and (eq major-mode 'eshell-mode)
+      (if (and (or (eq major-mode 'eshell-mode)
+                   (derived-mode-p 'comint-mode))
                (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
-          ;; Thanks
-          ;; https://github.com/emacs-straight/capf-autosuggest/blob/2ba57bf7fcc6183a73f3803edcf6bbcdbc2f5a19/capf-autosuggest.el#L354
           (let ((n (or arg 1)))
-            (and (not (memq last-command '(eshell-previous-matching-input-from-input
-                                           eshell-next-matching-input-from-input)))
-                 (> n 1)
-                 (setq n (1+ n)))
-            (eshell-previous-matching-input-from-input n)
-            (setq this-command 'eshell-previous-matching-input-from-input))
+            (if (derived-mode-p 'comint-mode)
+                ;; Comint support
+                (progn
+                  (and (not (memq last-command '(comint-previous-matching-input-from-input
+                                                 comint-next-matching-input-from-input)))
+                       (> n 1)
+                       (setq n (1+ n)))
+                  (comint-previous-matching-input-from-input n)
+                  (setq this-command 'comint-previous-matching-input-from-input))
+              ;; Eshell support
+              (and (not (memq last-command '(eshell-previous-matching-input-from-input
+                                             eshell-next-matching-input-from-input)))
+                   (> n 1)
+                   (setq n (1+ n)))
+              (eshell-previous-matching-input-from-input n)
+              (setq this-command 'eshell-previous-matching-input-from-input)))
+        ;; Corfu logic
         (if corfu--candidates
             (corfu-previous arg)
           (require 'cape)
