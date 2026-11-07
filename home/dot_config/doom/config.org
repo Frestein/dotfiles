@@ -1620,7 +1620,8 @@ Disable ws-butler in Org Mode.
 *** Git
 
 #+begin_src elisp
-(setopt git-commit-summary-max-length 80)
+(after! git-commit
+  (setopt git-commit-summary-max-length 72))
 #+end_src
 
 *** Magit

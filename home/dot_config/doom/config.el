@@ -1201,7 +1201,8 @@ making an abbreviation to a function."
 (add-to-list 'auto-mode-alist
              '("/\\.?config/git/.*\\'" . gitconfig-mode))
 
-(setopt git-commit-summary-max-length 80)
+(after! git-commit
+  (setopt git-commit-summary-max-length 72))
 
 (when (modulep! :tools magit)
   (setopt magit-repository-directories `(("~/Projects" . 2)
