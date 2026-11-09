@@ -269,9 +269,7 @@ the variable `message-log-max'."
 (setopt shell-file-name (executable-find "bash"))
 
 (when (executable-find "fish")
-  (setopt explicit-shell-file-name (executable-find "fish"))
-  (after! vterm
-    (setopt vterm-shell (executable-find "fish"))))
+  (setopt explicit-shell-file-name (executable-find "fish")))
 
 (when (modulep! :term eshell)
   (after! eshell
@@ -447,11 +445,6 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
         (:localleader
          "s" #'fr/eshell-history)))
 
-(use-package! eshell-vterm
-  :when (and (modulep! :term eshell)
-             (modulep! :term vterm))
-  :hook (eshell-load . eshell-vterm-mode))
-
 (when (modulep! :term ghostel)
   (after! ghostel
     (setopt ghostel-query-before-killing nil) ; Disable confirm before killing ghostel
@@ -471,82 +464,6 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
   (after! ghostel-compile
     (when (modulep! :editor ripgrep)
       (add-to-list 'ghostel-compile-global-mode-excluded-modes 'rg-mode))))
-
-(when (modulep! :term vterm)
-  (use-package! vterm
-    :custom
-    (vterm-always-compile-module t))
-
-  (after! vterm
-    (setopt vterm-max-scrollback 10000)
-
-    (set-popup-rule! "^\\*vterm" :ignore t)
-    (set-popup-rule! "^ \\*Install vterm" :height 0.25 :ttl 0)
-    (+popup-cleanup-rules-h)
-
-    ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/313#issuecomment-1183650463
-    (advice-add #'vterm--redraw :around (lambda (fun &rest args) (let ((cursor-type cursor-type)) (apply fun args))))
-
-    (when (modulep! :tools chezmoi)
-      (add-to-list 'vterm-eval-cmds '("chezmoi-magit-status" chezmoi-magit-status)))
-
-    ;; Thanks - https://github.com/akermu/emacs-libvterm/issues/749
-    (defadvice! fr/vterm-better-kill (orig-fun &rest args)
-      "Override kill-buffer for vterm: kill without confirmation when vterm is idle."
-      :around #'kill-buffer
-      (if (eq major-mode 'vterm-mode)
-          (let ((process (get-buffer-process (current-buffer))))
-            (when process
-              (if (vterm--at-prompt-p)
-                  (set-process-query-on-exit-flag process nil)
-                (set-process-query-on-exit-flag process t)))))
-      (apply orig-fun args))
-
-    (defun fr/switch-to-buffer-kill (&optional arg)
-      (interactive "P")
-      (let ((embark-default-action-overrides '((buffer . kill-buffer)))
-            ;; Force kill buffer is not in pre-action-hooks, and don't worry if embark-preaction-hooks exist.
-            (embark-pre-action-hooks nil)
-            embark-quit-after-action)
-        (embark-dwim arg)))
-
-    (defun fr/vterm--close-buffer-on-exit (_buffer _event)
-      "Close `vterm' buffer and its window upon process exit."
-      (let ((buf (current-buffer))
-            (win (get-buffer-window (current-buffer))))
-        (when (buffer-live-p buf)
-          (when (and win (not (one-window-p)))
-            (delete-window win))
-          (kill-buffer buf))))
-
-    (defun fr/browse-url-text-vterm (url &optional new-buffer)
-      "Ask a text browser to load URL inside `vterm'."
-      (interactive (browse-url-interactive-arg "Text browser URL: "))
-      (let* ((bufname "*vterm text browser*")
-             (buf (if new-buffer
-                      (generate-new-buffer-name bufname)
-                    bufname))
-             (proc (when (get-buffer buf) (get-buffer-process buf)))
-             (encoded-url (format "\"%s\"" (url-encode-url url)))
-             (browser-cmd (format "exec %s %s" browse-url-text-browser encoded-url)))
-        (if (or new-buffer (not (get-buffer buf)) (not proc) (not (memq (process-status proc) '(run stop))))
-            (progn
-              (vterm buf)
-              (add-hook 'vterm-exit-functions #'fr/vterm--close-buffer-on-exit nil t)
-              (vterm-send-string browser-cmd)
-              (vterm-send-return)
-              (switch-to-buffer buf)
-              (delete-other-windows))
-          (switch-to-buffer buf)
-          (vterm-send-string (concat "g \C-u" encoded-url "\r"))
-          (delete-other-windows))))
-
-    (map! :map minibuffer-local-map
-          :ni "M-k" #'fr/switch-to-buffer-kill)
-
-    (map! :map vterm-mode-map
-          :ni "C-k" #'vterm-previous-prompt
-          :ni "C-j" #'vterm-next-prompt)))
 
 (setopt epg-gpg-home-directory (getenv "GNUPGHOME")) ;; Respect XDG Base Directory Specification
 (setq epa-file-encrypt-to '("62AC23D90D0FF74BBF6CB3B9FD0E948816D7FF43")) ;; Personal PGP Key Fingerprint
@@ -898,8 +815,6 @@ With prefix ARG, cycle backwards if ARG is negative."
       :desc "Previous buffer" :n "H" #'previous-buffer
       :desc "Next buffer" :n "L" #'next-buffer
       :v "gss" #'sort-lines
-      (:when (modulep! :term vterm)
-        :desc "Toggle vterm popup" :n "C-/" #'+vterm/toggle)
       (:when (modulep! :term ghostel)
         :desc "Toggle ghostel popup" :n "C-/" #'+ghostel/toggle))
 
@@ -928,8 +843,6 @@ With prefix ARG, cycle backwards if ARG is negative."
        :desc "Open URL" "w" #'browse-url
        :desc "Contacts" "c" #'org-contacts
        :desc "Calendar" "C" #'calfw-org-open-calendar
-       (:when (modulep! :term vterm)
-         :desc "Open URL using text browser" "W" #'fr/browse-url-text-vterm)
        (:prefix "a"
         :desc "GTD Agenda" "g" (lambda () (interactive) (org-agenda nil "g"))
         :desc "Daily Agenda" "d" (lambda () (interactive) (org-agenda nil "d"))

@@ -18,10 +18,7 @@
     (package! esh-autosuggest))
 
   (when (executable-find "atuin")
-    (package! eshell-atuin))
-
-  (when (modulep! :term vterm)
-    (package! eshell-vterm)))
+    (package! eshell-atuin)))
 
 (when (modulep! :lang org)
   (package! org-expose-emphasis-markers)
