@@ -250,6 +250,11 @@ the variable `message-log-max'."
    buffer (cons `(side . ,(if (>= (frame-width) 120) 'right 'bottom))
                 alist)))
 
+(defmacro fr/ignore-args (fn)
+  "Return a function that ignores its arguments and calls FN."
+  `(lambda (&rest _)
+     (funcall ,fn)))
+
 ;; Increase how much is read from processes in a single chunk
 (setq read-process-output-max (* 4 1024 1024))
 
@@ -1944,19 +1949,14 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                                                       (org-agenda-skip-entry-if 'todo 'done)))
                        (org-agenda-span 'week)))))))
 
-  (defmacro ignore-args (fnc)
-    "Returns function that ignores its arguments and invokes FNC."
-    `(lambda (&rest _rest)
-       (funcall ,fnc)))
-
-  (advice-add #'org-priority-up :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add #'org-priority-down :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add #'org-deadline :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add #'org-schedule :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add #'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add #'org-todo :after (ignore-args #'org-save-all-org-buffers))
-  (advice-add #'org-refile :after 'org-save-all-org-buffers)
-  (advice-add #'org-capture-finalize :after (ignore-args #'org-agenda-redo-all))
+  (advice-add #'org-priority-up :after (fr/ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-priority-down :after (fr/ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-deadline :after (fr/ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-schedule :after (fr/ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-store-log-note :after (fr/ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-todo :after (fr/ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-refile :after (fr/ignore-args #'org-save-all-org-buffers))
+  (advice-add #'org-capture-finalize :after (fr/ignore-args #'org-agenda-redo-all))
   (advice-add #'org-agenda-redo :around #'doom-shut-up-a)
 
   (dolist (hook '(org-after-tags-change-hook
@@ -2136,8 +2136,8 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
     (advice-add #'org-roam-node-insert :override #'fr/org-roam-node-insert)
 
-    (advice-add #'org-roam-tag-remove :after (ignore-args #'org-save-all-org-buffers))
-    (advice-add #'org-roam-tag-add :after (ignore-args #'org-save-all-org-buffers))))
+    (advice-add #'org-roam-tag-remove :after (fr/ignore-args #'org-save-all-org-buffers))
+    (advice-add #'org-roam-tag-add :after (fr/ignore-args #'org-save-all-org-buffers))))
 
 (use-package! org-mem
   :when (modulep! :lang org +mem)
