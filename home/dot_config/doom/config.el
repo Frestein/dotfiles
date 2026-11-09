@@ -304,7 +304,9 @@ the variable `message-log-max'."
             ("gg" "magit-status")
             ("cdp" "cd-to-project")
             ("c" "clear-scrollback")
-            ("clear" "clear-scrollback")))
+            ("clear" "clear-scrollback")
+            ("ip-pub" "curl -s ifconfig.me")
+            ("ip-addr" "ip -o addr show | grep -oP 'inet6? \\K[^/]+'")))
 
     (defun fr/eshell-append-aliases (alist)
       (setq eshell-command-aliases-list
@@ -353,24 +355,49 @@ the variable `message-log-max'."
     (when (executable-find "git")
       (fr/eshell-append-aliases '(("git" "git --no-pager $*"))))
 
+    (when (executable-find "doom")
+      (fr/eshell-append-aliases
+       '(("ed" "ediff $*")
+         ("dm" "doom $*")
+         ("dms" "doom sync --aot $*")
+         ("dmu" "doom upgrade -B --aot $*"))))
+
+    (when (executable-find "yazi")
+      (fr/eshell-append-aliases '(("y" "yazi $*"))))
+
     (when (executable-find "chezmoi")
       (after! chezmoi
         (fr/eshell-append-aliases '(("cz-magit" "chezmoi-magit-status"))))
-
-      (fr/eshell-append-aliases '(("cz" "chezmoi $*")
-                                  ("czx" "CZ_EXT=1 chezmoi $*"))))
+      (fr/eshell-append-aliases
+       '(("cz"   "chezmoi $*")
+         ("czs"  "chezmoi status $*")
+         ("czd"  "chezmoi diff $*")
+         ("cza"  "chezmoi apply $*")
+         ("czx"  "env CZ_EXT=1 chezmoi $*")
+         ("czsx" "env CZ_EXT=1 chezmoi status $*")
+         ("czdx" "env CZ_EXT=1 chezmoi diff $*")
+         ("czax" "env CZ_EXT=1 chezmoi apply $*"))))
 
     (when (executable-find "systemctl")
       (fr/eshell-append-aliases '(("sc" "systemctl $*")
-                                  ("scu" "systemctl --user $*")
-                                  ("jctl" "journalctl -p 3 -xb $*"))))
+                                  ("scu" "systemctl --user $*"))))
+
+    (when (executable-find "journalctl")
+      (fr/eshell-append-aliases '(("jctl" "journalctl -p 3 -xb $*"))))
 
     (when (executable-find "speedtest-go")
       (fr/eshell-append-aliases '(("speedtest" "speedtest-go $*"))))
 
+    (when (executable-find "arch-update")
+      (fr/eshell-append-aliases
+       '(("au"  "arch-update $*")
+         ("aul" "arch-update -l $*")
+         ("aun" "arch-update -n $*")
+         ("aus" "arch-update -s $*"))))
+
     (when (executable-find "pacman")
       (fr/eshell-append-aliases
-       `(("pacrip" "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -$1 | nl")
+       `(("pacrip" "expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl")
          ("pacupg" "asroot pacman -Syu $*")
          ("pacin"  "asroot pacman -S $*")
          ("paclean" "asroot pacman -Sc $*")
@@ -383,6 +410,7 @@ the variable `message-log-max'."
          ("pacloc" "pacman -Qi $*")
          ("paclocs" "pacman -Qs $*")
          ("paclst" "pacman -Qe $*")
+         ("paclsta" "pacman -Qem | cut -d' ' -f1 | xargs expac --timefmt=\"%F %T\" \"[%l] \e[1;35m%n\e[0m \e[0;37m(%v)\e[0m\" | sort -k3")
          ("pacinsd" "asroot pacman -S --asdeps $*")
          ("pacmir"  "asroot pacman -Syy $*")
          ("paclsorphans" "asroot pacman -Qdt $*")
@@ -410,6 +438,7 @@ the variable `message-log-max'."
          ("yaloc"  "yay -Qi $*")
          ("yalocs" "yay -Qs $*")
          ("yalst"  "yay -Qe $*")
+         ("yalsta"  "yay -Qem | cut -d' ' -f1 | xargs expac --timefmt=\"%F %T\" \"[%l] \e[1;35m%n\e[0m \e[0;37m(%v)\e[0m\" | sort -k3")
          ("yaorph" "yay -Qtd $*")
          ("yainsd" "yay -S --asdeps $*")
          ("yamir"  "yay -Syy $*")
