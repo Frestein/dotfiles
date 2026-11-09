@@ -2709,7 +2709,7 @@ is tomorrow.  With two prefixes, select the deadline."
                          (t         "later"))))))
 
     (map! :map mu4e-main-mode-map
-          :n "q" (λ! (mu4e-quit t))
+          :n "q" (lambda () (interactive) (mu4e-quit t))
           :n "Q" #'mu4e-quit))
 
   (set-email-account! "fresteinart@gmail.com"
