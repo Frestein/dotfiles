@@ -912,35 +912,41 @@ With prefix ARG, cycle backwards if ARG is negative."
 
 (when (modulep! :completion corfu)
   (after! corfu
-    (defadvice! fr/corfu-dabbrev-or-next (&optional arg)
-      "Invoke `cape-dabbrev' but respect `evil-complete-all-buffers'.
-
-Intended to mimic `evil-complete-next', unless the popup is already open."
-      :override #'+corfu/dabbrev-or-next
-      (interactive "p")
+    (defun fr/corfu--dabbrev-dwim (direction arg)
+      "Shared implementation for `fr/corfu-dabbrev-or-next'/`-last'.
+DIRECTION is `next' or `prev'. ARG is the prefix argument."
       (if (and (or (eq major-mode 'eshell-mode)
                    (derived-mode-p 'comint-mode))
                (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
           (let ((n (or arg 1)))
             (if (derived-mode-p 'comint-mode)
                 ;; Comint support
-                (progn
-                  (and (not (memq last-command '(comint-next-matching-input-from-input
-                                                 comint-previous-matching-input-from-input)))
+                (let ((cmd (if (eq direction 'next)
+                               'comint-next-matching-input-from-input
+                             'comint-previous-matching-input-from-input))
+                      (opposite (if (eq direction 'next)
+                                    'comint-previous-matching-input-from-input
+                                  'comint-next-matching-input-from-input)))
+                  (and (not (memq last-command (list cmd opposite)))
                        (> n 1)
                        (setq n (1+ n)))
-                  (comint-next-matching-input-from-input n)
-                  (setq this-command 'comint-next-matching-input-from-input))
+                  (call-interactively cmd)
+                  (setq this-command cmd))
               ;; Eshell support
-              (and (not (memq last-command '(eshell-next-matching-input-from-input
-                                             eshell-previous-matching-input-from-input)))
-                   (> n 1)
-                   (setq n (1+ n)))
-              (eshell-next-matching-input-from-input n)
-              (setq this-command 'eshell-next-matching-input-from-input)))
+              (let ((cmd (if (eq direction 'next)
+                             'eshell-next-matching-input-from-input
+                           'eshell-previous-matching-input-from-input))
+                    (opposite (if (eq direction 'next)
+                                  'eshell-previous-matching-input-from-input
+                                'eshell-next-matching-input-from-input)))
+                (and (not (memq last-command (list cmd opposite)))
+                     (> n 1)
+                     (setq n (1+ n)))
+                (call-interactively cmd)
+                (setq this-command cmd))))
         ;; Corfu logic
         (if corfu--candidates
-            (corfu-next arg)
+            (if (eq direction 'next) (corfu-next arg) (corfu-previous arg))
           (require 'cape)
           (let ((cape-dabbrev-buffer-function
                  (if (bound-and-true-p evil-complete-all-buffers)
@@ -948,7 +954,17 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
                    #'current-buffer)))
             (cape-dabbrev t)
             (when (> corfu--total 0)
-              (corfu--goto (or arg 0)))))))
+              (corfu--goto (if (eq direction 'next)
+                               (or arg 0)
+                             (- corfu--total (or arg 1)))))))))
+
+    (defadvice! fr/corfu-dabbrev-or-next (&optional arg)
+      "Invoke `cape-dabbrev' but respect `evil-complete-all-buffers'.
+
+Intended to mimic `evil-complete-next', unless the popup is already open."
+      :override #'+corfu/dabbrev-or-next
+      (interactive "p")
+      (fr/corfu--dabbrev-dwim 'next arg))
 
     (defadvice! fr/corfu-dabbrev-or-last (&optional arg)
       "Invoke `cape-dabbrev' but respect `evil-complete-all-buffers'.
@@ -956,37 +972,7 @@ Intended to mimic `evil-complete-next', unless the popup is already open."
 Intended to mimic `evil-complete-previous', unless the popup is already open."
       :override #'+corfu/dabbrev-or-last
       (interactive "p")
-      (if (and (or (eq major-mode 'eshell-mode)
-                   (derived-mode-p 'comint-mode))
-               (not (and (frame-live-p corfu--frame) (frame-visible-p corfu--frame))))
-          (let ((n (or arg 1)))
-            (if (derived-mode-p 'comint-mode)
-                ;; Comint support
-                (progn
-                  (and (not (memq last-command '(comint-previous-matching-input-from-input
-                                                 comint-next-matching-input-from-input)))
-                       (> n 1)
-                       (setq n (1+ n)))
-                  (comint-previous-matching-input-from-input n)
-                  (setq this-command 'comint-previous-matching-input-from-input))
-              ;; Eshell support
-              (and (not (memq last-command '(eshell-previous-matching-input-from-input
-                                             eshell-next-matching-input-from-input)))
-                   (> n 1)
-                   (setq n (1+ n)))
-              (eshell-previous-matching-input-from-input n)
-              (setq this-command 'eshell-previous-matching-input-from-input)))
-        ;; Corfu logic
-        (if corfu--candidates
-            (corfu-previous arg)
-          (require 'cape)
-          (let ((cape-dabbrev-buffer-function
-                 (if (bound-and-true-p evil-complete-all-buffers)
-                     #'cape-same-mode-buffers
-                   #'current-buffer)))
-            (cape-dabbrev t)
-            (when (> corfu--total 0)
-              (corfu--goto (- corfu--total (or arg 1))))))))))
+      (fr/corfu--dabbrev-dwim 'prev arg))))
 
 (use-package! vertico-quick
   :after vertico
