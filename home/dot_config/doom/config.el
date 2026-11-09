@@ -1461,6 +1461,11 @@ If a region is active, emphasize it, else emphasize the word at point."
             (org-emphasize char)
             (deactivate-mark))))))
 
+  (defun fr/org-emphasize-key (char)
+    "Return an interactive command that emphasizes at point with CHAR.
+CHAR is passed to `fr/org-emphasize-dwim' (e.g. ?* for bold, ?/ for italic)."
+    (lambda () (interactive) (fr/org-emphasize-dwim char)))
+
   ;; QoL
   (defun fr/org-insert-link-dwim (&optional arg)
     "If region is active use it, otherwise mark the symbol at point (if any), then call `org-insert-link'."
@@ -1500,12 +1505,12 @@ If a region is active, emphasize it, else emphasize the word at point."
                  (:prefix "t"
                           "w" #'org-table-toggle-column-width))
         (:prefix ("e" . "emphasize")
-         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
-         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
-         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
-         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
-         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
-         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
+         :desc "Bold"          "b" (fr/org-emphasize-key ?*)
+         :desc "Italic"        "i" (fr/org-emphasize-key ?\/)
+         :desc "Underline"     "u" (fr/org-emphasize-key ?_)
+         :desc "Strike-through" "s" (fr/org-emphasize-key ?\+)
+         :desc "Verbatim"      "v" (fr/org-emphasize-key ?=)
+         :desc "Code"          "c" (fr/org-emphasize-key ?~)))
 
   (map! :map telega-chat-mode-map
         :when (modulep! :app telega)
@@ -1514,12 +1519,12 @@ If a region is active, emphasize it, else emphasize the word at point."
                  "c" #'org-cliplink
                  "l" #'fr/org-insert-link-dwim)
         (:prefix ("e" . "emphasize")
-         :desc "Bold" "b" #'(lambda () (interactive) (fr/org-emphasize-dwim ?*))
-         :desc "Italic" "i" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\/))
-         :desc "Underline" "u" #'(lambda () (interactive) (fr/org-emphasize-dwim ?_))
-         :desc "Strike-through" "s" #'(lambda () (interactive) (fr/org-emphasize-dwim ?\+))
-         :desc "Verbatim" "v" #'(lambda () (interactive) (fr/org-emphasize-dwim ?=))
-         :desc "Code" "c" #'(lambda () (interactive) (fr/org-emphasize-dwim ?~))))
+         :desc "Bold"          "b" (fr/org-emphasize-key ?*)
+         :desc "Italic"        "i" (fr/org-emphasize-key ?\/)
+         :desc "Underline"     "u" (fr/org-emphasize-key ?_)
+         :desc "Strike-through" "s" (fr/org-emphasize-key ?\+)
+         :desc "Verbatim"      "v" (fr/org-emphasize-key ?=)
+         :desc "Code"          "c" (fr/org-emphasize-key ?~)))
 
   (map! :map org-agenda-mode-map
         "<mouse-8>" #'org-agenda-earlier
