@@ -2396,8 +2396,7 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 
 (setopt browse-url-text-browser (executable-find "cha"))
 
-(use-package! eww
-  :config
+(after! eww
   (setopt eww-readable-urls '("lwn\\.net"))
 
   (add-hook 'eww-mode-hook (lambda () (setq-local doom-real-buffer-p t)))

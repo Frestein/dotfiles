@@ -2989,8 +2989,7 @@ Requirements:
 *** Config
 
 #+begin_src elisp
-(use-package! eww
-  :config
+(after! eww
   (setopt eww-readable-urls '("lwn\\.net"))
 
   (add-hook 'eww-mode-hook (lambda () (setq-local doom-real-buffer-p t)))
