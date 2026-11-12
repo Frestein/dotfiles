@@ -732,6 +732,8 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
       :n "r" #'image-rotate
       :n "R" #'fr/image-random)
 
+(setopt speedbar-prefer-window t)
+
 ;; Skip buffers visible on any frame
 (setopt switch-to-prev-buffer-skip
         (lambda (_window buffer _bury-or-kill)

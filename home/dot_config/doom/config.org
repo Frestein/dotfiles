@@ -42,6 +42,7 @@
     - [[#config-2][Config]]
     - [[#dirvish][Dirvish]]
   - [[#image][Image]]
+  - [[#speedbar][Speedbar]]
 - [[#buffer-management][Buffer Management]]
 - [[#editor][Editor]]
   - [[#settings][Settings]]
@@ -1018,6 +1019,12 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
       :n "c" #'image-crop
       :n "r" #'image-rotate
       :n "R" #'fr/image-random)
+#+end_src
+
+** Speedbar
+
+#+begin_src elisp
+(setopt speedbar-prefer-window t)
 #+end_src
 
 * Buffer Management
