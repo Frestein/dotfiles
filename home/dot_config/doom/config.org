@@ -94,6 +94,7 @@
     - [[#modules][Modules]]
       - [[#org-link][Org Link]]
       - [[#org-habit][Org Habit]]
+      - [[#org-checklist][Org Checklist]]
     - [[#org-roam][Org Roam]]
       - [[#config-6][Config]]
       - [[#org-mem][Org Mem]]
@@ -2468,6 +2469,14 @@ with `org-agenda-block-separator' characters)."
 
     (setq +org-habit-graph-padding 1)
     (setq +org-habit-graph-window-ratio 0.25)))
+#+end_src
+
+**** Org Checklist
+
+#+begin_src elisp
+(when (modulep! :lang org)
+  (after! org
+    (add-to-list 'org-modules 'org-checklist)))
 #+end_src
 
 *** Org Roam

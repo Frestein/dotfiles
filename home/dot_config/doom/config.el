@@ -1969,6 +1969,10 @@ with `org-agenda-block-separator' characters)."
     (setq +org-habit-graph-padding 1)
     (setq +org-habit-graph-window-ratio 0.25)))
 
+(when (modulep! :lang org)
+  (after! org
+    (add-to-list 'org-modules 'org-checklist)))
+
 (when (modulep! :lang org +roam)
   (after! org-roam
     (setopt org-roam-directory (expand-file-name "roam" org-directory))
