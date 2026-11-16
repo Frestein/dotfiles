@@ -91,6 +91,7 @@
     - [[#config-5][Config]]
     - [[#override-module-defaults][Override Module Defaults]]
     - [[#org-agenda][Org Agenda]]
+    - [[#org-attach][Org Attach]]
     - [[#modules][Modules]]
       - [[#org-link][Org Link]]
       - [[#org-habit][Org Habit]]
@@ -2448,6 +2449,12 @@ with `org-agenda-block-separator' characters)."
                                (org-agenda-redo))))))
 
   (add-hook 'server-after-make-frame-hook #'fr/org-agenda-redo-after-frame-delayed))
+#+end_src
+
+*** Org Attach
+
+#+begin_src elisp
+(setopt org-attach-auto-tag nil) ; Don't do it!
 #+end_src
 
 *** Modules

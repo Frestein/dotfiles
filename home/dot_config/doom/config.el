@@ -1958,6 +1958,8 @@ with `org-agenda-block-separator' characters)."
 
   (add-hook 'server-after-make-frame-hook #'fr/org-agenda-redo-after-frame-delayed))
 
+(setopt org-attach-auto-tag nil) ; Don't do it!
+
 (when (modulep! :lang org)
   (after! org
     (add-to-list 'org-modules 'ol-man))) ; Enable support for man pages
