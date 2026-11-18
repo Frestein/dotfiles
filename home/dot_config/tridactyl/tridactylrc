@@ -121,7 +121,9 @@ set searchengine search-4get
 
 " AI/LLM
 quickmark 1 chat.deepseek.com
-quickmark 2 www.perplexity.ai
+quickmark 2 chat.mistral.ai/work
+quickmark 3 chat.mistral.ai/code
+quickmark 4 www.perplexity.ai
 
 js tri.instances = {
     "4get": "4get.joygnu.org",
