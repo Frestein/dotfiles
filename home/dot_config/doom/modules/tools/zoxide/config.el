@@ -48,15 +48,15 @@ If TARGETS is nil, go to $HOME."
 
       (defun pcomplete/z ()
         "Completion for the `z' command."
-        (if (string-match-p "/" pcomplete-stub)
-            ;; Nested path — delegate to file completion
-            (pcomplete-here (pcomplete-dirs))
-          ;; Top-level — combine zoxide paths with local dirs
-          (pcomplete-here
-           (append
-            (mapcar (lambda (d) (file-relative-name d default-directory))
-                    (zoxide-query))
-            (pcomplete-dirs)))))))
+        (let* ((args (cdr pcomplete-args))
+               (matches (and (cdr args)
+                             (zerop (length pcomplete-stub))
+                             (apply #'zoxide-query (butlast args)))))
+          (cond
+           (matches
+            (pcomplete-here (list (completing-read "Zoxide: " matches nil t))))
+           ((null (cdr args))
+            (pcomplete-here (pcomplete-dirs))))))))
   :config
   (fmakunbound 'zoxide-query)
   (fmakunbound 'zoxide-query-with)
