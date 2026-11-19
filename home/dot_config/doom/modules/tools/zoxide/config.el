@@ -16,7 +16,6 @@
           :category file
           :face consult-file
           :history file-name-history
-          :enabled ,(lambda () (executable-find "zoxide"))
           :items ,#'zoxide-query)
         "Zoxide directory source for `consult-dir'.")
 
@@ -25,18 +24,6 @@
   (when (modulep! :term eshell)
     (after! eshell
       (advice-add 'eshell-add-to-dir-ring :after #'zoxide-add)
-
-      (defun zoxide--scored-query (&rest queries)
-        "Query the zoxide database with QUERIES, returning an alist.
-The alist elements are (PATH . SCORE), sorted by score like
-`zoxide query -s -l' prints them."
-        (mapcar (lambda (line)
-                  (let ((fields (split-string line)))
-                    (cons (string-join (cdr fields) " ")
-                          (car fields))))
-                (split-string
-                 (or (apply #'zoxide-run nil "query" "-s" "-l" queries) "")
-                 "\n" t)))
 
       (defun eshell/zi (&rest targets)
         "`eshell/cd' with interactive zoxide selection, sorted by score.
@@ -115,14 +102,22 @@ The second argument ARGS is passed to zoxide directly, like `query -l'."
     (when-let ((results (apply #'zoxide-run nil "query" "-l" queries)))
       (mapcar #'file-name-as-directory (split-string results "\n" t))))
 
+  (defun zoxide--scored-query (&rest queries)
+    "Query the zoxide database with QUERIES, returning an alist.
+The alist elements are (PATH . SCORE), sorted by score like
+`zoxide query -s -l' prints them."
+    (mapcar (lambda (line)
+              (let ((fields (split-string line)))
+                (cons (string-join (cdr fields) " ")
+                      (car fields))))
+            (split-string
+             (or (apply #'zoxide-run nil "query" "-s" "-l" queries) "")
+             "\n" t)))
+
   (defun zoxide--open-with (query callback &optional noninteractive)
-    "Search QUERY and run CALLBACK function with a selected path.
-
-If NONINTERACTIVE is non-nil, the callback is always called
-directly with the selected path as its first argument.
-
-This is a help function to define interactive commands like
-`zoxide-find-file'."
+    "Search QUERY and run CALLBACK on the selected path.
+CALLBACK is called interactively, or noninteractively with the
+selected path as its first argument when NONINTERACTIVE is set."
     (let* ((results (if query (zoxide-query query) (zoxide-query)))
            (default-directory (completing-read "Zoxide: " results nil t)))
       (if (and (not noninteractive) (commandp callback))
