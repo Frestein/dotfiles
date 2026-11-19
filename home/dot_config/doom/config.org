@@ -1908,6 +1908,7 @@ CHAR is passed to `fr/org-emphasize-dwim' (e.g. ?* for bold, ?/ for italic)."
   (map! :map org-mode-map
         :after org
         :localleader
+        "n" #'org-add-note
         "v" #'org-insert-structure-template
         "B" #'org-babel-tangle
         "D" #'org-insert-drawer
