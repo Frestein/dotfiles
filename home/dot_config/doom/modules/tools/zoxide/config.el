@@ -105,13 +105,12 @@ The second argument ARGS is passed to zoxide directly, like `query -l'."
     "Query the zoxide database with QUERIES, returning an alist.
 The alist elements are (PATH . SCORE), sorted by score like
 `zoxide query -s -l' prints them."
-    (mapcar (lambda (line)
-              (let ((fields (split-string line)))
-                (cons (string-join (cdr fields) " ")
-                      (car fields))))
-            (split-string
-             (or (apply #'zoxide-run nil "query" "-s" "-l" queries) "")
-             "\n" t)))
+    (when-let ((results (apply #'zoxide-run nil "query" "-s" "-l" queries)))
+      (mapcar (lambda (line)
+                (let ((fields (split-string line)))
+                  (cons (string-join (cdr fields) " ")
+                        (car fields))))
+              (split-string results "\n" t))))
 
   (defun zoxide--open-with (query callback &optional noninteractive)
     "Search QUERY and run CALLBACK on the selected path.
