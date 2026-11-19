@@ -16,7 +16,7 @@
           :category file
           :face consult-file
           :history file-name-history
-          :items ,#'zoxide-query)
+          :items ,#'zoxide-paths)
         "Zoxide directory source for `consult-dir'.")
 
       (add-to-list 'consult-dir-sources 'consult-dir--source-zoxide)))
@@ -28,7 +28,7 @@
       (defun eshell/zi (&rest targets)
         "`eshell/cd' with interactive zoxide selection, sorted by score.
 The whole database is queried when TARGETS is nil."
-        (when-let ((matches (apply #'zoxide--scored-query targets))
+        (when-let ((matches (apply #'zoxide-query targets))
                    (col (+ 10
                            (cl-loop for (path . _) in matches
                                     maximize (string-width path)))))
@@ -56,7 +56,7 @@ If TARGETS is nil, go to $HOME."
                  (file-directory-p (expand-file-name (car targets))))
             (eshell/cd (expand-file-name (car targets))))
            (t
-            (let ((candidate (car (apply #'zoxide-query targets))))
+            (let ((candidate (car (apply #'zoxide-paths targets))))
               (if candidate
                   (eshell/cd candidate)
                 (error "No match found for %s" (string-join targets " "))))))))
@@ -66,7 +66,7 @@ If TARGETS is nil, go to $HOME."
         (let* ((args (cdr pcomplete-args))
                (matches (and (cdr args)
                              (zerop (length pcomplete-stub))
-                             (apply #'zoxide-query (butlast args)))))
+                             (apply #'zoxide-paths (butlast args)))))
           (cond
            (matches
             (pcomplete-here (list (completing-read "Zoxide: " matches nil t))))
@@ -97,12 +97,7 @@ The second argument ARGS is passed to zoxide directly, like `query -l'."
           (warn "Zoxide error. See buffer *zoxide* for more details.")))))
 
   (defun zoxide-query (&rest queries)
-    "Search zoxide database with QUERIES by calling zoxide query."
-    (when-let ((results (apply #'zoxide-run nil "query" "-l" queries)))
-      (mapcar #'file-name-as-directory (split-string results "\n" t))))
-
-  (defun zoxide--scored-query (&rest queries)
-    "Query the zoxide database with QUERIES, returning an alist.
+    "Search the zoxide database with QUERIES, returning an alist.
 The alist elements are (PATH . SCORE), sorted by score like
 `zoxide query -s -l' prints them."
     (when-let ((results (apply #'zoxide-run nil "query" "-s" "-l" queries)))
@@ -112,11 +107,17 @@ The alist elements are (PATH . SCORE), sorted by score like
                         (car fields))))
               (split-string results "\n" t))))
 
+  (defun zoxide-paths (&rest queries)
+    "Like `zoxide-query', but return just the paths."
+    (mapcar (lambda (match)
+              (file-name-as-directory (car match)))
+            (apply #'zoxide-query queries)))
+
   (defun zoxide--open-with (query callback &optional noninteractive)
     "Search QUERY and run CALLBACK on the selected path.
 CALLBACK is called interactively, or noninteractively with the
 selected path as its first argument when NONINTERACTIVE is set."
-    (let* ((results (if query (zoxide-query query) (zoxide-query)))
+    (let* ((results (if query (zoxide-paths query) (zoxide-paths)))
            (default-directory (completing-read "Zoxide: " results nil t)))
       (if (and (not noninteractive) (commandp callback))
           (call-interactively callback)
