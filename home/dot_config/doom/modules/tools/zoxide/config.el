@@ -28,17 +28,16 @@
       (defun eshell/zi (&rest targets)
         "`eshell/cd' with interactive zoxide selection, sorted by score.
 The whole database is queried when TARGETS is nil."
-        (let* ((matches (apply #'zoxide--scored-query targets))
-               (col (+ 10
-                       (cl-loop for (path . _) in matches
-                                maximize (string-width path))))
-               (completion-extra-properties
-                `(:annotation-function
-                  ,(lambda (cand)
-                     (concat
-                      (propertize " " 'display `(space :align-to (+ left ,col)))
-                      (cdr (assoc cand matches)))))))
-          (when matches
+        (when-let ((matches (apply #'zoxide--scored-query targets))
+                   (col (+ 10
+                           (cl-loop for (path . _) in matches
+                                    maximize (string-width path)))))
+          (let ((completion-extra-properties
+                 `(:annotation-function
+                   ,(lambda (cand)
+                      (concat
+                       (propertize " " 'display `(space :align-to (+ left ,col)))
+                       (cdr (assoc cand matches)))))))
             (eshell/cd
              (completing-read "Zoxide: "
                               (completion-table-with-metadata
