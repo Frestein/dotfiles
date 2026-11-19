@@ -26,9 +26,38 @@
     (after! eshell
       (advice-add 'eshell-add-to-dir-ring :after #'zoxide-add)
 
-      (defun eshell/zi (&optional target)
-        "`eshell/cd' with interactive selection."
-        (if target (zoxide-find-file target) (zoxide-find-file)))
+      (defun zoxide--scored-query (&rest queries)
+        "Query the zoxide database with QUERIES, returning an alist.
+The alist elements are (PATH . SCORE), sorted by score like
+`zoxide query -s -l' prints them."
+        (mapcar (lambda (line)
+                  (let ((fields (split-string line)))
+                    (cons (string-join (cdr fields) " ")
+                          (car fields))))
+                (split-string
+                 (or (apply #'zoxide-run nil "query" "-s" "-l" queries) "")
+                 "\n" t)))
+
+      (defun eshell/zi (&rest targets)
+        "`eshell/cd' with interactive zoxide selection, sorted by score.
+The whole database is queried when TARGETS is nil."
+        (let* ((matches (apply #'zoxide--scored-query targets))
+               (col (+ 10
+                       (cl-loop for (path . _) in matches
+                                maximize (string-width path))))
+               (completion-extra-properties
+                `(:annotation-function
+                  ,(lambda (cand)
+                     (concat
+                      (propertize " " 'display `(space :align-to (+ left ,col)))
+                      (cdr (assoc cand matches)))))))
+          (when matches
+            (eshell/cd
+             (completing-read "Zoxide: "
+                              (completion-table-with-metadata
+                               (mapcar #'car matches)
+                               '((display-sort-function . identity)))
+                              nil t)))))
 
       (defun eshell/z (&rest targets)
         "Change directory using zoxide, falling back to cd.
