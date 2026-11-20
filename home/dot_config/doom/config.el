@@ -2389,10 +2389,9 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
     (after! apheleia
       (set-formatter! 'stylua
         '("stylua"
-          (eval (when (locate-dominating-file buffer-file-name "dot_stylua.toml")
-                  "--config-path"))
-          (eval (when-let ((dir (locate-dominating-file buffer-file-name "dot_stylua.toml")))
-                  (expand-file-name "dot_stylua.toml" dir)))
+          (when-let* ((config (fr/chezmoi-dominating-file
+                               '(".stylua.toml" "dot_stylua.toml"))))
+            (list "--config-path" config))
           "--search-parent-directories"
           "--stdin-filepath" filepath
           "-"))))
