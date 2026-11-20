@@ -2973,6 +2973,21 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (when (modulep! :lang lua)
   (add-to-list 'auto-mode-alist '("conky\\.conf\\'" . lua-mode))
 
+  (when (and (modulep! :tools chezmoi)
+             (modulep! :tools lsp +eglot))
+    (after! eglot
+      (defadvice! fr/chezmoi--eglot-lua-lookup-a (fn mode)
+	"Route Lua LSP lookups through `fr/chezmoi-eglot-lua-contact'.
+
+Doom registers its Lua contacts lazily at lua-mode/lua-ts-mode
+load time, which lands them above anything registered earlier,
+so `set-eglot-client!' can't reliably win that ordering race."
+	:around #'eglot--lookup-mode
+	(let ((result (funcall fn mode)))
+          (if (and result (memq mode '(lua-mode lua-ts-mode)))
+              (cons (car result) #'fr/chezmoi-eglot-lua-contact)
+            result)))))
+
   (when (modulep! :editor format)
     (after! apheleia
       (set-formatter! 'stylua
