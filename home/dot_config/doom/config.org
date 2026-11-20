@@ -2973,20 +2973,12 @@ The INFO, if provided, is passed to the underlying `org-roam-capture-'."
 (when (modulep! :lang lua)
   (add-to-list 'auto-mode-alist '("conky\\.conf\\'" . lua-mode))
 
-  (when (and (modulep! :tools chezmoi)
-             (modulep! :tools lsp +eglot))
-    (after! eglot
-      (defadvice! fr/chezmoi--eglot-lua-lookup-a (fn mode)
-	"Route Lua LSP lookups through `fr/chezmoi-eglot-lua-contact'.
-
-Doom registers its Lua contacts lazily at lua-mode/lua-ts-mode
-load time, which lands them above anything registered earlier,
-so `set-eglot-client!' can't reliably win that ordering race."
-	:around #'eglot--lookup-mode
-	(let ((result (funcall fn mode)))
-          (if (and result (memq mode '(lua-mode lua-ts-mode)))
-              (cons (car result) #'fr/chezmoi-eglot-lua-contact)
-            result)))))
+  ;; Use tabs for indentation
+  (setq-hook! '(lua-mode-hook lua-ts-mode-hook)
+    indent-tabs-mode t
+    tab-width 4
+    lua-indent-level 4
+    lua-ts-indent-offset 4)
 
   (when (modulep! :editor format)
     (after! apheleia
@@ -3000,20 +2992,20 @@ so `set-eglot-client!' can't reliably win that ordering race."
           "--stdin-filepath" filepath
           "-"))))
 
-  (add-hook 'lua-mode-hook
-            (lambda ()
-	      ;; Use tabs for indentation
-	      (setopt indent-tabs-mode t)
-	      (setopt tab-width 4)
-	      (setopt lua-indent-level 4)))
+  (when (and (modulep! :tools chezmoi)
+             (modulep! :tools lsp +eglot))
+    (after! eglot
+      (defadvice! fr/chezmoi--eglot-lua-lookup-a (fn mode)
+	"Route Lua LSP lookups through `fr/chezmoi-eglot-lua-contact'.
 
-  (when (modulep! :lang lua +tree-sitter)
-    (add-hook 'lua-ts-mode-hook
-	      (lambda ()
-		;; Use tabs for indentation
-		(setopt indent-tabs-mode t)
-		(setopt tab-width 4)
-		(setopt lua-ts-indent-offset 4)))))
+Doom registers its Lua contacts lazily at lua-mode/lua-ts-mode
+load time, which lands them above anything registered earlier,
+so `set-eglot-client!' can't reliably win that ordering race."
+	:around #'eglot--lookup-mode
+	(let ((result (funcall fn mode)))
+          (if (and result (memq mode '(lua-mode lua-ts-mode)))
+              (cons (car result) #'fr/chezmoi-eglot-lua-contact)
+            result))))))
 #+end_src
 
 * WWW
