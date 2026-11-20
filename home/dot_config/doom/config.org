@@ -1266,7 +1266,9 @@ Disable evil-snipe on specific modes.
 #+begin_src elisp
 (when (modulep! :completion corfu)
   (after! corfu
-    (setopt corfu-auto nil)))
+    (setopt corfu-auto nil)
+    (setopt corfu-auto-prefix 3)
+    (setopt corfu-preselect 'first)))
 #+end_src
 
 Overrides ~+corfu/dabbrev-or-last~ and ~+corfu/dabbrev-or-next~ adding proper eshell work, if corfu completion window is not shown, then ~eshell-previous-matching-input-from-input~, ~eshell-next-matching-input-from-input~ respectively is called. This is the most intuitive behavior and matches common Unix shells.

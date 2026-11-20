@@ -910,7 +910,9 @@ With prefix ARG, cycle backwards if ARG is negative."
 
 (when (modulep! :completion corfu)
   (after! corfu
-    (setopt corfu-auto nil)))
+    (setopt corfu-auto nil)
+    (setopt corfu-auto-prefix 3)
+    (setopt corfu-preselect 'first)))
 
 (when (modulep! :completion corfu)
   (after! corfu
