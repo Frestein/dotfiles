@@ -549,9 +549,39 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
   (setopt dired-mouse-drag-files t)
   (setopt mouse-drag-and-drop-region-cross-program t)
 
+  (defun fr/dired-find-file-dwim (&optional arg)
+    "Open file(s) at point DWIM-style.
+
+If a rule from `dired-guess-shell-alist-user' matches the current
+file(s), run its first command detached from Emacs. Pty is
+disabled for the subprocess: a short-lived launcher like
+`xdg-open' would otherwise tear down the pty on exit and the
+spawned player (e.g. mpv) would receive SIGHUP and die.
+Otherwise, fall back to `dired-find-file'.
+
+With a universal prefix argument (ARG), ignore external handler
+rules and always open via `dired-find-file' instead."
+    (interactive "P")
+    (let* ((files (dired-get-marked-files))
+           (guess (and (not arg)
+                       (cl-loop for (re . cmds) in dired-guess-shell-alist-user
+                                when (and (stringp re)
+                                          (cl-every (lambda (f)
+                                                      (string-match-p
+                                                       re (file-name-nondirectory f)))
+                                                    files))
+                                return (cond ((stringp cmds) cmds)
+                                             ((stringp (car cmds)) (car cmds)))))))
+      (if guess
+          (let* ((process-connection-type nil)
+                 (argv (append (split-string-shell-command guess) files)))
+            (apply #'start-process (concat "fr-dired-" (car argv)) nil argv))
+        (dired-find-file))))
+
   (defun fr/dired--init-map-h ()
     "Initialize custom dired keybindings."
     (map! :map dired-mode-map
+          :n "l" #'fr/dired-find-file-dwim
           :n "+" #'dired-create-empty-file
           :n "a" #'dired-create-empty-file
           :n "," #'dired-clean-directory
@@ -597,6 +627,12 @@ If called with a prefix argument, use `eshell-atuin-history' instead."
           [S-return] #'image-dired-thumbnail-display-external))
 
   (after! dired-x
+    (setopt dired-guess-shell-alist-user
+            `(("\\.\\(?:jpe?g\\|png\\|gif\\|xpm\\)\\'" "xdg-open")
+              ("\\.xcf\\'" "xdg-open")
+              ("\\.csv\\'" "xdg-open")
+              ("\\.\\(?:mp4\\|mkv\\|avi\\|flv\\|rm\\|rmvb\\|ogv\\)\\(?:\\.part\\)?\\'" "xdg-open")
+              ("\\.\\(?:mp3\\|flac\\)\\'" "xdg-open")))
     (setopt dired-omit-files
             (concat dired-omit-files
                     "\\|^lost\\+found\\'"
@@ -709,6 +745,7 @@ Require: `epub-thumbnailer' or `gnome-epub-thumbnailer' (executable)"
     (setopt mouse-1-click-follows-link nil)
 
     (map! :map dirvish-mode-map
+          :n "l" #'fr/dired-find-file-dwim
           "<mouse-1>" #'dirvish-subtree-toggle-or-open
           "<mouse-2>" #'dired-mouse-find-file-other-window
           "<mouse-3>" #'dired-mouse-find-file
