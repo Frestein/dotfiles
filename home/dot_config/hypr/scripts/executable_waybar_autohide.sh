@@ -14,8 +14,8 @@ if ! command -v waybar >/dev/null 2>&1; then
 fi
 
 LOCK="/run/user/$(id -u)/waybar-autohide.lock"
-HIDDEN="true" # Current visibility state of waybar
-TOLERANCE=10  # Allowed pixel deviation from the monitor edges
+STATE="/run/user/$(id -u)/waybar-autohide.state"
+TOLERANCE=10 # Allowed pixel deviation from the monitor edges
 
 # Monitors will be reported in logical layout coordinates, refreshed every 5 s
 MONITORS_JSON=""
@@ -90,6 +90,9 @@ while true; do
 	edge_top=$3
 	center_x=$4
 
+	# Read the shared visibility state; an empty state disables decisions
+	state=$(cat "$STATE" 2>/dev/null)
+
 	near_left=false
 	near_right=false
 	near_center=false
@@ -110,12 +113,12 @@ while true; do
 	fi
 
 	# Show waybar if cursor is near top edge and currently hidden
-	if { [ "$near_left" = true ] || [ "$near_right" = true ] || [ "$near_center" = true ]; } && [ "$HIDDEN" = true ]; then
+	if { [ "$near_left" = true ] || [ "$near_right" = true ] || [ "$near_center" = true ]; } && [ "$state" = hidden ]; then
 		pkill -USR1 waybar
-		HIDDEN=false
+		echo shown >"$STATE"
 	# Hide waybar if cursor moves down (y > 250) and currently shown
-	elif [ "$y" -gt 250 ] && [ "$HIDDEN" = false ]; then
+	elif [ "$y" -gt 250 ] && [ "$state" = shown ]; then
 		pkill -USR1 waybar
-		HIDDEN=true
+		echo hidden >"$STATE"
 	fi
 done

@@ -106,7 +106,7 @@ local dmenu_switch_window = paths.scripts_path .. "/fuzzel/switch_window.sh"
 local bar_toggle_autohide = scu("is-active --quiet waybar-autohide")
 	.. " && " .. scu("stop waybar-autohide")
 	.. " || " .. scu("start waybar-autohide")
-local bar_toggle_visibility = "pkill -USR1 waybar"
+local bar_toggle_visibility = paths.scripts_path .. "/toggle_waybar_visibility.sh"
 local bar_lock_visibility = paths.scripts_path .. "/toggle_waybar_lock.sh"
 local bar_reload_config = scu "reload waybar"
 local bar_restart_service = scu "restart waybar"

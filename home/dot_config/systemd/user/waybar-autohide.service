@@ -5,6 +5,7 @@ After=graphical-session.target waybar.service
 
 [Service]
 ExecStart=%h/.config/hypr/scripts/waybar_autohide.sh
+ExecStopPost=%h/.config/hypr/scripts/waybar_show.sh
 Restart=on-failure
 
 [Install]
