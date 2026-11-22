@@ -13,6 +13,7 @@ if ! command -v waybar >/dev/null 2>&1; then
     exit 1
 fi
 
+LOCK="/run/user/$(id -u)/waybar-autohide.lock"
 HIDDEN="true"     # Current visibility state of waybar
 SCREEN_WIDTH=1920 # Screen width in pixels
 TOLERANCE=10      # Allowed pixel deviation from edges
@@ -33,18 +34,16 @@ is_near() {
 }
 
 while true; do
-    LOCK="/run/user/$(id -u)/waybar-autohide.lock"
+    sleep 0.1
 
     # If lock file exists, skip this iteration (prevents multiple instances)
     if [ -f "$LOCK" ]; then
         continue
     fi
 
-    sleep 0.1
-
     # Don't trigger if current window is fullscreen
     fullscreen=$(hyprctl activewindow | grep "fullscreen:" | awk '{print $2}')
-    if [ "$fullscreen" -ne 0 ]; then
+    if [ "${fullscreen:-0}" -ne 0 ]; then
         continue
     fi
 
