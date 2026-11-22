@@ -53,6 +53,15 @@ local function close_special()
 	return true
 end
 
+-- Sets english layout
+local set_layout_en = "hyprctl switchxkblayout kanata 0"
+
+-- Prefix a command with the layout switch and wrap it in a subshell, so
+-- dmenu launchers always start on the english layout.
+local function with_en_layout(cmd)
+	return "(" .. set_layout_en .. " && " .. cmd .. ")"
+end
+
 -- ===========================================================================
 -- Variables
 -- ===========================================================================
@@ -108,9 +117,6 @@ local kill_active = require "scripts.kill_active"
 local move_focus = require "scripts.smart_focus"
 local toggle_monocle = require "scripts.toggle_monocle"
 local zoom = require "scripts.zoom"
-
--- Hyprland behavior
-local set_layout_en = "hyprctl switchxkblayout kanata 0" -- Sets english layout
 
 -- ===========================================================================
 -- Binds
@@ -194,13 +200,16 @@ hl.on("workspace.created", function(ws)
 end)
 
 -- Applets
-hl.bind("CTRL + F1", hl.dsp.exec_cmd("pkill fuzzel || (" .. set_layout_en .. " && " .. dmenu_launcher .. ")"))
-hl.bind("SUPER + X", hl.dsp.exec_cmd("pkill fuzzel || (" .. set_layout_en .. " && " .. dmenu_clipboard .. ")"))
+hl.bind("CTRL + F1", hl.dsp.exec_cmd("pkill fuzzel || " .. with_en_layout(dmenu_launcher)))
+hl.bind("SUPER + X", hl.dsp.exec_cmd("pkill fuzzel || " .. with_en_layout(dmenu_clipboard)))
 
 hl.bind("SUPER + A", hl.dsp.submap "applets")
 hl.define_submap("applets", function()
-	hl.bind("Z", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_pass .. ")")))
-	hl.bind("F", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_files .. ")")))
+	hl.bind("Z", reset_then(hl.dsp.exec_cmd(with_en_layout(dmenu_pass))))
+	hl.bind("F", reset_then(hl.dsp.exec_cmd(with_en_layout(dmenu_files))))
+	hl.bind("R", reset_then(hl.dsp.exec_cmd(with_en_layout(dmenu_launch_as_root))))
+	hl.bind("W", reset_then(hl.dsp.exec_cmd(with_en_layout(dmenu_switch_window))))
+	hl.bind("Q", reset_then(hl.dsp.exec_cmd(with_en_layout "sessionctl --dmenu")))
 	hl.bind("B", reset_then(hl.dsp.exec_cmd "brightnessctl --dmenu"))
 	hl.bind(
 		"S",
@@ -214,17 +223,14 @@ hl.define_submap("applets", function()
 			hl.dsp.exec_cmd 'uuctl fuzzel --dmenu -w 100 -p "Select Service " --placeholder "Search..." --minimal-lines'
 		)
 	)
-	hl.bind("R", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_launch_as_root .. ")")))
-	hl.bind("W", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && " .. dmenu_switch_window .. ")")))
-	hl.bind("Q", reset_then(hl.dsp.exec_cmd("(" .. set_layout_en .. " && sessionctl --dmenu)")))
 
 	-- Emoji
 	hl.bind("E", hl.dsp.submap "emoji")
 	hl.define_submap("emoji", "reset", function()
-		hl.bind("E", hl.dsp.exec_cmd("(" .. set_layout_en .. ' && emojictl "Emoji " emoji)'))
-		hl.bind("N", hl.dsp.exec_cmd("(" .. set_layout_en .. ' && emojictl "Nerd " nerd_font)'))
-		hl.bind("M", hl.dsp.exec_cmd("(" .. set_layout_en .. ' && emojictl "Math " math)'))
-		hl.bind("W", hl.dsp.exec_cmd("(" .. set_layout_en .. ' && emojictl "Writer " latin-1_supplement math)'))
+		hl.bind("E", hl.dsp.exec_cmd(with_en_layout 'emojictl "Emoji " emoji'))
+		hl.bind("N", hl.dsp.exec_cmd(with_en_layout 'emojictl "Nerd " nerd_font'))
+		hl.bind("M", hl.dsp.exec_cmd(with_en_layout 'emojictl "Math " math'))
+		hl.bind("W", hl.dsp.exec_cmd(with_en_layout 'emojictl "Writer " latin-1_supplement math'))
 		hl.bind("ESCAPE", hl.dsp.submap "reset")
 	end)
 
