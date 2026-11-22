@@ -38,11 +38,34 @@ swayimg.text.status_timeout = 3
 swayimg.text.visible = false
 
 -- ============================================================================
+-- Transparent image background
+-- ============================================================================
+local chessboard_size = 10
+local chessboard_color1 = 0xffaaaaaa
+local chessboard_color2 = 0xff555555
+local white_background = false
+
+local function apply_image_background()
+	if white_background then
+		swayimg.viewer.set_image_background(0xffffffff)
+		swayimg.slideshow.set_image_background(0xffffffff)
+	else
+		swayimg.viewer.set_image_chessboard(chessboard_size, chessboard_color1, chessboard_color2)
+		swayimg.slideshow.set_image_chessboard(chessboard_size, chessboard_color1, chessboard_color2)
+	end
+end
+
+local function toggle_image_background()
+	white_background = not white_background
+	apply_image_background()
+end
+
+-- ============================================================================
 -- Viewer mode
 -- ============================================================================
 -- Background & transparency
 swayimg.viewer.set_window_background(0xff282828)
-swayimg.viewer.set_image_chessboard(10, 0xffaaaaaa, 0xff555555)
+swayimg.viewer.set_image_chessboard(chessboard_size, chessboard_color1, chessboard_color2)
 
 -- Scale, position, antialiasing
 local antialiasing_enabled = true
@@ -85,7 +108,7 @@ swayimg.viewer.text = {
 -- ============================================================================
 swayimg.slideshow.timeout = 5
 swayimg.slideshow.set_window_background(0xff282828)
-swayimg.slideshow.set_image_chessboard(10, 0xffaaaaaa, 0xff555555)
+swayimg.slideshow.set_image_chessboard(chessboard_size, chessboard_color1, chessboard_color2)
 swayimg.slideshow.default_scale = "optimal"
 swayimg.slideshow.default_position = "center"
 swayimg.slideshow.loop = true
@@ -294,6 +317,9 @@ viewer.on_key("a", function()
 	antialiasing_enabled = not antialiasing_enabled
 	swayimg.antialiasing = antialiasing_enabled
 end)
+viewer.on_key("b", function()
+	toggle_image_background()
+end)
 viewer.on_key("r", function()
 	viewer.reload()
 end)
@@ -430,6 +456,9 @@ slideshow.on_key("Space", function()
 end)
 slideshow.on_key("f", function()
 	swayimg.fullscreen = not swayimg.fullscreen
+end)
+slideshow.on_key("b", function()
+	toggle_image_background()
 end)
 slideshow.on_key("Delete", function()
 	local img = swayimg.slideshow.get_image()
