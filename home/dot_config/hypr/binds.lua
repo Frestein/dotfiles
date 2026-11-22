@@ -166,18 +166,32 @@ hl.define_submap("scratchpad", "reset", function()
 	hl.bind("ESCAPE", hl.dsp.submap "reset")
 end)
 
-hl.workspace_rule { workspace = "special:music", on_created_empty = youtube_music }
-hl.workspace_rule { workspace = "special:telega", on_created_empty = emacs_telega }
-hl.workspace_rule { workspace = "special:telegram", on_created_empty = telegram }
-hl.workspace_rule { workspace = "special:discord", on_created_empty = discord }
-hl.workspace_rule { workspace = "special:elfeed", on_created_empty = emacs_elfeed }
-hl.workspace_rule { workspace = "special:youtube", on_created_empty = term_youtube }
-hl.workspace_rule { workspace = "special:yazi", on_created_empty = term_yazi }
-hl.workspace_rule { workspace = "special:agenda", on_created_empty = emacs_agenda }
-hl.workspace_rule { workspace = "special:scratch", on_created_empty = emacs_scratch }
-hl.workspace_rule { workspace = "special:calc", on_created_empty = term_calc }
-hl.workspace_rule { workspace = "special:top", on_created_empty = term_top }
-hl.workspace_rule { workspace = "special:mu4e", on_created_empty = emacs_mu4e }
+-- Auto start apps when an empty special workspace is created
+local special_autostart = {
+	["special:music"] = youtube_music,
+	["special:telega"] = emacs_telega,
+	["special:telegram"] = telegram,
+	["special:discord"] = discord,
+	["special:elfeed"] = emacs_elfeed,
+	["special:youtube"] = term_youtube,
+	["special:yazi"] = term_yazi,
+	["special:agenda"] = emacs_agenda,
+	["special:scratch"] = emacs_scratch,
+	["special:calc"] = term_calc,
+	["special:top"] = term_top,
+	["special:mu4e"] = emacs_mu4e,
+}
+
+hl.on("workspace.created", function(ws)
+	if not ws.is_empty then
+		return
+	end
+
+	local cmd = special_autostart[ws.name]
+	if cmd then
+		hl.dispatch(hl.dsp.exec_cmd(cmd))
+	end
+end)
 
 -- Applets
 hl.bind("CTRL + F1", hl.dsp.exec_cmd("pkill fuzzel || (" .. set_layout_en .. " && " .. dmenu_launcher .. ")"))
@@ -320,7 +334,7 @@ hl.define_submap("window/workspace", function()
 	hl.bind("G", hl.dsp.submap "group")
 	hl.define_submap("group", function()
 		hl.bind("T", hl.dsp.group.toggle())
-		hl.bind("SHIFT + T", hl.dsp.group.lock_active { action = "toggle" })
+		hl.bind("SHIFT + T", hl.dsp.group.lock { action = "toggle" })
 		hl.bind("H", hl.dsp.group.prev(), { repeating = true })
 		hl.bind("J", hl.dsp.group.next(), { repeating = true })
 		hl.bind("K", hl.dsp.group.prev(), { repeating = true })
