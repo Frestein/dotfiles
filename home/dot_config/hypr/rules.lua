@@ -13,35 +13,49 @@ hl.window_rule { match = { class = "Timeshift-gtk" }, tag = "+tile" }
 hl.window_rule { match = { tag = "tile" }, tile = true }
 
 -- ---------------------------------------------------------------------------
+-- Popups
+-- ---------------------------------------------------------------------------
+
+-- Window matches shared by the float, center and half-size tag sections below.
+-- A match without a `tags` list gets all three tags.
+local popups = {
+	{ match = { title = "ee-footclient" } },
+	{ match = { title = "^(emacs-capture)$" } },
+	{ match = { title = "^(Please choose a folder)$" } },
+	{ match = { title = "^(Find file.*)$" } },
+	{ match = { class = "^(firefox)$", title = "^(Save.*)$" } },
+	{ match = { class = "^(firefox)$", title = "^(Enter name of file.*)$" } },
+	{ match = { class = "^(firefox)$", title = "(^$)" } },
+	{ match = { class = "zenity" } },
+	{ match = { class = "nm-connection-editor", title = "(^ $)" }, tags = { "float", "center" } },
+	{ match = { class = "gcr-prompter" }, tags = { "float", "center" } },
+	{ match = { class = "polkit-gnome-authentication-agent-1" }, tags = { "float", "center" } },
+	{
+		match = {
+			class = "org.qbittorrent.qBittorrent",
+			title = "^(Preferences|Open Torrent Files|Download from URLs|About qBittorrent|Torrent Creator|Manage Cookies)",
+		},
+	},
+	{
+		match = {
+			class = "steam",
+			title = "^(Friends List|Список друзей|Steam Settings|Настройки|Добавить стороннюю игру|Настройки раздела|Сведения о системе|Системный отчёт|Среда выполнения Steam — сведения о системе)$",
+		},
+	},
+}
+
+for _, popup in ipairs(popups) do
+	for _, tag in ipairs(popup.tags or { "float", "center", "half-size" }) do
+		hl.window_rule { match = popup.match, tag = "+" .. tag }
+	end
+end
+
+-- ---------------------------------------------------------------------------
 -- Float
 -- ---------------------------------------------------------------------------
 
+-- Floated only
 hl.window_rule { match = { title = ".*float.*" }, tag = "+float" }
-hl.window_rule { match = { title = "ee-footclient" }, tag = "+float" }
-hl.window_rule { match = { title = "^(emacs-capture)$" }, tag = "+float" }
-hl.window_rule { match = { title = "^(Please choose a folder)$" }, tag = "+float" }
-hl.window_rule { match = { title = "^(Find file.*)$" }, tag = "+float" }
-hl.window_rule { match = { class = "^(firefox)$", title = "^(Save.*)$" }, tag = "+float" }
-hl.window_rule { match = { class = "^(firefox)$", title = "^(Enter name of file.*)$" }, tag = "+float" }
-hl.window_rule { match = { class = "^(firefox)$", title = "(^$)" }, tag = "+float" }
-hl.window_rule { match = { class = "zenity" }, tag = "+float" }
-hl.window_rule { match = { class = "nm-connection-editor", title = "(^ $)" }, tag = "+float" }
-hl.window_rule {
-	match = {
-		class = "org.qbittorrent.qBittorrent",
-		title = "^(Preferences|Open Torrent Files|Download from URLs|About qBittorrent|Torrent Creator|Manage Cookies)",
-	},
-	tag = "+float",
-}
-hl.window_rule { match = { class = "gcr-prompter" }, tag = "+float" }
-hl.window_rule { match = { class = "polkit-gnome-authentication-agent-1" }, tag = "+float" }
-hl.window_rule {
-	match = {
-		class = "steam",
-		title = "^(Friends List|Список друзей|Steam Settings|Настройки|Добавить стороннюю игру|Настройки раздела|Сведения о системе|Системный отчёт|Среда выполнения Steam — сведения о системе)$",
-	},
-	tag = "+float",
-}
 hl.window_rule { match = { class = "steam", title = "(^$)" }, tag = "+float" }
 
 hl.window_rule { match = { tag = "float" }, float = true }
@@ -50,33 +64,9 @@ hl.window_rule { match = { tag = "float" }, float = true }
 -- Center
 -- ---------------------------------------------------------------------------
 
+-- Centered only
 hl.window_rule { match = { title = ".*center.*" }, tag = "+center" }
-hl.window_rule { match = { title = "ee-footclient" }, tag = "+center" }
-hl.window_rule { match = { title = "^(emacs-capture)$" }, tag = "+center" }
-hl.window_rule { match = { title = "^(Please choose a folder)$" }, tag = "+center" }
-hl.window_rule { match = { title = "^(Find file.*)$" }, tag = "+center" }
 hl.window_rule { match = { class = "Timeshift-gtk" }, tag = "+center" }
-hl.window_rule { match = { class = "^(firefox)$", title = "^(Save.*)$" }, tag = "+center" }
-hl.window_rule { match = { class = "^(firefox)$", title = "^(Enter name of file.*)$" }, tag = "+center" }
-hl.window_rule { match = { class = "^(firefox)$", title = "(^$)" }, tag = "+center" }
-hl.window_rule { match = { class = "zenity" }, tag = "+center" }
-hl.window_rule { match = { class = "nm-connection-editor", title = "(^ $)" }, tag = "+center" }
-hl.window_rule {
-	match = {
-		class = "org.qbittorrent.qBittorrent",
-		title = "^(Preferences|Open Torrent Files|Download from URLs|About qBittorrent|Torrent Creator|Manage Cookies)",
-	},
-	tag = "+center",
-}
-hl.window_rule { match = { class = "gcr-prompter" }, tag = "+center" }
-hl.window_rule { match = { class = "polkit-gnome-authentication-agent-1" }, tag = "+center" }
-hl.window_rule {
-	match = {
-		class = "steam",
-		title = "^(Friends List|Список друзей|Steam Settings|Настройки|Добавить стороннюю игру|Настройки раздела|Сведения о системе|Системный отчёт|Среда выполнения Steam — сведения о системе)$",
-	},
-	tag = "+center",
-}
 
 hl.window_rule { match = { tag = "center" }, center = true }
 
@@ -84,29 +74,8 @@ hl.window_rule { match = { tag = "center" }, center = true }
 -- Half-size
 -- ---------------------------------------------------------------------------
 
+-- Half-sized only
 hl.window_rule { match = { title = ".*half.*" }, tag = "+half-size" }
-hl.window_rule { match = { title = "ee-footclient" }, tag = "+half-size" }
-hl.window_rule { match = { title = "^(emacs-capture)$" }, tag = "+half-size" }
-hl.window_rule { match = { title = "^(Please choose a folder)$" }, tag = "+half-size" }
-hl.window_rule { match = { title = "^(Find file.*)$" }, tag = "+half-size" }
-hl.window_rule { match = { class = "^(firefox)$", title = "^(Save.*)$" }, tag = "+half-size" }
-hl.window_rule { match = { class = "^(firefox)$", title = "^(Enter name of file.*)$" }, tag = "+half-size" }
-hl.window_rule { match = { class = "^(firefox)$", title = "(^$)" }, tag = "+half-size" }
-hl.window_rule { match = { class = "zenity" }, tag = "+half-size" }
-hl.window_rule {
-	match = {
-		class = "org.qbittorrent.qBittorrent",
-		title = "^(Preferences|Open Torrent Files|Download from URLs|About qBittorrent|Torrent Creator|Manage Cookies)",
-	},
-	tag = "+half-size",
-}
-hl.window_rule {
-	match = {
-		class = "steam",
-		title = "^(Friends List|Список друзей|Steam Settings|Настройки|Добавить стороннюю игру|Настройки раздела|Сведения о системе|Системный отчёт|Среда выполнения Steam — сведения о системе)$",
-	},
-	tag = "+half-size",
-}
 
 hl.window_rule { match = { tag = "half-size" }, size = "(monitor_w*0.5) (monitor_h*0.5)" }
 hl.window_rule { match = { tag = "three-quarters-size" }, size = "(monitor_w*0.75) (monitor_h*0.75)" }
