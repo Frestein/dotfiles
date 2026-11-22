@@ -89,7 +89,7 @@ swayimg.slideshow.set_image_chessboard(10, 0xffaaaaaa, 0xff555555)
 swayimg.slideshow.default_scale = "optimal"
 swayimg.slideshow.default_position = "center"
 swayimg.slideshow.loop = true
-swayimg.slideshow.autocenter = true
+swayimg.slideshow.autopos = "center"
 swayimg.slideshow.preload = 25
 swayimg.slideshow.history = 50
 
@@ -316,41 +316,45 @@ viewer.on_key("q", function()
 end)
 
 -- Mouse bindings
-viewer.on_mouse("ScrollLeft", function()
-	step_right(5)
-end)
-viewer.on_mouse("ScrollRight", function()
-	step_left(5)
-end)
-viewer.on_mouse("ScrollUp", function()
-	viewer.open("prev")
-end)
-viewer.on_mouse("ScrollDown", function()
-	viewer.open("next")
-end)
-viewer.on_mouse("Ctrl+ScrollUp", function()
-	zoom(0.1)
-end)
-viewer.on_mouse("Ctrl+ScrollDown", function()
-	zoom(-0.1)
-end)
-viewer.on_mouse("Shift+ScrollUp", function()
-	step_up(5)
-end)
-viewer.on_mouse("Shift+ScrollDown", function()
-	step_down(5)
-end)
-viewer.on_mouse("Shift+ScrollLeft", function()
-	step_left(5)
-end)
-viewer.on_mouse("Shift+ScrollRight", function()
-	step_right(5)
-end)
-viewer.on_mouse("Alt+ScrollUp", function()
-	viewer.prev_frame()
-end)
-viewer.on_mouse("Alt+ScrollDown", function()
-	viewer.next_frame()
+-- Sign conventions follow swayimg: vertical < 0 means scrolling up,
+-- horizontal > 0 means scrolling right.
+viewer.on_scroll(function(kmods, horizontal, vertical)
+	if kmods == "Ctrl" then
+		if vertical < 0 then
+			zoom(0.1)
+		elseif vertical > 0 then
+			zoom(-0.1)
+		end
+	elseif kmods == "Alt" then
+		if vertical ~= 0 then
+			viewer.animation = false
+			if vertical < 0 then
+				viewer.frame = viewer.frame - 1
+			else
+				viewer.frame = viewer.frame + 1
+			end
+		end
+	elseif kmods == "Shift" then
+		if horizontal < 0 then
+			step_left(5)
+		elseif horizontal > 0 then
+			step_right(5)
+		elseif vertical < 0 then
+			step_up(5)
+		elseif vertical > 0 then
+			step_down(5)
+		end
+	else
+		if horizontal < 0 then
+			step_right(5)
+		elseif horizontal > 0 then
+			step_left(5)
+		elseif vertical < 0 then
+			viewer.open("prev")
+		elseif vertical > 0 then
+			viewer.open("next")
+		end
+	end
 end)
 viewer.on_mouse("MouseLeft", function()
 	viewer.drag_button = "MouseLeft"
@@ -542,23 +546,22 @@ gallery.on_key("q", function()
 end)
 
 -- Mouse bindings for gallery
-gallery.on_mouse("ScrollLeft", function()
-	gallery.select("left")
-end)
-gallery.on_mouse("ScrollRight", function()
-	gallery.select("right")
-end)
-gallery.on_mouse("ScrollUp", function()
-	gallery.select("up")
-end)
-gallery.on_mouse("ScrollDown", function()
-	gallery.select("down")
-end)
-gallery.on_mouse("Ctrl+ScrollUp", function()
-	gallery.thumb_size = gallery.thumb_size + 20
-end)
-gallery.on_mouse("Ctrl+ScrollDown", function()
-	gallery.thumb_size = gallery.thumb_size - 20
+gallery.on_scroll(function(kmods, horizontal, vertical)
+	if kmods == "Ctrl" then
+		if vertical < 0 then
+			gallery.thumb_size = gallery.thumb_size + 20
+		elseif vertical > 0 then
+			gallery.thumb_size = gallery.thumb_size - 20
+		end
+	elseif horizontal < 0 then
+		gallery.select("left")
+	elseif horizontal > 0 then
+		gallery.select("right")
+	elseif vertical < 0 then
+		gallery.select("up")
+	elseif vertical > 0 then
+		gallery.select("down")
+	end
 end)
 gallery.on_mouse("MouseRight", function()
 	swayimg.mode = "viewer"
