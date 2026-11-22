@@ -67,7 +67,7 @@ end
 -- ===========================================================================
 
 -- Apps
-local browser = uwsm_app(os.getenv "BROWSER")
+local browser = uwsm_app(os.getenv "BROWSER" or "qutebrowser")
 local discord = uwsm_app 'goofcord --password-store="gnome-libsecret"'
 local telegram = uwsm_app "AyuGram"
 local youtube_music = uwsm_app "youtube-music --enable-features=WebRTCPipeWireCapturer --ozone-platform-hint=auto"
