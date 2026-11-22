@@ -7,7 +7,7 @@ local paths = require "lib.paths"
 -- ===========================================================================
 
 -- Reset submap, then run the given dispatcher
----@param dispatcher table   # any hl.dsp.* (native or exec_cmd)
+---@param dispatcher function|table   # a plain function or any hl.dsp.* dispatcher
 local function reset_then(dispatcher)
 	return function()
 		hl.dispatch(hl.dsp.submap "reset")
@@ -103,10 +103,10 @@ local bar_reload_config = scu "reload waybar"
 local bar_restart_service = scu "restart waybar"
 
 -- Hyprland scripts
-local toggle_monocle_layout = paths.scripts_path .. "/toggle_monocle_layout.sh"
 local colorpicker = paths.scripts_path .. "/colorpicker.sh"
-local kill_active_window = paths.scripts_path .. "/kill_active_window.sh"
-local move_focus = paths.scripts_path .. "/smart_move_focus.sh"
+local kill_active = require "scripts.kill_active"
+local move_focus = require "scripts.smart_focus"
+local toggle_monocle = require "scripts.toggle_monocle"
 local zoom = require "scripts.zoom"
 
 -- Hyprland behavior
@@ -234,7 +234,7 @@ end)
 -- Hyprland
 hl.bind("SUPER + D", hl.dsp.submap "hyprland")
 hl.define_submap("hyprland", function()
-	hl.bind("M", reset_then(hl.dsp.exec_cmd(toggle_monocle_layout)))
+	hl.bind("M", reset_then(toggle_monocle))
 
 	-- Session
 	hl.bind("S", hl.dsp.submap "session")
@@ -270,17 +270,25 @@ end)
 
 -- Window Management
 hl.bind("SUPER + F", hl.dsp.window.fullscreen { action = "toggle" })
-hl.bind("SUPER + C", hl.dsp.exec_cmd(kill_active_window))
+hl.bind("SUPER + C", kill_active)
 
 -- Mouse binds
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true }) -- Drag and move window
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true }) -- Drag and resize window
 
 -- "Smart" move focus
-hl.bind("SUPER + H", hl.dsp.exec_cmd(move_focus .. " l"))
-hl.bind("SUPER + J", hl.dsp.exec_cmd(move_focus .. " d"))
-hl.bind("SUPER + K", hl.dsp.exec_cmd(move_focus .. " u"))
-hl.bind("SUPER + L", hl.dsp.exec_cmd(move_focus .. " r"))
+hl.bind("SUPER + H", function()
+	move_focus "l"
+end)
+hl.bind("SUPER + J", function()
+	move_focus "d"
+end)
+hl.bind("SUPER + K", function()
+	move_focus "u"
+end)
+hl.bind("SUPER + L", function()
+	move_focus "r"
+end)
 
 hl.bind("SUPER + W", hl.dsp.submap "window/workspace")
 
