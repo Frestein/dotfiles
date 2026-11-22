@@ -4,9 +4,9 @@
 LOCK="/run/user/$(id -u)/waybar-autohide.lock"
 
 if [ -f "$LOCK" ]; then
-    rm -f "$LOCK"
+	rm -f "$LOCK"
 else
-    touch "$LOCK"
+	touch "$LOCK"
 fi
 
 pkill -SIGRTMIN+8 waybar

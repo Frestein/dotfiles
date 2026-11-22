@@ -8,8 +8,8 @@ GNOME_SCHEMA="org.gnome.desktop.interface"
 command -v gsettings >/dev/null 2>&1 || exit 1
 
 get_key() {
-    key="$1"
-    sed -n "s/^[[:space:]]*${key}[[:space:]]*=[[:space:]]*['\"]*\([^'\"]*\)['\"]*/\1/p" "$GTK_CONFIG" | head -n1
+	key="$1"
+	sed -n "s/^[[:space:]]*${key}[[:space:]]*=[[:space:]]*['\"]*\([^'\"]*\)['\"]*/\1/p" "$GTK_CONFIG" | head -n1
 }
 
 GTK_FONT_NAME=$(get_key "gtk-font-name")

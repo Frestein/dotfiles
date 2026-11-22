@@ -3,26 +3,26 @@
 options=" Foot\n Neovim\n󰇥 Yazi\n󰑩 Zapret\n󰒒 DNSCrypt\n Etckeeper"
 
 selected_option=$(
-    printf "%b" "$options" | fuzzel -d \
-        --minimal-lines \
-        -p " " \
-        --placeholder "Root "
+	printf "%b" "$options" | fuzzel -d \
+		--minimal-lines \
+		-p " " \
+		--placeholder "Root "
 )
 
 command=$(printf "%s\n" "$selected_option" | grep -o -E "[a-zA-Z]+")
 
 main() {
-    case "$1" in
-    "Foot") set -- foot ;;
-    "Neovim") set -- foot nvim ;;
-    "Yazi") set -- foot yazi ;;
-    "Zapret") set -- foot --working-directory /opt/zapret ;;
-    "DNSCrypt") set -- foot --working-directory /etc/dnscrypt-proxy ;;
-    "Etckeeper") set -- foot --working-directory /etc ;;
-    *) return ;;
-    esac
+	case "$1" in
+	"Foot") set -- foot ;;
+	"Neovim") set -- foot nvim ;;
+	"Yazi") set -- foot yazi ;;
+	"Zapret") set -- foot --working-directory /opt/zapret ;;
+	"DNSCrypt") set -- foot --working-directory /etc/dnscrypt-proxy ;;
+	"Etckeeper") set -- foot --working-directory /etc ;;
+	*) return ;;
+	esac
 
-    asroot "$@"
+	asroot "$@"
 }
 
 main "$command"
