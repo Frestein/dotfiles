@@ -390,7 +390,7 @@
 		"exec": "/home/frestein/.config/waybar/scripts/hyprland_get_layout.sh",
 		"exec-if": "pgrep -x Hyprland",
 		"return-type": "json",
-		"on-click": "/home/frestein/.config/hypr/scripts/toggle_monocle_layout.sh",
+		"on-click": "hyprctl eval 'require(\"scripts.toggle_monocle\")()'",
 		"tooltip": true,
 		"signal": 10
 	}
