@@ -448,15 +448,15 @@ end)
 
 -- Screenshot
 hl.bind("PRINT", hl.dsp.submap "screenshot")
-hl.define_submap("screenshot", function()
-	hl.bind("RETURN", reset_then(hl.dsp.exec_cmd "screenshot"))
-	hl.bind("PRINT", reset_then(hl.dsp.exec_cmd "screenshot --now"))
-	hl.bind("S", reset_then(hl.dsp.exec_cmd "screenshot --now"))
-	hl.bind("A", reset_then(hl.dsp.exec_cmd "screenshot --active"))
-	hl.bind("C", reset_then(hl.dsp.exec_cmd "screenshot --area"))
+hl.define_submap("screenshot", "reset", function()
+	hl.bind("RETURN", hl.dsp.exec_cmd "screenshot")
+	hl.bind("PRINT", hl.dsp.exec_cmd "screenshot --now")
+	hl.bind("S", hl.dsp.exec_cmd "screenshot --now")
+	hl.bind("A", hl.dsp.exec_cmd "screenshot --active")
+	hl.bind("C", hl.dsp.exec_cmd "screenshot --area")
 	for i = 1, 10 do
 		local key = i == 10 and "0" or tostring(i)
-		hl.bind(key, reset_then(hl.dsp.exec_cmd("screenshot --delay " .. i)))
+		hl.bind(key, hl.dsp.exec_cmd("screenshot --delay " .. i))
 	end
 
 	-- Edit
