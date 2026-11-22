@@ -147,7 +147,7 @@ hl.define_submap("editor", "reset", function()
 	hl.bind("M", hl.dsp.exec_cmd(emacs_mu4e))
 	hl.bind("R", hl.dsp.exec_cmd(scu "reload emacs.service"))
 	hl.bind("SHIFT + R", hl.dsp.exec_cmd(scu "restart emacs.service"))
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Scratchpad
@@ -169,7 +169,7 @@ hl.define_submap("scratchpad", "reset", function()
 	hl.bind("C", hl.dsp.workspace.toggle_special "calc")
 	hl.bind("SHIFT + B", hl.dsp.workspace.toggle_special "top")
 	hl.bind("M", hl.dsp.workspace.toggle_special "mu4e")
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Auto start apps when an empty special workspace is created
@@ -231,10 +231,10 @@ hl.define_submap("applets", function()
 		hl.bind("N", hl.dsp.exec_cmd(with_en_layout 'emojictl "Nerd " nerd_font'))
 		hl.bind("M", hl.dsp.exec_cmd(with_en_layout 'emojictl "Math " math'))
 		hl.bind("W", hl.dsp.exec_cmd(with_en_layout 'emojictl "Writer " latin-1_supplement math'))
-		hl.bind("ESCAPE", hl.dsp.submap "reset")
+		hl.bind("catchall", hl.dsp.submap "reset")
 	end)
 
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Hyprland
@@ -249,7 +249,7 @@ hl.define_submap("hyprland", function()
 		hl.bind("R", hl.dsp.exec_cmd "sessionctl --reboot --confirm", { locked = true })
 		hl.bind("L", hl.dsp.exec_cmd "sessionctl --lock")
 		hl.bind("SHIFT + L", hl.dsp.exec_cmd "sessionctl --logout --confirm", { locked = true })
-		hl.bind("ESCAPE", hl.dsp.submap "reset")
+		hl.bind("catchall", hl.dsp.submap "reset")
 	end)
 
 	-- Bar
@@ -261,17 +261,17 @@ hl.define_submap("hyprland", function()
 		hl.bind("R", hl.dsp.exec_cmd(bar_reload_config))
 		hl.bind("SHIFT + R", hl.dsp.exec_cmd(bar_restart_service))
 		hl.bind("L", hl.dsp.exec_cmd(bar_lock_visibility))
-		hl.bind("ESCAPE", hl.dsp.submap "reset")
+		hl.bind("catchall", hl.dsp.submap "reset")
 	end)
 
 	-- Wallpaper
 	hl.bind("W", hl.dsp.submap "wallpaper")
 	hl.define_submap("wallpaper", function()
 		hl.bind("R", hl.dsp.exec_cmd "waypaper --random")
-		hl.bind("ESCAPE", hl.dsp.submap "reset")
+		hl.bind("catchall", hl.dsp.submap "reset")
 	end)
 
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Window Management
@@ -332,7 +332,7 @@ hl.define_submap("window/workspace", function()
 		hl.bind("J", hl.dsp.window.resize { x = 0, y = 50, relative = true }, { repeating = true })
 		hl.bind("K", hl.dsp.window.resize { x = 0, y = -50, relative = true }, { repeating = true })
 		hl.bind("L", hl.dsp.window.resize { x = 50, y = 0, relative = true }, { repeating = true })
-		hl.bind("ESCAPE", hl.dsp.submap "reset")
+		hl.bind("catchall", hl.dsp.submap "reset")
 	end)
 
 	-- Move Active Window
@@ -353,10 +353,10 @@ hl.define_submap("window/workspace", function()
 		hl.bind("J", hl.dsp.group.next(), { repeating = true })
 		hl.bind("K", hl.dsp.group.prev(), { repeating = true })
 		hl.bind("L", hl.dsp.group.next(), { repeating = true })
-		hl.bind("ESCAPE", hl.dsp.submap "reset")
+		hl.bind("catchall", hl.dsp.submap "reset")
 	end)
 
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Workspace Management
@@ -421,7 +421,7 @@ hl.define_submap("jamesdsp", "reset", function()
 	hl.bind("T", hl.dsp.exec_cmd "jamesdspctl --toggle")
 	hl.bind("S", hl.dsp.exec_cmd "jamesdspctl --state")
 	hl.bind("C", hl.dsp.exec_cmd "jamesdspctl --choose-preset")
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Brightness
@@ -449,7 +449,7 @@ hl.define_submap("record", "reset", function()
 	hl.bind("F4", hl.dsp.exec_cmd "gsr-ui-cli toggle-record")
 	hl.bind("F5", hl.dsp.exec_cmd "gsr-ui-cli toggle-replay")
 	hl.bind("F6", hl.dsp.exec_cmd "gsr-ui-cli toggle-stream")
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Screenshot
@@ -476,10 +476,10 @@ hl.define_submap("screenshot", "reset", function()
 			local key = i == 10 and "0" or tostring(i)
 			hl.bind(key, hl.dsp.exec_cmd("screenshot --delay " .. i .. " --edit"))
 		end
-		hl.bind("ESCAPE", hl.dsp.submap "reset")
+		hl.bind("catchall", hl.dsp.submap "reset")
 	end)
 
-	hl.bind("ESCAPE", hl.dsp.submap "reset")
+	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
 -- Zoom
@@ -495,5 +495,5 @@ hl.define_submap("zoom", function()
 	hl.bind("1", function() zoom(1) end)
 	hl.bind("2", function() zoom(2) end)
 	hl.bind("3", function() zoom(3) end)
-	hl.bind("ESCAPE", hl.dsp.submap("reset"))
+	hl.bind("catchall", hl.dsp.submap("reset"))
 end)
