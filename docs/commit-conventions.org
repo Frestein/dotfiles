@@ -1,0 +1,241 @@
+#+TITLE: Commit conventions
+#+AUTHOR: Frestein
+
+* Purpose
+
+This document is the single source of truth for commit messages in this
+repository. It defines the message format, the canonical scope names, and
+the historical spellings that are no longer used. History is not rewritten;
+this document only describes new commits.
+
+* Message format
+
+#+begin_src text
+type(scope): description
+#+end_src
+
+- Types in use: =chore=, =feat=, =fix=, =refactor=, =style=, =docs=, =perf=.
+- A scope is a single component name without a slash: =emacs=, =nvim=,
+  =qutebrowser=, =chezmoi=, =hyprland=, =fish=, =yazi=.
+- The subsystem goes into the description as a =section:= prefix:
+  - =feat(emacs): lua: add lsp config=
+  - =chore(emacs): lang/lua: enable +fennel flag=
+  - =chore(nvim): util/chezmoi: drop extra=
+- If a change touches several components, use one primary scope or split the
+  change into separate commits. Do not combine scopes.
+- The description is lowercase and has no trailing period.
+- Wrap code identifiers in backticks in the subject; some forges render them
+  as code. Example from this repository:
+  =fix(systemd): check-disk-usage: use `OnCalendar` instead of `OnUnitActiveSec`=
+- In the body, backticks are optional and serve only as visual separation
+  between code and prose.
+
+* Canonical scopes
+
+| Canonical        | Deprecated aliases        | Why                                       |
+|------------------+---------------------------+-------------------------------------------|
+| =emacs=          | =doom=, =doom/*=          | The =doom= scope is no longer used        |
+| =nvim=           | =nvim/*=                  | Subsystems move into the description      |
+| =qutebrowser=    | =qb=, =qute=, =qutebrowser/*= | Full project name is unambiguous      |
+| =hyprland=       | =hypr=, =hypr/*=          | Full compositor name; =hypr= is only the config directory |
+| =chezmoi=        | =cz=, =ch=, =chezmoi/*=   | Short abbreviations were early experiments |
+| =chezmoi-watcher= | =cz/watcher=              | A separate component, not a chezmoi subsystem |
+
+Every other top-level scope found in the history is canonical as written.
+
+* Actual scopes
+
+The block below is the machine-readable list used to generate a linter
+configuration later. It contains every top-level scope from the history
+except deprecated aliases and nested forms with a slash. A tangle target
+will be added when the linter is chosen.
+
+#+name: canonical-scopes
+#+begin_src toml
+scopes = [
+  "acb",
+  "agenda",
+  "ai.supermaven",
+  "aliases",
+  "android",
+  "arch",
+  "arch-update",
+  "aria2",
+  "arkenfox",
+  "askpass",
+  "asroot",
+  "atuin",
+  "authinfo",
+  "auth-source",
+  "bash",
+  "bin",
+  "bottom",
+  "brightnessctl",
+  "brush",
+  "btop",
+  "buku",
+  "calfw",
+  "chezmoi",
+  "chezmoi-watcher",
+  "chromium",
+  "cliphist",
+  "clipmanager",
+  "common-lisp",
+  "compile-angel",
+  "conky",
+  "consult-gh",
+  "corfu",
+  "cups",
+  "delta",
+  "dired",
+  "dirvish",
+  "discord",
+  "dmenu",
+  "dmenu-ex",
+  "doas",
+  "downloadctl",
+  "ebuku",
+  "eglot",
+  "elfeed",
+  "elfeed-org",
+  "emacs",
+  "ement",
+  "enchant",
+  "eshell",
+  "everywhere",
+  "eww",
+  "fastfetch",
+  "ff",
+  "firefox",
+  "fish",
+  "fj",
+  "flow",
+  "flycheck",
+  "fontconfig",
+  "fonts",
+  "foot",
+  "fuzzel",
+  "fzf",
+  "ghostel",
+  "git",
+  "gitu",
+  "gnupg",
+  "gosuki",
+  "gpg-agent",
+  "gpu-screen-recorder",
+  "gsr",
+  "handlr",
+  "helix",
+  "hypridle",
+  "hyprland",
+  "hyprlock",
+  "hyprpaper",
+  "hyprtoolkit",
+  "ianny",
+  "isync",
+  "jamesdsp",
+  "jinx",
+  "kanata",
+  "kanata-switcher",
+  "kanata-swtcher",
+  "kitty",
+  "kvantum",
+  "lang.commonlisp",
+  "lazygit",
+  "LICENSE",
+  "magit",
+  "magit-todos",
+  "mako",
+  "mangohud",
+  "mime",
+  "mimeapps",
+  "mpv",
+  "msmtp",
+  "mu4e",
+  "neovide",
+  "newsboat",
+  "nm-dmenu",
+  "nord",
+  "nvchecker",
+  "nvim",
+  "nyxt",
+  "oh-my-posh",
+  "omp",
+  "opencode",
+  "org",
+  "org-agenda",
+  "org-contacts",
+  "org-roam",
+  "org-srs",
+  "osm",
+  "packages",
+  "pacman",
+  "pdf-tools",
+  "pear",
+  "pipewire",
+  "profile",
+  "pulse",
+  "qalc",
+  "qs",
+  "qt6ct",
+  "quickshell",
+  "qutebrowser",
+  "qute-buku",
+  "reverse-im",
+  "rofimoji",
+  "satty",
+  "sbcl",
+  "screen",
+  "screenshot",
+  "scripts",
+  "sessionctl",
+  "shell",
+  "sudo",
+  "swayimg",
+  "symex",
+  "systemd",
+  "telega",
+  "television",
+  "termfilechooser",
+  "tessen",
+  "trashed",
+  "tridactyl",
+  "tv",
+  "typst",
+  "udiskie",
+  "uosc",
+  "uwsm",
+  "vterm",
+  "waybar",
+  "waypaper",
+  "wluma",
+  "wt",
+  "xdg",
+  "xonsh",
+  "xremap",
+  "yarn",
+  "yay",
+  "yazi",
+  "yt-dlp",
+  "yt-dlp-plugins",
+  "ytm",
+  "yt-x",
+  "zathura",
+  "zoxide",
+  "zsh",
+]
+#+end_src
+
+* Rules
+
+1. Use only canonical scopes from =canonical-scopes=. Add a new scope there
+   before using it; never introduce an alias for an existing one.
+2. Do not rewrite published history. Amending your own most recent,
+   unpublished commit is fine.
+
+* Tooling (pending)
+
+A later step will add a commit-message linter. Its configuration will be
+generated from the =canonical-scopes= block, so this document remains the
+only place where the vocabulary is maintained. No tool-specific
+configuration is committed at this stage.
