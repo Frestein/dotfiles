@@ -24,6 +24,9 @@ type(scope): description
 - If a change touches several components, use one primary scope or split the
   change into separate commits. Do not combine scopes.
 - The description is lowercase and has no trailing period.
+- Separate the subject from the body with a blank line.
+- Keep the subject within 50 characters when possible; 72 is the hard limit.
+- Wrap the body at 72 characters.
 - Wrap code identifiers in backticks in the subject; some forges render them
   as code. Example from this repository:
   =fix(systemd): check-disk-usage: use `OnCalendar` instead of `OnUnitActiveSec`=
