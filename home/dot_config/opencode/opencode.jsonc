@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "policies": [
+    { "action": "tool.use", "resource": "shell:*chezmoi apply*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*chezmoi status*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*chezmoi diff*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*chezmoi add*--encrypt*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*chezmoi re-add*--re-encrypt*", "effect": "deny" }
+  ]
+}

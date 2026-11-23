@@ -83,3 +83,7 @@
 **/node_modules/
 **/build/
 **/tsconfig.tsbuildinfo
+
+# Local OpenCode TUI settings and the service password: keep them out of source state
+.config/opencode/cli.json
+.config/opencode/service.json
