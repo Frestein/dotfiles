@@ -60,6 +60,8 @@
 .config/weechat/
 .config/wireshark/
 .config/yazi/flavors/*/LICENSE-tmtheme
+.config/yazi/flavors/**/*.png
+.config/yazi/flavors/**/*.gif
 .config/yazi/plugins/**/.gitignore
 .config/yazi/plugins/**/.github
 .config/yazi/plugins/**/*.png
