@@ -7,3 +7,8 @@ oldver = ".nv_old.json"
 source = "github"
 github = "Brainicism/bgutil-ytdlp-pot-provider"
 use_latest_tag = true
+
+[tg-ws-proxy]
+source = "github"
+github = "Flowseal/tg-ws-proxy"
+use_latest_tag = true
