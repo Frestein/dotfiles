@@ -22,6 +22,20 @@ while IFS= read -r line; do
 	WATCH_TARGETS+=("$expanded")
 done <"$TARGETS_FILE"
 
+# Optional list of paths to skip, using the same shell-style syntax as targets.
+IGNORE_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/chezmoi-watcher/ignore"
+IGNORE_TARGETS=()
+if [[ -f "$IGNORE_FILE" ]]; then
+	while IFS= read -r line; do
+		line="${line%%#*}" # Remove all comments
+		line="${line// /}" # Remove all spaces
+		[[ -n "$line" ]] || continue
+
+		expanded=$(eval echo "$line")
+		IGNORE_TARGETS+=("$expanded")
+	done <"$IGNORE_FILE"
+fi
+
 # Minimum interval between two events for the same file (debounce)
 MIN_INTERVAL=2
 declare -A last_event_time
@@ -60,6 +74,21 @@ is_watched() {
 	return 1
 }
 
+# Check whether a changed file is explicitly ignored.
+# Directories match recursively, plain paths match exactly.
+is_ignored() {
+	local file="$1"
+	for target in "${IGNORE_TARGETS[@]-}"; do
+		[[ -n "$target" ]] || continue
+		if [[ -d "$target" ]]; then
+			[[ "$file" == "$target"/* ]] && return 0
+		else
+			[[ "$file" == "$target" ]] && return 0
+		fi
+	done
+	return 1
+}
+
 # inotifywait needs to watch parent directories. Collect unique parent directories
 # from all targets to minimise the number of watches.
 declare -A watch_parents
@@ -88,6 +117,10 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while
 
 	# Normalise path (resolve symlinks, remove extra slashes) and make it relative to $HOME
 	changed_file="$(realpath "$changed_file")"
+	if is_ignored "$changed_file"; then
+		continue
+	fi
+
 	rel_path="${changed_file#"$HOME/"}"
 	if [[ -z "$rel_path" ]]; then
 		continue
