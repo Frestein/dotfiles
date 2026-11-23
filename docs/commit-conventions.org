@@ -229,7 +229,8 @@ scopes = [
 
 #+name: scope-list
 #+begin_src emacs-lisp :results raw :exports none
-(let ((file "/home/frestein/.local/share/chezmoi/docs/commit-conventions.org"))
+(let ((file (or buffer-file-name
+                (error "Tangle this block from the Org file"))))
   (with-temp-buffer
     (insert-file-contents file)
     (goto-char (point-min))
