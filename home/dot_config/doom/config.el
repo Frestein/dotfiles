@@ -935,6 +935,7 @@ With prefix ARG, cycle backwards if ARG is negative."
                             "s" nil)))))
 
 (setopt bookmark-save-flag 1) ;; Save after every change
+(setopt bookmark-default-file "~/.config/doom/bookmarks.eld")
 
 (defun fr/org-edit-src-code-and-insert ()
   (when (fboundp 'evil-normal-state)

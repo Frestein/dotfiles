@@ -1281,6 +1281,7 @@ Disable evil-snipe on specific modes.
 
 #+begin_src elisp
 (setopt bookmark-save-flag 1) ;; Save after every change
+(setopt bookmark-default-file "~/.config/doom/bookmarks.eld")
 #+end_src
 
 ** Snippets
