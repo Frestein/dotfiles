@@ -1176,7 +1176,9 @@ making an abbreviation to a function."
              '("/\\.?config/git/.*\\'" . gitconfig-mode))
 
 (after! git-commit
-  (setopt git-commit-summary-max-length 72))
+  (setopt git-commit-summary-max-length 72)
+  (add-hook! 'git-commit-mode-hook
+    (setopt-local fill-column 72)))
 
 (when (modulep! :tools magit)
   (setopt magit-repository-directories `(("~/Projects" . 2)
