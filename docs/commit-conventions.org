@@ -47,13 +47,12 @@ Every other top-level scope found in the history is canonical as written.
 
 * Actual scopes
 
-The block below is the machine-readable list used to generate a linter
-configuration later. It contains every top-level scope from the history
-except deprecated aliases and nested forms with a slash. A tangle target
-will be added when the linter is chosen.
+The block below is the machine-readable list used to generate the
+commit-message linter configuration. It contains every top-level scope from
+the history except deprecated aliases and nested forms with a slash.
 
 #+name: canonical-scopes
-#+begin_src toml
+#+begin_src toml :tangle no :eval never
 scopes = [
   "acb",
   "agenda",
@@ -228,6 +227,41 @@ scopes = [
 ]
 #+end_src
 
+#+name: scope-list
+#+begin_src emacs-lisp :results raw :exports none
+(let ((file "/home/frestein/.local/share/chezmoi/docs/commit-conventions.org"))
+  (with-temp-buffer
+    (insert-file-contents file)
+    (goto-char (point-min))
+    (re-search-forward "^#\\+name: canonical-scopes$")
+    (re-search-forward "^#\\+begin_src")
+    (let ((start (point))
+          scopes)
+      (re-search-forward "^#\\+end_src")
+      (save-restriction
+        (narrow-to-region start (match-beginning 0))
+        (goto-char (point-min))
+        (while (re-search-forward "\"\\([^\"]+\\)\"" nil t)
+          (push (match-string 1) scopes)))
+      (mapconcat #'identity (nreverse scopes) ","))))
+#+end_src
+
+The commit-message hook configuration is generated from the same list.
+
+#+begin_src yaml :tangle ../.pre-commit-config.yaml :noweb yes
+default_install_hook_types: [commit-msg]
+
+repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.5.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args:
+          - --force-scope
+          - --scopes=<<scope-list()>>
+#+end_src
+
 * Rules
 
 1. Use only canonical scopes from =canonical-scopes=. Add a new scope there
@@ -235,9 +269,8 @@ scopes = [
 2. Do not rewrite published history. Amending your own most recent,
    unpublished commit is fine.
 
-* Tooling (pending)
+* Tooling
 
-A later step will add a commit-message linter. Its configuration will be
-generated from the =canonical-scopes= block, so this document remains the
-only place where the vocabulary is maintained. No tool-specific
-configuration is committed at this stage.
+The =canonical-scopes= block is tangled into =.pre-commit-config.yaml= in the
+repository root. The =commit-msg= hook is installed with =prek install=.
+Update hook versions with =prek update=.
