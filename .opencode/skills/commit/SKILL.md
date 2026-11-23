@@ -7,10 +7,10 @@ description: 'Use when the user asks to write a commit message in Russian or Eng
 
 ## Iron rule
 
-Read `docs/commit-conventions.org` at the repository root before drafting
-any commit message (from the chezmoi source directory the path is
-`../docs/commit-conventions.org`). It is the single source of truth; never
-rely on memory or on another repository's conventions.
+Read `docs/commit-conventions.org` before drafting any commit message.
+Resolve the root with `git rev-parse --show-toplevel`. It is the single
+source of truth; never rely on memory or on another repository's
+conventions.
 
 ## Draft
 
