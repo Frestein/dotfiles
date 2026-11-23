@@ -248,18 +248,17 @@ scopes = [
 
 The commit-message hook configuration is generated from the same list.
 
-#+begin_src yaml :tangle ../.pre-commit-config.yaml :noweb yes
-default_install_hook_types: [commit-msg]
+#+begin_src toml :tangle ../prek.toml :noweb yes
+default_install_hook_types = ["commit-msg"]
 
-repos:
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.5.0
-    hooks:
-      - id: conventional-pre-commit
-        stages: [commit-msg]
-        args:
-          - --force-scope
-          - --scopes=<<scope-list()>>
+[[repos]]
+repo = "https://github.com/compilerla/conventional-pre-commit"
+rev = "v4.5.0"
+
+[[repos.hooks]]
+id = "conventional-pre-commit"
+stages = ["commit-msg"]
+args = ["--force-scope", "--scopes=<<scope-list()>>"]
 #+end_src
 
 * Rules
@@ -271,6 +270,6 @@ repos:
 
 * Tooling
 
-The =canonical-scopes= block is tangled into =.pre-commit-config.yaml= in the
-repository root. The =commit-msg= hook is installed with =prek install=.
-Update hook versions with =prek update=.
+The =canonical-scopes= block is tangled into =prek.toml= in the repository
+root. The =commit-msg= hook is installed with =prek install=. Update hook
+versions with =prek update=.
