@@ -2,7 +2,7 @@
 
 [".local/bin/TgWsProxy"]
 type = "file"
-url = {{ gitHubLatestReleaseAssetURL "Flowseal/tg-ws-proxy" (printf "TgWsProxy_linux_amd64") | quote }}
+url = {{ gitHubReleaseAssetURL "Flowseal/tg-ws-proxy" "v1.12.0" "TgWsProxy_linux_amd64" | quote }}
 executable = true
 refreshPeriod = "336h"
 
