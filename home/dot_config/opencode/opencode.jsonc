@@ -5,6 +5,52 @@
     { "action": "tool.use", "resource": "shell:*chezmoi status*", "effect": "deny" },
     { "action": "tool.use", "resource": "shell:*chezmoi diff*", "effect": "deny" },
     { "action": "tool.use", "resource": "shell:*chezmoi add*--encrypt*", "effect": "deny" },
-    { "action": "tool.use", "resource": "shell:*chezmoi re-add*--re-encrypt*", "effect": "deny" }
+    { "action": "tool.use", "resource": "shell:*chezmoi re-add*--re-encrypt*", "effect": "deny" },
+
+    // Close everything outside the Location and the worktree.
+    { "action": "tool.use", "resource": "external_directory:*", "effect": "deny" },
+
+    // Allowlist: explicit exceptions go after the broad deny (last match wins).
+    { "action": "tool.use", "resource": "external_directory:~/.config/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:~/Projects/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:~/Tools/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:~/.local/bin/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:~/.local/share/opencode/tool-output/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:/tmp/opencode/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:/usr/share/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:/etc/*", "effect": "allow" },
+
+    // Sensitive targets inside allowed directories: deny after the allow rules.
+    { "action": "tool.use", "resource": "read:~/.config/qutebrowser/quickmarks", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/qutebrowser/quickmarks", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/qutebrowser/web_exclude.txt", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/qutebrowser/web_exclude.txt", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/YouTube Music/config.json", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/YouTube Music/config.json", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/authinfo", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/authinfo", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/nvchecker/keyfile.toml", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/nvchecker/keyfile.toml", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/msmtp/config", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/msmtp/config", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/opencode/service.json", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/opencode/service.json", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/opencode/cli.json", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/opencode/cli.json", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/chromium/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/chromium/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/google-chrome/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/google-chrome/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/rclone/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/rclone/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:~/.config/weechat/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:~/.config/weechat/*", "effect": "deny" },
+
+    // Shell fallback for distinctive sensitive file names.
+    { "action": "tool.use", "resource": "shell:*authinfo*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*quickmarks*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*web_exclude*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*keyfile.toml*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*service.json*", "effect": "deny" }
   ]
 }
