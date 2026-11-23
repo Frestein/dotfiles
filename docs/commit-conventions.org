@@ -27,8 +27,7 @@ type(scope): description
 - Separate the subject from the body with a blank line.
 - Keep the subject within 50 characters when possible; 72 is the hard limit.
 - Wrap the body at 72 characters.
-- Wrap code identifiers in backticks in the subject; some forges render them
-  as code. Example from this repository:
+- Wrap code identifiers in backticks in the subject. Example:
   =fix(systemd): check-disk-usage: use `OnCalendar` instead of `OnUnitActiveSec`=
 - In the body, backticks are optional and serve only as visual separation
   between code and prose.
