@@ -23,11 +23,6 @@ source = "github"
 github = "Eisa01/mpv-scripts"
 use_latest_tag = true
 
-[gopasspw_gopass]
-source = "github"
-github = "gopasspw/gopass"
-use_latest_tag = true
-
 [gruvbox_kvantum_themes]
 source = "github"
 github = "sachnr/gruvbox-kvantum-themes"
