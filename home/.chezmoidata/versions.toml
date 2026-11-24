@@ -3,6 +3,7 @@
 
 [versions]
 bgutil_ytdlp_pot_provider = "2.0.2"
+bitingsock_ytdl_preload = "2026.04.26"
 christoph_heinrich_mpv_quality_menu = "v4.2.1"
 gopasspw_gopass = "v1.17.5"
 gruvbox_kvantum_themes = "1.1"

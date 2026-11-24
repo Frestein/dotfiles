@@ -8,6 +8,11 @@ source = "github"
 github = "Brainicism/bgutil-ytdlp-pot-provider"
 use_latest_tag = true
 
+[bitingsock_ytdl_preload]
+source = "github"
+github = "bitingsock/ytdl-preload"
+use_latest_tag = true
+
 [christoph_heinrich_mpv_quality_menu]
 source = "github"
 github = "christoph-heinrich/mpv-quality-menu"
