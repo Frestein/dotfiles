@@ -1,0 +1,6 @@
+# Pinned versions for chezmoi external archives.
+# Keys mirror nvchecker package names.
+
+[versions]
+bgutil_ytdlp_pot_provider = "2.0.2"
+tg_ws_proxy = "v1.12.0"

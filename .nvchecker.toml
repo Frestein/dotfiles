@@ -3,12 +3,12 @@ keyfile = "~/.config/nvchecker/keyfile.toml"
 newver = ".nv_new.json"
 oldver = ".nv_old.json"
 
-[bgutil-ytdlp-pot-provider]
+[bgutil_ytdlp_pot_provider]
 source = "github"
 github = "Brainicism/bgutil-ytdlp-pot-provider"
 use_latest_tag = true
 
-[tg-ws-proxy]
+[tg_ws_proxy]
 source = "github"
 github = "Flowseal/tg-ws-proxy"
 use_latest_tag = true
