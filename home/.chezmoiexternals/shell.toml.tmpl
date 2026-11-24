@@ -7,13 +7,6 @@ url = "https://raw.githubusercontent.com/Calinou/0x0/refs/heads/master/bin/0x0"
 refreshPeriod = "336h"
 executable = true
 
-# fzf
-
-[".local/bin/fzf-preview.sh"]
-type = "file"
-url = "https://raw.githubusercontent.com/junegunn/fzf/{{ .versions.junegunn_fzf }}/bin/fzf-preview.sh"
-executable = true
-
 # mpv
 
 {{- if (stat "/usr/share/mpv/scripts/umpv") }}
