@@ -8,6 +8,11 @@ source = "github"
 github = "Brainicism/bgutil-ytdlp-pot-provider"
 use_latest_tag = true
 
+[christoph_heinrich_mpv_quality_menu]
+source = "github"
+github = "christoph-heinrich/mpv-quality-menu"
+use_latest_tag = true
+
 [gruvbox_kvantum_themes]
 source = "github"
 github = "sachnr/gruvbox-kvantum-themes"

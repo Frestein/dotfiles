@@ -119,8 +119,7 @@ refreshPeriod = "336h"
 
 [".config/mpv/scripts/quality-menu.lua"]
 type = "file"
-url = "https://raw.githubusercontent.com/christoph-heinrich/mpv-quality-menu/refs/heads/master/quality-menu.lua"
-refreshPeriod = "336h"
+url = {{ gitHubReleaseAssetURL "christoph-heinrich/mpv-quality-menu" .versions.christoph_heinrich_mpv_quality_menu "quality-menu.lua" | quote }}
 
 #### SponsorBlock - Skip sponsor' segments
 
