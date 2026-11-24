@@ -18,6 +18,11 @@ source = "github"
 github = "christoph-heinrich/mpv-quality-menu"
 use_latest_tag = true
 
+[eisa01_mpv_scripts]
+source = "github"
+github = "Eisa01/mpv-scripts"
+use_latest_tag = true
+
 [gopasspw_gopass]
 source = "github"
 github = "gopasspw/gopass"
