@@ -36,6 +36,24 @@ In source names, `dot_` becomes `.`, `private_` sets restrictive permissions, `e
 - `chezmoi source-path <target>` and `chezmoi managed` are safe: they read metadata, not secret values.
 - Show the resulting `git diff` to the user and ask them to run `chezmoi apply`.
 
+## Debug logs
+
+`chezmoi --debug` prints the stdout of external commands (`gopass`, `gpg`, ...)
+and rendered file contents in `output=`, `contents=`, `data=` and `plaintext=`.
+These fields contain secrets — never copy raw debug output into chat or an issue.
+
+The agent must not run `chezmoi status`, `diff`, `apply`, `init` or `update`,
+even with `--debug`. Ask the user to capture timings with redaction instead:
+
+```sh
+chezmoi --debug status 2>&1 \
+  | sed -E 's/(output|data|value|contents|plaintext)=".*"/\1="<redacted>"/g' \
+  > /tmp/opencode/chezmoi-debug.log
+```
+
+The redaction keeps `time=`, `msg=`, `name=` and `duration=` — enough to find
+slow steps. Read `/tmp/opencode/chezmoi-debug.log`, then delete it.
+
 ## Special files
 
 - `.chezmoiignore` — target paths deliberately left unmanaged; also a hint about local state that should not be read.
