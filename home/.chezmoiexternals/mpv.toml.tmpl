@@ -137,9 +137,8 @@ include = [
 
 [".config/mpv/shaders"]
 type = "archive"
-url = "https://github.com/iwalton3/default-shader-pack/archive/master.tar.gz"
+url = "https://github.com/iwalton3/default-shader-pack/archive/refs/tags/{{ .versions.iwalton3_default_shader_pack }}.tar.gz"
 exact = true
 stripComponents = 2
-refreshPeriod = "336h"
 include = ["*/shaders/Anime4K*", "*/shaders/FSR*"]
 
