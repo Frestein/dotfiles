@@ -39,7 +39,7 @@ In source names, `dot_` becomes `.`, `private_` sets restrictive permissions, `e
 ## Special files
 
 - `.chezmoiignore` — target paths deliberately left unmanaged; also a hint about local state that should not be read.
-- `.chezmoiexternals/*.toml.tmpl` — external dependencies; the user refreshes them with `CZ_EXT=1 chezmoi apply`.
+- `.chezmoiexternals/*.toml.tmpl` — external dependencies; the user refreshes them with `chezmoi apply`.
 - `.chezmoiscripts/` — `run_once_*` and `run_onchange_*` hooks.
 - `.chezmoidata/packages.yaml` — package lists.
 - `.chezmoi.toml.tmpl` — GPG encryption plus `delta` pager and `nvim` merge command: another reason never to run chezmoi commands without a TTY.

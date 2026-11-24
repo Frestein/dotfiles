@@ -35,7 +35,7 @@ This is supporting material for the `chezmoi` skill. Read it before renaming fil
 ## Externals
 
 - `.chezmoiexternals/*.toml.tmpl` defines git repositories and archives pulled into the target.
-- The user refreshes them with `CZ_EXT=1 chezmoi apply`; do not run that yourself.
+- The user refreshes them with `chezmoi apply`; do not run that yourself.
 
 ## Scripts
 

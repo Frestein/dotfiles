@@ -39,12 +39,6 @@ chezmoi diff    # View differences between the source and the applied state
 chezmoi apply   # Apply the updated configuration
 #+END_SRC
 
-To fetch and apply externals, set the ~CZ_EXT~ environment variable:
-
-#+BEGIN_SRC sh :eval no
-env CZ_EXT=1 chezmoi apply
-#+END_SRC
-
 * License
 
 This project is distributed under the GNU General Public License v3.0.

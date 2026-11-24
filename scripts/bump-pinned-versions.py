@@ -118,7 +118,7 @@ def main() -> None:
         cwd=repo,
     )
 
-    print("\nDone. Refresh the externals with: CZ_EXT=1 chezmoi apply")
+    print("\nDone. Refresh the externals with: chezmoi apply")
 
 
 if __name__ == "__main__":

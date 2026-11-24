@@ -1,4 +1,4 @@
-{{ if env "CZ_EXT" }}#!/usr/bin/env bash
+#!/usr/bin/env bash
 {{- range .version_hooks }}
 # {{ .name }} version: {{ index $.versions .name }}
 {{- end }}
@@ -6,5 +6,4 @@ set -e
 {{- range .version_hooks }}
 cd "{{ .dir }}" || exit 1
 {{ .command }}
-{{- end }}
 {{- end }}

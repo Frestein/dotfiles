@@ -372,11 +372,7 @@ the variable `message-log-max'."
        '(("cz"   "chezmoi $*")
          ("czs"  "chezmoi status $*")
          ("czd"  "chezmoi diff $*")
-         ("cza"  "chezmoi apply $*")
-         ("czx"  "env CZ_EXT=1 chezmoi $*")
-         ("czsx" "env CZ_EXT=1 chezmoi status $*")
-         ("czdx" "env CZ_EXT=1 chezmoi diff $*")
-         ("czax" "env CZ_EXT=1 chezmoi apply $*"))))
+         ("cza"  "chezmoi apply $*"))))
 
     (when (executable-find "systemctl")
       (fr/eshell-append-aliases '(("sc" "systemctl $*")

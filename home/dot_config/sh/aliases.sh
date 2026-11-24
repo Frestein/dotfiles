@@ -81,7 +81,6 @@ fi
 # Dotfiles (Chezmoi)
 if command -v chezmoi >/dev/null 2>&1; then
 	alias cz='chezmoi'
-	alias czx='CZ_EXT=1 chezmoi'
 fi
 
 # Systemd
