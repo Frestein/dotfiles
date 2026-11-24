@@ -26,6 +26,9 @@ github_user = "Frestein"
 args = "--quiet"
 recipient = {{ $gpg_keyid | quote }}
 
+[gitHub]
+refreshPeriod = "24h"
+
 [diff]
 pager = "delta"
 
