@@ -23,6 +23,11 @@ source = "github"
 github = "sachnr/gruvbox-kvantum-themes"
 use_latest_tag = true
 
+[junegunn_fzf]
+source = "github"
+github = "junegunn/fzf"
+use_latest_tag = true
+
 [tg_ws_proxy]
 source = "github"
 github = "Flowseal/tg-ws-proxy"
