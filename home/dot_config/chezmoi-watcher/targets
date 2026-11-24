@@ -6,3 +6,6 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/hypr
 ${XDG_CONFIG_HOME:-$HOME/.config}/tridactyl/tridactylrc
 ${XDG_CONFIG_HOME:-$HOME/.config}/conky
 ${XDG_CONFIG_HOME:-$HOME/.config}/xonsh
+${XDG_CONFIG_HOME:-$HOME/.config}/YouTube Music/config.json
+${XDG_CONFIG_HOME:-$HOME/.config}/goofcord/GoofCord/settings.json
+${XDG_CONFIG_HOME:-$HOME/.config}/qalculate/qalc.cfg

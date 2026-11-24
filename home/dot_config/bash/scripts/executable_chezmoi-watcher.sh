@@ -14,7 +14,7 @@ fi
 WATCH_TARGETS=()
 while IFS= read -r line; do
 	line="${line%%#*}" # Remove all comments
-	line="${line// /}" # Remove all spaces
+	line="$(printf '%s' "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')" # Trim leading/trailing whitespace
 	[[ -n "$line" ]] || continue
 
 	# Safely expand $VARIABLE and ${VARIABLE:-default} constructs
@@ -28,7 +28,7 @@ IGNORE_TARGETS=()
 if [[ -f "$IGNORE_FILE" ]]; then
 	while IFS= read -r line; do
 		line="${line%%#*}" # Remove all comments
-		line="${line// /}" # Remove all spaces
+		line="$(printf '%s' "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')" # Trim leading/trailing whitespace
 		[[ -n "$line" ]] || continue
 
 		expanded=$(eval echo "$line")
@@ -137,6 +137,14 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while
 	# File may disappear between the event and now
 	if [[ ! -e "$changed_file" ]]; then
 		echo "File $changed_file no longer exists, skipping"
+		continue
+	fi
+
+	# Skip changes that only re-apply chezmoi's own state. `verify` exits 0 when
+	# the target already matches the desired state, so re-adding would just churn
+	# encrypted sources. If verify fails (e.g. no key in this context), fall
+	# through to the normal re-add path.
+	if is_managed "$rel_path" && chezmoi verify "$HOME/$rel_path" >/dev/null 2>&1; then
 		continue
 	fi
 
