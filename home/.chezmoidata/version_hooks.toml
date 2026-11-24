@@ -1,0 +1,7 @@
+# Commands to run after apply when a pinned version changes.
+# `name` must match a key in versions.toml.
+
+[[version_hooks]]
+name = "bgutil_ytdlp_pot_provider"
+dir = "$HOME/Tools/bgutil-ytdlp-pot-provider"
+command = "deno install --frozen --allow-scripts=npm:canvas --allow-scripts=npm:@swc/core"
