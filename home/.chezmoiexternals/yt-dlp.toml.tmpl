@@ -11,7 +11,6 @@ type = "archive"
 url = {{ $bgutil_url | quote }}
 exact = true
 stripComponents = 2
-refreshPeriod = "336h"
 include = ["*/plugin/yt_dlp_plugins/**"]
 
 ["Tools/bgutil-ytdlp-pot-provider"]
@@ -19,7 +18,6 @@ type = "archive"
 url = {{ $bgutil_url | quote }}
 exact = true
 stripComponents = 2
-refreshPeriod = "336h"
 include = [
   "*/server/src/**",
   "*/server/types/**",
