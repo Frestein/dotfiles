@@ -4,14 +4,13 @@
 ## UI
 ### UOSC - Feature-rich minimalist UI
 
-{{- $uosc_url := "https://github.com/tomasklaen/uosc/releases/latest/download/uosc.zip" }}
+{{- $uosc_url := gitHubReleaseAssetURL "tomasklaen/uosc" .versions.tomasklaen_uosc "uosc.zip" }}
 
 [".config/mpv/fonts"]
 type = "archive"
 url = {{ $uosc_url | quote }}
 exact = true
 stripComponents = 1
-refreshPeriod = "336h"
 include = ["fonts/**"]
 
 [".config/mpv/scripts/uosc"]
@@ -19,7 +18,6 @@ type = "archive"
 url = {{ $uosc_url | quote }}
 exact = true
 stripComponents = 2
-refreshPeriod = "336h"
 include = ["scripts/**"]
 
 ### M-x - Emacs-like minibuffer

@@ -17,3 +17,8 @@ use_latest_tag = true
 source = "github"
 github = "Flowseal/tg-ws-proxy"
 use_latest_tag = true
+
+[tomasklaen_uosc]
+source = "github"
+github = "tomasklaen/uosc"
+use_latest_tag = true
