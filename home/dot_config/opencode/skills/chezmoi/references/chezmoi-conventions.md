@@ -30,7 +30,7 @@ This is supporting material for the `chezmoi` skill. Read it before renaming fil
 - Common values: `.chezmoi.os`, `.chezmoi.hostname`, `.chezmoi.arch`, `.chezmoi.sourceDir`, `.email`, `.github_user`.
 - Platform branches: `{{- if eq .chezmoi.os "linux" }} ... {{ end }}`.
 - To emit literal braces for a target format that also uses `{{ }}`: `{{ "{{" }}value{{ "}}" }}`.
-- A source template may call secret backends (`gopass`, `keepassxcAttribute`, `secret`). Its rendered target must never be read.
+- A source template may call secret backends (`gopass`, `secret`). Its rendered target must never be read.
 
 ## Externals
 
