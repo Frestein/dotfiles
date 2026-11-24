@@ -3,4 +3,5 @@
 
 [versions]
 bgutil_ytdlp_pot_provider = "2.0.2"
+gruvbox_kvantum_themes = "1.1"
 tg_ws_proxy = "v1.12.0"

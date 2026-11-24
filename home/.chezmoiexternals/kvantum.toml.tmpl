@@ -2,14 +2,12 @@
 
 [".config/Kvantum/Gruvbox_Light_Green"]
 type = "archive"
-url = {{ gitHubLatestReleaseAssetURL "sachnr/gruvbox-kvantum-themes" "Gruvbox_Light_Green.tar.gz" | quote }}
-refreshPeriod = "336h"
+url = {{ gitHubReleaseAssetURL "sachnr/gruvbox-kvantum-themes" .versions.gruvbox_kvantum_themes "Gruvbox_Light_Green.tar.gz" | quote }}
 stripComponents = 3
 
 [".config/Kvantum/Gruvbox-Dark-Green"]
 type = "archive"
-url = {{ gitHubLatestReleaseAssetURL "sachnr/gruvbox-kvantum-themes" "Gruvbox-Dark-Green.tar.gz" | quote }}
-refreshPeriod = "336h"
+url = {{ gitHubReleaseAssetURL "sachnr/gruvbox-kvantum-themes" .versions.gruvbox_kvantum_themes "Gruvbox-Dark-Green.tar.gz" | quote }}
 stripComponents = 3
 
 {{- end }}
