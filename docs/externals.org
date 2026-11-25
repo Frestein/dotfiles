@@ -492,3 +492,19 @@ executable = true
 
 {{- end }}
 #+end_src
+
+** Firefox
+
+*** Theme
+
+Cascadefox with its Gruvbox integration.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/firefox.toml.tmpl
+[".config/mozilla/firefox/personal.default/chrome/includes"]
+type = "archive"
+url = "https://github.com/cascadefox/cascade/archive/main.tar.gz"
+exact = true
+stripComponents = 3
+refreshPeriod = "336h"
+include = ["*/chrome/includes/**", "*/integrations/gruvbox/**"]
+#+end_src
