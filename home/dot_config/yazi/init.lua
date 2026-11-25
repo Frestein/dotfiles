@@ -4,8 +4,8 @@
 
 -- Borders
 require("full-border"):setup {
-	-- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
-	type = ui.Border.PLAIN,
+	-- Available values: "plain", "rounded"
+	set = "plain",
 }
 
 -- INFO: Use full mode indicator
