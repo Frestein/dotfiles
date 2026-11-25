@@ -16,8 +16,12 @@ conventions.
 
 - Use one of the seven types listed in the document.
 - A scope is optional. When present, use exactly one canonical scope from the
-  `canonical-scopes` block; do not combine scopes or invent aliases. If no
-  scope fits, omit it rather than forcing an unrelated one.
+  `canonical-scopes` block; do not combine scopes or invent aliases. For a
+  component without a canonical scope, ask the user whether to add one and
+  propose concrete names; omit the scope only for changes that are not
+  component-specific. When a component with a scope is removed, ask the user
+  whether to remove that scope, then remove it from the conventions and
+  regenerate `prek.toml`.
 - The subsystem prefix is optional in the description, e.g.
   `feat(emacs): lua: add lsp config`. Omit it when the scope already names the
   subsystem.

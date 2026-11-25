@@ -16,7 +16,8 @@ type: description
 #+end_src
 
 - Types in use: =chore=, =feat=, =fix=, =refactor=, =style=, =docs=, =perf=.
-- A scope is optional: use =type: description= when no component fits.
+- A scope is optional: use =type: description= for changes that do not belong
+  to a specific component.
 - When present, a scope is a single component name without a slash: =emacs=,
   =nvim=, =qutebrowser=, =chezmoi=, =hyprland=, =fish=, =yazi=.
 - The subsystem may go into the description as an optional =section:= prefix:
@@ -269,11 +270,16 @@ args = ["--scopes=<<scope-list()>>"]
 
 1. Use only canonical scopes from =canonical-scopes=. Add a new scope there
    before using it; never introduce an alias for an existing one.
-2. Do not rewrite published history. Amending your own most recent,
+2. If a change belongs to a component but no canonical scope fits, ask the user
+   whether to add one and propose concrete names.
+3. When a component with a canonical scope is removed, ask the user whether to
+   remove its scope, then remove it from the =canonical-scopes= block and
+   regenerate the hook configuration.
+4. Do not rewrite published history. Amending your own most recent,
    unpublished commit is fine.
 
 * Tooling
 
 The =canonical-scopes= block is tangled into =prek.toml= in the repository
-root. The =commit-msg= hook is installed with =prek install=. Update hook
-versions with =prek update=.
+root. Regenerate it whenever the scope list changes. The =commit-msg= hook is
+installed with =prek install=. Update hook versions with =prek update=.
