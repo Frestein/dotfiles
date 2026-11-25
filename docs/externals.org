@@ -410,3 +410,56 @@ include = [
     "sponsorblock_shared/**"
 ]
 #+end_src
+
+** yt-dlp
+
+*** PO token provider
+
+Provider for YouTube PO tokens. See the
+[[https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide][PO Token Guide]].
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yt-dlp.toml.tmpl
+{{- $bgutil_tag := .versions.bgutil_ytdlp_pot_provider }}
+{{- $bgutil_url := printf "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/refs/tags/%s.tar.gz" $bgutil_tag }}
+
+[".config/yt-dlp-plugins/bgutil-ytdlp-pot-provider"]
+type = "archive"
+url = {{ $bgutil_url | quote }}
+exact = true
+stripComponents = 2
+include = ["*/plugin/yt_dlp_plugins/**"]
+
+["Tools/bgutil-ytdlp-pot-provider"]
+type = "archive"
+url = {{ $bgutil_url | quote }}
+exact = true
+stripComponents = 2
+include = [
+  "*/server/src/**",
+  "*/server/types/**",
+  "*/server/deno.json",
+  "*/server/deno.lock",
+  "*/server/package-lock.json",
+  "*/server/package.json",
+  "*/server/tsconfig.json",
+]
+#+end_src
+
+*** Yandex.Translate
+
+Yandex.Translate for videos, based on voice-over-translation (vot) and
+vot-cli.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yt-dlp.toml.tmpl
+[".config/yt-dlp-plugins/YandexTranslate/yt_dlp_plugins"]
+type = "archive"
+url = "https://github.com/gnfalex/YT_yt_dlp_plugin/archive/master.tar.gz"
+exact = true
+stripComponents = 2
+refreshPeriod = "336h"
+include = [
+  "*/yt_dlp_plugins/extractor/**",
+  "*/yt_dlp_plugins/postprocessor/**",
+  "*/yt_dlp_plugins/yandex.protoc",
+]
+#+end_src
