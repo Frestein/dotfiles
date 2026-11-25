@@ -2,7 +2,7 @@
 Description=Watch directory for file changes, add to chezmoi on change
 
 [Service]
-ExecStart=%h/.config/bash/scripts/chezmoi-watcher.sh
+ExecStart=%h/.local/bin/chezmoi-watcher
 Restart=on-failure
 RestartSec=5
 

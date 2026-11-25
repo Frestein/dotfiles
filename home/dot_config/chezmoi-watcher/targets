@@ -1,11 +1,11 @@
-${XDG_CONFIG_HOME:-$HOME/.config}/nvim
-${XDG_CONFIG_HOME:-$HOME/.config}/doom
-${XDG_CONFIG_HOME:-$HOME/.config}/quickshell
+${XDG_CONFIG_HOME:-$HOME/.config}/nvim/
+${XDG_CONFIG_HOME:-$HOME/.config}/doom/
+${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/
 ${XDG_CONFIG_HOME:-$HOME/.config}/qutebrowser/config.py
-${XDG_CONFIG_HOME:-$HOME/.config}/hypr
+${XDG_CONFIG_HOME:-$HOME/.config}/hypr/
 ${XDG_CONFIG_HOME:-$HOME/.config}/tridactyl/tridactylrc
-${XDG_CONFIG_HOME:-$HOME/.config}/conky
-${XDG_CONFIG_HOME:-$HOME/.config}/xonsh
+${XDG_CONFIG_HOME:-$HOME/.config}/conky/
+${XDG_CONFIG_HOME:-$HOME/.config}/xonsh/
 ${XDG_CONFIG_HOME:-$HOME/.config}/YouTube Music/config.json
 ${XDG_CONFIG_HOME:-$HOME/.config}/goofcord/GoofCord/settings.json
 ${XDG_CONFIG_HOME:-$HOME/.config}/qalculate/qalc.cfg

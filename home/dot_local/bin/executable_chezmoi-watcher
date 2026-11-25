@@ -1,0 +1,306 @@
+#!/usr/bin/env python3
+"""Watch configured paths and keep their chezmoi sources in sync."""
+
+import logging
+import os
+import re
+import selectors
+import signal
+import subprocess
+import sys
+import time
+from dataclasses import dataclass
+from pathlib import Path
+
+MIN_INTERVAL = 2
+HOME = Path.home()
+CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config")
+TARGETS_FILE = CONFIG_HOME / "chezmoi-watcher" / "targets"
+IGNORE_FILE = CONFIG_HOME / "chezmoi-watcher" / "ignore"
+
+log = logging.getLogger("chezmoi-watcher")
+_VAR_DEFAULT = re.compile(r"\$\{(\w+):-([^}]*)\}")
+_VAR = re.compile(r"\$(\w+)")
+_SECRET = re.compile(r'(output|data|value|contents|plaintext)="[^"]*"')
+
+
+@dataclass(frozen=True)
+class WatchTarget:
+    path: Path
+    directory: bool
+
+
+class PeriodFormatter(logging.Formatter):
+    """End each log line with a period unless it already has sentence punctuation."""
+
+    def format(self, record: logging.LogRecord) -> str:
+        line = super().format(record)
+        return line if line.endswith((".", "!", "?")) else f"{line}."
+
+
+def redact(text: str) -> str:
+    """Mask values that may contain plaintext secrets in diagnostic output."""
+    return _SECRET.sub(r'\1="<redacted>"', text)
+
+
+def parse_line(line: str) -> WatchTarget | None:
+    """Parse one shell-style path line without evaluating shell code."""
+    line = line.split("#", 1)[0].strip()
+    if not line:
+        return None
+    directory = line.endswith("/")
+    line = _VAR_DEFAULT.sub(lambda m: os.environ.get(m.group(1)) or m.group(2), line)
+    line = _VAR.sub(lambda m: os.environ.get(m.group(1), ""), line)
+    return WatchTarget(Path(line).expanduser(), directory)
+
+
+def read_list(path: Path) -> list[WatchTarget]:
+    if not path.is_file():
+        return []
+    return [
+        parsed
+        for line in path.read_text().splitlines()
+        if (parsed := parse_line(line)) is not None
+    ]
+
+
+def run(cmd: list[str], *, capture: bool = False) -> subprocess.CompletedProcess[str]:
+    """Run a command from $HOME, optionally capturing its output."""
+    if capture:
+        return subprocess.run(
+            cmd, cwd=HOME, check=False, text=True, capture_output=True
+        )
+    return subprocess.run(
+        cmd,
+        cwd=HOME,
+        check=False,
+        text=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def report_failure(
+    action: str, rel: Path, result: subprocess.CompletedProcess[str]
+) -> None:
+    detail = redact((result.stderr or result.stdout).strip())
+    log.error("%s failed for %s: %s", action, rel, detail)
+
+
+def notify(urgency: str, message: str) -> None:
+    run(
+        ["notify-send", "-u", urgency, "-c", "chezmoi", "Chezmoi", message],
+        capture=False,
+    )
+
+
+def re_add(rel: Path) -> None:
+    result = run(["chezmoi", "re-add", str(rel)], capture=True)
+    if result.returncode == 0:
+        log.info("Updated %s", rel)
+        notify("normal", f"File {rel} updated")
+    else:
+        report_failure("Re-add", rel, result)
+        notify("critical", f"Error during re-add {rel}")
+
+
+def add(rel: Path) -> None:
+    result = run(["chezmoi", "add", str(rel)], capture=True)
+    if result.returncode == 0:
+        log.info("Added %s", rel)
+        notify("normal", f"File {rel} added")
+    else:
+        report_failure("Add", rel, result)
+        notify("critical", f"Error during add {rel}")
+
+
+def matches(path: Path, target: WatchTarget) -> bool:
+    if target.directory:
+        return path.is_relative_to(target.path)
+    return path == target.path
+
+
+def process(
+    raw: Path,
+    targets: list[WatchTarget],
+    ignored: list[WatchTarget],
+    last_event: dict[Path, float],
+) -> None:
+    if not any(matches(raw, target) for target in targets):
+        return
+    if raw.is_dir():
+        return
+
+    changed = raw.resolve()
+    if any(matches(changed, target) for target in ignored):
+        return
+    try:
+        rel = changed.relative_to(HOME)
+    except ValueError:
+        return
+    if not rel.parts:
+        return
+
+    now = time.monotonic()
+    if now - last_event.get(rel, 0.0) < MIN_INTERVAL:
+        return
+    last_event[rel] = now
+
+    if not changed.exists():
+        log.warning("File %s no longer exists, skipping", changed)
+        return
+
+    # A fresh source-path lookup is the authority: a cached managed list can go
+    # stale and would send already-managed files (including encrypted ones) to
+    # the `add` path.
+    lookup = run(["chezmoi", "source-path", str(changed)], capture=True)
+    source = lookup.stdout.strip() if lookup.returncode == 0 else ""
+    if lookup.returncode != 0:
+        log.error("Source-path failed for %s: %s", rel, redact(lookup.stderr.strip()))
+    elif not source:
+        log.error("Source-path was empty for %s", rel)
+
+    if source:
+        # `verify` exits 0 when the target already matches the desired state,
+        # so re-adding would only churn encrypted sources. If verification is
+        # unavailable (e.g. no key), fall through to the normal re-add path.
+        if run(["chezmoi", "verify", str(changed)]).returncode == 0:
+            log.info("Skipping %s: target already matches source state", rel)
+            return
+        re_add(rel)
+        return
+
+    # Without a source path, confirm managedness freshly before falling back to
+    # `add`; never risk adding a file that is already tracked.
+    managed = run(["chezmoi", "managed"], capture=True)
+    if managed.returncode != 0:
+        report_failure("Managed", rel, managed)
+        return
+    if str(rel) in managed.stdout.splitlines():
+        log.warning("Source-path was empty for managed file %s", rel)
+        if run(["chezmoi", "verify", str(changed)]).returncode == 0:
+            log.info("Skipping %s: target already matches source state", rel)
+            return
+        re_add(rel)
+    else:
+        add(rel)
+
+
+def start_watch(paths: list[Path], *, recursive: bool) -> subprocess.Popen[bytes]:
+    cmd = [
+        "inotifywait",
+        "--monitor",
+        "--event",
+        "create",
+        "--event",
+        "modify",
+        "--format",
+        "%w%f",
+    ]
+    if recursive:
+        cmd.append("--recursive")
+    cmd.extend(str(path) for path in paths)
+    return subprocess.Popen(
+        cmd,
+        cwd=HOME,
+        bufsize=0,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+
+
+def _stop(_signum: int, _frame: object) -> None:
+    raise SystemExit(0)
+
+
+def main() -> None:
+    handler = logging.StreamHandler(sys.stderr)
+    handler.setFormatter(PeriodFormatter("%(levelname)s: %(message)s"))
+    logging.basicConfig(level=logging.INFO, handlers=[handler])
+    signal.signal(signal.SIGTERM, _stop)
+
+    if not TARGETS_FILE.is_file():
+        log.error("Targets file not found: %s", TARGETS_FILE)
+        sys.exit(1)
+    targets = read_list(TARGETS_FILE)
+    ignored = read_list(IGNORE_FILE)
+
+    directory_paths = {target.path for target in targets if target.directory}
+    file_paths = [target.path for target in targets if not target.directory]
+    existing_dirs = sorted(path for path in directory_paths if path.is_dir())
+    missing_dirs = {path for path in directory_paths if not path.is_dir()}
+    parents = {
+        path.parent
+        for path in [*file_paths, *missing_dirs]
+        if not any(path.is_relative_to(directory) for directory in existing_dirs)
+    }
+    log.info(
+        "Targets loaded: %d directories (%d pending), %d files; ignore entries: %d",
+        len(directory_paths),
+        len(missing_dirs),
+        len(file_paths),
+        len(ignored),
+    )
+    if not existing_dirs and not parents:
+        log.error("No directories to watch")
+        sys.exit(1)
+
+    selector = selectors.DefaultSelector()
+    processes: list[subprocess.Popen[bytes]] = []
+
+    def add_watch(paths: list[Path], *, recursive: bool) -> None:
+        if not paths:
+            return
+        watcher = start_watch(paths, recursive=recursive)
+        processes.append(watcher)
+        if watcher.stdout is not None:
+            selector.register(watcher.stdout.fileno(), selectors.EVENT_READ, watcher)
+
+    add_watch(existing_dirs, recursive=True)
+    add_watch(sorted(parents), recursive=False)
+    log.info("Watches established on %d directories", len(existing_dirs) + len(parents))
+
+    buffers: dict[int, str] = {}
+    last_event: dict[Path, float] = {}
+    try:
+        while True:
+            for key, _ in selector.select():
+                fd = key.fd
+                chunk = os.read(fd, 65536)
+                if not chunk:
+                    watcher = key.data
+                    selector.unregister(fd)
+                    error = (
+                        watcher.stderr.read().decode(errors="replace").strip()
+                        if watcher.stderr
+                        else ""
+                    )
+                    log.error(
+                        "Inotifywait exited with %s: %s",
+                        watcher.wait(),
+                        redact(error),
+                    )
+                    sys.exit(1)
+                *lines, remainder = (
+                    buffers.get(fd, "") + chunk.decode(errors="replace")
+                ).split("\n")
+                buffers[fd] = remainder
+                for line in lines:
+                    if not line:
+                        continue
+                    raw = Path(line)
+                    if raw in missing_dirs and raw.is_dir():
+                        missing_dirs.remove(raw)
+                        add_watch([raw], recursive=True)
+                        log.info("Watches established for new directory %s", raw)
+                    process(raw, targets, ignored, last_event)
+    finally:
+        for watcher in processes:
+            if watcher.poll() is None:
+                watcher.terminate()
+        for watcher in processes:
+            watcher.wait(timeout=5)
+
+
+if __name__ == "__main__":
+    main()
