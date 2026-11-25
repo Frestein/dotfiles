@@ -508,3 +508,26 @@ stripComponents = 3
 refreshPeriod = "336h"
 include = ["*/chrome/includes/**", "*/integrations/gruvbox/**"]
 #+end_src
+
+** Fish
+
+*** Archive extraction
+
+Extract function from oh-my-fish.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/fish.toml.tmpl
+[".config/fish/functions/extract.fish"]
+type = "file"
+url = "https://raw.githubusercontent.com/oh-my-fish/plugin-extract/refs/heads/master/functions/extract.fish"
+refreshPeriod = "336h"
+#+end_src
+
+*** UWSM completion
+
+Shell completion for uwsm.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/fish.toml.tmpl
+[".config/fish/completions/uwsm.fish"]
+type = "file"
+url = "https://gist.githubusercontent.com/dafitt/4aec26d1107c1a9b1d9812d9eb6dc9b2/raw/6f81538b1cb818e9dce34fc9f637b0d752f3abc5/uwsm.fish"
+#+end_src
