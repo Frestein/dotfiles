@@ -1,0 +1,220 @@
+#+title: Chezmoi externals
+#+author: Frestein
+#+property: header-args :results silent
+#+startup: content
+
+* Externals
+
+Chezmoi externals pull configuration from remote archives and refresh it with
+=refreshPeriod=. Go template directives are expanded by chezmoi at apply time,
+not by Org.
+
+Tangle this file with =org-babel-tangle= after editing a block.
+
+** Yazi
+
+Yazi plugins and flavors have no version tags, so all archives track =master=.
+
+*** Personal plugins
+
+These four plugins are maintained in the chezmoi source tree, not fetched from
+a remote archive:
+
+- =confirm-quit.yazi= — ask for confirmation before quitting with multiple tabs.
+- =folder-rules.yazi= — per-folder sorting rules.
+- =parent-arrow.yazi= — move between parent directories.
+- =smart-tab.yazi= — create a tab and enter the hovered directory.
+
+*** Official plugins
+
+The official plugins live in the =yazi-rs/plugins= monorepo; the template list
+keeps all their entries in one place:
+
+- =types.yazi= — type definitions for the Lua language server.
+- =chmod.yazi= — change file permissions.
+- =diff.yazi= — diff the selected file against the hovered one.
+- =toggle-pane.yazi= — toggle, hide, and maximize panes.
+- =zoom.yazi= — zoom the image in the preview pane.
+- =git.yazi= — show Git status in the file list.
+- =vcs-files.yazi= — filter files by Git changes.
+- =mount.yazi= — mount, unmount, and eject disks.
+- =full-border.yazi= — draw a full border around the UI.
+- =smart-enter.yazi= — open files or enter directories with a single key.
+- =smart-filter.yazi= — filter continuously, enter a unique match
+  automatically, and open the file on submit.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+{{- $yazi_plugins_base := "https://github.com/yazi-rs/plugins/archive/master.tar.gz" }}
+{{- $yazi_plugins_list := list
+    "types.yazi"
+    "chmod.yazi"
+    "diff.yazi"
+    "toggle-pane.yazi"
+    "zoom.yazi"
+    "git.yazi"
+    "vcs-files.yazi"
+    "mount.yazi"
+    "full-border.yazi"
+    "smart-enter.yazi"
+    "smart-filter.yazi"
+}}
+
+{{- range $plugin := $yazi_plugins_list }}
+[".config/yazi/plugins/{{ $plugin }}"]
+type = "archive"
+url = {{ $yazi_plugins_base | quote }}
+exact = true
+stripComponents = 2
+refreshPeriod = "336h"
+include = ["*/{{ $plugin }}/**"]
+{{- end }}
+#+end_src
+
+*** Community plugins
+
+Community plugins are pulled from their own repositories.
+
+**** Easyjump
+
+Jump to files with one or two keystrokes.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/easyjump.yazi"]
+type = "archive"
+url = "https://github.com/DreamMaoMao/yazi-config/archive/master.tar.gz"
+exact = true
+stripComponents = 3
+refreshPeriod = "336h"
+include = ["*/plugins/easyjump.yazi/**"]
+#+end_src
+
+**** File operations
+
+Show the size of the selection or current directory, and compress selected
+files into an archive.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/what-size.yazi"]
+type = "archive"
+url = "https://github.com/pirafrank/what-size.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+
+[".config/yazi/plugins/compress.yazi"]
+type = "archive"
+url = "https://github.com/KKV9/compress.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+**** Trash restore
+
+Restore the most recently deleted files or folders.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/restore.yazi"]
+type = "archive"
+url = "https://github.com/Frestein/restore.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+**** Git
+
+Show Git status in the header line.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/githead.yazi"]
+type = "archive"
+url = "https://github.com/llanosrocas/githead.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+**** Previewers
+
+Each previewer covers one kind of document or media.
+
+***** Images
+
+Browse images as a grid using swayimg.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/thumbnail.yazi"]
+type = "archive"
+url = "https://github.com/tasnimAlam/thumbnail.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+***** EPUB
+
+Preview EPUB files.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/epub-preview.yazi"]
+type = "archive"
+url = "https://github.com/kirasok/epub-preview.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+***** DjVu
+
+Preview DjVu documents.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/djvu-view.yazi"]
+type = "archive"
+url = "https://github.com/Shallow-Seek/djvu-view.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+***** Media files
+
+Preview media thumbnails and metadata.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/mediainfo.yazi"]
+type = "archive"
+url = "https://github.com/Frestein/mediainfo.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+**** Clipboard paste
+
+Save clipboard contents to a new file.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/plugins/save-clipboard-to-file.yazi"]
+type = "archive"
+url = "https://github.com/Frestein/save-clipboard-to-file.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
+
+*** Flavors
+
+**** Gruvbox
+
+Gruvbox dark flavor.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+[".config/yazi/flavors/gruvbox-dark.yazi"]
+type = "archive"
+url = "https://github.com/bennyyip/gruvbox-dark.yazi/archive/master.tar.gz"
+exact = true
+stripComponents = 1
+refreshPeriod = "336h"
+#+end_src
