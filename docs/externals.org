@@ -531,3 +531,25 @@ Shell completion for uwsm.
 type = "file"
 url = "https://gist.githubusercontent.com/dafitt/4aec26d1107c1a9b1d9812d9eb6dc9b2/raw/6f81538b1cb818e9dce34fc9f637b0d752f3abc5/uwsm.fish"
 #+end_src
+
+** Kvantum
+
+Both themes are pinned to the version tracked by nvchecker.
+
+*** Light Green
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/kvantum.toml.tmpl
+[".config/Kvantum/Gruvbox_Light_Green"]
+type = "archive"
+url = {{ gitHubReleaseAssetURL "sachnr/gruvbox-kvantum-themes" .versions.gruvbox_kvantum_themes "Gruvbox_Light_Green.tar.gz" | quote }}
+stripComponents = 3
+#+end_src
+
+*** Dark Green
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/kvantum.toml.tmpl
+[".config/Kvantum/Gruvbox-Dark-Green"]
+type = "archive"
+url = {{ gitHubReleaseAssetURL "sachnr/gruvbox-kvantum-themes" .versions.gruvbox_kvantum_themes "Gruvbox-Dark-Green.tar.gz" | quote }}
+stripComponents = 3
+#+end_src
