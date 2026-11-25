@@ -1,0 +1,91 @@
+#+title: Chezmoi watcher
+#+author: Frestein
+
+A systemd user service that watches selected paths and keeps their chezmoi
+sources in sync.
+
+* Files
+
+| Purpose       | Source                                               | Target                                         |
+|---------------+------------------------------------------------------+------------------------------------------------|
+| Script        | [[file:../home/dot_local/bin/executable_chezmoi-watcher][home/dot_local/bin/executable_chezmoi-watcher]]        | =~/.local/bin/chezmoi-watcher=                   |
+| Watched paths | [[file:../home/dot_config/chezmoi-watcher/targets][home/dot_config/chezmoi-watcher/targets]]              | =~/.config/chezmoi-watcher/targets=              |
+| Ignores       | [[file:../home/dot_config/chezmoi-watcher/ignore][home/dot_config/chezmoi-watcher/ignore]]               | =~/.config/chezmoi-watcher/ignore=               |
+| Service       | [[file:../home/dot_config/systemd/user/chezmoi-watcher.service][home/dot_config/systemd/user/chezmoi-watcher.service]] | =~/.config/systemd/user/chezmoi-watcher.service= |
+
+The unit is enabled by
+[[file:../home/.chezmoiscripts/run_once_after_30_enable-chezmoi-watcher.sh][run_once_after_30_enable-chezmoi-watcher.sh]].
+
+* Target syntax
+
+Both =targets= and =ignore= use the same shell-style syntax:
+
+- One path per line; =#= starts a comment, surrounding whitespace is trimmed.
+- =${VAR:-default}= and =$VAR= are expanded without =eval=; =~= is expanded too.
+- A trailing =/= marks a directory and enables recursive watching.
+  Without it the entry is an exact file path.
+
+The directory marker is explicit on purpose. The watcher does not guess from
+whether the directory exists at startup: a missing directory target is watched
+through its parent, and a recursive watch is added as soon as the directory
+appears. This keeps future directories working without ever recursing into a
+parent such as =~/.config= itself.
+
+Ignores follow the same rules: a marked directory matches recursively, a plain
+path matches exactly.
+
+* Event flow
+
+For every =create= or =modify= event the watcher:
+
+1. Checks that the path belongs to a target and is not a directory itself.
+2. Resolves symlinks, applies ignores, and computes the path relative to =$HOME=.
+3. Drops repeated events for the same file within two seconds (monotonic clock).
+4. Looks up a fresh =chezmoi source-path= for the absolute target.
+5. If a source exists, runs =chezmoi verify=:
+   - exit 0: the target already matches the source, so the event is logged as
+     =Skipping …: target already matches source state.= and no command runs;
+   - otherwise: =chezmoi re-add <relative path>=.
+6. If no source path was found, runs a fresh =chezmoi managed= before falling
+   back to =chezmoi add=. An already-managed file is re-added, never added.
+
+Notifications go through =notify-send= on success and failure. Failures of
+=re-add=, =add= and =managed= are logged with stderr captured, so diagnostics
+reach the journal instead of being discarded.
+
+* Usage
+
+Files under the watched paths are edited as usual; the service notices changes
+and syncs their chezmoi sources. To watch a new path, add it to =targets= with a
+trailing =/= for a directory. After changing the script, the unit or =targets=,
+apply the source and restart the service:
+
+#+begin_src sh :eval no
+chezmoi apply
+systemctl --user restart chezmoi-watcher.service
+#+end_src
+
+Follow the log with:
+
+#+begin_src sh :eval no
+journalctl --user-unit=chezmoi-watcher.service -f
+#+end_src
+
+Typical startup and event lines:
+
+#+begin_src text
+INFO: Targets loaded: 6 directories (1 pending), 5 files; ignore entries: 0.
+INFO: Watches established on 11 directories.
+INFO: Skipping .config/doom/bookmarks.eld: target already matches source state.
+INFO: Updated .config/doom/bookmarks.eld.
+#+end_src
+
+* Troubleshooting
+
+- No lines at all: check =systemctl --user status chezmoi-watcher.service= and
+  the =journalctl= flag above.
+- =Source-path was empty= or =Source-path failed=: metadata lookup failed; the
+  watcher falls back to a fresh =managed= check and never guesses =add=.
+- =Inotifywait exited=: the watcher exits non-zero and systemd restarts it.
+- Unexpected =add= attempts: inspect the =targets= marker and whether the file
+  is actually managed with =chezmoi source-path=.
