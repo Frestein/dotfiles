@@ -37,3 +37,11 @@ git update-index --skip-worktree -- \
   home/dot_config/private_goofcord/GoofCord/encrypted_settings.json.asc \
   home/dot_config/private_qalculate/qalc.cfg
 ```
+
+## Deprecated package data
+
+`.chezmoidata/packages.yaml`, the Arch install script that consumes it
+(`.chezmoiscripts/linux/arch/run_onchange_01-install-arch-packages.sh.tmpl`)
+and the `get-packages-list` helper are a deprecated proof of concept. They are
+not the source of truth for installed packages and are not used in practice.
+Do not rely on them or extend them; the package workflow needs to be rewritten.

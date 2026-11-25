@@ -59,7 +59,6 @@ slow steps. Read `/tmp/opencode/chezmoi-debug.log`, then delete it.
 - `.chezmoiignore` — target paths deliberately left unmanaged; also a hint about local state that should not be read.
 - `.chezmoiexternals/*.toml.tmpl` — external dependencies; the user refreshes them with `chezmoi apply`.
 - `.chezmoiscripts/` — `run_once_*` and `run_onchange_*` hooks.
-- `.chezmoidata/packages.yaml` — package lists.
 - `.chezmoi.toml.tmpl` — GPG encryption plus `delta` pager and `nvim` merge command: another reason never to run chezmoi commands without a TTY.
 
 ## Workflow
