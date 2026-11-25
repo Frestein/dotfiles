@@ -15,9 +15,9 @@ conventions.
 ## Draft
 
 - Use one of the seven types listed in the document.
-- Use exactly one canonical scope from the `canonical-scopes` block. Do not
-  combine scopes and do not invent aliases. If no scope fits, propose adding
-  one to the document first.
+- A scope is optional. When present, use exactly one canonical scope from the
+  `canonical-scopes` block; do not combine scopes or invent aliases. If no
+  scope fits, omit it rather than forcing an unrelated one.
 - The subsystem prefix is optional in the description, e.g.
   `feat(emacs): lua: add lsp config`. Omit it when the scope already names the
   subsystem.

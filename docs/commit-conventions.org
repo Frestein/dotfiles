@@ -12,18 +12,20 @@ this document only describes new commits.
 
 #+begin_src text
 type(scope): description
+type: description
 #+end_src
 
 - Types in use: =chore=, =feat=, =fix=, =refactor=, =style=, =docs=, =perf=.
-- A scope is a single component name without a slash: =emacs=, =nvim=,
-  =qutebrowser=, =chezmoi=, =hyprland=, =fish=, =yazi=.
+- A scope is optional: use =type: description= when no component fits.
+- When present, a scope is a single component name without a slash: =emacs=,
+  =nvim=, =qutebrowser=, =chezmoi=, =hyprland=, =fish=, =yazi=.
 - The subsystem may go into the description as an optional =section:= prefix:
   - =feat(emacs): lua: add lsp config=
   - =chore(emacs): lang/lua: enable +fennel flag=
   - =chore(nvim): util/chezmoi: drop extra=
 - Omit the prefix when the scope already names the subsystem.
-- If a change touches several components, use one primary scope or split the
-  change into separate commits. Do not combine scopes.
+- If a change touches several components, use one primary scope, omit the
+  scope, or split the change into separate commits. Do not combine scopes.
 - The description is lowercase and has no trailing period.
 - Separate the subject from the body with a blank line.
 - Keep the subject within 50 characters when possible; 72 is the hard limit.
@@ -260,7 +262,7 @@ rev = "v4.5.0"
 [[repos.hooks]]
 id = "conventional-pre-commit"
 stages = ["commit-msg"]
-args = ["--force-scope", "--scopes=<<scope-list()>>"]
+args = ["--scopes=<<scope-list()>>"]
 #+end_src
 
 * Rules
