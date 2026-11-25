@@ -553,3 +553,16 @@ type = "archive"
 url = {{ gitHubReleaseAssetURL "sachnr/gruvbox-kvantum-themes" .versions.gruvbox_kvantum_themes "Gruvbox-Dark-Green.tar.gz" | quote }}
 stripComponents = 3
 #+end_src
+
+** Telegram
+
+*** WebSocket proxy
+
+Binary pinned to the version tracked by nvchecker.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/telegram.toml.tmpl
+[".local/bin/TgWsProxy"]
+type = "file"
+url = {{ gitHubReleaseAssetURL "Flowseal/tg-ws-proxy" .versions.tg_ws_proxy "TgWsProxy_linux_amd64" | quote }}
+executable = true
+#+end_src
