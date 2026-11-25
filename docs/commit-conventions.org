@@ -17,10 +17,11 @@ type(scope): description
 - Types in use: =chore=, =feat=, =fix=, =refactor=, =style=, =docs=, =perf=.
 - A scope is a single component name without a slash: =emacs=, =nvim=,
   =qutebrowser=, =chezmoi=, =hyprland=, =fish=, =yazi=.
-- The subsystem goes into the description as a =section:= prefix:
+- The subsystem may go into the description as an optional =section:= prefix:
   - =feat(emacs): lua: add lsp config=
   - =chore(emacs): lang/lua: enable +fennel flag=
   - =chore(nvim): util/chezmoi: drop extra=
+- Omit the prefix when the scope already names the subsystem.
 - If a change touches several components, use one primary scope or split the
   change into separate commits. Do not combine scopes.
 - The description is lowercase and has no trailing period.

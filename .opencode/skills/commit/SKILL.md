@@ -18,8 +18,9 @@ conventions.
 - Use exactly one canonical scope from the `canonical-scopes` block. Do not
   combine scopes and do not invent aliases. If no scope fits, propose adding
   one to the document first.
-- Write the subsystem as a `section:` prefix in the description, e.g.
-  `feat(emacs): lua: add lsp config`.
+- The subsystem prefix is optional in the description, e.g.
+  `feat(emacs): lua: add lsp config`. Omit it when the scope already names the
+  subsystem.
 - Wrap code identifiers in backticks in the subject. Example:
 
   ```text
