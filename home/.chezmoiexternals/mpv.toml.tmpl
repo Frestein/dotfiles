@@ -1,9 +1,3 @@
-
-# Plugins
-
-## UI
-### UOSC - Feature-rich minimalist UI
-
 {{- $uosc_url := gitHubReleaseAssetURL "tomasklaen/uosc" .versions.tomasklaen_uosc "uosc.zip" }}
 
 [".config/mpv/fonts"]
@@ -20,8 +14,6 @@ exact = true
 stripComponents = 2
 include = ["scripts/**"]
 
-### M-x - Emacs-like minibuffer
-
 [".config/mpv/scripts/M-x.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/M-x.lua"
@@ -32,94 +24,64 @@ type = "file"
 url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/script-modules/extended-menu.lua"
 refreshPeriod = "336h"
 
-### Thumbfast - On-the-fly thumbnailer
-
 [".config/mpv/scripts/thumbfast.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/po5/thumbfast/refs/heads/master/thumbfast.lua"
 refreshPeriod = "336h"
 
-### Gallery View
-
 {{- $gallery_repo := "https://raw.githubusercontent.com/occivink/mpv-gallery-view/master" }}
-
-# Gallery - Library module required by playlist-view and gallery-thumbgen
 
 [".config/mpv/script-modules/gallery.lua"]
 type = "file"
 url = "{{ $gallery_repo }}/script-modules/gallery.lua"
 refreshPeriod = "336h"
 
-#### Gallery Thumbgen - Worker for generating gallery thumbnails
-
 [".config/mpv/scripts/gallery-thumbgen.lua"]
 type = "file"
 url = "{{ $gallery_repo }}/scripts/gallery-thumbgen.lua"
 refreshPeriod = "336h"
-
-#### Playlist View - Displays an overview of the current playlist with thumbnails
 
 [".config/mpv/scripts/playlist-view.lua"]
 type = "file"
 url = "{{ $gallery_repo }}/scripts/playlist-view.lua"
 refreshPeriod = "336h"
 
-## auto-save-state - Periodically saves watch progress
-
 [".config/mpv/scripts/auto-save-state.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/dyphire/mpv-scripts/refs/heads/main/auto-save-state.lua"
 refreshPeriod = "336h"
 
-## Undo / Redo
-
 [".config/mpv/scripts/undo-redo.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/Eisa01/mpv-scripts/{{ .versions.eisa01_mpv_scripts }}/scripts/UndoRedo.lua"
-
-## Reload - Automatic reloading of slow/stuck video steams
 
 [".config/mpv/scripts/reload.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/Frestein/mpv-reload/refs/heads/master/main.lua"
 refreshPeriod = "336h"
 
-## Skip Silence - Increase playback speed during silence
-
 [".config/mpv/scripts/skipsilence.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/ferreum/mpv-skipsilence/refs/heads/master/skipsilence.lua"
 refreshPeriod = "336h"
-
-## Recent - Shows menu with recently played videos
 
 [".config/mpv/scripts/recent.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/Frestein/recent/refs/heads/master/recent.lua"
 refreshPeriod = "336h"
 
-## russian-layout - Input using Cyrillic layout
-
 [".config/mpv/scripts/russian-layout.lua"]
 type = "file"
 url = "https://codeberg.org/Frestein/russian-layout.mpv/raw/branch/main/russian-layout.lua"
 refreshPeriod = "336h"
 
-## Services
-### YouTube
-#### YouTube Preload - Precache next entry in playlist
-
 [".config/mpv/scripts/ytdl-preload.lua"]
 type = "file"
 url = "https://raw.githubusercontent.com/bitingsock/ytdl-preload/{{ .versions.bitingsock_ytdl_preload }}/ytdl_preload.lua"
 
-#### Quality Menu - Allow to change streamed video quality
-
 [".config/mpv/scripts/quality-menu.lua"]
 type = "file"
 url = {{ gitHubReleaseAssetURL "christoph-heinrich/mpv-quality-menu" .versions.christoph_heinrich_mpv_quality_menu "quality-menu.lua" | quote }}
-
-#### SponsorBlock - Skip sponsor' segments
 
 [".config/mpv/scripts"]
 type = "archive"
@@ -130,4 +92,3 @@ include = [
     "sponsorblock.lua",
     "sponsorblock_shared/**"
 ]
-

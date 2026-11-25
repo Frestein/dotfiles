@@ -5,9 +5,9 @@
 
 * Externals
 
-Chezmoi externals pull configuration from remote archives and refresh it with
-=refreshPeriod=. Go template directives are expanded by chezmoi at apply time,
-not by Org.
+Chezmoi externals pull configuration from remote archives and refresh it either
+with =refreshPeriod= or through versions tracked by nvchecker. Go template
+directives are expanded by chezmoi at apply time, not by Org.
 
 Tangle this file with =org-babel-tangle= after editing a block.
 
@@ -217,4 +217,196 @@ url = "https://github.com/bennyyip/gruvbox-dark.yazi/archive/master.tar.gz"
 exact = true
 stripComponents = 1
 refreshPeriod = "336h"
+#+end_src
+** MPV
+
+*** Plugins
+
+**** UI
+
+***** Minimalist UI
+
+UOSC is a feature-rich minimalist UI.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+{{- $uosc_url := gitHubReleaseAssetURL "tomasklaen/uosc" .versions.tomasklaen_uosc "uosc.zip" }}
+
+[".config/mpv/fonts"]
+type = "archive"
+url = {{ $uosc_url | quote }}
+exact = true
+stripComponents = 1
+include = ["fonts/**"]
+
+[".config/mpv/scripts/uosc"]
+type = "archive"
+url = {{ $uosc_url | quote }}
+exact = true
+stripComponents = 2
+include = ["scripts/**"]
+#+end_src
+
+***** Emacs-like minibuffer
+
+M-x provides an Emacs-like minibuffer.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/M-x.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/M-x.lua"
+refreshPeriod = "336h"
+
+[".config/mpv/script-modules/extended-menu.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/Seme4eg/mpv-scripts/refs/heads/master/script-modules/extended-menu.lua"
+refreshPeriod = "336h"
+#+end_src
+
+***** On-the-fly thumbnails
+
+Thumbfast generates thumbnails on the fly.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/thumbfast.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/po5/thumbfast/refs/heads/master/thumbfast.lua"
+refreshPeriod = "336h"
+#+end_src
+
+***** Gallery view
+
+The Gallery View module is required by playlist-view and gallery-thumbgen.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+{{- $gallery_repo := "https://raw.githubusercontent.com/occivink/mpv-gallery-view/master" }}
+
+[".config/mpv/script-modules/gallery.lua"]
+type = "file"
+url = "{{ $gallery_repo }}/script-modules/gallery.lua"
+refreshPeriod = "336h"
+#+end_src
+
+****** Thumbnail worker
+
+Gallery Thumbgen generates thumbnails for the gallery.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/gallery-thumbgen.lua"]
+type = "file"
+url = "{{ $gallery_repo }}/scripts/gallery-thumbgen.lua"
+refreshPeriod = "336h"
+#+end_src
+
+****** Playlist overview
+
+Playlist View shows the current playlist with thumbnails.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/playlist-view.lua"]
+type = "file"
+url = "{{ $gallery_repo }}/scripts/playlist-view.lua"
+refreshPeriod = "336h"
+#+end_src
+
+**** Auto-save watch progress
+
+auto-save-state periodically saves watch progress.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/auto-save-state.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/dyphire/mpv-scripts/refs/heads/main/auto-save-state.lua"
+refreshPeriod = "336h"
+#+end_src
+
+**** Undo and redo
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/undo-redo.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/Eisa01/mpv-scripts/{{ .versions.eisa01_mpv_scripts }}/scripts/UndoRedo.lua"
+#+end_src
+
+**** Reload stuck videos
+
+Reload automatically reloads slow or stuck video streams.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/reload.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/Frestein/mpv-reload/refs/heads/master/main.lua"
+refreshPeriod = "336h"
+#+end_src
+
+**** Skip silence
+
+Skip Silence increases playback speed during silence.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/skipsilence.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/ferreum/mpv-skipsilence/refs/heads/master/skipsilence.lua"
+refreshPeriod = "336h"
+#+end_src
+
+**** Recently played menu
+
+Recent shows a menu with recently played videos.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/recent.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/Frestein/recent/refs/heads/master/recent.lua"
+refreshPeriod = "336h"
+#+end_src
+
+**** Cyrillic input
+
+russian-layout enables input using the Cyrillic layout.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/russian-layout.lua"]
+type = "file"
+url = "https://codeberg.org/Frestein/russian-layout.mpv/raw/branch/main/russian-layout.lua"
+refreshPeriod = "336h"
+#+end_src
+
+*** Services
+
+**** YouTube
+
+***** Precache playlist entries
+
+YouTube Preload precaches the next playlist entry.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/ytdl-preload.lua"]
+type = "file"
+url = "https://raw.githubusercontent.com/bitingsock/ytdl-preload/{{ .versions.bitingsock_ytdl_preload }}/ytdl_preload.lua"
+#+end_src
+
+***** Stream quality
+
+Quality Menu changes the quality of streamed video.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts/quality-menu.lua"]
+type = "file"
+url = {{ gitHubReleaseAssetURL "christoph-heinrich/mpv-quality-menu" .versions.christoph_heinrich_mpv_quality_menu "quality-menu.lua" | quote }}
+#+end_src
+
+***** Skip sponsor segments
+
+SponsorBlock skips sponsor segments.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+[".config/mpv/scripts"]
+type = "archive"
+url = "https://github.com/po5/mpv_sponsorblock/archive/master.tar.gz"
+stripComponents = 1
+refreshPeriod = "336h"
+include = [
+    "sponsorblock.lua",
+    "sponsorblock_shared/**"
+]
 #+end_src
