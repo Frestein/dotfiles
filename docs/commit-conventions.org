@@ -1,5 +1,5 @@
-#+TITLE: Commit conventions
-#+AUTHOR: Frestein
+#+title: Commit conventions
+#+author: Frestein
 
 * Purpose
 
@@ -34,14 +34,14 @@ type(scope): description
 
 * Canonical scopes
 
-| Canonical        | Deprecated aliases        | Why                                       |
-|------------------+---------------------------+-------------------------------------------|
-| =emacs=          | =doom=, =doom/*=          | The =doom= scope is no longer used        |
-| =nvim=           | =nvim/*=                  | Subsystems move into the description      |
-| =qutebrowser=    | =qb=, =qute=, =qutebrowser/*= | Full project name is unambiguous      |
-| =hyprland=       | =hypr=, =hypr/*=          | Full compositor name; =hypr= is only the config directory |
-| =chezmoi=        | =cz=, =ch=, =chezmoi/*=   | Short abbreviations were early experiments |
-| =chezmoi-watcher= | =cz/watcher=              | A separate component, not a chezmoi subsystem |
+| Canonical       | Deprecated aliases      | Why                                                     |
+|-----------------+-------------------------+---------------------------------------------------------|
+| =emacs=           | =doom=, =doom/*=            | The =doom= scope is no longer used                        |
+| =nvim=            | =nvim/*=                  | Subsystems move into the description                    |
+| =qutebrowser=     | =qb=, =qute=, =qutebrowser/*= | Full project name is unambiguous                        |
+| =hyprland=        | =hypr=, =hypr/*=            | Full compositor name; =hypr= is only the config directory |
+| =chezmoi=         | =cz=, =ch=, =chezmoi/*=       | Short abbreviations were early experiments              |
+| =chezmoi-watcher= | =cz/watcher=              | A separate component, not a chezmoi subsystem           |
 
 Every other top-level scope found in the history is canonical as written.
 
