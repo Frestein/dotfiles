@@ -55,30 +55,6 @@ url = "*/"
 run = "git"
 group = "git"
 
-# ---------------------------------------------------------------------------
-# office.yazi
-# ---------------------------------------------------------------------------
-
-[[plugin.prepend_preloaders]]
-mime = "application/openxmlformats-officedocument.*"
-run = "office"
-
-[[plugin.prepend_preloaders]]
-mime = "application/oasis.opendocument.*"
-run = "office"
-
-[[plugin.prepend_preloaders]]
-mime = "application/ms-*"
-run = "office"
-
-[[plugin.prepend_preloaders]]
-mime = "application/msword"
-run = "office"
-
-[[plugin.prepend_preloaders]]
-url = "*.docx"
-run = "office"
-
 # Replace magick, image, video with mediainfo
 [[plugin.prepend_preloaders]]
 mime = "{audio}/*"
@@ -92,26 +68,6 @@ run = "mediainfo --no-metadata"
 [[plugin.prepend_preloaders]]
 mime = "application/{subrip,postscript,illustrator,dvb.ait,vnd.adobe.illustrator,eps}"
 run = "mediainfo --no-metadata"
-
-[[plugin.prepend_previewers]]
-mime = "application/openxmlformats-officedocument.*"
-run = "office"
-
-[[plugin.prepend_previewers]]
-mime = "application/oasis.opendocument.*"
-run = "office"
-
-[[plugin.prepend_previewers]]
-mime = "application/ms-*"
-run = "office"
-
-[[plugin.prepend_previewers]]
-mime = "application/msword"
-run = "office"
-
-[[plugin.prepend_previewers]]
-url = "*.docx"
-run = "office"
 
 # ---------------------------------------------------------------------------
 # djvu-view.yazi
