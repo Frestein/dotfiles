@@ -20,12 +20,12 @@ description: Use when working with chezmoi-managed dotfiles in this repository â
 
 ## Path map
 
-| Target | Source |
-| --- | --- |
-| `~/.config/nvim/init.lua` | `home/dot_config/nvim/init.lua` |
-| `~/.config/fish/config.fish` | `home/dot_config/private_fish/config.fish` |
-| `~/.local/bin/askpass` | `home/dot_local/bin/executable_askpass` |
-| `~/.config/authinfo` | `home/dot_config/private_authinfo.tmpl` (target is sensitive) |
+| Target                       | Source                                                        |
+|------------------------------|---------------------------------------------------------------|
+| `~/.config/nvim/init.lua`    | `home/dot_config/nvim/init.lua`                               |
+| `~/.config/fish/config.fish` | `home/dot_config/private_fish/config.fish`                    |
+| `~/.local/bin/askpass`       | `home/dot_local/bin/executable_askpass`                       |
+| `~/.config/authinfo`         | `home/dot_config/private_authinfo.tmpl` (target is sensitive) |
 
 In source names, `dot_` becomes `.`, `private_` sets restrictive permissions, `executable_` sets the executable bit, and `.tmpl` is removed after rendering.
 
