@@ -1,0 +1,47 @@
+#+title: Bump pinned external versions
+#+author: Frestein
+
+[[file:../scripts/bump-pinned-versions.py][scripts/bump-pinned-versions.py]] advances the pinned versions of chezmoi
+externals from nvchecker results. It lives in the repository root and is not
+deployed as a dotfile.
+
+* What it does
+
+1. Runs =nvchecker -c .nvchecker.toml= to refresh =.nv_new.json=.
+2. Reads new package names with =nvcmp -c .nvchecker.toml -q -n=.
+3. Compares them with the pins in
+   [[file:../home/.chezmoidata/versions.toml][home/.chezmoidata/versions.toml]] and builds a list of changes.
+4. Replaces the corresponding =name = "version"= lines in place.
+5. Commits as =chore(chezmoi): externals: bump pinned versions= with one
+   =name: old -> new= line per change in the body.
+6. Runs =nvtake= for the taken names and prints a reminder to apply.
+
+Names without a pin are reported and skipped, as are names missing from the
+nvchecker results. Unchanged versions produce no commit.
+
+* Dry run
+
+With =--dry-run= the script prints pending changes and touches nothing: no file
+edits, no commit, no =nvtake=. Use it to inspect a bump before letting the
+script commit.
+
+* Requirements
+
+The =nvchecker= package provides =nvchecker=, =nvcmp= and =nvtake=.
+
+* Conventions
+
+- Keys in =versions.toml= mirror nvchecker package names exactly.
+- Externals in [[file:../home/.chezmoiexternals][.chezmoiexternals/]] are pinned to release tags rather than
+  branches, so =chezmoi apply= is reproducible.
+
+* Safety
+
+The script commits by default. Run it only with a clean working tree and review
+the dry run first.
+
+After the script finishes, refresh the externals:
+
+#+begin_src sh :eval no
+chezmoi apply
+#+end_src
