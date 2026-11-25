@@ -74,9 +74,9 @@ include = ["*/{{ $plugin }}/**"]
 
 Community plugins are pulled from their own repositories.
 
-**** Easyjump
+**** Jump to files
 
-Jump to files with one or two keystrokes.
+Easyjump jumps to files with one or two keystrokes.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/easyjump.yazi"]
@@ -88,10 +88,10 @@ refreshPeriod = "336h"
 include = ["*/plugins/easyjump.yazi/**"]
 #+end_src
 
-**** File operations
+**** Size and archives
 
-Show the size of the selection or current directory, and compress selected
-files into an archive.
+what-size shows the size of the selection or current directory; compress
+archives selected files.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/what-size.yazi"]
@@ -109,9 +109,9 @@ stripComponents = 1
 refreshPeriod = "336h"
 #+end_src
 
-**** Trash restore
+**** Restore deleted files
 
-Restore the most recently deleted files or folders.
+restore.yazi restores the most recently deleted files or folders.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/restore.yazi"]
@@ -122,9 +122,9 @@ stripComponents = 1
 refreshPeriod = "336h"
 #+end_src
 
-**** Git
+**** Git status
 
-Show Git status in the header line.
+githead shows Git status in the header line.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/githead.yazi"]
@@ -139,9 +139,9 @@ refreshPeriod = "336h"
 
 Each previewer covers one kind of document or media.
 
-***** Images
+***** Image grid
 
-Browse images as a grid using swayimg.
+thumbnail.yazi browses images as a grid using swayimg.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/thumbnail.yazi"]
@@ -152,9 +152,9 @@ stripComponents = 1
 refreshPeriod = "336h"
 #+end_src
 
-***** EPUB
+***** EPUB books
 
-Preview EPUB files.
+epub-preview previews EPUB files.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/epub-preview.yazi"]
@@ -165,9 +165,9 @@ stripComponents = 1
 refreshPeriod = "336h"
 #+end_src
 
-***** DjVu
+***** DjVu documents
 
-Preview DjVu documents.
+djvu-view previews DjVu documents.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/djvu-view.yazi"]
@@ -178,9 +178,9 @@ stripComponents = 1
 refreshPeriod = "336h"
 #+end_src
 
-***** Media files
+***** Media previews
 
-Preview media thumbnails and metadata.
+mediainfo previews media thumbnails and metadata.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/mediainfo.yazi"]
@@ -191,9 +191,9 @@ stripComponents = 1
 refreshPeriod = "336h"
 #+end_src
 
-**** Clipboard paste
+**** Clipboard to file
 
-Save clipboard contents to a new file.
+save-clipboard-to-file saves clipboard contents to a new file.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
 [".config/yazi/plugins/save-clipboard-to-file.yazi"]
@@ -206,7 +206,7 @@ refreshPeriod = "336h"
 
 *** Flavors
 
-**** Gruvbox
+**** Gruvbox flavor
 
 Gruvbox dark flavor.
 
