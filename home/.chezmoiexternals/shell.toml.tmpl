@@ -1,13 +1,8 @@
-
-# Pastebin
-
 [".local/bin/0x0"]
 type = "file"
 url = "https://raw.githubusercontent.com/Calinou/0x0/refs/heads/master/bin/0x0"
 refreshPeriod = "336h"
 executable = true
-
-# mpv
 
 {{- if (stat "/usr/share/mpv/scripts/umpv") }}
 
@@ -17,4 +12,3 @@ url = "file:///usr/share/mpv/scripts/umpv"
 executable = true
 
 {{- end }}
-

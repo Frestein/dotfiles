@@ -463,3 +463,32 @@ include = [
   "*/yt_dlp_plugins/yandex.protoc",
 ]
 #+end_src
+
+** Shell
+
+*** Pastebin
+
+0x0 uploads files to a pastebin.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/shell.toml.tmpl
+[".local/bin/0x0"]
+type = "file"
+url = "https://raw.githubusercontent.com/Calinou/0x0/refs/heads/master/bin/0x0"
+refreshPeriod = "336h"
+executable = true
+#+end_src
+
+*** MPV
+
+umpv is installed only when its MPV script is present.
+
+#+begin_src toml :tangle ../home/.chezmoiexternals/shell.toml.tmpl
+{{- if (stat "/usr/share/mpv/scripts/umpv") }}
+
+[".local/bin/umpv"]
+type = "file"
+url = "file:///usr/share/mpv/scripts/umpv"
+executable = true
+
+{{- end }}
+#+end_src
