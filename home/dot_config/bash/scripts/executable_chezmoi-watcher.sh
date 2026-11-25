@@ -44,8 +44,15 @@ declare -A last_event_time
 managed_cache=()
 
 update_managed_cache() {
-	# Fill cache with output of chezmoi managed
-	mapfile -t managed_cache < <(chezmoi managed 2>/dev/null || true)
+	# Fill cache with output of chezmoi managed, reporting failures instead of
+	# silently leaving an empty cache.
+	local output
+	if ! output=$(chezmoi managed 2>&1); then
+		echo "Chezmoi managed failed: $output" >&2
+		managed_cache=()
+		return 1
+	fi
+	mapfile -t managed_cache <<< "$output"
 }
 
 # Check if a relative path is already tracked by chezmoi
@@ -57,7 +64,32 @@ is_managed() {
 	return 1
 }
 
-update_managed_cache
+if ! update_managed_cache; then
+	echo "Initial managed cache is empty" >&2
+fi
+echo "Managed cache: ${#managed_cache[@]} entries; bookmarks=$(is_managed '.config/doom/bookmarks.eld' && echo yes || echo no)" >&2
+
+# Add or re-add a file, keeping stderr in the journal for diagnostics.
+readd_file() {
+	local rel="$1" output
+	if output=$(chezmoi re-add "$rel" 2>&1); then
+		notify-send -u normal -c "chezmoi" "Chezmoi" "File $rel updated"
+	else
+		echo "Re-add failed for $rel: $output" >&2
+		notify-send -u critical -c "chezmoi" "Chezmoi" "Error during re-add $rel"
+	fi
+}
+
+add_file() {
+	local rel="$1" output
+	if output=$(chezmoi add "$rel" 2>&1); then
+		notify-send -u normal -c "chezmoi" "Chezmoi" "File $rel added"
+		update_managed_cache || true
+	else
+		echo "Add failed for $rel: $output" >&2
+		notify-send -u critical -c "chezmoi" "Chezmoi" "Error during add $rel"
+	fi
+}
 
 # Check whether a changed file belongs to any of the watched targets.
 # For a directory target, any file inside it (recursively) matches.
@@ -148,19 +180,25 @@ inotifywait -m -r -e create -e modify --format '%w%f' "${watch_dirs[@]}" | while
 		continue
 	fi
 
-	# Update or add the file in chezmoi
-	if is_managed "$rel_path"; then
-		if chezmoi re-add "$rel_path" 2>/dev/null; then
-			notify-send -u normal -c "chezmoi" "Chezmoi" "File $rel_path updated"
-		else
-			notify-send -u critical -c "chezmoi" "Chezmoi" "Error during re-add $rel_path"
+	# Trust a fresh source-path lookup over the cached managed list. The cache is
+	# built only at startup and can go stale, which would send already-managed
+	# files (including encrypted ones) down the `chezmoi add` path.
+	src="$(chezmoi source-path "$HOME/$rel_path" 2>/dev/null)" || {
+		echo "Source-path failed for $rel_path" >&2
+		src=""
+	}
+	if [[ -n "$src" ]]; then
+		if ! is_managed "$rel_path"; then
+			echo "Cache miss: $rel_path, source-path: $src" >&2
 		fi
+		readd_file "$rel_path"
 	else
-		if chezmoi add "$rel_path" 2>/dev/null; then
-			notify-send -u normal -c "chezmoi" "Chezmoi" "File $rel_path added"
-			update_managed_cache
+		update_managed_cache || true
+		if is_managed "$rel_path"; then
+			echo "Source-path was empty for managed file $rel_path" >&2
+			readd_file "$rel_path"
 		else
-			notify-send -u critical -c "chezmoi" "Chezmoi" "Error during add $rel_path"
+			add_file "$rel_path"
 		fi
 	fi
 done
