@@ -9,7 +9,9 @@ Chezmoi externals pull configuration from remote archives and refresh it either
 with =refreshPeriod= or through versions tracked by nvchecker. Go template
 directives are expanded by chezmoi at apply time, not by Org.
 
-Tangle this file with =org-babel-tangle= after editing a block.
+The =.toml.tmpl= files are generated: edit this Org file and tangle with
+=org-babel-tangle= instead of editing them directly. Commit the Org source
+together with the regenerated files.
 
 ** Yazi
 
@@ -44,6 +46,8 @@ keeps all their entries in one place:
   automatically, and open the file on submit.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 {{- $yazi_plugins_base := "https://github.com/yazi-rs/plugins/archive/master.tar.gz" }}
 {{- $yazi_plugins_list := list
     "types.yazi"
@@ -229,6 +233,8 @@ refreshPeriod = "336h"
 UOSC is a feature-rich minimalist UI.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 {{- $uosc_url := gitHubReleaseAssetURL "tomasklaen/uosc" .versions.tomasklaen_uosc "uosc.zip" }}
 
 [".config/mpv/fonts"]
@@ -419,6 +425,8 @@ Provider for YouTube PO tokens. See the
 [[https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide][PO Token Guide]].
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yt-dlp.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 {{- $bgutil_tag := .versions.bgutil_ytdlp_pot_provider }}
 {{- $bgutil_url := printf "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/refs/tags/%s.tar.gz" $bgutil_tag }}
 
@@ -471,6 +479,8 @@ include = [
 0x0 uploads files to a pastebin.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/shell.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 [".local/bin/0x0"]
 type = "file"
 url = "https://raw.githubusercontent.com/Calinou/0x0/refs/heads/master/bin/0x0"
@@ -500,6 +510,8 @@ executable = true
 Cascadefox with its Gruvbox integration.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/firefox.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 [".config/mozilla/firefox/personal.default/chrome/includes"]
 type = "archive"
 url = "https://github.com/cascadefox/cascade/archive/main.tar.gz"
@@ -516,6 +528,8 @@ include = ["*/chrome/includes/**", "*/integrations/gruvbox/**"]
 Extract function from oh-my-fish.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/fish.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 [".config/fish/functions/extract.fish"]
 type = "file"
 url = "https://raw.githubusercontent.com/oh-my-fish/plugin-extract/refs/heads/master/functions/extract.fish"
@@ -539,6 +553,8 @@ Both themes are pinned to the version tracked by nvchecker.
 *** Light Green
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/kvantum.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 [".config/Kvantum/Gruvbox_Light_Green"]
 type = "archive"
 url = {{ gitHubReleaseAssetURL "sachnr/gruvbox-kvantum-themes" .versions.gruvbox_kvantum_themes "Gruvbox_Light_Green.tar.gz" | quote }}
@@ -561,6 +577,8 @@ stripComponents = 3
 Binary pinned to the version tracked by nvchecker.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/telegram.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 [".local/bin/TgWsProxy"]
 type = "file"
 url = {{ gitHubReleaseAssetURL "Flowseal/tg-ws-proxy" .versions.tg_ws_proxy "TgWsProxy_linux_amd64" | quote }}
@@ -575,6 +593,8 @@ executable = true
 Userscripts installed into the greasemonkey directory.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/qutebrowser.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 [".config/qutebrowser/greasemonkey/adguard-extra.user.js"]
 type = "file"
 url = "https://userscripts.adtidy.org/release/adguard-extra/1.0/adguard-extra.user.js"
@@ -705,6 +725,8 @@ source can be added as a separate block under =*** Opencode=. All entries track
 *** Opencode
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/opencode.toml.tmpl
+# Generated from docs/externals.org - do not edit.
+
 {{- $emacs_skills_upstream_base := "https://raw.githubusercontent.com/xenodium/emacs-skills/refs/heads/main/skills/" }}
 {{- $emacs_skills_fork_base := "https://raw.githubusercontent.com/Frestein/emacs-skills/refs/heads/main/skills/" }}
 {{- $emacs_skills_upstream_files := list

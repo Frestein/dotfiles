@@ -77,6 +77,11 @@ chezmoi execute-template -f <source> > /tmp/opencode/rendered
 
 - `.chezmoiexternals/*.toml.tmpl` defines git repositories and archives pulled into the target.
 - The user refreshes them with `chezmoi apply`; do not run that yourself.
+- `docs/externals.org` is the literate source for these files. Edit the Org
+  document, never the generated `.toml.tmpl` files: `org-babel-tangle`
+  overwrites them.
+- After changing a block, tangle, then check `git diff` and commit the Org
+  source together with all regenerated `.toml.tmpl` files.
 
 ## Scripts
 
