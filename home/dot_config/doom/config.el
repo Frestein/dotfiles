@@ -1186,7 +1186,53 @@ making an abbreviation to a function."
   (after! magit
     ;; HACK: Override magit-log defaults
     (put 'magit-log-mode 'magit-log-default-arguments
-         '("--graph" "-n256" "--decorate" "--color" "--show-signature"))))
+         '("--graph" "-n256" "--decorate" "--color" "--show-signature")))
+
+  (defvar fr/yazi-magit--frame nil
+    "Frame used by the Yazi-launched Magit client.")
+
+  (defun fr/yazi-magit--frame-p (frame)
+    "Return non-nil when FRAME belongs to the Yazi Magit client."
+    (or (eq frame fr/yazi-magit--frame)
+        (and (frame-live-p frame)
+             (frame-parameter frame 'yazi-magit))))
+
+  (defun fr/yazi-magit--no-associate-a (fn frame &optional new-frame-p)
+    "Skip workspace association for Yazi Magit frames."
+    (unless (fr/yazi-magit--frame-p frame)
+      (funcall fn frame new-frame-p)))
+
+  (defun fr/yazi-magit--skip-persp-delete-a (fn frame)
+    "Skip persp frame hook for Yazi Magit frames."
+    (unless (fr/yazi-magit--frame-p frame)
+      (funcall fn frame)))
+
+  (defun fr/yazi-magit--skip-workspaces-delete-a (fn &optional frame)
+    "Skip workspace deletion hook for Yazi Magit frames."
+    (unless (fr/yazi-magit--frame-p (or frame (selected-frame)))
+      (funcall fn frame)))
+
+  (advice-add #'+workspaces-associate-frame-fn :around #'fr/yazi-magit--no-associate-a)
+  (advice-add #'persp-delete-frame :around #'fr/yazi-magit--skip-persp-delete-a)
+  (advice-add #'+workspaces-delete-associated-workspace-h :around #'fr/yazi-magit--skip-workspaces-delete-a)
+
+  (defun fr/yazi-magit--bury-a (fn &optional kill-buffer)
+    "Close the Yazi Magit frame when quitting its status buffer."
+    (if (and (fr/yazi-magit--frame-p (selected-frame))
+             (eq major-mode 'magit-status-mode))
+        (progn
+          (when kill-buffer (kill-buffer))
+          (delete-frame))
+      (funcall fn kill-buffer)))
+
+  (advice-add #'+magit/quit :around #'fr/yazi-magit--bury-a)
+  (advice-add #'magit-mode-bury-buffer :around #'fr/yazi-magit--bury-a)
+
+  (defun fr/yazi-magit (dir)
+    "Open Magit for DIR in a TTY frame closed with `q'."
+    (interactive "D")
+    (setq fr/yazi-magit--frame (selected-frame))
+    (magit-status dir)))
 
 (when (modulep! :tools magit)
   (after! magit

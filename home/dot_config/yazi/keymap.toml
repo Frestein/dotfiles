@@ -81,6 +81,7 @@ prepend_keymap = [
   ## Git
   { on = ["\\", "g", "r"], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the root (git)" },
   { on = ["\\", "g", "v"], run = "plugin vcs-files", desc = "Show Git file changes" },
+  { on = ["\\", "g", "g"], run = "plugin magit", desc = "Magit" },
   ## Chezmoi
   { on = ["C", "a"], run = "shell -- chezmoi add %s", desc = "Add to chezmoi" },
   { on = ["C", "A"], run = "shell -- chezmoi add --encrypt %s", desc = "Add to chezmoi (encrypted)" },
