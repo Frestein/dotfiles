@@ -26,7 +26,7 @@ export FZF_CTRL_T_OPTS="
     --preview 'fzf-preview.sh {}'
 "
 export FZF_CTRL_R_OPTS="
-    --bind 'alt-y:execute-silent(echo -n {2..} | fish_clipboard_copy)+abort'
+    --bind 'alt-y:execute-silent(echo -n {2..} | wl-copy)+abort'
     --list-border='sharp'
     --border-label='Command History'
     --border-label-pos=-4
