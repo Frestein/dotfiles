@@ -16,55 +16,6 @@ function fzf_bind_multiply() {
 preview_down=$(fzf_bind_multiply 10 'preview-down')
 preview_up=$(fzf_bind_multiply 10 'preview-up')
 
-walker_skip="
-    GDrive
-    Music
-    node_modules
-    target
-    .cache
-    .icons
-    .local
-    .git
-    .wine
-    .cargo
-    .go
-    .rye
-    .steam
-    .cert
-    .m2
-    .zen
-    .java
-    .dotnet
-    .aspnet
-    .gemini
-    .simplex
-    .telega
-    .nuget
-    .vcpkg
-    .android
-    .TranslationPlugin
-    .mono
-    .mozilla
-    .npm
-    .ollama
-    .pki
-    .renpy
-    .skiko
-    .spotdl
-    .terminfo
-    .lgp
-    .gradle
-    .fleet
-    .gnupg
-    .cups
-    .javacpp
-    .lyrics
-    .purple
-    .stfolder
-"
-
-walker_skip=$(echo "$walker_skip" | tr '\n' ',' | sed 's/,$//')
-
 export FZF_CTRL_T_OPTS="
     --bind 'alt-p:toggle-preview'
     --list-border='sharp'
@@ -72,7 +23,6 @@ export FZF_CTRL_T_OPTS="
     --border-label-pos=-4
     --header 'Preview <M-p>'
     --color header:italic
-    --walker-skip $walker_skip
     --preview 'fzf-preview.sh {}'
 "
 export FZF_CTRL_R_OPTS="
@@ -92,7 +42,8 @@ export FZF_ALT_C_OPTS="
     --border-label-pos=-4
     --header 'Preview <M-p>  Multi <M-m>'
     --color header:italic
-    --walker-skip $walker_skip
+    --walker=dir,follow
+    --walker-skip GDrive,node_modules
     --preview 'eza -T --color=always --icons {}'
 "
 
@@ -136,4 +87,4 @@ export FZF_DEFAULT_OPTS="
     '
 "
 
-unset preview_down preview_up fzf_bind_multiply walker_skip
+unset preview_down preview_up fzf_bind_multiply
