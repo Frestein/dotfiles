@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "gruvbox",
+    "mode": "system"
+  },
+  "session": {
+    "scrollbar": false,
+    "thinking": "hide",
+    "permissions": "prompt",
+    "image_preview": true
+  },
+  "tabs": {
+    "scope": "cwd",
+    "mode": "auto"
+  },
+  "animations": true,
+  "prompt": {
+    "image_preview": true,
+    "paste": "compact"
+  },
+  "scroll": {
+    "speed": 3
+  }
+}

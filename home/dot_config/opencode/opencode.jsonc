@@ -38,8 +38,6 @@
     { "action": "tool.use", "resource": "edit:/home/frestein/.config/msmtp/config", "effect": "deny" },
     { "action": "tool.use", "resource": "read:/home/frestein/.config/opencode/service.json", "effect": "deny" },
     { "action": "tool.use", "resource": "edit:/home/frestein/.config/opencode/service.json", "effect": "deny" },
-    { "action": "tool.use", "resource": "read:/home/frestein/.config/opencode/cli.json", "effect": "deny" },
-    { "action": "tool.use", "resource": "edit:/home/frestein/.config/opencode/cli.json", "effect": "deny" },
     { "action": "tool.use", "resource": "read:/home/frestein/.config/chromium/*", "effect": "deny" },
     { "action": "tool.use", "resource": "edit:/home/frestein/.config/chromium/*", "effect": "deny" },
     { "action": "tool.use", "resource": "read:/home/frestein/.config/google-chrome/*", "effect": "deny" },
