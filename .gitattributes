@@ -1,3 +1,7 @@
-# Track Org files, instead of generated Elisp files, for literate configuration.
+# Track Org sources, not their tangled outputs, for literate configuration.
 **/doom/config.org linguist-detectable=true
-**/doom/config.el  linguist-generated
+**/doom/config.el linguist-generated=true
+docs/commit-conventions.org linguist-detectable=true
+docs/externals.org linguist-detectable=true
+prek.toml linguist-generated=true
+home/.chezmoiexternals/*.toml.tmpl linguist-generated=true
