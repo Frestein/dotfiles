@@ -18,8 +18,8 @@ local function entry()
 	end
 
 	local escaped = dir:gsub("\\", "\\\\"):gsub('"', '\\"')
-	local elisp = string.format('(fr/yazi-magit "%s")', escaped)
-	local params = ya.quote("((yazi-magit . t))")
+	local elisp = string.format('(fr/magit-dedicated "%s")', escaped)
+	local params = ya.quote("((magit-dedicated . t))")
 	local cmd = "emacsclient -nw --alternate-editor= --frame-parameters=" .. params .. " -e " .. ya.quote(elisp)
 	ya.emit("shell", { cmd, block = true })
 end
