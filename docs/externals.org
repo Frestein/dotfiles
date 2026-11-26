@@ -11,7 +11,8 @@ directives are expanded by chezmoi at apply time, not by Org.
 
 The =.toml.tmpl= files are generated: edit this Org file and tangle with
 =org-babel-tangle= instead of editing them directly. Commit the Org source
-together with the regenerated files.
+together with the regenerated files. Their =linguist-generated= and this
+file's =linguist-detectable= attributes are defined in =.gitattributes=.
 
 ** Yazi
 

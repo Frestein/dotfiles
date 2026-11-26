@@ -38,6 +38,12 @@ State the file format explicitly in the name: `config.sh`, `notes.md`,
   `config`, `zathurarc`, `npmrc`, `pythonrc`, `tridactylrc`, `env`, `README`,
   `LICENSE`, and similar.
 
+## Generated files
+
+Tangled outputs are marked `linguist-generated` in `.gitattributes`, and their
+Org sources are marked `linguist-detectable`. When adding a literate source,
+add both attributes so forges track the Org file instead of the output.
+
 ## Locally protected state files
 
 The following sources are updated by `chezmoi-watcher.service` and marked

@@ -296,4 +296,6 @@ into =prek.toml= in the repository root. Regenerate it whenever either changes.
 The =commit-msg= hooks are installed with =prek install=; update remote hook
 versions with =prek update=. The local hook runs
 =scripts/check-commit-body.py=, which skips the subject and exempts URL-only
-lines from the width limit.
+lines from the width limit. This Org file is =linguist-detectable= and
+=prek.toml= is =linguist-generated=; keep both attributes when adding literate
+sources.
