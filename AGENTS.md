@@ -44,6 +44,10 @@ Tangled outputs are marked `linguist-generated` in `.gitattributes`, and their
 Org sources are marked `linguist-detectable`. When adding a literate source,
 add both attributes so forges track the Org file instead of the output.
 
+## Hyprland config
+
+Project-specific details are in `docs/hyprland.org`.
+
 ## Locally protected state files
 
 The following sources are updated by `chezmoi-watcher.service` and marked

@@ -1,0 +1,21 @@
+#+title: Hyprland configuration
+#+author: Frestein
+#+startup: content
+
+Generic Hyprland API, keybind rules, submaps, and hyprctl usage live in the
+global =hyprland= skill.
+
+* Structure
+
+- ~hyprland.lua~ - Basically an assembly file; open to suggestions on what else belongs here.
+- ~binds.lua~ - All keybinds and submaps.
+- ~rules.lua~ - Window, layer, and workspace rules.
+- ~autostart.lua~ - Startup hook.
+- ~lib/~ - Reusable logic.
+- ~scripts/~ - Scripts used only by Hyprland.
+- ~themes/~ - Color schemes.
+- ~wallpapers/hyprlock/~ - Lock screen wallpaper.
+- ~hypridle.conf~ - Configuration for hypridle.
+- ~hyprlock.conf~ - Configuration for hyprlock.
+- ~hyprpaper.conf~ - Configuration for hyprpaper.
+- ~hyprtoolkit.conf~ - Configuration for hyprtoolkit.
