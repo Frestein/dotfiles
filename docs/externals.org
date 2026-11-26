@@ -47,7 +47,7 @@ keeps all their entries in one place:
   automatically, and open the file on submit.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yazi.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 {{- $yazi_plugins_base := "https://github.com/yazi-rs/plugins/archive/master.tar.gz" }}
 {{- $yazi_plugins_list := list
@@ -234,7 +234,7 @@ refreshPeriod = "336h"
 UOSC is a feature-rich minimalist UI.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 {{- $uosc_url := gitHubReleaseAssetURL "tomasklaen/uosc" .versions.tomasklaen_uosc "uosc.zip" }}
 
@@ -428,7 +428,7 @@ Provider for YouTube PO tokens. See the
 [[https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide][PO Token Guide]].
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/yt-dlp.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 {{- $bgutil_tag := .versions.bgutil_ytdlp_pot_provider }}
 {{- $bgutil_url := printf "https://github.com/Brainicism/bgutil-ytdlp-pot-provider/archive/refs/tags/%s.tar.gz" $bgutil_tag }}
@@ -482,7 +482,7 @@ include = [
 0x0 uploads files to a pastebin.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/shell.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 [".local/bin/0x0"]
 type = "file"
@@ -513,7 +513,7 @@ executable = true
 Cascadefox with its Gruvbox integration.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/firefox.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 [".config/mozilla/firefox/personal.default/chrome/includes"]
 type = "archive"
@@ -531,7 +531,7 @@ include = ["*/chrome/includes/**", "*/integrations/gruvbox/**"]
 Extract function from oh-my-fish.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/fish.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 [".config/fish/functions/extract.fish"]
 type = "file"
@@ -558,7 +558,7 @@ Both themes are pinned to the version tracked by nvchecker.
 Light Gruvbox variant with green accents.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/kvantum.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 [".config/Kvantum/Gruvbox_Light_Green"]
 type = "archive"
@@ -584,7 +584,7 @@ stripComponents = 3
 Binary pinned to the version tracked by nvchecker.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/telegram.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 [".local/bin/TgWsProxy"]
 type = "file"
@@ -600,7 +600,7 @@ executable = true
 Userscripts installed into the greasemonkey directory.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/qutebrowser.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 [".config/qutebrowser/greasemonkey/adguard-extra.user.js"]
 type = "file"
@@ -729,7 +729,7 @@ All Emacs skills are pulled from Frestein's own =emacs-skills= repository;
 entries track =refs/heads/main=.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/opencode.toml.tmpl
-# Generated from docs/externals.org - do not edit.
+# Generated from docs/externals.org - do not edit directly.
 
 {{- $emacs_skills_base := "https://raw.githubusercontent.com/Frestein/emacs-skills/refs/heads/main/skills/" }}
 {{- $emacs_skills_files := list

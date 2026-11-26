@@ -27,10 +27,30 @@ This is supporting material for the `chezmoi` skill. Read it before renaming fil
 ## Templates
 
 - Chezmoi uses Go `text/template` with sprig functions.
-- Common values: `.chezmoi.os`, `.chezmoi.hostname`, `.chezmoi.arch`, `.chezmoi.sourceDir`, `.email`, `.github_user`.
+- Common values: `.chezmoi.os`, `.chezmoi.hostname`, `.chezmoi.arch`, `.chezmoi.sourceDir`, `.chezmoi.sourceFile`, `.email`, `.github_user`.
 - Platform branches: `{{- if eq .chezmoi.os "linux" }} ... {{ end }}`.
 - To emit literal braces for a target format that also uses `{{ }}`: `{{ "{{" }}value{{ "}}" }}`.
 - A source template may call secret backends (`gopass`, `secret`). Its rendered target must never be read.
+
+## Generated file banners
+
+A file rendered from a `.tmpl` source begins with a banner naming that source.
+Use `.chezmoi.sourceFile` so the path stays correct after a rename:
+
+```gotemplate
+# Generated from {{ .chezmoi.sourceFile }} - do not edit directly.
+```
+
+Place the banner on the first line, after a shebang if the target has one, and follow it with a blank line.
+
+A file tangled from a literate Org source names the Org document literally:
+`.chezmoi.sourceFile` would point at the generated `.toml.tmpl` instead.
+
+```gotemplate
+# Generated from docs/externals.org - do not edit directly.
+```
+
+Adapt the comment syntax to the target format.
 
 ## Data files
 

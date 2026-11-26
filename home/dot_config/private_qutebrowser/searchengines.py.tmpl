@@ -4,7 +4,7 @@
 {{- $defaultURL = .url -}}
 {{- end -}}
 {{- end -}}
-# Generated from .chezmoidata/searchengines.yaml - do not edit directly.
+# Generated from {{ .chezmoi.sourceFile }} - do not edit directly.
 
 c.url.default_page = "{{ template "search-url.tmpl" (dict "url" .searchengines.start_page "instances" .searchengines.instances "placeholder" "{}") }}"
 c.url.start_pages = ["{{ template "search-url.tmpl" (dict "url" .searchengines.start_page "instances" .searchengines.instances "placeholder" "{}") }}"]
