@@ -58,4 +58,10 @@ commit, not only draft its message.
 ## History
 
 Do not rewrite published history. Amending your own most recent,
-unpublished commit is acceptable.
+unpublished commit is acceptable. Check publication status immediately
+before amending with `git status -sb` or `git log <upstream>..HEAD`: it may
+have changed since the last check.
+
+If an amendment of an already published commit is genuinely required, ask
+the user first and proceed only after explicit confirmation. Never
+force-push without a separate explicit request.
