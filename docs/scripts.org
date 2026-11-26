@@ -1,0 +1,25 @@
+#+title: Script naming
+#+author: Frestein (frestein@tuta.io)
+
+* Scripts
+
+A script's name depends on how it is invoked.
+
+** PATH executables
+
+Executables in =~/.local/bin= have no extension: they are called by bare name
+through =PATH=, and the shebang selects the interpreter. Examples: =askpass=,
+=sessionctl=, =check-disk-usage=. An extension would have to be typed on every
+invocation.
+
+** Explicitly invoked helpers
+
+Helpers in =scripts/= keep their format suffix: =bump-pinned-versions.py= and
+=check-commit-body.py= are run as =python3 scripts/...= or =./scripts/...=.
+When a script is invoked by path or by an explicit interpreter, the extension
+tells both the shell and the reader what to expect.
+
+* Rule
+
+If a script is invoked through =PATH=, an extension only gets in the way. If it
+is invoked by path or interpreter, state the format explicitly.

@@ -26,6 +26,18 @@ Never edit a target directly.
 - Templates must be human-readable: use block form with trim markers
   (`{{- range ... }}` / `{{- end }}`), not an action and a value on one line.
 
+## File naming
+
+State the file format explicitly in the name: `config.sh`, `notes.md`,
+`settings.toml`. Exceptions:
+
+- Executables invoked by bare name via `PATH`, e.g. `~/.local/bin/askpass`
+  or `~/.local/bin/sessionctl`: no extension, the shebang selects the
+  interpreter.
+- Conventional Unix dotfiles and config names: `.profile`, `.bashrc`,
+  `config`, `zathurarc`, `npmrc`, `pythonrc`, `tridactylrc`, `env`, `README`,
+  `LICENSE`, and similar.
+
 ## Locally protected state files
 
 The following sources are updated by `chezmoi-watcher.service` and marked
