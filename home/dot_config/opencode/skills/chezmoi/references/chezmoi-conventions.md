@@ -32,6 +32,47 @@ This is supporting material for the `chezmoi` skill. Read it before renaming fil
 - To emit literal braces for a target format that also uses `{{ }}`: `{{ "{{" }}value{{ "}}" }}`.
 - A source template may call secret backends (`gopass`, `secret`). Its rendered target must never be read.
 
+## Data files
+
+Files in `.chezmoidata/` are merged into the root template data, not nested
+under a key derived from the filename. To create a namespace, wrap the
+contents in a top-level key:
+
+```yaml
+# .chezmoidata/fzf.yaml
+fzf:
+  colors:
+    - "fg:#ebdbb2"
+  common:
+    - "--border='sharp'"
+```
+
+Use `.fzf.colors` in templates. Do not expect `.fzf` to exist just because
+the file is named `fzf.yaml`.
+
+## Template style
+
+Prefer readable block form over putting an action and a value on one line:
+
+```gotemplate
+{{- range .fzf.common }}
+    {{ . }}
+{{- end }}
+```
+
+Avoid `{{ range .fzf.common }}    {{ . }}` followed by `{{ end }}`: the trim
+markers keep the rendered output identical while making the source easier
+to read.
+
+Before changing a template, save its rendered output; after the change,
+render it again and diff byte-for-byte. Only do this for templates that do
+not call `gopass` or other secret backends, and keep rendered output in
+`/tmp/opencode`, never in the conversation:
+
+```sh
+chezmoi execute-template -f <source> > /tmp/opencode/rendered
+```
+
 ## Externals
 
 - `.chezmoiexternals/*.toml.tmpl` defines git repositories and archives pulled into the target.
@@ -52,4 +93,4 @@ This is supporting material for the `chezmoi` skill. Read it before renaming fil
 
 - `[diff] pager = "delta"` and `[merge] command = "nvim"` in `.chezmoi.toml.tmpl` can hang without a TTY — one more reason not to run chezmoi diff/status/apply.
 - The target of `encrypted_quickmarks.asc` is `~/.config/qutebrowser/quickmarks`, not a file named `encrypted_*`.
-- `chezmoi source-path` and `chezmoi managed` are metadata-only and safe; commands that render templates are not.
+- `chezmoi source-path` and `chezmoi managed` are metadata-only and safe. Rendering templates is only acceptable for templates that call no secret backends, as described in "Template style"; never render config or encrypted sources.

@@ -1,6 +1,6 @@
 ---
 name: chezmoi
-description: Use when working with chezmoi-managed dotfiles in this repository — editing ~/.config files, adding or renaming dotfiles, changing templates, externals or scripts, or whenever the user mentions chezmoi or dotfiles. Never run chezmoi apply, status, diff, init, update, add --encrypt, or re-add --re-encrypt.
+description: Use when working with chezmoi-managed dotfiles in this repository — editing ~/.config files, adding or renaming dotfiles, changing templates, externals or scripts, or whenever the user mentions chezmoi or dotfiles. Never run chezmoi apply, status, diff, init, update, add --encrypt, or re-add.
 ---
 
 # Chezmoi source-state workflow
@@ -8,7 +8,7 @@ description: Use when working with chezmoi-managed dotfiles in this repository �
 ## Iron rules
 
 1. The chezmoi source tree is the single source of truth. Edit source files; never edit deployed targets.
-2. Never run `chezmoi apply`, `chezmoi status`, `chezmoi diff`, `chezmoi init`, `chezmoi update`, `chezmoi add --encrypt`, or `chezmoi re-add --re-encrypt`. These commands render, decrypt, or re-encrypt secrets through GPG, re-render the config, or apply the source state; a non-interactive agent cannot answer pinentry, and secret values could leak into the conversation. The user performs these operations personally.
+2. Never run `chezmoi apply`, `chezmoi status`, `chezmoi diff`, `chezmoi init`, `chezmoi update`, `chezmoi add --encrypt`, or `chezmoi re-add` (including `--re-encrypt`). These commands render, decrypt, or re-encrypt secrets through GPG, copy deployed files back into the source state, re-render the config, or apply the source state; a non-interactive agent cannot answer pinentry, and secret values could leak into the conversation. The user performs these operations personally.
 3. Never read target files containing secrets or local state:
    - decrypted results of `encrypted_*` sources (`~/.config/qutebrowser/quickmarks`, `~/.config/qutebrowser/web_exclude.txt`, `~/.config/YouTube Music/config.json`);
    - rendered results of templates calling `gopass` or other secret backends (`~/.config/authinfo`, `~/.config/nvchecker/keyfile.toml`, `~/.config/msmtp/config`);

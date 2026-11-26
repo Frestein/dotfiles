@@ -1,7 +1,30 @@
-Always load the `chezmoi` skill before reading or editing any dotfile in this repository.
-Never run `chezmoi apply`, `chezmoi status`, `chezmoi diff`, `chezmoi init`, `chezmoi update`, `chezmoi add --encrypt`, or `chezmoi re-add --re-encrypt`, and never read target files that the skill marks as sensitive.
-Always load the `commit` skill before drafting a commit message.
-Never read, edit, glob or grep files outside the repo root and the allowlist in `~/.config/opencode/opencode.jsonc`. Never read target files marked sensitive by the `chezmoi` skill (encrypted-source results, gopass-rendered configs, credentials, browser profiles, token stores, anything excluded by `.chezmoiignore`) — read the source copy instead.
+Chezmoi conventions are documented in
+`home/dot_config/opencode/skills/chezmoi/references/chezmoi-conventions.md`;
+read them before working with dotfiles. Commit conventions live in
+`docs/commit-conventions.org`; read them before drafting a commit message.
+
+Never run `chezmoi apply`, `chezmoi status`, `chezmoi diff`, `chezmoi init`,
+`chezmoi update`, `chezmoi add --encrypt`, or `chezmoi re-add` (including
+`--re-encrypt`). The latter copies deployed files back into the source state
+and can involve encrypted files.
+Never read, edit, glob or grep files outside the repository root. Never read
+deployed files marked as sensitive by the chezmoi conventions (encrypted-source
+results, gopass-rendered configs, credentials, browser profiles, token stores,
+anything excluded by `.chezmoiignore`) — read the source copy instead.
+
+## Chezmoi source state
+
+All changes are made in the source state only, never in deployed targets
+under `$HOME`. Applying the source state is the user's responsibility.
+Never edit a target directly.
+
+## Chezmoi data and templates
+
+- Contents of `.chezmoidata/*.yaml` and `.toml` are merged into the root
+  template data, not nested under a key derived from the filename. Wrap
+  values in a top-level key (for example `fzf:`) to namespace them.
+- Templates must be human-readable: use block form with trim markers
+  (`{{- range ... }}` / `{{- end }}`), not an action and a value on one line.
 
 ## Locally protected state files
 

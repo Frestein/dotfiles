@@ -7,7 +7,7 @@
     { "action": "tool.use", "resource": "shell:*chezmoi init*", "effect": "deny" },
     { "action": "tool.use", "resource": "shell:*chezmoi update*", "effect": "deny" },
     { "action": "tool.use", "resource": "shell:*chezmoi add*--encrypt*", "effect": "deny" },
-    { "action": "tool.use", "resource": "shell:*chezmoi re-add*--re-encrypt*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*chezmoi re-add*", "effect": "deny" },
 
     // Close everything outside the Location and the worktree.
     { "action": "tool.use", "resource": "external_directory:*", "effect": "deny" },
