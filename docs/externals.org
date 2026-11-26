@@ -327,6 +327,8 @@ refreshPeriod = "336h"
 
 **** Undo and redo
 
+UndoRedo from Eisa01/mpv-scripts adds undo and redo support.
+
 #+begin_src toml :tangle ../home/.chezmoiexternals/mpv.toml.tmpl
 [".config/mpv/scripts/undo-redo.lua"]
 type = "file"
@@ -552,6 +554,8 @@ Both themes are pinned to the version tracked by nvchecker.
 
 *** Light Green
 
+Light Gruvbox variant with green accents.
+
 #+begin_src toml :tangle ../home/.chezmoiexternals/kvantum.toml.tmpl
 # Generated from docs/externals.org - do not edit.
 
@@ -562,6 +566,8 @@ stripComponents = 3
 #+end_src
 
 *** Dark Green
+
+Dark Gruvbox variant with green accents.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/kvantum.toml.tmpl
 [".config/Kvantum/Gruvbox-Dark-Green"]
@@ -716,20 +722,16 @@ executable = true
 
 ** Skills
 
-OpenCode skills are grouped by source, and this section currently covers
-=emacs-skills=. Unchanged files come from =xenodium/emacs-skills=; the three
-locally patched files come from the =Frestein/emacs-skills= fork. Another skill
-source can be added as a separate block under =*** Opencode=. All entries track
-=refs/heads/main=.
-
 *** Opencode
+
+All Emacs skills are pulled from Frestein's own =emacs-skills= repository;
+entries track =refs/heads/main=.
 
 #+begin_src toml :tangle ../home/.chezmoiexternals/opencode.toml.tmpl
 # Generated from docs/externals.org - do not edit.
 
-{{- $emacs_skills_upstream_base := "https://raw.githubusercontent.com/xenodium/emacs-skills/refs/heads/main/skills/" }}
-{{- $emacs_skills_fork_base := "https://raw.githubusercontent.com/Frestein/emacs-skills/refs/heads/main/skills/" }}
-{{- $emacs_skills_upstream_files := list
+{{- $emacs_skills_base := "https://raw.githubusercontent.com/Frestein/emacs-skills/refs/heads/main/skills/" }}
+{{- $emacs_skills_files := list
     "d2/SKILL.md"
     "describe/SKILL.md"
     "describe/agent-skill-describe.el"
@@ -737,33 +739,24 @@ source can be added as a separate block under =*** Opencode=. All entries track
     "dired/agent-skill-dired.el"
     "emacsclient/SKILL.md"
     "file-links/SKILL.md"
+    "github-activity/SKILL.md"
+    "github-activity/analyze.py"
     "gnuplot/SKILL.md"
     "highlight/SKILL.md"
     "highlight/agent-skill-highlight.el"
     "matplotlib/SKILL.md"
+    "mermaid/SKILL.md"
     "open/SKILL.md"
     "open/agent-skill-open.el"
     "plantuml/SKILL.md"
     "select/SKILL.md"
     "select/agent-skill-select.el"
 }}
-{{- $emacs_skills_fork_files := list
-    "github-activity/SKILL.md"
-    "github-activity/analyze.py"
-    "mermaid/SKILL.md"
-}}
 
-{{- range $skill_file := $emacs_skills_upstream_files }}
+{{- range $skill_file := $emacs_skills_files }}
 
 [".config/opencode/skills/{{ $skill_file }}"]
 type = "file"
-url = {{ printf "%s%s" $emacs_skills_upstream_base $skill_file | quote }}
-{{- end }}
-
-{{- range $skill_file := $emacs_skills_fork_files }}
-
-[".config/opencode/skills/{{ $skill_file }}"]
-type = "file"
-url = {{ printf "%s%s" $emacs_skills_fork_base $skill_file | quote }}
+url = {{ printf "%s%s" $emacs_skills_base $skill_file | quote }}
 {{- end }}
 #+end_src
