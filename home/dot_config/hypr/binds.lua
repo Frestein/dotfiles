@@ -42,6 +42,12 @@ local function emacs_cmd(expr, extra)
 	return cmd
 end
 
+---@param expr string  # Emacs Lisp expression (without outer quotes)
+---@return string      # emacsclient command that reuses the current Emacs frame
+local function emacs_eval(expr)
+	return 'emacsclient -e "' .. expr .. '"'
+end
+
 -- Close active special workspace if any; returns true if closed
 local function close_special()
 	local sp = hl.get_active_special_workspace()
@@ -143,10 +149,30 @@ hl.define_submap("editor", "reset", function()
 	hl.bind("RETURN", hl.dsp.exec_cmd(emacs_scratch))
 	hl.bind("F", hl.dsp.exec_cmd(emacs_dired))
 	hl.bind("S", hl.dsp.exec_cmd(emacs_ghostel))
-	hl.bind("P", hl.dsp.exec_cmd(emacs_pass))
+	-- Pomm
+	hl.bind("P", hl.dsp.submap "pomodoro")
+	hl.bind("SHIFT + P", hl.dsp.submap "third-time")
+	hl.bind("G", hl.dsp.exec_cmd(emacs_pass))
 	hl.bind("M", hl.dsp.exec_cmd(emacs_mu4e))
 	hl.bind("R", hl.dsp.exec_cmd(scu "reload emacs.service"))
 	hl.bind("SHIFT + R", hl.dsp.exec_cmd(scu "restart emacs.service"))
+
+	hl.define_submap("pomodoro", "reset", function()
+		hl.bind("S", hl.dsp.exec_cmd(emacs_eval "(pomm-start)"))
+		hl.bind("SHIFT + S", hl.dsp.exec_cmd(emacs_eval "(pomm-stop)"))
+		hl.bind("P", hl.dsp.exec_cmd(emacs_eval "(pomm-pause)"))
+		hl.bind("O", hl.dsp.exec_cmd(emacs_cmd "(pomm)"))
+		hl.bind("catchall", hl.dsp.submap "reset")
+	end)
+
+	hl.define_submap("third-time", "reset", function()
+		hl.bind("S", hl.dsp.exec_cmd(emacs_eval "(pomm-third-time-start)"))
+		hl.bind("SHIFT + S", hl.dsp.exec_cmd(emacs_cmd "(pomm-third-time-stop)"))
+		hl.bind("T", hl.dsp.exec_cmd(emacs_eval "(pomm-third-time-switch)"))
+		hl.bind("O", hl.dsp.exec_cmd(emacs_cmd "(pomm-third-time)"))
+		hl.bind("catchall", hl.dsp.submap "reset")
+	end)
+
 	hl.bind("catchall", hl.dsp.submap "reset")
 end)
 
