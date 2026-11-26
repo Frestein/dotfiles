@@ -42,14 +42,18 @@ error notifications remain unchanged.
 For every =create=, =modify=, =close_write= or =moved_to= event the watcher:
 
 1. Checks that the path belongs to a target and is not a directory itself.
-2. Resolves symlinks, applies ignores, and computes the path relative to =$HOME=.
-3. Drops repeated events for the same file within two seconds (monotonic clock).
-4. Looks up a fresh =chezmoi source-path= for the absolute target.
-5. If a source exists, runs =chezmoi verify=:
+2. Discards temporary files from atomic writes and editors: =.renameio-TempDir*=,
+   =.#*=, =#*#=, =*~= and =.<name><digits>=.
+3. Resolves symlinks, applies ignores, and computes the path relative to =$HOME=.
+4. Settles events for 0.3 seconds, coalescing them per path, then drops repeated
+   events for the same file within two seconds (monotonic clock).
+5. Checks that the file still exists before invoking chezmoi.
+6. Looks up a fresh =chezmoi source-path= for the absolute target.
+7. If a source exists, runs =chezmoi verify=:
    - exit 0: the target already matches the source, so the event is logged as
      =Skipping …: target already matches source state.= and no command runs;
    - otherwise: =chezmoi re-add <relative path>=.
-6. If no source path was found, runs a fresh =chezmoi managed= before falling
+8. If no source path was found, runs a fresh =chezmoi managed= before falling
    back to =chezmoi add=. An already-managed file is re-added, never added.
 
 Notifications go through =notify-send= on success and failure. A success
@@ -93,3 +97,8 @@ INFO: Updated .config/doom/bookmarks.eld.
 - =Inotifywait exited=: the watcher exits non-zero and systemd restarts it.
 - Unexpected =add= attempts: inspect the =targets= marker and whether the file
   is actually managed with =chezmoi source-path=.
+- =timeout obtaining persistent state lock=: another chezmoi instance held the
+  state lock. The watcher retries once, logs a warning and sends no critical
+  notification; the final event for the real file still runs =verify=.
+- Temp paths like =.renameio-TempDir*= or =.config.el1234567890= are normal
+  artifacts of atomic writes and are ignored before any chezmoi command.

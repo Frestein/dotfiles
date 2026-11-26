@@ -13,6 +13,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 MIN_INTERVAL = 2
+SETTLE_INTERVAL = 0.3
+LOCK_TIMEOUT = "timeout obtaining persistent state lock"
 HOME = Path.home()
 CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config")
 TARGETS_FILE = CONFIG_HOME / "chezmoi-watcher" / "targets"
@@ -23,6 +25,15 @@ log = logging.getLogger("chezmoi-watcher")
 _VAR_DEFAULT = re.compile(r"\$\{(\w+):-([^}]*)\}")
 _VAR = re.compile(r"\$(\w+)")
 _SECRET = re.compile(r'(output|data|value|contents|plaintext)="[^"]*"')
+_TRANSIENT = re.compile(
+    r"(?:"
+    r"\.renameio-TempDir\d+"
+    r"|\.#.*"
+    r"|#.*#"
+    r"|.*~"
+    r"|\.[^/]+?\d{10,}"
+    r")"
+)
 
 
 @dataclass(frozen=True)
@@ -42,6 +53,11 @@ class PeriodFormatter(logging.Formatter):
 def redact(text: str) -> str:
     """Mask values that may contain plaintext secrets in diagnostic output."""
     return _SECRET.sub(r'\1="<redacted>"', text)
+
+
+def is_transient(path: Path) -> bool:
+    """Detect temporary files left by atomic writers and editors."""
+    return bool(_TRANSIENT.fullmatch(path.name))
 
 
 def parse_line(line: str) -> WatchTarget | None:
@@ -81,11 +97,37 @@ def run(cmd: list[str], *, capture: bool = False) -> subprocess.CompletedProcess
     )
 
 
-def report_failure(
+def is_lock_timeout(result: subprocess.CompletedProcess[str]) -> bool:
+    return LOCK_TIMEOUT in (result.stderr or "")
+
+
+def run_chezmoi(*args: str) -> subprocess.CompletedProcess[str]:
+    """Run chezmoi, retrying once if the persistent state lock is busy."""
+    result = run(["chezmoi", *args], capture=True)
+    if result.returncode != 0 and is_lock_timeout(result):
+        time.sleep(1)
+        result = run(["chezmoi", *args], capture=True)
+    return result
+
+
+def log_failure(
     action: str, rel: Path, result: subprocess.CompletedProcess[str]
 ) -> None:
+    level = logging.WARNING if is_lock_timeout(result) else logging.ERROR
     detail = redact((result.stderr or result.stdout).strip())
-    log.error("%s failed for %s: %s", action, rel, detail)
+    log.log(level, "%s failed for %s: %s", action, rel, detail)
+
+
+def matches_source(changed: Path) -> bool:
+    return run_chezmoi("verify", str(changed)).returncode == 0
+
+
+def still_exists(rel: Path, changed: Path) -> bool:
+    """Guard against the file disappearing between the event and the command."""
+    if changed.exists():
+        return True
+    log.debug("File %s disappeared before update", rel)
+    return False
 
 
 def notify(urgency: str, message: str) -> None:
@@ -96,25 +138,27 @@ def notify(urgency: str, message: str) -> None:
 
 
 def re_add(rel: Path, *, quiet: bool) -> None:
-    result = run(["chezmoi", "re-add", str(rel)], capture=True)
+    result = run_chezmoi("re-add", str(rel))
     if result.returncode == 0:
         log.info("Updated %s", rel)
         if not quiet:
             notify("normal", f"File {rel} updated")
     else:
-        report_failure("Re-add", rel, result)
-        notify("critical", f"Error during re-add {rel}")
+        log_failure("Re-add", rel, result)
+        if not is_lock_timeout(result):
+            notify("critical", f"Error during re-add {rel}")
 
 
 def add(rel: Path, *, quiet: bool) -> None:
-    result = run(["chezmoi", "add", str(rel)], capture=True)
+    result = run_chezmoi("add", str(rel))
     if result.returncode == 0:
         log.info("Added %s", rel)
         if not quiet:
             notify("normal", f"File {rel} added")
     else:
-        report_failure("Add", rel, result)
-        notify("critical", f"Error during add {rel}")
+        log_failure("Add", rel, result)
+        if not is_lock_timeout(result):
+            notify("critical", f"Error during add {rel}")
 
 
 def matches(path: Path, target: WatchTarget) -> bool:
@@ -132,7 +176,7 @@ def process(
 ) -> None:
     if not any(matches(raw, target) for target in targets):
         return
-    if raw.is_dir():
+    if raw.is_dir() or is_transient(raw):
         return
 
     changed = raw.resolve()
@@ -158,10 +202,10 @@ def process(
     # A fresh source-path lookup is the authority: a cached managed list can go
     # stale and would send already-managed files (including encrypted ones) to
     # the `add` path.
-    lookup = run(["chezmoi", "source-path", str(changed)], capture=True)
+    lookup = run_chezmoi("source-path", str(changed))
     source = lookup.stdout.strip() if lookup.returncode == 0 else ""
     if lookup.returncode != 0:
-        log.error("Source-path failed for %s: %s", rel, redact(lookup.stderr.strip()))
+        log_failure("Source-path", rel, lookup)
     elif not source:
         log.error("Source-path was empty for %s", rel)
 
@@ -169,25 +213,27 @@ def process(
         # `verify` exits 0 when the target already matches the desired state,
         # so re-adding would only churn encrypted sources. If verification is
         # unavailable (e.g. no key), fall through to the normal re-add path.
-        if run(["chezmoi", "verify", str(changed)]).returncode == 0:
+        if matches_source(changed):
             log.info("Skipping %s: target already matches source state", rel)
             return
-        re_add(rel, quiet=quiet)
+        if still_exists(rel, changed):
+            re_add(rel, quiet=quiet)
         return
 
     # Without a source path, confirm managedness freshly before falling back to
     # `add`; never risk adding a file that is already tracked.
-    managed = run(["chezmoi", "managed"], capture=True)
+    managed = run_chezmoi("managed")
     if managed.returncode != 0:
-        report_failure("Managed", rel, managed)
+        log_failure("Managed", rel, managed)
         return
     if str(rel) in managed.stdout.splitlines():
         log.warning("Source-path was empty for managed file %s", rel)
-        if run(["chezmoi", "verify", str(changed)]).returncode == 0:
+        if matches_source(changed):
             log.info("Skipping %s: target already matches source state", rel)
             return
-        re_add(rel, quiet=quiet)
-    else:
+        if still_exists(rel, changed):
+            re_add(rel, quiet=quiet)
+    elif still_exists(rel, changed):
         add(rel, quiet=quiet)
 
 
@@ -273,9 +319,19 @@ def main() -> None:
 
     buffers: dict[int, str] = {}
     last_event: dict[Path, float] = {}
+    pending: dict[Path, float] = {}
     try:
         while True:
-            for key, _ in selector.select():
+            now = time.monotonic()
+            for raw, deadline in list(pending.items()):
+                if deadline <= now:
+                    del pending[raw]
+                    process(raw, targets, ignored, quiet, last_event)
+
+            timeout = (
+                max(0.0, min(pending.values()) - time.monotonic()) if pending else None
+            )
+            for key, _ in selector.select(timeout):
                 fd = key.fd
                 chunk = os.read(fd, 65536)
                 if not chunk:
@@ -304,7 +360,7 @@ def main() -> None:
                         missing_dirs.remove(raw)
                         add_watch([raw], recursive=True)
                         log.info("Watches established for new directory %s", raw)
-                    process(raw, targets, ignored, quiet, last_event)
+                    pending[raw] = time.monotonic() + SETTLE_INTERVAL
     finally:
         for watcher in processes:
             if watcher.poll() is None:
