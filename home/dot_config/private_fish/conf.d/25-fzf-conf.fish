@@ -47,9 +47,6 @@ set -gx FZF_ALT_C_OPTS "
 set -gx FZF_DEFAULT_COMMAND "fd --type f --strip-cwd-prefix"
 set -gx FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
 
-set -gx DISABLE_FZF_AUTO_COMPLETION false
-set -gx DISABLE_FZF_KEY_BINDINGS false
-
 set -gx FZF_DEFAULT_OPTS "
     --bind 'ctrl-y:accept'
     --bind 'ctrl-f:$preview_down'
