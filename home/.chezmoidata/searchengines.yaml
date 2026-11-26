@@ -1,0 +1,217 @@
+searchengines:
+  instances:
+    fourget: 4get.canine.tools
+    searxng: eu.priv.au
+    mozhi: mozhi.pussthecat.org
+
+  default: search-4get
+  start_page: https://{instance:fourget}
+
+  engines:
+    # Web
+    - group: Web
+      name: search-ddg
+      url: https://duckduckgo.com/?q={query}
+    - group: Web
+      name: search-g
+      url: https://www.google.com/search?q={query}
+    - group: Web
+      name: search-ya
+      url: https://ya.ru/search/?text={query}
+    - group: Web
+      name: search-4get
+      url: https://{instance:fourget}/web?scraper_ac=ddg&country=ru&nsfw=yes&s={query}
+      org_link: 4get
+    - group: Web
+      name: search-sx
+      url: https://{instance:searxng}/?q={query}
+      org_link: searxng
+
+    # Development & Packages
+    - group: Development & Packages
+      name: wk-nixos
+      url: https://wiki.nixos.org/w/index.php?search={query}
+    - group: Development & Packages
+      name: wk-gentoo
+      url: https://wiki.gentoo.org/index.php?search={query}
+    - group: Development & Packages
+      name: wk-arch
+      url: https://wiki.archlinux.org/index.php?search={query}
+    - group: Development & Packages
+      name: pkg-melpa
+      url: https://melpa.org/#/?q={query}
+    - group: Development & Packages
+      name: pkg-guix
+      url: https://packages.guix.gnu.org/search/?query={query}
+    - group: Development & Packages
+      name: pkg-toys
+      url: https://toys.whereis.social/?search={query}
+    - group: Development & Packages
+      name: pkg-nix
+      url: https://search.nixos.org/packages?query={query}
+    - group: Development & Packages
+      name: pkg-nur
+      url: https://nur.nix-community.org/?query={query}
+    - group: Development & Packages
+      name: pkg-gentoo
+      url: https://packages.gentoo.org/packages/search?q={query}
+    - group: Development & Packages
+      name: pkg-arch
+      url: https://archlinux.org/packages/?q={query}
+    - group: Development & Packages
+      name: pkg-aur
+      url: https://aur.archlinux.org/packages?&K={query}
+    - group: Development & Packages
+      name: pkg-linux
+      url: https://pkgs.org/search/?q={query}
+    - group: Development & Packages
+      name: grep-sg
+      url: https://sourcegraph.com/search?q=context:global+{query}
+    - group: Development & Packages
+      name: grep-gh-code
+      url: https://github.com/search?q={query}&type=code
+    - group: Development & Packages
+      name: grep-gh-repo
+      url: https://github.com/search?q={query}&type=repositories
+    - group: Development & Packages
+      name: grep-gh-issue
+      url: https://github.com/search?q={query}&type=issues
+    - group: Development & Packages
+      name: grep-gh-user
+      url: https://github.com/search?q={query}&type=users
+    - group: Development & Packages
+      name: grep-cb-repo
+      url: https://codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q={query}
+    - group: Development & Packages
+      name: grep-cb-user
+      url: https://codeberg.org/explore/users?q={query}
+
+    # Userscripts
+    - group: Userscripts
+      name: userscript-gf
+      url: https://greasyfork.org/en/scripts?q={query}
+    - group: Userscripts
+      name: userscript-sf
+      url: https://sleazyfork.org/en/scripts?q={query}
+
+    # Torrent
+    - group: Torrent
+      name: torrent-rutracker
+      url: https://rutracker.org/forum/tracker.php?nm={query}
+
+    # Translation
+    - group: Translation
+      name: trans-g
+      url: https://translate.google.com/?text={query}
+    - group: Translation
+      name: trans-mozhi
+      url: https://{instance:mozhi}/?engine=yandex&from=auto&to=ru&text={query}
+
+    # Maps
+    - group: Maps
+      name: map-g
+      url: https://www.google.com/maps?q={query}
+    - group: Maps
+      name: map-osm
+      url: https://www.openstreetmap.org/search?query={query}
+
+    # Media
+    - group: Media
+      name: media-yt
+      url: https://www.youtube.com/results?search_query={query}
+    - group: Media
+      name: media-kp
+      url: https://www.kinopoisk.ru/index.php?kp_query={query}
+
+    # Music
+    - group: Music
+      name: music-ytm
+      url: https://music.youtube.com/search?q={query}
+    - group: Music
+      name: music-lfm
+      url: https://www.last.fm/search?q={query}
+
+    # References
+    - group: References
+      name: ref-pin
+      url: https://pinterest.com/search/pins/?q={query}
+    - group: References
+      name: ref-zch
+      url: https://www.zerochan.net/{query}
+
+    # Social & Forums
+    - group: Social & Forums
+      name: social-reddit
+      url: https://www.reddit.com/r/{query}
+
+    # Games
+    - group: Games
+      name: games-pdb
+      url: https://www.protondb.com/search?q={query}
+    - group: Games
+      name: games-steam
+      url: https://store.steampowered.com/search?term={query}
+
+    # Anime & Manga
+    - group: Anime & Manga
+      name: anime-sfw
+      url: https://anilist.co/search/anime?hide%20my%20anime=true&search={query}
+    - group: Anime & Manga
+      name: anime-nsfw
+      url: https://anilist.co/search/anime?hide%20my%20anime=true&adult=true&search={query}
+    - group: Anime & Manga
+      name: manga-sfw
+      url: https://anilist.co/search/manga?hide%20my%20manga=true&search={query}
+    - group: Anime & Manga
+      name: manga-nsfw
+      url: https://anilist.co/search/manga?hide%20my%20manga=true&adult=true&search={query}
+
+    # Shopping
+    - group: Shopping
+      name: shop-ozon
+      url: https://ozon.ru/search/?text={query}
+    - group: Shopping
+      name: shop-yam
+      url: https://market.yandex.ru/search?text={query}
+
+  quickmarks:
+    - key: "1"
+      url: https://chat.deepseek.com
+    - key: "2"
+      url: https://chat.mistral.ai/work
+    - key: "3"
+      url: https://chat.mistral.ai/code
+    - key: "4"
+      url: https://www.perplexity.ai
+    - key: a
+      url: https://anilist.co/user/Frestein
+    - key: s
+      url: https://{instance:fourget}
+    - key: S
+      url: https://{instance:searxng}
+    - key: d
+      url: https://duckduckgo.com
+    - key: g
+      url: https://codeberg.org/Frestein
+    - key: G
+      url: https://github.com/Frestein
+    - key: e
+      url: https://mail.google.com/mail/u/2/
+    - key: E
+      url: https://app.tuta.com
+    - key: m
+      url: https://music.youtube.com
+    - key: M
+      url: https://www.last.fm/user/Frestein
+    - key: k
+      url: https://kinopoisk.ru/user/frestein/movies/planned-to-watch
+    - key: t
+      url: https://{instance:mozhi}/?engine=yandex&from=auto&to=ru
+    - key: T
+      url: https://translate.google.com
+    - key: y
+      url: https://www.youtube.com
+    - key: p
+      url: https://pinterest.com
+    - key: r
+      url: https://reddit.com

@@ -1,0 +1,13 @@
+;;; searchengines.el ---  -*- lexical-binding: t; -*-
+
+;; Generated from .chezmoidata/searchengines.yaml - do not edit directly.
+
+(defvar org-link-abbrev-alist)
+{{ range .searchengines.engines -}}
+{{- if hasKey . "org_link" }}
+(add-to-list 'org-link-abbrev-alist
+             '("{{ .org_link }}" . "{{ template "search-url.tmpl" (dict "url" .url "instances" $.searchengines.instances "placeholder" "%s") }}") t)
+{{- end }}
+{{- end }}
+
+(provide 'searchengines)

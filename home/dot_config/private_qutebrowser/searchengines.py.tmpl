@@ -1,0 +1,33 @@
+{{- $defaultURL := "" -}}
+{{- range .searchengines.engines -}}
+{{- if eq .name $.searchengines.default -}}
+{{- $defaultURL = .url -}}
+{{- end -}}
+{{- end -}}
+# Generated from .chezmoidata/searchengines.yaml - do not edit directly.
+
+c.url.default_page = "{{ template "search-url.tmpl" (dict "url" .searchengines.start_page "instances" .searchengines.instances "placeholder" "{}") }}"
+c.url.start_pages = ["{{ template "search-url.tmpl" (dict "url" .searchengines.start_page "instances" .searchengines.instances "placeholder" "{}") }}"]
+
+c.url.searchengines = {
+    "DEFAULT": "{{ template "search-url.tmpl" (dict "url" $defaultURL "instances" .searchengines.instances "placeholder" "{}") }}",
+{{- $previousGroup := "" -}}
+{{- range .searchengines.engines }}
+{{- if ne .group $previousGroup }}
+
+    # {{ .group }}
+{{- $previousGroup = .group }}
+{{- end }}
+    "{{ .name }}": "{{ template "search-url.tmpl" (dict "url" .url "instances" $.searchengines.instances "placeholder" "{}") }}",
+{{- end }}
+}
+
+qsites = {
+{{- range .searchengines.quickmarks }}
+    "{{ .key }}": "{{ template "search-url.tmpl" (dict "url" .url "instances" $.searchengines.instances "placeholder" "{}") }}",
+{{- end }}
+}
+
+for key, url in qsites.items():
+    config.bind("go" + key, "open " + url)
+    config.bind("gn" + key, "open -t " + url)

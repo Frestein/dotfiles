@@ -1,0 +1,5 @@
+{{- $url := .url -}}
+{{- range $name, $host := .instances -}}
+{{- $url = $url | replace (printf "{instance:%s}" $name) $host -}}
+{{- end -}}
+{{- $url | replace "{query}" .placeholder -}}

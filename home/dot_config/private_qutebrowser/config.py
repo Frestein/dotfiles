@@ -238,99 +238,7 @@ c.completion.web_history.exclude = web_exclude
 # Search engines
 # ===========================================================================
 
-# ---------------------------------------------------------------------------
-# Instance variables
-# ---------------------------------------------------------------------------
-
-instance_4get = "4get.canine.tools"
-instance_searxng = "eu.priv.au"
-instance_mozhi = "mozhi.pussthecat.org"
-
-# ---------------------------------------------------------------------------
-# Search engines
-# ---------------------------------------------------------------------------
-
-c.url.default_page = instance_4get
-c.url.start_pages = instance_4get
-
-# fmt: off
-
-c.url.searchengines = {
-    # Web
-    "DEFAULT": f"{instance_4get}/web?scraper_ac=ddg&country=ru&nsfw=yes&s={{}}",
-    "search-ddg": "duckduckgo.com/?q={}",
-    "search-g": "google.com/search?q={}",
-    "search-ya": "ya.ru/search/?text={}",
-    "search-4get": f"{instance_4get}/web?scraper_ac=ddg&country=ru&nsfw=yes&s={{}}",
-    "search-sx": f"{instance_searxng}/?q={{}}",
-
-    # Development & Packages
-    "wk-nixos": "wiki.nixos.org/w/index.php?search={}",
-    "wk-gentoo": "wiki.gentoo.org/index.php?search={}",
-    "wk-arch": "wiki.archlinux.org/index.php?search={}",
-    "pkg-melpa": "melpa.org/#/?q={}",
-    "pkg-guix": "packages.guix.gnu.org/search/?query={}",
-    "pkg-toys": "toys.whereis.social/?search={}",
-    "pkg-nix": "search.nixos.org/packages?query={}",
-    "pkg-nur": "nur.nix-community.org/?query={}",
-    "pkg-gentoo": "packages.gentoo.org/packages/search?q={}",
-    "pkg-arch": "archlinux.org/packages/?q={}",
-    "pkg-aur": "aur.archlinux.org/packages?&K={}",
-    "pkg-linux": "pkgs.org/search/?q={}",
-    "grep-sg": "sourcegraph.com/search?q=context:global+{}",
-    "grep-gh-code": "github.com/search?q={}&type=code",
-    "grep-gh-repo": "github.com/search?q={}&type=repositories",
-    "grep-gh-issue": "github.com/search?q={}&type=issues",
-    "grep-gh-user": "github.com/search?q={}&type=users",
-    "grep-cb-repo": "codeberg.org/explore/repos?only_show_relevant=true&sort=moststars&q={}",
-    "grep-cb-user": "codeberg.org/explore/users?q={}",
-
-    # Userscripts
-    "userscript-gf": "greasyfork.org/en/scripts?q={}",
-    "userscript-sf": "sleazyfork.org/en/scripts?q={}",
-
-    # Torrent
-    "torrent-rutracker": "rutracker.org/forum/tracker.php?nm={}",
-
-    # Translation
-    "trans-g": "translate.google.com/?text={}",
-    "trans-mozhi": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru&text={{}}",
-
-    # Maps
-    "map-g": "google.com/maps?q={}",
-    "map-osm": "www.openstreetmap.org/search?query={}",
-
-    # Media
-    "media-yt": "www.youtube.com/results?search_query={}",
-    "media-kp": "kinopoisk.ru/index.php?kp_query={}",
-
-    # Music
-    "music-ytm": "music.youtube.com/search?q={}",
-    "music-lfm": "last.fm/search?q={}",
-
-    # References
-    "ref-pin": "pinterest.com/search/pins/?q={}",
-    "ref-zch": "zerochan.net/{}",
-
-    # Social & Forums
-    "social-reddit": "reddit.com/r/{}",
-
-    # Games
-    "games-pdb": "protondb.com/search?q={}",
-    "games-steam": "store.steampowered.com/search?term={}",
-
-    # Anime & Manga
-    "anime-sfw": "anilist.co/search/anime?hide my anime=true&search={}",
-    "anime-nsfw": "anilist.co/search/anime?hide my anime=true&adult=true&search={}",
-    "manga-sfw": "anilist.co/search/manga?hide my manga=true&search={}",
-    "manga-nsfw": "anilist.co/search/manga?hide my manga=true&adult=true&search={}",
-
-    # Shopping
-    "shop-ozon": "ozon.ru/search/?text={}",
-    "shop-yam": "market.yandex.ru/search?text={}",
-}
-
-# fmt: on
+config.source("searchengines.py")
 
 # ===========================================================================
 # Aliases
@@ -482,37 +390,6 @@ bind("\\pu", "gopass-username-path")
 bind("\\pU", "gopass-username-secret")
 bind("\\pp", "gopass-password")
 bind("\\po", "gopass-otp")
-
-# ---------------------------------------------------------------------------
-# Tridactyl quickmarks
-# ---------------------------------------------------------------------------
-
-qsites = {
-    "1": "chat.deepseek.com",
-    "2": "chat.mistral.ai/work",
-    "3": "chat.mistral.ai/code",
-    "4": "perplexity.ai",
-    "a": "anilist.co/user/Frestein",
-    "s": instance_4get,
-    "S": instance_searxng,
-    "d": "duckduckgo.com",
-    "g": "codeberg.org/Frestein",
-    "G": "github.com/Frestein",
-    "e": "mail.google.com/mail/u/2/",
-    "E": "app.tuta.com",
-    "m": "music.youtube.com",
-    "M": "last.fm/user/Frestein",
-    "k": "kinopoisk.ru/user/frestein/movies/planned-to-watch",
-    "t": f"{instance_mozhi}/?engine=yandex&from=auto&to=ru",
-    "T": "translate.google.com",
-    "y": "www.youtube.com",
-    "p": "pinterest.com",
-    "r": "reddit.com",
-}
-
-for k, v in qsites.items():
-    bind("go" + k, "open " + v)
-    bind("gn" + k, "open -t " + v)
 
 # ---------------------------------------------------------------------------
 # Kinopoisk

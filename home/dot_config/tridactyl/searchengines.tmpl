@@ -1,0 +1,21 @@
+" Generated from .chezmoidata/searchengines.yaml - do not edit directly.
+
+js tri.config.set("searchurls", {})
+{{- $previousGroup := "" -}}
+{{- range .searchengines.engines }}
+{{- if ne .group $previousGroup }}
+
+" {{ .group }}
+{{- $previousGroup = .group }}
+{{- end }}
+set searchurls.{{ .name }} {{ template "search-url.tmpl" (dict "url" .url "instances" $.searchengines.instances "placeholder" "%s") }}
+{{- end }}
+
+set searchengine {{ .searchengines.default }}
+
+" Quickmarks
+{{- range .searchengines.quickmarks }}
+quickmark {{ .key }} {{ template "search-url.tmpl" (dict "url" .url "instances" $.searchengines.instances "placeholder" "%s") }}
+{{- end }}
+
+" vim:ft=tridactyl

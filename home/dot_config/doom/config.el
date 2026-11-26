@@ -1554,9 +1554,8 @@ CHAR is passed to `fr/org-emphasize-dwim' (e.g. ?* for bold, ?/ for italic)."
     (setq org-element-archive-tag "archive")
     (add-to-list 'org-default-properties "CREATED")
 
-    (dolist (pair '(("4get"       . "https://4get.joygnu.org/web?country=ru&nsfw=yes&s=%s")
-                    ("searxng"    . "https://eu.priv.au/search?q=%s")
-                    ("codeberg"   . "https://codeberg.org/%s")
+    (require 'searchengines)
+    (dolist (pair '(("codeberg"   . "https://codeberg.org/%s")
                     ("sourcehut"  . "https://git.sr.ht/~%s")
                     ("gitlab"     . "https://gitlab.com/%s")))
       (add-to-list 'org-link-abbrev-alist pair t))
