@@ -12,9 +12,11 @@ in the chezmoi source repository.
 ## Rules
 
 1. Files: `home/dot_local/bin/executable_chezmoi-watcher`,
-   `home/dot_config/chezmoi-watcher/targets`, `home/dot_config/chezmoi-watcher/ignore`
-   and `home/dot_config/systemd/user/chezmoi-watcher.service`. After changing
-   them, ask the user to restart `chezmoi-watcher.service`.
+   `home/dot_config/chezmoi-watcher/targets`,
+   `home/dot_config/chezmoi-watcher/ignore`,
+   `home/dot_config/chezmoi-watcher/quiet` and
+   `home/dot_config/systemd/user/chezmoi-watcher.service`. After changing them,
+   ask the user to restart `chezmoi-watcher.service`.
 2. A trailing `/` in `targets` or `ignore` is the explicit directory marker.
    Never classify a directory by whether it currently exists.
 3. `Skipping …: target already matches source state.` is a successful no-op

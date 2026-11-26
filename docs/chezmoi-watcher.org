@@ -11,6 +11,7 @@ sources in sync.
 | Script        | [[file:../home/dot_local/bin/executable_chezmoi-watcher][home/dot_local/bin/executable_chezmoi-watcher]]        | =~/.local/bin/chezmoi-watcher=                   |
 | Watched paths | [[file:../home/dot_config/chezmoi-watcher/targets][home/dot_config/chezmoi-watcher/targets]]              | =~/.config/chezmoi-watcher/targets=              |
 | Ignores       | [[file:../home/dot_config/chezmoi-watcher/ignore][home/dot_config/chezmoi-watcher/ignore]]               | =~/.config/chezmoi-watcher/ignore=               |
+| Quiet targets | [[file:../home/dot_config/chezmoi-watcher/quiet][home/dot_config/chezmoi-watcher/quiet]]               | =~/.config/chezmoi-watcher/quiet=               |
 | Service       | [[file:../home/dot_config/systemd/user/chezmoi-watcher.service][home/dot_config/systemd/user/chezmoi-watcher.service]] | =~/.config/systemd/user/chezmoi-watcher.service= |
 
 The unit is enabled by
@@ -18,7 +19,7 @@ The unit is enabled by
 
 * Target syntax
 
-Both =targets= and =ignore= use the same shell-style syntax:
+=targets=, =ignore= and =quiet= use the same shell-style syntax:
 
 - One path per line; =#= starts a comment, surrounding whitespace is trimmed.
 - =${VAR:-default}= and =$VAR= are expanded without =eval=; =~= is expanded too.
@@ -32,7 +33,9 @@ appears. This keeps future directories working without ever recursing into a
 parent such as =~/.config= itself.
 
 Ignores follow the same rules: a marked directory matches recursively, a plain
-path matches exactly.
+path matches exactly. Quiet entries also use these rules: they suppress the
+success desktop notification for the matching path, while journal lines and
+error notifications remain unchanged.
 
 * Event flow
 
@@ -49,9 +52,10 @@ For every =create=, =modify=, =close_write= or =moved_to= event the watcher:
 6. If no source path was found, runs a fresh =chezmoi managed= before falling
    back to =chezmoi add=. An already-managed file is re-added, never added.
 
-Notifications go through =notify-send= on success and failure. Failures of
-=re-add=, =add= and =managed= are logged with stderr captured, so diagnostics
-reach the journal instead of being discarded.
+Notifications go through =notify-send= on success and failure. A success
+notification is skipped for paths listed in =quiet=; failure notifications are
+always sent. Failures of =re-add=, =add= and =managed= are logged with stderr
+captured, so diagnostics reach the journal instead of being discarded.
 
 * Usage
 

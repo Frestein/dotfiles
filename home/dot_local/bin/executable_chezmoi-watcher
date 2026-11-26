@@ -17,6 +17,7 @@ HOME = Path.home()
 CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config")
 TARGETS_FILE = CONFIG_HOME / "chezmoi-watcher" / "targets"
 IGNORE_FILE = CONFIG_HOME / "chezmoi-watcher" / "ignore"
+QUIET_FILE = CONFIG_HOME / "chezmoi-watcher" / "quiet"
 
 log = logging.getLogger("chezmoi-watcher")
 _VAR_DEFAULT = re.compile(r"\$\{(\w+):-([^}]*)\}")
@@ -94,21 +95,23 @@ def notify(urgency: str, message: str) -> None:
     )
 
 
-def re_add(rel: Path) -> None:
+def re_add(rel: Path, *, quiet: bool) -> None:
     result = run(["chezmoi", "re-add", str(rel)], capture=True)
     if result.returncode == 0:
         log.info("Updated %s", rel)
-        notify("normal", f"File {rel} updated")
+        if not quiet:
+            notify("normal", f"File {rel} updated")
     else:
         report_failure("Re-add", rel, result)
         notify("critical", f"Error during re-add {rel}")
 
 
-def add(rel: Path) -> None:
+def add(rel: Path, *, quiet: bool) -> None:
     result = run(["chezmoi", "add", str(rel)], capture=True)
     if result.returncode == 0:
         log.info("Added %s", rel)
-        notify("normal", f"File {rel} added")
+        if not quiet:
+            notify("normal", f"File {rel} added")
     else:
         report_failure("Add", rel, result)
         notify("critical", f"Error during add {rel}")
@@ -124,6 +127,7 @@ def process(
     raw: Path,
     targets: list[WatchTarget],
     ignored: list[WatchTarget],
+    quiet_targets: list[WatchTarget],
     last_event: dict[Path, float],
 ) -> None:
     if not any(matches(raw, target) for target in targets):
@@ -140,6 +144,7 @@ def process(
         return
     if not rel.parts:
         return
+    quiet = any(matches(changed, target) for target in quiet_targets)
 
     now = time.monotonic()
     if now - last_event.get(rel, 0.0) < MIN_INTERVAL:
@@ -167,7 +172,7 @@ def process(
         if run(["chezmoi", "verify", str(changed)]).returncode == 0:
             log.info("Skipping %s: target already matches source state", rel)
             return
-        re_add(rel)
+        re_add(rel, quiet=quiet)
         return
 
     # Without a source path, confirm managedness freshly before falling back to
@@ -181,9 +186,9 @@ def process(
         if run(["chezmoi", "verify", str(changed)]).returncode == 0:
             log.info("Skipping %s: target already matches source state", rel)
             return
-        re_add(rel)
+        re_add(rel, quiet=quiet)
     else:
-        add(rel)
+        add(rel, quiet=quiet)
 
 
 def start_watch(paths: list[Path], *, recursive: bool) -> subprocess.Popen[bytes]:
@@ -228,6 +233,7 @@ def main() -> None:
         sys.exit(1)
     targets = read_list(TARGETS_FILE)
     ignored = read_list(IGNORE_FILE)
+    quiet = read_list(QUIET_FILE)
 
     directory_paths = {target.path for target in targets if target.directory}
     file_paths = [target.path for target in targets if not target.directory]
@@ -239,11 +245,12 @@ def main() -> None:
         if not any(path.is_relative_to(directory) for directory in existing_dirs)
     }
     log.info(
-        "Targets loaded: %d directories (%d pending), %d files; ignore entries: %d",
+        "Targets loaded: %d directories (%d pending), %d files; ignore entries: %d; quiet entries: %d",
         len(directory_paths),
         len(missing_dirs),
         len(file_paths),
         len(ignored),
+        len(quiet),
     )
     if not existing_dirs and not parents:
         log.error("No directories to watch")
@@ -297,7 +304,7 @@ def main() -> None:
                         missing_dirs.remove(raw)
                         add_watch([raw], recursive=True)
                         log.info("Watches established for new directory %s", raw)
-                    process(raw, targets, ignored, last_event)
+                    process(raw, targets, ignored, quiet, last_event)
     finally:
         for watcher in processes:
             if watcher.poll() is None:
