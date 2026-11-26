@@ -1,6 +1,6 @@
 ---
 name: Commit message
-description: 'Use when the user asks to write a commit message in Russian or English ("напиши коммит", "write a commit"), or when preparing changes for a commit in this repository. Conventional Commits (CC) rules live in docs/commit-conventions.org.'
+description: 'Use when the user asks to write or create a commit in Russian or English ("напиши коммит", "пиши коммит", "write a commit"), or when preparing changes for a commit in this repository. Conventional Commits (CC) rules live in docs/commit-conventions.org.'
 ---
 
 # Commit message workflow
@@ -11,6 +11,9 @@ Read `docs/commit-conventions.org` before drafting any commit message.
 Resolve the root with `git rev-parse --show-toplevel`. It is the single
 source of truth; never rely on memory or on another repository's
 conventions.
+
+"напиши коммит", "пиши коммит", and "write a commit" mean create the
+commit, not only draft its message.
 
 ## Draft
 
@@ -39,8 +42,13 @@ conventions.
 
 1. Read the document.
 2. Run `git status` and `git diff` to see the changes.
-3. Draft the message and present it to the user.
-4. Do not stage files or create the commit unless explicitly asked.
+3. Draft the message.
+4. When the user asked to write a commit, stage only the intended files and
+   create the commit with the drafted message. Show only the message when
+   the user explicitly asks for the message alone, or when the changes are
+   not ready to commit.
+5. Verify with `git show --stat --oneline HEAD` and confirm protected files
+   were not staged.
 
 ## History
 
