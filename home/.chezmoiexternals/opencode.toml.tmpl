@@ -1,0 +1,39 @@
+{{- $emacs_skills_upstream_base := "https://raw.githubusercontent.com/xenodium/emacs-skills/refs/heads/main/skills/" }}
+{{- $emacs_skills_fork_base := "https://raw.githubusercontent.com/Frestein/emacs-skills/refs/heads/main/skills/" }}
+{{- $emacs_skills_upstream_files := list
+    "d2/SKILL.md"
+    "describe/SKILL.md"
+    "describe/agent-skill-describe.el"
+    "dired/SKILL.md"
+    "dired/agent-skill-dired.el"
+    "emacsclient/SKILL.md"
+    "file-links/SKILL.md"
+    "gnuplot/SKILL.md"
+    "highlight/SKILL.md"
+    "highlight/agent-skill-highlight.el"
+    "matplotlib/SKILL.md"
+    "open/SKILL.md"
+    "open/agent-skill-open.el"
+    "plantuml/SKILL.md"
+    "select/SKILL.md"
+    "select/agent-skill-select.el"
+}}
+{{- $emacs_skills_fork_files := list
+    "github-activity/SKILL.md"
+    "github-activity/analyze.py"
+    "mermaid/SKILL.md"
+}}
+
+{{- range $skill_file := $emacs_skills_upstream_files }}
+
+[".config/opencode/skills/{{ $skill_file }}"]
+type = "file"
+url = {{ printf "%s%s" $emacs_skills_upstream_base $skill_file | quote }}
+{{- end }}
+
+{{- range $skill_file := $emacs_skills_fork_files }}
+
+[".config/opencode/skills/{{ $skill_file }}"]
+type = "file"
+url = {{ printf "%s%s" $emacs_skills_fork_base $skill_file | quote }}
+{{- end }}
