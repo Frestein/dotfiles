@@ -36,7 +36,7 @@ path matches exactly.
 
 * Event flow
 
-For every =create= or =modify= event the watcher:
+For every =create=, =modify=, =close_write= or =moved_to= event the watcher:
 
 1. Checks that the path belongs to a target and is not a directory itself.
 2. Resolves symlinks, applies ignores, and computes the path relative to =$HOME=.

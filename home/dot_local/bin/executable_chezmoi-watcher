@@ -194,6 +194,10 @@ def start_watch(paths: list[Path], *, recursive: bool) -> subprocess.Popen[bytes
         "create",
         "--event",
         "modify",
+        "--event",
+        "close_write",
+        "--event",
+        "moved_to",
         "--format",
         "%w%f",
     ]
