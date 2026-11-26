@@ -51,6 +51,15 @@ export FZF_ALT_C_OPTS="
 export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
+# Use fd for path completion: respects .gitignore and skips hidden dirs
+_fzf_compgen_path() {
+    fd --follow . "$1"
+}
+
+_fzf_compgen_dir() {
+    fd --type d --follow . "$1"
+}
+
 export FZF_DEFAULT_OPTS="
     --bind 'ctrl-y:accept'
     --bind 'ctrl-f:$preview_down'
