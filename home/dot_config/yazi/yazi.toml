@@ -25,6 +25,7 @@ image = [
 prepend_rules = [
   { mime = "image/{vnd.djvu,x-djvu,djvu}", use = ["open", "reveal"] },
   { mime = "image/*", use = ["image", "open", "reveal"] },
+  { url = "*.fb2", use = ["open", "reveal"] }, # file(1) detects FB2 as text/xml
 ]
 
 # ===========================================================================
