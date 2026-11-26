@@ -36,6 +36,9 @@ commit, not only draft its message.
 
 - Keep the subject within 50 characters when possible; 72 is the hard limit.
 - Separate the subject from the body with a blank line; wrap the body at 72.
+- Write the body with explicit line breaks: embed newlines in the `-m` argument
+  or use `git commit -F <file>`. A line that is only a URL may exceed 72; the
+  `check-commit-body` hook enforces the rest.
 - The description is lowercase and has no trailing period.
 
 ## Workflow
@@ -49,6 +52,8 @@ commit, not only draft its message.
    not ready to commit.
 5. Verify with `git show --stat --oneline HEAD` and confirm protected files
    were not staged.
+6. Check the message width with
+   `python3 scripts/check-commit-body.py .git/COMMIT_EDITMSG`.
 
 ## History
 

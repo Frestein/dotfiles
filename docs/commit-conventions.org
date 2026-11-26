@@ -30,7 +30,8 @@ type: description
 - The description is lowercase and has no trailing period.
 - Separate the subject from the body with a blank line.
 - Keep the subject within 50 characters when possible; 72 is the hard limit.
-- Wrap the body at 72 characters.
+- Wrap the body at 72 characters. This is enforced by the =check-commit-body=
+  hook; a line that is only a URL may exceed the limit.
 - Wrap code identifiers in backticks in the subject. Example:
   =fix(systemd): check-disk-usage: use `OnCalendar` instead of `OnUnitActiveSec`=
 - In the body, backticks are optional and serve only as visual separation
@@ -264,6 +265,16 @@ rev = "v4.5.0"
 id = "conventional-pre-commit"
 stages = ["commit-msg"]
 args = ["--scopes=<<scope-list()>>"]
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "check-commit-body"
+name = "Check commit body width"
+entry = "python3 scripts/check-commit-body.py"
+language = "system"
+stages = ["commit-msg"]
 #+end_src
 
 * Rules
@@ -280,6 +291,9 @@ args = ["--scopes=<<scope-list()>>"]
 
 * Tooling
 
-The =canonical-scopes= block is tangled into =prek.toml= in the repository
-root. Regenerate it whenever the scope list changes. The =commit-msg= hook is
-installed with =prek install=. Update hook versions with =prek update=.
+The =canonical-scopes= block and the local =check-commit-body= hook are tangled
+into =prek.toml= in the repository root. Regenerate it whenever either changes.
+The =commit-msg= hooks are installed with =prek install=; update remote hook
+versions with =prek update=. The local hook runs
+=scripts/check-commit-body.py=, which skips the subject and exempts URL-only
+lines from the width limit.
