@@ -20,10 +20,9 @@ Yazi plugins and flavors have no version tags, so all archives track =master=.
 
 *** Personal plugins
 
-These four plugins are maintained in the chezmoi source tree, not fetched from
+These three plugins are maintained in the chezmoi source tree, not fetched from
 a remote archive:
 
-- =confirm-quit.yazi= — ask for confirmation before quitting with multiple tabs.
 - =folder-rules.yazi= — per-folder sorting rules.
 - =parent-arrow.yazi= — move between parent directories.
 - =smart-tab.yazi= — create a tab and enter the hovered directory.

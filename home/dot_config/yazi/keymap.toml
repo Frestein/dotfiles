@@ -11,7 +11,7 @@ prepend_keymap = [
   { on = ".", run = "noop" },
   # QoL
   { on = "l", run = "plugin smart-enter", desc = "Enter the child directory or open in editor" },
-  { on = "q", run = "plugin confirm-quit", desc = "Quit the process" },
+  { on = "q", run = "quit", desc = "Quit the process" },
   # Motions
   ## Zoxide
   { on = ["z", "z"], run = "plugin zoxide", desc = "Zoxide" },
