@@ -20,6 +20,8 @@
     { "action": "tool.use", "resource": "external_directory:/home/frestein/.local/bin/*", "effect": "allow" },
     { "action": "tool.use", "resource": "external_directory:/home/frestein/.local/share/opencode/tool-output/*", "effect": "allow" },
     { "action": "tool.use", "resource": "external_directory:/tmp/opencode/*", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:/tmp/aur", "effect": "allow" },
+    { "action": "tool.use", "resource": "external_directory:/tmp/aur/*", "effect": "allow" },
     { "action": "tool.use", "resource": "external_directory:/usr/share/*", "effect": "allow" },
     { "action": "tool.use", "resource": "external_directory:/etc/*", "effect": "allow" },
 
