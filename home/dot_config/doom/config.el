@@ -387,7 +387,7 @@ the variable `message-log-max'."
     (when (executable-find "arch-update")
       (fr/eshell-append-aliases
        '(("au"  "arch-update $*")
-         ("aul" "arch-update -l $*")
+         ("aul" "arch-update-highlight $*")
          ("aun" "arch-update -n $*")
          ("aus" "arch-update -s $*"))))
 
