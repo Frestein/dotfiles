@@ -19,7 +19,7 @@ export PATH="$BUN_HOME/bin:$GOPATH/bin:$CARGO_HOME/bin:$XDG_CONFIG_HOME/emacs/bi
 
 export SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
 export EMACSDIR="$XDG_CONFIG_HOME/emacs"
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gcr/ssh"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/gopass/stores/root"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export RENPY_PATH_TO_SAVES="$XDG_DATA_HOME/renpy"

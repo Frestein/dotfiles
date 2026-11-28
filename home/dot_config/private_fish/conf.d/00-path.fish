@@ -24,7 +24,7 @@ prepend_unique_path $BUN_HOME/bin $GOPATH/bin $CARGO_HOME/bin $XDG_CONFIG_HOME/d
 set -q SCREENRC; or set -x SCREENRC $XDG_CONFIG_HOME/screen/screenrc
 set -q EMACSDIR; or set -x EMACSDIR $XDG_CONFIG_HOME/doom.d
 set -q GNUPGHOME; or set -x GNUPGHOME $XDG_DATA_HOME/gnupg
-set -q SSH_AUTH_SOCK; or set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent.socket
+set -q SSH_AUTH_SOCK; or set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/gcr/ssh
 set -q PASSWORD_STORE_DIR; or set -x PASSWORD_STORE_DIR $XDG_DATA_HOME/gopass/stores/root
 set -q NPM_CONFIG_USERCONFIG; or set -x NPM_CONFIG_USERCONFIG $XDG_CONFIG_HOME/npm/npmrc
 set -q RENPY_PATH_TO_SAVES; or set -x RENPY_PATH_TO_SAVES $XDG_DATA_HOME/renpy
