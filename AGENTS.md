@@ -13,6 +13,9 @@ Never read, edit, glob or grep files outside the repository root. Never read
 deployed files marked as sensitive by the chezmoi conventions (encrypted-source
 results, gopass-rendered configs, credentials, browser profiles, token stores,
 anything excluded by `.chezmoiignore`) — read the source copy instead.
+Never invoke secret backends (`gopass`, `secret-tool`, `pass`), read shell
+histories, or print private key material. Shell commands are denied by the
+`policies` block in `home/dot_config/opencode/opencode.jsonc`; this rule explains why.
 
 ## Chezmoi source state
 

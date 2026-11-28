@@ -54,6 +54,47 @@
     { "action": "tool.use", "resource": "shell:*quickmarks*", "effect": "deny" },
     { "action": "tool.use", "resource": "shell:*web_exclude*", "effect": "deny" },
     { "action": "tool.use", "resource": "shell:*keyfile.toml*", "effect": "deny" },
-    { "action": "tool.use", "resource": "shell:*service.json*", "effect": "deny" }
+    { "action": "tool.use", "resource": "shell:*service.json*", "effect": "deny" },
+
+    // Secret backends and key material are off-limits for the agent.
+    { "action": "tool.use", "resource": "shell:*gopass*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*secret-tool*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*pass show*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*gpg*export-secret*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*private-keys-v1.d*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*chezmoi --debug*", "effect": "deny" },
+
+    // Private keys, credential stores, and shell history.
+    { "action": "tool.use", "resource": "read:*/.ssh/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:*/.ssh/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/.ssh/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.local/share/gopass/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/gopass/stores/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.local/share/keyrings/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/keyrings/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.local/share/gnupg/private-keys-v1.d/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.local/share/fish/fish_history", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.bash_history", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.zsh_history", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*_history*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.config/emacs/.local/etc/eshell/history", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:/home/frestein/.config/emacs/.local/etc/eshell/history", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*eshell*history*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.local/share/xonsh/history_json/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/xonsh/history_json/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.local/share/atuin/history.db*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/atuin/history.db*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.config/atuin/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/home/frestein/.cache/cliphist/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "edit:/home/frestein/.cache/cliphist/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/.cache/cliphist/*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*cliphist list*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*cliphist decode*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*wl-paste*", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/etc/shadow", "effect": "deny" },
+    { "action": "tool.use", "resource": "read:/etc/gshadow", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/etc/shadow*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*/etc/gshadow*", "effect": "deny" },
+    { "action": "tool.use", "resource": "shell:*git credential*", "effect": "deny" }
   ]
 }
