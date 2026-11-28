@@ -2,6 +2,8 @@ Chezmoi conventions are documented in
 `home/dot_config/opencode/skills/chezmoi/references/chezmoi-conventions.md`;
 read them before working with dotfiles. Commit conventions live in
 `docs/commit-conventions.org`; read them before drafting a commit message.
+Load the `journal` skill before running `journalctl`; user-unit logs live in
+the system journal and use `--user-unit=<name>.service`, not `--user -u`.
 
 Never run `chezmoi apply`, `chezmoi status`, `chezmoi diff`, `chezmoi init`,
 `chezmoi update`, `chezmoi add --encrypt`, or `chezmoi re-add` (including
