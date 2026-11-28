@@ -6,9 +6,11 @@ set -o pipefail
 
 real_column=${ARCH_UPDATE_REAL_COLUMN:-/usr/bin/column}
 config_file=${ARCH_UPDATE_HIGHLIGHT_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/arch-update/highlight.conf}
+arch_config="${XDG_CONFIG_HOME:-$HOME/.config}/arch-update/arch-update.conf"
 
-if [[ ${ARCH_UPDATE_HIGHLIGHT:-} == 0 ]] || [[ ! -r $config_file ]]; then
-    exec "$real_column" "$@"
+if [[ ${ARCH_UPDATE_HIGHLIGHT:-} == 0 ]] || [[ ! -r $config_file ]] ||
+	grep -Eq '^[[:space:]]*NoColor[[:space:]]*$' "$arch_config" 2>/dev/null; then
+	exec "$real_column" "$@"
 fi
 
 awk -v config="$config_file" '
