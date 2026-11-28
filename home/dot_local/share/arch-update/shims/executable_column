@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
-# List pending updates and highlight packages of interest.
-# Requires: arch-update and awk.
-# Config: $XDG_CONFIG_HOME/arch-update/highlight.conf
+# Highlight packages of interest in arch-update's column-formatted lists.
+# Used only through the arch-update wrapper; see highlight.conf for patterns.
 
 set -o pipefail
 
-config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
-config_file=${ARCH_UPDATE_HIGHLIGHT_CONFIG:-$config_dir/arch-update/highlight.conf}
+real_column=${ARCH_UPDATE_REAL_COLUMN:-/usr/bin/column}
+config_file=${ARCH_UPDATE_HIGHLIGHT_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/arch-update/highlight.conf}
 
-if [[ ! -r $config_file ]]; then
-    printf 'arch-update-highlight: cannot read config: %s\n' "$config_file" >&2
-    exec arch-update -l "$@"
+if [[ ${ARCH_UPDATE_HIGHLIGHT:-} == 0 ]] || [[ ! -r $config_file ]]; then
+    exec "$real_column" "$@"
 fi
 
-arch-update -l "$@" | awk -v config="$config_file" '
+awk -v config="$config_file" '
 BEGIN {
     esc = sprintf("%c", 27)
     section = ""
@@ -39,6 +37,12 @@ BEGIN {
 }
 
 {
+    # Package lines from arch-update carry the old -> new version arrow.
+    if (index($0, " -> ") == 0) {
+        print
+        next
+    }
+
     plain = $0
     gsub(esc "\\[[0-9;]*m", "", plain)
     sub(/^[[:space:]]+/, "", plain)
@@ -67,4 +71,4 @@ BEGIN {
     } else {
         print
     }
-}'
+}' | "$real_column" "$@"

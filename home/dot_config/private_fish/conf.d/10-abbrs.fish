@@ -97,7 +97,7 @@ abbr -a -- ip-addr "ip -o addr show | awk '{split(\$4,a,\"/\"); print a[1]}'"
 ## Arch-Update (Update helper)
 if type -q arch-update
     abbr -a -- au arch-update
-    abbr -a -- aul arch-update-highlight # Display the list of pending updates (highlighted)
+    abbr -a -- aul arch-update -l # Display the list of pending updates
     abbr -a -- aun arch-update -n # Display latest Arch news
     abbr -a -- aus arch-update -s # Check for services requiring a post upgrade restart
 end

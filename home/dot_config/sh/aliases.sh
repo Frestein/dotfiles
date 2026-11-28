@@ -104,7 +104,7 @@ alias ip-pub='curl -s ifconfig.me'
 ## Arch-Update (Update helper)
 if command -v arch-update >/dev/null 2>&1; then
 	alias au='arch-update'
-	alias aul='arch-update-highlight' # Display the list of pending updates (highlighted)
+	alias aul='arch-update -l' # Display the list of pending updates
 	alias aun='arch-update -n' # Display latest Arch news
 	alias aus='arch-update -s' # Check for services requiring a post upgrade restart
 fi

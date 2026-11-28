@@ -1,0 +1,11 @@
+#!/bin/sh
+# Run arch-update with package highlighting in terminal list output.
+# The column shim is prepended to PATH only for this process.
+
+ARCH_UPDATE_REAL_COLUMN=$(command -v column)
+export ARCH_UPDATE_REAL_COLUMN
+
+export ARCH_UPDATE_HIGHLIGHT_CONFIG="${ARCH_UPDATE_HIGHLIGHT_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/arch-update/highlight.conf}"
+
+PATH="${XDG_DATA_HOME:-$HOME/.local/share}/arch-update/shims:$PATH"
+exec /usr/bin/arch-update "$@"
