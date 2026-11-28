@@ -119,3 +119,6 @@ chezmoi execute-template -f <source> > /tmp/opencode/rendered
 - `[diff] pager = "delta"` and `[merge] command = "nvim"` in `.chezmoi.toml.tmpl` can hang without a TTY — one more reason not to run chezmoi diff/status/apply.
 - The target of `encrypted_quickmarks.asc` is `~/.config/qutebrowser/quickmarks`, not a file named `encrypted_*`.
 - `chezmoi source-path` and `chezmoi managed` are metadata-only and safe. Rendering templates is only acceptable for templates that call no secret backends, as described in "Template style"; never render config or encrypted sources.
+- Removing a source file leaves its deployed target in place: `chezmoi apply`
+  updates and writes targets but does not delete them. Ask the user to remove
+  the target manually instead of assuming `apply` will clean it up.

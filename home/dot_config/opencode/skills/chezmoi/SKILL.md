@@ -67,4 +67,7 @@ slow steps. Read `/tmp/opencode/chezmoi-debug.log`, then delete it.
 2. Read it. In a `.tmpl`, preserve every `{{ ... }}` token; escape nested braces as `{{ "{{" }}`.
 3. Edit the source only. Keep `dot_`, `private_`, `executable_` prefixes and the `.tmpl` suffix intact.
 4. Show `git diff`, then ask the user to run `chezmoi apply`.
-5. Before renaming files or changing attributes/templates, read `references/chezmoi-conventions.md`.
+5. Deleting a source file does not remove its deployed target on `chezmoi
+   apply`; ask the user to delete the target manually.
+6. Before renaming files or changing attributes/templates, read
+   `references/chezmoi-conventions.md`.
